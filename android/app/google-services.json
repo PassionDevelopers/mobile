@@ -1,0 +1,54 @@
+{
+  "project_info": {
+    "project_number": "651662231738",
+    "project_id": "dasi-stand",
+    "storage_bucket": "dasi-stand.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:651662231738:android:852ee89d403855b7431a83",
+        "android_client_info": {
+          "package_name": "com.PassionDev.DasiStand"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "651662231738-71indnugi3vvluvfdhdduduo2oi95os7.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.PassionDev.DasiStand",
+            "certificate_hash": "30033eaee0cb8921cb9b42838567913d425fe217"
+          }
+        },
+        {
+          "client_id": "651662231738-1frr74s9bod4ssub1f6g7u3gfkru1o32.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD3P3dHv92D6L6ekERUXqQchqwbVtYgp_o"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "651662231738-1frr74s9bod4ssub1f6g7u3gfkru1o32.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "651662231738-tjfn35pl6jortiunk56dpeohd86hfkiv.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.PassionDev.DasiStand"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
