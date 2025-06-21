@@ -1,6 +1,5 @@
+import 'package:could_be/core/themes/margins_paddings.dart';
 import 'package:flutter/material.dart';
-
-import '../../../presentation/themes/margins_paddings.dart';
 import '../../../ui/color.dart';
 import '../../../ui/fonts.dart';
 
@@ -9,20 +8,37 @@ class IssueChip extends StatelessWidget {
   final String title;
   final bool isActive;
   final VoidCallback onTap;
+
   @override
   Widget build(BuildContext context) {
     return Padding(
       padding: EdgeInsets.only(right: MyPaddings.small),
-      child: InkWell(
-        borderRadius: BorderRadius.circular(20),
-        onTap: onTap,
-        child: Ink(
-            padding: EdgeInsets.symmetric(horizontal: MyPaddings.small, vertical: MyPaddings.extraSmall),
-            decoration: BoxDecoration(
-              color: isActive? AppColors.primary : AppColors.primaryLight,
-              borderRadius: BorderRadius.circular(15),
+      child: AnimatedContainer(
+        duration: Duration(milliseconds: 200),
+        curve: Curves.easeInOut,
+        child: InkWell(
+          borderRadius: BorderRadius.circular(25),
+          onTap: onTap,
+          child: Container(
+            padding: EdgeInsets.symmetric(
+              horizontal: MyPaddings.medium,
+              vertical: MyPaddings.small,
             ),
-            child: Center(child: MyText.h3(title, color: isActive? AppColors.textPrimaryLight : AppColors.textPrimary))
+            decoration: BoxDecoration(
+              color: isActive ? AppColors.primary : AppColors.surface,
+              borderRadius: BorderRadius.circular(25),
+              border: Border.all(
+                color: isActive ? Colors.transparent : AppColors.border,
+                width: 1,
+              ),
+            ),
+            child: Center(
+              child: MyText.h3(
+                title,
+                color: isActive ? Colors.white : AppColors.textPrimary,
+              ),
+            ),
+          ),
         ),
       ),
     );

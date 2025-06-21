@@ -3,7 +3,7 @@ import '../../domain/entities/issues.dart';
 import '../../domain/repositoryInterfaces/issues_interface.dart';
 import 'package:dio/dio.dart';
 
-import '../dataSource/issues_dto.dart';
+import '../dto/issues_dto.dart';
 
 class IssuesRepositoryImpl implements IssuesRepository {
   final Dio dio;
@@ -64,6 +64,36 @@ class IssuesRepositoryImpl implements IssuesRepository {
         },
       ),
       queryParameters: {'type': 'for-you', 'limit': 10, 'lastIssueId': ''},
+    );
+    final issuesDTO = IssuesDTO.fromJson(response.data);
+    return issuesDTO.toDomain();
+  }
+
+  @override
+  Future<Issues> fetchWatchHistoryIssues() async {
+    final response = await dio.get(
+      '/user/watch-history',
+      options: Options(
+        headers: {
+          'Authorization' : demoToken
+        },
+      ),
+      queryParameters: {'limit': 10, 'lastIssueId': ''},
+    );
+    final issuesDTO = IssuesDTO.fromJson(response.data);
+    return issuesDTO.toDomain();
+  }
+
+  @override
+  Future<Issues> fetchSubscribedIssues() async{
+    final response = await dio.get(
+      '/issues/subscribed',
+      options: Options(
+        headers: {
+          'Authorization' : demoToken
+        },
+      ),
+      // queryParameters: {'limit': 10, 'lastIssueId': ''},
     );
     final issuesDTO = IssuesDTO.fromJson(response.data);
     return issuesDTO.toDomain();

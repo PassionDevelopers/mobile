@@ -21,4 +21,12 @@ class FetchIssuesUseCase{
   Future<Issues> fetchForYouIssues() async {
     return _issuesRepository.fetchForYouIssues();
   }
+
+  Future<Issues> fetchWatchHistoryIssues() async {
+    return _issuesRepository.fetchWatchHistoryIssues();
+  }
+
+  Future<Issues> fetchSubscribedIssues() async {
+    return _issuesRepository.fetchSubscribedIssues();
+  }
 }

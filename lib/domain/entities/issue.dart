@@ -1,4 +1,5 @@
-import '../models/coverage_spectrum_model.dart';
+
+import 'coverage_spectrum.dart';
 
 class Issue{
   final String id;
@@ -13,7 +14,7 @@ class Issue{
   final List<String> keywords;
   final String? imageUrl;
   final int view;
-  final CoverageSpectrumModel coverageSpectrum;
+  final CoverageSpectrum coverageSpectrum;
 
   Issue({
     required this.id,
@@ -40,4 +41,23 @@ class Issue{
     view,
     coverageSpectrum
   ];
+
+  String getTimeAgo() {
+    final now = DateTime.now();
+    final difference = now.difference(createdAt);
+
+    if (difference.inDays > 365) {
+      return '${(difference.inDays / 365).floor()}년 전';
+    } else if (difference.inDays > 30) {
+      return '${(difference.inDays / 30).floor()}달 전';
+    } else if (difference.inDays > 0) {
+      return '${difference.inDays}일 전';
+    } else if (difference.inHours > 0) {
+      return '${difference.inHours}시간 전';
+    } else if (difference.inMinutes > 0) {
+      return '${difference.inMinutes}분 전';
+    } else {
+      return '방금 전';
+    }
+  }
 }

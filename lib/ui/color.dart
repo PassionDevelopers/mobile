@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 
-class AppColors {
-  AppColors._();
+abstract class AppColors {
 
   static Color primary = Color(0xff0A0A0B);
   static Color primaryLight = Colors.white; // 라이트 모드에서의 기본 색상
@@ -19,7 +18,7 @@ class AppColors {
   // static Color left = Color.fromRGBO(220, 38, 38, 1); // 따뜻한 빨강
   static Color leftCenter = Colors.blue.shade100;
   // static Color center = Colors.grey.shade700;
-  static Color center = Color(0xff9B7EBD);
+  static Color center = Color(0xffEBD6FB);
 
   static Color right = Color.fromRGBO(226, 93, 114, 1);
   // static Color right = Color.fromRGBO(37, 99, 235, 1); // 클래식 블루
@@ -37,6 +36,32 @@ class AppColors {
   static Color hover = Color(0xffF3F4F6); // 호버 상태
   static Color active = Color(0xffE5E7EB); // 액티브 상태
   static Color unselected = Color(0xffE5E7EB); // 비활성화된 탭
+
+  // 현대적 그라데이션 컬러 (젊은층 타겟)
+  static Color gradientStart = Color(0xff667eea); // 보라-파랑 그라데이션 시작
+  static Color gradientEnd = Color(0xff764ba2); // 보라-파랑 그라데이션 끝
+  static Color accentGradientStart = Color(0xffff6b6b); // 핑크-오렌지 그라데이션 시작  
+  static Color accentGradientEnd = Color(0xfffeca57); // 핑크-오렌지 그라데이션 끝
+  
+  // 카테고리별 그라데이션 컬러
+  static Color dailyGradientStart = Color(0xff4facfe); // 파랑 그라데이션
+  static Color dailyGradientEnd = Color(0xff00f2fe);
+  static Color recommendGradientStart = Color(0xfffa709a); // 핑크 그라데이션
+  static Color recommendGradientEnd = Color(0xfffee140);
+  static Color economyGradientStart = Color(0xff43e97b); // 초록 그라데이션
+  static Color economyGradientEnd = Color(0xff38f9d7);
+  
+  // 액센트 컬러 (CTA, 강조용)
+  static Color accent = Color(0xff6c5ce7); // 보라 액센트
+  static Color accentLight = Color(0xffa29bfe); // 연한 보라 액센트
+  static Color success = Color(0xff00b894); // 성공 색상
+  static Color warning = Color(0xffe17055); // 경고 색상
+  static Color info = Color(0xff74b9ff); // 정보 색상
+  
+  // 글래스모피즘 효과용 색상
+  static Color glassBg = Color(0x1affffff); // 반투명 흰색
+  static Color glassBorder = Color(0x33ffffff); // 반투명 테두리
+  static Color glassBackdrop = Color(0x0dffffff); // 배경 블러용
 
 }
 
@@ -176,62 +201,4 @@ class AbpColor{
       d5 = Color(0xff6B728E),   //107, 114, 142
       d7 = Color(0xff6B6290),
       d8 = Color.fromRGBO(231, 235, 253, 1);
-// mozart: ♯E6E200 (Bright Yellow)
-// maestro: #AbpColor.c5AbpColor.c5AbpColor.c5 (Light Gray)
-// pro: #00BFFF (Bright Light Blue)
-// Platinum: #ADAbpColor.d8E6 (Light Blue)
-// Gold: #FFD700 (Yellow)
-// Silver: #C0C0C0 (Gray)
-// Bronze: #CD7F32 (Bronze)
-// Iron: #A9A9A9 (Dark Gray)
-// Unranked: #FFFFFF (White)
 }
-
-
-//배경 & 베이스 컬러
-//
-//#667EEA - 메인 배경 그라데이션 시작색 (퍼플 블루)
-//#764BA2 - 메인 배경 그라데이션 끝색 (딥 퍼플)
-//#FFFFFF - 카드 배경색 (순백색)
-//rgba(255, 255, 255, 0.95) - 반투명 흰색 (글래스모피즘)
-//🔵 토스 브랜드 컬러
-//
-//#0064FF - 토스 시그니처 블루 (메인 CTA)
-//#4A90E2 - 라이트 블루 (보조 액센트)
-//#E3F2FD - 매우 연한 블루 (배경 하이라이트)
-//🟢 상태 & 성공 컬러
-//
-//#00C851 - 성공/증가 그린 (+12% 화살표)
-//#4CAF50 - 라이트 그린 (이슈 키워드1)
-//#E8F5E8 - 그린 배경 (연한 그린)
-//🔴 경고 & 강조 컬러
-//
-//#FF4757 - 경고/중요 레드
-//#FF6B6B - 소프트 레드 (이슈 키워드2)
-//#FFE5E5 - 레드 배경 (연한 레드)
-//⚫ 텍스트 컬러
-//
-//#1A1A1A - 메인 텍스트 (진한 검정)
-//#333333 - 서브 헤딩 (다크 그레이)
-//#666666 - 보조 텍스트 (미디엄 그레이)
-//#999999 - 힌트 텍스트 (라이트 그레이)
-//#CCCCCC - 비활성 텍스트 (매우 연한 그레이)
-//🌈 그라데이션 컬러
-//
-//프로그레스 바: linear-gradient(90deg, #FF6B6B 0%, #4ECDC4 50%, #45B7D1 100%)
-//카드 배경: linear-gradient(135deg, rgba(255,255,255,0.9) 0%, rgba(255,255,255,0.7) 100%)
-//버튼 호버: linear-gradient(135deg, #0064FF 0%, #4A90E2 100%)
-//🎯 기능별 컬러
-//
-//#F8F9FA - 섹션 구분선 & 보더
-//#E9ECEF - 입력 필드 배경
-//rgba(0, 0, 0, 0.1) - 가벼운 그림자
-//rgba(0, 0, 0, 0.15) - 카드 그림자
-//rgba(255, 255, 255, 0.3) - 글래스 효과
-//🏷️ 태그 & 라벨 컬러
-//
-//#FFC107 - 경고 태그 (옐로우)
-//#17A2B8 - 정보 태그 (티얼)
-//#6F42C1 - 보라 태그
-//#FD7E14 - 오렌지 태그
-

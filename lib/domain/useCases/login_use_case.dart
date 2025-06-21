@@ -16,6 +16,10 @@ class LoginUseCase{
       idToken: googleAuth?.idToken,
     );
 
+    print(credential);
+    print(googleAuth?.accessToken);
+    print(googleAuth?.idToken);
+
     // Once signed in, return the UserCredential
     return await FirebaseAuth.instance.signInWithCredential(credential);
   }

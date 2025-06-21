@@ -5,4 +5,6 @@ abstract class IssuesRepository{
   Future<Issues> fetchHotIssues();
   Future<Issues> fetchBlindSpotIssues();
   Future<Issues> fetchForYouIssues();
+  Future<Issues> fetchWatchHistoryIssues();
+  Future<Issues> fetchSubscribedIssues();
 }
