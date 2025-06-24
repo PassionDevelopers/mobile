@@ -41,6 +41,7 @@ class _IssueListLoadingViewState extends State<IssueListLoadingView> {
               ContentPlaceholder(
                 lineType: ContentLineType.twoLines,
               ),
+
               SizedBox(height: 16.0),
               TitlePlaceholder(width: 200.0),
               SizedBox(height: 16.0),

@@ -5,7 +5,15 @@ abstract class AppColors {
   static Color primary = Color(0xff0A0A0B);
   static Color primaryLight = Colors.white; // 라이트 모드에서의 기본 색상
   static Color secondary = Colors.grey.shade600;
-  static Color tertiary = Color(0xff2D2D30);// 라이트 차콜
+  static Color tertiary = Color(0xff2D2D30);// 라이
+
+  static const Color black = Color(0xFF000000);
+  static const Color gray1 = Color(0xFF484848);
+  static const Color gray2 = Color(0xFF797979);
+  static const Color gray3 = Color(0xFFA9A9A9);
+  static const Color gray4 = Color(0xFFD9D9D9);
+  static const Color gray5 = Color(0xFFF2F2F2);
+  static const Color white = Color(0xFFFFFFFF);
 
   // static Color background = Color(0xffffffff);
   static Color background = Colors.grey.shade100;
@@ -18,7 +26,10 @@ abstract class AppColors {
   // static Color left = Color.fromRGBO(220, 38, 38, 1); // 따뜻한 빨강
   static Color leftCenter = Colors.blue.shade100;
   // static Color center = Colors.grey.shade700;
-  static Color center = Color(0xffEBD6FB);
+
+  static Color center = Color(0xffE5D9F2);
+  // static Color center = Color(0xffA294F9);
+  // static Color centerLight = Color(0xffCDC1FF);
 
   static Color right = Color.fromRGBO(226, 93, 114, 1);
   // static Color right = Color.fromRGBO(37, 99, 235, 1); // 클래식 블루

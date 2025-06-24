@@ -4,13 +4,21 @@ abstract class RouteNames{
   home = '/',
   login = '/login',
   topic = '/topic',
-  topicDetail = '/topicDetail',
+  topicDetail = '/topic/detail',
   blindSpot = '/blindSpot',
-  media = '/media',
 
+  //media
+  media = '/media',
+  wholeMedia = '$media/wholeMedia',
+
+  //article
+  webView = '/webView/:issueId',
+
+  //my page
   myPage = '/myPage',
   watchHistory = '$myPage/watchHistory',
   subscribedIssue = '$myPage/subscribedIssue',
+  userBiasStatus = '$myPage/userBiasStatus',
 
   shortsView = '/shortsView/:issueId'
   ;

@@ -1,6 +1,7 @@
 enum IssueType {
   daily,
-  blindSpot,
+  blindSpotLeft,
+  blindSpotRight,
   forYou,
   hot,
   watchHistroy,

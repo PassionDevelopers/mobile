@@ -36,6 +36,12 @@ dependencies:
   share_plus: ^11.0.0
   dio: ^5.8.0+1
 
+  #web view
+  webview_flutter: ^4.13.0
+  webview_flutter_android: ^4.7.0
+  webview_flutter_wkwebview: ^3.22.0
+
+
   #router
   go_router: ^15.2.3
 
@@ -48,6 +54,7 @@ dependencies:
   flutter_card_swiper: ^7.0.2
   fl_chart: ^1.0.0
   google_fonts: ^6.2.1
+  fluttertoast: ^8.2.12
 
   #signin
   sign_button: ^2.0.6

@@ -15,7 +15,7 @@ class IssuesRepositoryImpl implements IssuesRepository {
       '/issues',
       options: Options(
         headers: {
-          'Accept': 'application/vnd.github.v3+json',
+          'Authorization': demoToken,
         },
       ),
       queryParameters: {'type': 'daily', 'limit': 10, 'lastIssueId': ''},
@@ -30,7 +30,7 @@ class IssuesRepositoryImpl implements IssuesRepository {
       '/issues',
       options: Options(
         headers: {
-          'Accept': 'application/vnd.github.v3+json',
+          'Authorization': demoToken,
         },
       ),
       queryParameters: {'type': 'hot', 'limit': 10, 'lastIssueId': ''},
@@ -40,15 +40,30 @@ class IssuesRepositoryImpl implements IssuesRepository {
   }
 
   @override
-  Future<Issues> fetchBlindSpotIssues() async {
+  Future<Issues> fetchBlindSpotLeftIssues() async {
     final response = await dio.get(
       '/issues',
       options: Options(
         headers: {
-          'Accept': 'application/vnd.github.v3+json',
+          'Authorization': demoToken,
         },
       ),
-      queryParameters: {'type': 'blind-spot', 'limit': 10, 'lastIssueId': ''},
+      queryParameters: {'type': 'blind-spot-left', 'limit': 10, 'lastIssueId': ''},
+    );
+    final issuesDTO = IssuesDTO.fromJson(response.data);
+    return issuesDTO.toDomain();
+  }
+
+  @override
+  Future<Issues> fetchBlindSpotRightIssues() async {
+    final response = await dio.get(
+      '/issues',
+      options: Options(
+        headers: {
+          'Authorization': demoToken,
+        },
+      ),
+      queryParameters: {'type': 'blind-spot-right', 'limit': 10, 'lastIssueId': ''},
     );
     final issuesDTO = IssuesDTO.fromJson(response.data);
     return issuesDTO.toDomain();
@@ -60,7 +75,7 @@ class IssuesRepositoryImpl implements IssuesRepository {
       '/issues',
       options: Options(
         headers: {
-          'Accept': 'application/vnd.github.v3+json',
+          'Authorization': demoToken,
         },
       ),
       queryParameters: {'type': 'for-you', 'limit': 10, 'lastIssueId': ''},

@@ -72,29 +72,29 @@ abstract class MyText {
     return AutoSizeText(text, style: MyFontStyle.h1,);
   }
 
-  static AutoSizeText h2(String text, {Color? color}){
-    return AutoSizeText(text, style: MyFontStyle.h2.copyWith(color: color),);
+  static AutoSizeText h2(String text, {Color? color, AutoSizeGroup? group, int? maxLines}){
+    return AutoSizeText(text, style: MyFontStyle.h2.copyWith(color: color), group: group, maxLines: maxLines ?? 1, minFontSize: 1, overflow: TextOverflow.ellipsis);
   }
-  static AutoSizeText h2w(String text, {Color? color}){
-    return AutoSizeText(text, style: MyFontStyle.h2w.copyWith(color: color),);
+  static AutoSizeText h2w(String text, {Color? color, AutoSizeGroup? group, int? maxLines}){
+    return AutoSizeText(text, style: MyFontStyle.h2w.copyWith(color: color),group: group, maxLines: maxLines ?? 1, minFontSize: 1, overflow: TextOverflow.ellipsis);
   }
-  static AutoSizeText h3(String text, {Color? color}){
-    return AutoSizeText(text, style: MyFontStyle.h3.copyWith(color: color), maxLines: 1,);
+  static AutoSizeText h3(String text, {Color? color, AutoSizeGroup? group, int? maxLines}){
+    return AutoSizeText(text, style: MyFontStyle.h3.copyWith(color: color),group: group, maxLines: maxLines ?? 1, minFontSize: 1, overflow: TextOverflow.ellipsis);
   }
 
   static Text article(String text, {Color? color}){
     return Text(text, style: MyFontStyle.article.copyWith(color: color));
   }
 
-  static AutoSizeText reg(String text, {Color? color, AutoSizeGroup? group}){
-    return AutoSizeText(text, style: MyFontStyle.reg.copyWith(color: color, ), group: group, maxLines: 1, minFontSize: 1,);
+  static AutoSizeText reg(String text, {Color? color, AutoSizeGroup? group, int? maxLines}){
+    return AutoSizeText(text, style: MyFontStyle.reg.copyWith(color: color, ), group: group, maxLines: maxLines ?? 1, minFontSize: 1, overflow: TextOverflow.ellipsis);
   }
 
-  static AutoSizeText small(String text, {Color? color}){
-    return AutoSizeText(text, style: MyFontStyle.small.copyWith(color: color), maxLines: 1,);
+  static AutoSizeText small(String text, {Color? color, AutoSizeGroup? group, int? maxLines}){
+    return AutoSizeText(text, style: MyFontStyle.small.copyWith(color: color),group: group, maxLines: maxLines ?? 1, minFontSize: 1, overflow: TextOverflow.ellipsis);
   }
 
-  static AutoSizeText accent(String text, {Color? color}){
-    return AutoSizeText(text, style: MyFontStyle.accent.copyWith(color: color),);
+  static AutoSizeText accent(String text, {Color? color, AutoSizeGroup? group, int? maxLines}){
+    return AutoSizeText(text, style: MyFontStyle.accent.copyWith(color: color),group: group, maxLines: maxLines ?? 1, minFontSize: 1, overflow: TextOverflow.ellipsis);
   }
 }

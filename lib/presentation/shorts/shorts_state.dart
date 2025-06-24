@@ -1,21 +1,22 @@
-import 'package:could_be/domain/entities/whole_issue.dart';
+import 'package:could_be/domain/entities/issue_detail.dart';
 
 class ShortsState{
 
-  final WholeIssue? wholeIssue;
+  final IssueDetail? issueDetail;
   final bool isLoading;
+
 
   ShortsState({
     this.isLoading = false,
-    this.wholeIssue,
+    this.issueDetail,
   });
 
   ShortsState copyWith({
-    WholeIssue? wholeIssue,
+    IssueDetail? issueDetail,
     bool? isLoading,
   }) {
     return ShortsState(
-      wholeIssue: wholeIssue ?? this.wholeIssue,
+      issueDetail: issueDetail ?? this.issueDetail,
       isLoading: isLoading ?? this.isLoading,
     );
   }

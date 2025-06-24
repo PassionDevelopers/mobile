@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-
-import '../../../core/components/cards/news_card.dart';
+import '../../../core/components/cards/issue_card.dart';
 import '../../../domain/entities/issue.dart';
 
 
@@ -13,7 +12,7 @@ class IssueListView extends StatelessWidget {
     return Column(
       children: [
         for (int i = 0; i < issueList.length; i++)
-          NewsCard(issue: issueList[i], isDailyIssue: false),
+          IssueCard(issue: issueList[i], isDailyIssue: false),
       ],
     );
   }

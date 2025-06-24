@@ -18,6 +18,7 @@ IssueDTO _$IssueDTOFromJson(Map<String, dynamic> json) => IssueDTO(
   category: json['category'] as String,
   keywords:
       (json['keywords'] as List<dynamic>).map((e) => e as String).toList(),
+  isSubscribed: json['isSubscribed'] as bool,
   imageUrl: json['imageUrl'] as String?,
   view: (json['view'] as num).toInt(),
   coverageSpectrum: CoverageSpectrumDTO.fromJson(
@@ -35,5 +36,6 @@ Map<String, dynamic> _$IssueDTOToJson(IssueDTO instance) => <String, dynamic>{
   'keywords': instance.keywords,
   'imageUrl': instance.imageUrl,
   'view': instance.view,
+  'isSubscribed': instance.isSubscribed,
   'coverageSpectrum': instance.coverageSpectrum,
 };

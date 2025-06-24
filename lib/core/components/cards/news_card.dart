@@ -1,18 +1,15 @@
-import 'package:could_be/ui/color_styles.dart';
+import 'package:could_be/domain/entities/article.dart';
 import 'package:could_be/ui/fonts.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import '../../../domain/entities/issue.dart';
+
 import '../../../ui/color.dart';
 import '../../themes/margins_paddings.dart';
-import '../bias/bias_bar.dart';
-import '../chips/key_word_chip_component.dart';
 
 class NewsCard extends StatefulWidget {
-  final Issue issue;
-  final bool isDailyIssue;
+  final Article article;
 
-  const NewsCard({super.key, required this.issue, required this.isDailyIssue});
+  const NewsCard({super.key, required this.article});
 
   @override
   State<NewsCard> createState() => _NewsCardState();
@@ -30,30 +27,40 @@ class _NewsCardState extends State<NewsCard> with TickerProviderStateMixin {
     CurvedAnimation(parent: _animationController, curve: Curves.easeInOut),
   );
 
-  ani() {
-    return AnimatedBuilder(
-      animation: _scaleAnimation,
-      builder: (context, child) {
-        return Transform.scale(
-          scale: _scaleAnimation.value,
-          child: GestureDetector(
-            onTapDown: (_) => _animationController.forward(),
-            onTapUp: (_) {
-              _animationController.reverse();
-              context.push('/shortsView/${widget.issue.id}');
-            },
-            onTapCancel: () => _animationController.reverse(),
-            child: Container(),
-          ),
-        );
-      },
-    );
+  String getTimeAgo(DateTime createdAt) {
+    final now = DateTime.now();
+    final difference = now.difference(createdAt);
+
+    if (difference.inDays > 365) {
+      return '${(difference.inDays / 365).floor()}년 전';
+    } else if (difference.inDays > 30) {
+      return '${(difference.inDays / 30).floor()}달 전';
+    } else if (difference.inDays > 0) {
+      return '${difference.inDays}일 전';
+    } else if (difference.inHours > 0) {
+      return '${difference.inHours}시간 전';
+    } else if (difference.inMinutes > 0) {
+      return '${difference.inMinutes}분 전';
+    } else {
+      return '방금 전';
+    }
   }
 
   @override
   Widget build(BuildContext context) {
+
+    @override
+    void dispose() {
+      // TODO: implement dispose
+      _animationController.dispose();
+      super.dispose();
+    }
+
     return Padding(
-      padding: EdgeInsets.symmetric(horizontal: MyPaddings.largeMedium, vertical: MyPaddings.small),
+      padding: EdgeInsets.symmetric(
+        horizontal: MyPaddings.largeMedium,
+        vertical: MyPaddings.small,
+      ),
       child: AnimatedBuilder(
         animation: _scaleAnimation,
         builder: (context, child) {
@@ -63,112 +70,54 @@ class _NewsCardState extends State<NewsCard> with TickerProviderStateMixin {
               onTapDown: (_) => _animationController.forward(),
               onTapUp: (_) {
                 _animationController.reverse();
-                context.push('/shortsView/${widget.issue.id}');
+                // context.push('/shortsView/${widget.issue.id}');
               },
               onTapCancel: () => _animationController.reverse(),
               child: InkWell(
                 borderRadius: BorderRadius.circular(16),
                 onTap: () {
-                  context.push('/shortsView/${widget.issue.id}');
+                  context.push('/webView/${widget.article.id}', extra: {
+                    'url': widget.article.url});
                 },
                 child: Ink(
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(16),
                     color: AppColors.primaryLight,
                   ),
-                  child: Column(
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
                     children: [
-                      if (widget.issue.imageUrl != null)
-                        Container(
-                          height: 180,
-                          width: double.infinity,
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.vertical(
-                              top: Radius.circular(16),
-                            ),
-                          ),
-                          child: ClipRRect(
-                            borderRadius: BorderRadius.vertical(
-                              top: Radius.circular(16),
-                            ),
-                            child: Image.network(
-                              widget.issue.imageUrl!,
-                              fit: BoxFit.cover,
-                            ),
+                      Container(
+                        height: 100,
+                        width: 100,
+                        padding: EdgeInsets.all(MyPaddings.extraSmall),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(16),
+                        ),
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(16),
+                          child: Image.network(
+                            widget.article.imageUrl!,
+                            fit: BoxFit.cover,
                           ),
                         ),
-                      Padding(
-                        padding: EdgeInsets.fromLTRB(
-                          MyPaddings.large,
-                          MyPaddings.medium,
-                          MyPaddings.large,
-                          MyPaddings.large,
-                        ),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Row(
-                              children: [
-                                Expanded(child: MyText.h2(widget.issue.title)),
-                                // if (issue.getBlindSpot() != null) BlindChip(isRightBlind: issue.getBlindSpot()!, )
-                              ],
-                            ),
-                            SizedBox(height: MyPaddings.large),
-                            SizedBox(
-                              height: 26,
-                              child: ListView.builder(
-                                scrollDirection: Axis.horizontal,
-                                itemBuilder: (_, index) {
-                                  return KeyWordChip(
-                                    title: widget.issue.keywords[index],
-                                  );
-                                },
-                                itemCount: widget.issue.keywords.length,
-                                shrinkWrap: true,
+                      ),
+                      Expanded(
+                        child: Padding(
+                          padding: EdgeInsets.all(MyPaddings.small),
+                          child: Column(
+                            mainAxisSize: MainAxisSize.min,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              MyText.h2(widget.article.title, maxLines: 2),
+                              SizedBox(height: MyPaddings.small),
+                              MyText.reg(
+                                widget.article.source.name +
+                                    ' · ' +
+                                    getTimeAgo(widget.article.publishedAt),
                               ),
-                            ),
-                            // Bias Bar
-                            SizedBox(height: MyPaddings.medium),
-                            CardBiasBar(
-                              coverageSpectrum: widget.issue.coverageSpectrum,
-                            ),
-                            SizedBox(height: MyPaddings.medium),
-                            Row(
-                              children: [
-                                Icon(
-                                  Icons.article_outlined,
-                                  size: 16,
-                                  color: ColorStyles.gray1,
-                                ),
-                                SizedBox(width: 4),
-                                MyText.reg(
-                                  '${widget.issue.coverageSpectrum.total}개 매체',
-                                  color: ColorStyles.gray1,
-                                ),
-                                SizedBox(width: 16),
-                                Icon(
-                                  Icons.access_time,
-                                  size: 16,
-                                  color: ColorStyles.gray1,
-                                ),
-                                SizedBox(width: 4),
-                                MyText.reg(
-                                  widget.issue.getTimeAgo(),
-                                ),
-                                SizedBox(width: 16),
-                                Icon(
-                                  Icons.visibility,
-                                  size: 16,
-                                  color: ColorStyles.gray1,
-                                ),
-                                SizedBox(width: 4),
-                                MyText.reg(
-                                  widget.issue.view.toString(),
-                                  color: ColorStyles.gray1,
-                                ),
-                              ],
-                            ),
-                          ],
+                            ],
+                          ),
                         ),
                       ),
                     ],

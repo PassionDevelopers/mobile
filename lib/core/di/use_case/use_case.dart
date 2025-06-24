@@ -1,13 +1,30 @@
 
+import 'package:could_be/data/repositoryImpl/articles_repository_impl.dart';
+import 'package:could_be/data/repositoryImpl/manage_issue_subscription_repository_impl.dart';
+
+import '../../../data/repositoryImpl/issue_detail_repository_impl.dart';
 import '../../../data/repositoryImpl/issues_repository_impl.dart';
-import '../../../data/repositoryImpl/media_repository_impl.dart';
-import '../../../data/repositoryImpl/whole_issue_repository_impl.dart';
+import '../../../data/repositoryImpl/sources_repository_impl.dart';
+import '../../../data/repositoryImpl/user_bias_repository_impl.dart';
+import '../../../domain/useCases/fetch_articles_use_case.dart';
 import '../../../domain/useCases/fetch_issues_use_case.dart';
-import '../../../domain/useCases/fetch_media_use_case.dart';
+import '../../../domain/useCases/fetch_sources_use_case.dart';
+import '../../../domain/useCases/fetch_user_bias_user_case.dart';
 import '../../../domain/useCases/fetch_whole_issue_use_case.dart';
+import '../../../domain/useCases/manage_issue_subscription_use_case.dart';
 import '../api.dart';
 
 final fetchIssuesUseCase = FetchIssuesUseCase(IssuesRepositoryImpl(dio));
-final fetchWholeIssueUseCase = FetchWholeIssueUseCase(WholeIssueRepositoryImpl(dio));
-final fetchMediaUseCase = FetchMediaUseCase(MediaRepositoryImpl(dio));
+final fetchIssueDetailUseCase = FetchIssueDetailUseCase(IssueDetailRepositoryImpl(dio));
+// final fetchMediaUseCase = FetchMediaUseCase(MediaRepositoryImpl(dio));
+final fetchUserBiasUseCase = FetchUserBiasUseCase(UserBiasRepositoryImpl(dio));
 
+// final fetchSubscribedMediaAndArticlesUseCase =
+//     FetchSubscribedMediaAndArticlesUseCase(SubscribedMediaArticlesRepositoryImpl(dio));
+
+final fetchArticlesUseCase = FetchArticlesUseCase(ArticlesRepositoryImpl(dio));
+
+final manageIssueSubscriptionUseCase =
+    ManageIssueSubscriptionUseCase(ManageIssueSubscriptionRepositoryImpl(dio));
+
+final fetchSourcesUseCase = FetchSourcesUseCase(SourcesRepositoryImpl(dio));

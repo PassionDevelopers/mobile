@@ -1,6 +1,6 @@
 
 
-import 'article_source.dart';
+import 'package:could_be/domain/entities/source.dart';
 
 class Article{
   final String id;
@@ -8,11 +8,11 @@ class Article{
   final String preview;
   final String url;
   final String? reporter;
-  final String publishedAt;
+  final DateTime publishedAt;
   final String issueId;
   final String category;
   final String? imageUrl;
-  final ArticleSource source;
+  final Source source;
 
   Article({
     required this.id,

@@ -11,9 +11,14 @@ class BlindSpotRoot extends StatelessWidget {
   final void Function(String issueId) onIssueSelected;
   @override
   Widget build(BuildContext context) {
-    final viewModel = IssueListViewModel(
+    IssueListViewModel viewModelLeft = IssueListViewModel(
       fetchIssuesUseCase: fetchIssuesUseCase,
-      issueType: IssueType.blindSpot,
+      issueType: IssueType.blindSpotLeft,
+    );
+
+    IssueListViewModel viewModelRight = IssueListViewModel(
+      fetchIssuesUseCase: fetchIssuesUseCase,
+      issueType: IssueType.blindSpotRight,
     );
     return DefaultTabController(length: 2, child: Column(
       children: [
@@ -21,8 +26,8 @@ class BlindSpotRoot extends StatelessWidget {
           color: AppColors.background,
           child: TabBar(
             tabs: [
-              Tab(text: '보수 사각지대'),
               Tab(text: '진보 사각지대'),
+              Tab(text: '보수 사각지대'),
             ],
             labelColor: Colors.black,
             unselectedLabelColor: Colors.grey,
@@ -31,16 +36,16 @@ class BlindSpotRoot extends StatelessWidget {
         ),
         SizedBox(height: 8),
         Expanded(child: TabBarView(children: [
-          ListenableBuilder(listenable: viewModel, builder: (context, _){
-            final state = viewModel.state;
+          ListenableBuilder(listenable: viewModelLeft, builder: (context, _){
+            final state = viewModelLeft.state;
             if(state.isLoading){
               return IssueListLoadingView();
             }
             return SingleChildScrollView(child: IssueListView(
                 issueList: state.issueList));
           }),
-          ListenableBuilder(listenable: viewModel, builder: (context, _){
-            final state = viewModel.state;
+          ListenableBuilder(listenable: viewModelRight, builder: (context, _){
+            final state = viewModelRight.state;
             if(state.isLoading){
               return IssueListLoadingView();
             }

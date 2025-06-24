@@ -1,12 +1,13 @@
-import 'package:could_be/domain/entities/whole_issue.dart';
-import 'package:could_be/domain/repositoryInterfaces/whole_issue_interface.dart';
 
-class FetchWholeIssueUseCase{
-  final WholeIssueRepository _wholeIssueRepository;
+import '../entities/issue_detail.dart';
+import '../repositoryInterfaces/issue_detail_interface.dart';
 
-  const FetchWholeIssueUseCase(this._wholeIssueRepository);
+class FetchIssueDetailUseCase{
+  final IssueDetailRepository _issueDetailRepository;
 
-  Future<WholeIssue?> fetchWholeIssueById(String id) async {
-    return _wholeIssueRepository.fetchWholeIssueById(id);
+  const FetchIssueDetailUseCase(this._issueDetailRepository);
+
+  Future<IssueDetail?> fetchIssueDetailById(String id) async {
+    return _issueDetailRepository.fetchIssueDetailById(id);
   }
 }

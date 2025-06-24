@@ -1,8 +1,10 @@
 import 'dart:math';
 import 'package:auto_size_text/auto_size_text.dart';
+import 'package:could_be/presentation/my_page/user_bias_status/my_bias_status_view.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import '../../core/components/bias/bias_enum.dart';
 import '../../core/many_use.dart';
 import '../../ui/color.dart';
 
@@ -54,7 +56,7 @@ class _DailyUserDataChartState extends State<DailyUserDataChart> {
   @override
   Widget build(BuildContext context) {
     AutoSizeGroup titleSize = AutoSizeGroup();
-    AutoSizeGroup pitchSize = AutoSizeGroup();
+    AutoSizeGroup group = AutoSizeGroup();
     int maxTotal = 0;
     Future<Map<String, DailyUserData>> getDailyData()async{
       Map<String, DailyUserData> dailyClearData = {};
@@ -125,85 +127,99 @@ class _DailyUserDataChartState extends State<DailyUserDataChart> {
         return autoSizeText(t, color: textColor, group: titleSize, textAlign: TextAlign.center);
       }
 
-      return LayoutBuilder(
-        builder: (context, constraints) {
-          final leftHeight = constraints.maxHeight*0.9;
-          final bottomWidth = constraints.maxWidth*0.85;
-          return Padding(
-              padding: EdgeInsets.only(top: leftHeight/10),
-              child: LineChart(
-                LineChartData(
-                  lineTouchData: lineTouchData(),
-                  gridData: FlGridData(
-                    show: true,
-                    horizontalInterval: getHorizontalInterval(),
-                    getDrawingHorizontalLine: (double value) {
-                      return FlLine(
-                        color: AbpColor.n8.withOpacity(0.5),
-                        strokeWidth: 1,
-                        dashArray: [1,0],
-                      );
-                    },
-                    drawVerticalLine: false,
-                  ),
-                  titlesData: FlTitlesData(
-                    bottomTitles: AxisTitles(
-                        sideTitles: SideTitles(
-                            showTitles: true,
-                            reservedSize: leftHeight/5,
-                            interval: 1,
-                            getTitlesWidget: (double value, TitleMeta meta) {
-                              return Container(
-                                  width: bottomWidth/(dailyClearData.length),
-                                  padding: const EdgeInsets.all(1.0),
-                                  child: title(value.round())
-                              );
-                            }
-                        )
-                    ),
-                    rightTitles: AxisTitles(sideTitles: SideTitles(showTitles: true,
-                        reservedSize: bottomWidth/(dailyClearData.length)/2,
-                        getTitlesWidget: (value, meta)=>const SizedBox()),),
-                    topTitles: const AxisTitles(sideTitles: SideTitles(showTitles: false),),
-                    leftTitles: AxisTitles(
-                      sideTitles: SideTitles(
-                        getTitlesWidget: (double value, TitleMeta meta) {
-                          return Container(
-                              width: bottomWidth/(dailyClearData.length),
-                              padding: const EdgeInsets.all(1.0),
-                              child: Center(child: autoSizeText(value>0 ? value.round().toString() : '', color: AbpColor.n4))
-                          );
-                        },
-                        showTitles: true,
-                        interval: getHorizontalInterval(),
-                        reservedSize: bottomWidth/(dailyClearData.length)/2,
+      return Column(
+        children: [
+          SizedBox(
+            height: 30,
+            child: Row(children: [
+              SwitchButton(bias: Bias.left, onTap: (){}, isSelected: true, pitchSize: group),
+              SwitchButton(bias: Bias.center, onTap: (){}, isSelected: false, pitchSize: group),
+              SwitchButton(bias: Bias.right, onTap: (){}, isSelected: false, pitchSize: group),
+            ],),
+          ),
+          Expanded(
+            child: LayoutBuilder(
+              builder: (context, constraints) {
+                final leftHeight = constraints.maxHeight*0.9;
+                final bottomWidth = constraints.maxWidth*0.85;
+                return Padding(
+                    padding: EdgeInsets.only(top: leftHeight/10),
+                    child: LineChart(
+                      LineChartData(
+                        lineTouchData: lineTouchData(),
+                        gridData: FlGridData(
+                          show: true,
+                          horizontalInterval: getHorizontalInterval(),
+                          getDrawingHorizontalLine: (double value) {
+                            return FlLine(
+                              color: AbpColor.n8.withOpacity(0.5),
+                              strokeWidth: 1,
+                              dashArray: [1,0],
+                            );
+                          },
+                          drawVerticalLine: false,
+                        ),
+                        titlesData: FlTitlesData(
+                          bottomTitles: AxisTitles(
+                              sideTitles: SideTitles(
+                                  showTitles: true,
+                                  reservedSize: leftHeight/5,
+                                  interval: 1,
+                                  getTitlesWidget: (double value, TitleMeta meta) {
+                                    return Container(
+                                        width: bottomWidth/(dailyClearData.length),
+                                        padding: const EdgeInsets.all(1.0),
+                                        child: title(value.round())
+                                    );
+                                  }
+                              )
+                          ),
+                          rightTitles: AxisTitles(sideTitles: SideTitles(showTitles: true,
+                              reservedSize: bottomWidth/(dailyClearData.length)/2,
+                              getTitlesWidget: (value, meta)=>const SizedBox()),),
+                          topTitles: const AxisTitles(sideTitles: SideTitles(showTitles: false),),
+                          leftTitles: AxisTitles(
+                            sideTitles: SideTitles(
+                              getTitlesWidget: (double value, TitleMeta meta) {
+                                return Container(
+                                    width: bottomWidth/(dailyClearData.length),
+                                    padding: const EdgeInsets.all(1.0),
+                                    child: Center(child: autoSizeText(value>0 ? value.round().toString() : '', color: AbpColor.n4))
+                                );
+                              },
+                              showTitles: true,
+                              interval: getHorizontalInterval(),
+                              reservedSize: bottomWidth/(dailyClearData.length)/2,
+                            ),
+                          ),
+                        ),
+                        borderData: borderData,
+                        lineBarsData:
+                        // isRhythmNow? [
+                        //   chartBarData(dailyClearData, isAbsolute: false, isRhythm: false),
+                        //   chartBarData(dailyClearData, isAbsolute: true, isRhythm: false),
+                        //   chartBarData(dailyClearData, isAbsolute: false, isRhythm: true),
+                        // ] :
+                        // isAbsoluteNow ?
+                        // [
+                        //   chartBarData(dailyClearData, isAbsolute: false, isRhythm: true),
+                        //   chartBarData(dailyClearData, isAbsolute: false, isRhythm: false),
+                        //   chartBarData(dailyClearData, isAbsolute: true, isRhythm: false),
+                        // ] :
+                        [
+                          chartBarData(dailyClearData, isAbsolute: false, isRhythm: true),
+                          chartBarData(dailyClearData, isAbsolute: true, isRhythm: false),
+                          chartBarData(dailyClearData, isAbsolute: false, isRhythm: false),
+                        ],
+                        minX: 0, maxX: (dailyClearData.length-1)*1.0, maxY: maxTotal*1.0, minY: 0,
                       ),
-                    ),
-                  ),
-                  borderData: borderData,
-                  lineBarsData:
-                  // isRhythmNow? [
-                  //   chartBarData(dailyClearData, isAbsolute: false, isRhythm: false),
-                  //   chartBarData(dailyClearData, isAbsolute: true, isRhythm: false),
-                  //   chartBarData(dailyClearData, isAbsolute: false, isRhythm: true),
-                  // ] :
-                  // isAbsoluteNow ?
-                  // [
-                  //   chartBarData(dailyClearData, isAbsolute: false, isRhythm: true),
-                  //   chartBarData(dailyClearData, isAbsolute: false, isRhythm: false),
-                  //   chartBarData(dailyClearData, isAbsolute: true, isRhythm: false),
-                  // ] :
-                  [
-                    chartBarData(dailyClearData, isAbsolute: false, isRhythm: true),
-                    chartBarData(dailyClearData, isAbsolute: true, isRhythm: false),
-                    chartBarData(dailyClearData, isAbsolute: false, isRhythm: false),
-                  ],
-                  minX: 0, maxX: (dailyClearData.length-1)*1.0, maxY: maxTotal*1.0, minY: 0,
-                ),
-                duration: const Duration(milliseconds: 250),
-              )
-          );
-        },
+                      duration: const Duration(milliseconds: 250),
+                    )
+                );
+              },
+            ),
+          ),
+        ],
       ) ;
     }
 

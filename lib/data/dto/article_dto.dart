@@ -1,7 +1,7 @@
+import 'package:could_be/data/dto/source_dto.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 import '../../domain/entities/article.dart';
-import 'article_source_dto.dart';
 
 part 'article_dto.g.dart';
 
@@ -13,11 +13,11 @@ class ArticleDTO {
   final String preview;
   final String url;
   final String? reporter;
-  final String publishedAt;
+  final DateTime publishedAt;
   final String issueId;
   final String category;
   final String? imageUrl;
-  final ArticleSourceDTO source;
+  final SourceDTO source;
 
   ArticleDTO({
     required this.id,
@@ -37,6 +37,7 @@ class ArticleDTO {
 
   Map<String, dynamic> toJson() => _$ArticleDTOToJson(this);
 }
+
 
 extension ArticleDtx on ArticleDTO {
   // Converts the DTO to a domain entity

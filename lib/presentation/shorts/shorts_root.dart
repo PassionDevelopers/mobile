@@ -1,5 +1,5 @@
+import 'package:could_be/presentation/shorts/shorts_component.dart';
 import 'package:could_be/presentation/shorts/shorts_loading_view.dart';
-import 'package:could_be/presentation/shorts/shorts_view.dart';
 import 'package:could_be/presentation/shorts/shorts_view_model.dart';
 import 'package:flutter/material.dart';
 import '../../core/components/layouts/scaffold_layout.dart';
@@ -13,7 +13,8 @@ class ShortsRoot extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final viewModel = ShortsViewModel(
-      fetchWholeIssueUseCase: fetchWholeIssueUseCase,
+      fetchIssueDetailUseCase: fetchIssueDetailUseCase,
+      manageIssueSubscriptionUseCase: manageIssueSubscriptionUseCase,
       issueId: issueId, // Assuming issueType has an issueId property
     );
     return MyScaffold(
@@ -24,10 +25,19 @@ class ShortsRoot extends StatelessWidget {
           if (state.isLoading) {
             return ShortsLoadingView();
           } else {
-            if (state.wholeIssue == null) {
-              return Center(child: Text('No issue found'));
+            if (state.issueDetail == null) {
+              return Center(child: Text('발견된 이슈가 없습니다.'));
             }
-            return ShortsView(wholeIssue: state.wholeIssue!);
+            print('state.issueDetail: ${state.issueDetail!.isSubscribed}');
+            return ShortsComponent(issue: state.issueDetail!, manageIssueSubscripton: viewModel.manageIssueSubscription,);
+
+          // return PageView(
+            //     scrollDirection: Axis.vertical,
+            //     children: [
+            //       ShortsComponent(issue: state.issueDetail!, manageIssueSubscripton: viewModel.manageIssueSubscription,),
+            //       ShortsComponent(issue: state.issueDetail!, manageIssueSubscripton: viewModel.manageIssueSubscription,),
+            //     ]
+            // );
           }
         },
       ),

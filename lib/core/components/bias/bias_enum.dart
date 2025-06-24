@@ -5,3 +5,4 @@ enum Bias{
   rightCenter,
   center;
 }
+

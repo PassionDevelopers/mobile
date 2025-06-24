@@ -36,8 +36,10 @@ class IssueListViewModel with ChangeNotifier {
     switch (_issueType) {
       case IssueType.daily:
         return await _fetchIssuesUseCase.fetchDailyIssues();
-      case IssueType.blindSpot:
-        return await _fetchIssuesUseCase.fetchBlindSpotIssues();
+      case IssueType.blindSpotLeft:
+        return await _fetchIssuesUseCase.fetchBlindSpotLeftIssues();
+      case IssueType.blindSpotRight:
+        return await _fetchIssuesUseCase.fetchBlindSpotRightIssues();
       case IssueType.forYou:
         return await _fetchIssuesUseCase.fetchForYouIssues();
       case IssueType.hot:

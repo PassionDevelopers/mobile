@@ -14,8 +14,11 @@ class FetchIssuesUseCase{
     return _issuesRepository.fetchHotIssues();
   }
 
-  Future<Issues> fetchBlindSpotIssues() async {
-    return _issuesRepository.fetchBlindSpotIssues();
+  Future<Issues> fetchBlindSpotLeftIssues() async {
+    return _issuesRepository.fetchBlindSpotLeftIssues();
+  }
+  Future<Issues> fetchBlindSpotRightIssues() async {
+    return _issuesRepository.fetchBlindSpotRightIssues();
   }
 
   Future<Issues> fetchForYouIssues() async {

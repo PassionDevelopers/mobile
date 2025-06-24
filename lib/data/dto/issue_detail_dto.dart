@@ -25,26 +25,30 @@ class IssueDetailDTO {
   final List<String> leftKeywords;
   final List<String> centerKeywords;
   final List<String> rightKeywords;
+  final List<String> nextIssueIds;
+  final bool isSubscribed;
 
-  IssueDetailDTO(
-    this.id,
-    this.title,
-    this.category,
-    this.summary,
-    this.imageUrl,
-    this.keywords,
-    this.createdAt,
-    this.view,
-    this.coverageSpectrum,
-    this.updatedAt,
-    this.leftSummary,
-    this.centerSummary,
-    this.rightSummary,
-    this.biasComparison,
-    this.leftKeywords,
-    this.centerKeywords,
-    this.rightKeywords,
-  );
+  IssueDetailDTO({
+    required this.id,
+    required this.title,
+    required this.category,
+    required this.summary,
+    required this.imageUrl,
+    required this.keywords,
+    required this.createdAt,
+    required this.view,
+    required this.coverageSpectrum,
+    required this.updatedAt,
+    required this.leftSummary,
+    required this.centerSummary,
+    required this.rightSummary,
+    required this.biasComparison,
+    required this.leftKeywords,
+    required this.centerKeywords,
+    required this.rightKeywords,
+    required this.nextIssueIds,
+    required this.isSubscribed
+  });
 
   factory IssueDetailDTO.fromJson(Map<String, dynamic> json) =>
       _$IssueDetailDTOFromJson(json);
@@ -73,6 +77,8 @@ extension IssueDetailDtx on IssueDetailDTO {
       leftKeywords: leftKeywords,
       centerKeywords: centerKeywords,
       rightKeywords: rightKeywords,
+      nextIssueIds: nextIssueIds,
+      isSubscribed: isSubscribed,
     );
   }
 }

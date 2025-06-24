@@ -21,8 +21,8 @@ class IssueChip extends StatelessWidget {
           onTap: onTap,
           child: Container(
             padding: EdgeInsets.symmetric(
-              horizontal: MyPaddings.medium,
-              vertical: MyPaddings.small,
+              horizontal: MyPaddings.small,
+              vertical: MyPaddings.extraSmall,
             ),
             decoration: BoxDecoration(
               color: isActive ? AppColors.primary : AppColors.surface,
@@ -33,7 +33,7 @@ class IssueChip extends StatelessWidget {
               ),
             ),
             child: Center(
-              child: MyText.h3(
+              child: MyText.reg(
                 title,
                 color: isActive ? Colors.white : AppColors.textPrimary,
               ),

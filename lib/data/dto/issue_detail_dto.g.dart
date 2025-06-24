@@ -6,30 +6,38 @@ part of 'issue_detail_dto.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-IssueDetailDTO _$IssueDetailDTOFromJson(Map<String, dynamic> json) =>
-    IssueDetailDTO(
-      json['_id'] as String,
-      json['title'] as String,
-      json['category'] as String,
-      json['summary'] as String,
-      json['imageUrl'] as String,
+IssueDetailDTO _$IssueDetailDTOFromJson(
+  Map<String, dynamic> json,
+) => IssueDetailDTO(
+  id: json['_id'] as String,
+  title: json['title'] as String,
+  category: json['category'] as String,
+  summary: json['summary'] as String,
+  imageUrl: json['imageUrl'] as String,
+  keywords:
       (json['keywords'] as List<dynamic>).map((e) => e as String).toList(),
-      json['createdAt'] as String,
-      (json['view'] as num).toInt(),
-      CoverageSpectrumDTO.fromJson(
-        json['coverageSpectrum'] as Map<String, dynamic>,
-      ),
-      json['updatedAt'] as String,
-      json['leftSummary'] as String,
-      json['centerSummary'] as String,
-      json['rightSummary'] as String,
-      json['biasComparison'] as String,
+  createdAt: json['createdAt'] as String,
+  view: (json['view'] as num).toInt(),
+  coverageSpectrum: CoverageSpectrumDTO.fromJson(
+    json['coverageSpectrum'] as Map<String, dynamic>,
+  ),
+  updatedAt: json['updatedAt'] as String,
+  leftSummary: json['leftSummary'] as String,
+  centerSummary: json['centerSummary'] as String,
+  rightSummary: json['rightSummary'] as String,
+  biasComparison: json['biasComparison'] as String,
+  leftKeywords:
       (json['leftKeywords'] as List<dynamic>).map((e) => e as String).toList(),
+  centerKeywords:
       (json['centerKeywords'] as List<dynamic>)
           .map((e) => e as String)
           .toList(),
+  rightKeywords:
       (json['rightKeywords'] as List<dynamic>).map((e) => e as String).toList(),
-    );
+  nextIssueIds:
+      (json['nextIssueIds'] as List<dynamic>).map((e) => e as String).toList(),
+  isSubscribed: json['isSubscribed'] as bool,
+);
 
 Map<String, dynamic> _$IssueDetailDTOToJson(IssueDetailDTO instance) =>
     <String, dynamic>{
@@ -50,4 +58,6 @@ Map<String, dynamic> _$IssueDetailDTOToJson(IssueDetailDTO instance) =>
       'leftKeywords': instance.leftKeywords,
       'centerKeywords': instance.centerKeywords,
       'rightKeywords': instance.rightKeywords,
+      'nextIssueIds': instance.nextIssueIds,
+      'isSubscribed': instance.isSubscribed,
     };

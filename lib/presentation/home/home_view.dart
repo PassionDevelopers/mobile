@@ -17,7 +17,7 @@ class HomeView extends StatelessWidget {
     required this.setCurrentIndex,
   });
 
-  final List<String?> appBarTitles = [null, '토픽', '사각지대', '매체 성향', '마이페이지'];
+  final List<String?> appBarTitles = [null, '토픽', '사각지대', '매체', '마이페이지'];
 
   @override
   Widget build(BuildContext context) {

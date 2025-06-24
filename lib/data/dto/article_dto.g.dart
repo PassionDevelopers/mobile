@@ -12,11 +12,11 @@ ArticleDTO _$ArticleDTOFromJson(Map<String, dynamic> json) => ArticleDTO(
   preview: json['preview'] as String,
   url: json['url'] as String,
   reporter: json['reporter'] as String?,
-  publishedAt: json['publishedAt'] as String,
+  publishedAt: DateTime.parse(json['publishedAt'] as String),
   issueId: json['issueId'] as String,
   category: json['category'] as String,
   imageUrl: json['imageUrl'] as String?,
-  source: ArticleSourceDTO.fromJson(json['source'] as Map<String, dynamic>),
+  source: SourceDTO.fromJson(json['source'] as Map<String, dynamic>),
 );
 
 Map<String, dynamic> _$ArticleDTOToJson(ArticleDTO instance) =>
@@ -26,7 +26,7 @@ Map<String, dynamic> _$ArticleDTOToJson(ArticleDTO instance) =>
       'preview': instance.preview,
       'url': instance.url,
       'reporter': instance.reporter,
-      'publishedAt': instance.publishedAt,
+      'publishedAt': instance.publishedAt.toIso8601String(),
       'issueId': instance.issueId,
       'category': instance.category,
       'imageUrl': instance.imageUrl,

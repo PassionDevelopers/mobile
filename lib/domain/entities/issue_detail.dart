@@ -10,7 +10,7 @@ class IssueDetail {
   final DateTime createdAt;
   final int view;
   final CoverageSpectrum coverageSpectrum;
-  final DateTime updatedAt;
+  final DateTime? updatedAt;
   final String leftSummary;
   final String centerSummary;
   final String rightSummary;
@@ -18,6 +18,8 @@ class IssueDetail {
   final List<String> leftKeywords;
   final List<String> centerKeywords;
   final List<String> rightKeywords;
+  final List<String> nextIssueIds;
+  final bool isSubscribed;
 
   IssueDetail({
     required this.id,
@@ -37,28 +39,51 @@ class IssueDetail {
     required this.leftKeywords,
     required this.centerKeywords,
     required this.rightKeywords,
+    required this.nextIssueIds,
+    required this.isSubscribed,
   });
 
-  String getDate() {
-    return createdAt.toLocal().toString().split(' ')[0];
-  }
-
-  String getTimeAgo() {
-    final now = DateTime.now();
-    final difference = now.difference(createdAt);
-
-    if (difference.inDays > 365) {
-      return '${(difference.inDays / 365).floor()}년 전';
-    } else if (difference.inDays > 30) {
-      return '${(difference.inDays / 30).floor()}달 전';
-    } else if (difference.inDays > 0) {
-      return '${difference.inDays}일 전';
-    } else if (difference.inHours > 0) {
-      return '${difference.inHours}시간 전';
-    } else if (difference.inMinutes > 0) {
-      return '${difference.inMinutes}분 전';
-    } else {
-      return '방금 전';
-    }
+  IssueDetail copyWith({
+    String? id,
+    String? title,
+    String? category,
+    String? summary,
+    String? imageUrl,
+    List<String>? keywords,
+    DateTime? createdAt,
+    int? view,
+    CoverageSpectrum? coverageSpectrum,
+    DateTime? updatedAt,
+    String? leftSummary,
+    String? centerSummary,
+    String? rightSummary,
+    String? biasComparison,
+    List<String>? leftKeywords,
+    List<String>? centerKeywords,
+    List<String>? rightKeywords,
+    List<String>? nextIssueIds,
+    bool? isSubscribed,
+  }) {
+    return IssueDetail(
+      id: id ?? this.id,
+      title: title ?? this.title,
+      category: category ?? this.category,
+      summary: summary ?? this.summary,
+      imageUrl: imageUrl ?? this.imageUrl,
+      keywords: keywords ?? this.keywords,
+      createdAt: createdAt ?? this.createdAt,
+      view: view ?? this.view,
+      coverageSpectrum: coverageSpectrum ?? this.coverageSpectrum,
+      updatedAt: updatedAt ?? this.updatedAt,
+      leftSummary: leftSummary ?? this.leftSummary,
+      centerSummary: centerSummary ?? this.centerSummary,
+      rightSummary: rightSummary ?? this.rightSummary,
+      biasComparison: biasComparison ?? this.biasComparison,
+      leftKeywords: leftKeywords ?? this.leftKeywords,
+      centerKeywords: centerKeywords ?? this.centerKeywords,
+      rightKeywords: rightKeywords ?? this.rightKeywords,
+      nextIssueIds: nextIssueIds ?? this.nextIssueIds,
+      isSubscribed: isSubscribed ?? this.isSubscribed
+    );
   }
 } 

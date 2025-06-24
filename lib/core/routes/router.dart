@@ -2,18 +2,19 @@ import 'package:could_be/core/routes/route_names.dart';
 import 'package:could_be/presentation/home/feed_view.dart';
 import 'package:could_be/presentation/log_in/login_view.dart';
 import 'package:could_be/presentation/media/main/subscribed_media_root.dart';
+import 'package:could_be/presentation/my_page/user_bias_status/user_bias_status_view.dart';
 import 'package:could_be/presentation/shorts/shorts_root.dart';
+import 'package:could_be/presentation/topic/subscribed_topic/subscribed_topic_view.dart';
+import 'package:could_be/presentation/web_view/web_view_view.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../presentation/blind_spot/blind_spot_root.dart';
 import '../../presentation/home/home_view.dart';
-import '../../presentation/my_page/my_page_view.dart';
+import '../../presentation/media/whole_media/whole_media_view.dart';
+import '../../presentation/my_page/main/my_page_view.dart';
 import '../../presentation/my_page/subscribed_issue_view.dart';
 import '../../presentation/my_page/watch_history_view.dart';
-import '../../presentation/media/media_bias_view.dart';
-import '../../presentation/shorts/shorts_view.dart';
 import '../../presentation/topic/topic_detail_view.dart';
-import '../../presentation/topic/topic_home_view.dart';
 
 final router = GoRouter(
   initialLocation: '/',
@@ -34,18 +35,43 @@ final router = GoRouter(
         return ShortsRoot(issueId: issueId);
       },
     ),
+
+    //article
+    GoRoute(
+      path: RouteNames.webView,
+      builder: (context, state) {
+        final extra = state.extra! as Map<String, dynamic>;
+        return WebViewView(url: extra['url']);
+      },
+    ),
+
+    //topic
     GoRoute(
       path: RouteNames.topicDetail,
       builder: (context, state) => TopicDetailView(),
     ),
+
+    //media
+    GoRoute(
+      path: RouteNames.wholeMedia,
+      builder: (context, state) => WholeMediaView(),
+    ),
+
+    //my page
     GoRoute(
       path: RouteNames.watchHistory,
       builder: (context, state) => WatchHistoryView(),
     ),
-    GoRoute(path: RouteNames.subscribedIssue,
+    GoRoute(
+      path: RouteNames.subscribedIssue,
       builder: (context, state) => SubscribedIssueView(),
     ),
+    GoRoute(
+      path: RouteNames.userBiasStatus,
+      builder: (context, state) => UserBiasStatusView(),
+    ),
 
+    //bottom nav
     StatefulShellRoute.indexedStack(
       builder: (context, state, navigationShell) {
         return HomeView(
@@ -66,9 +92,9 @@ final router = GoRouter(
               path: RouteNames.home,
               builder:
                   (context, state) => FeedView(
-                    onIssueSelected: (issueId) =>  context.push(
-                      RouteNames.shortsView + issueId,
-                    ),
+                    onIssueSelected:
+                        (issueId) =>
+                            context.push(RouteNames.shortsView + issueId),
                   ),
             ),
           ],
@@ -77,7 +103,7 @@ final router = GoRouter(
           routes: [
             GoRoute(
               path: RouteNames.topic,
-              builder: (context, state) => TopicHomeView(),
+              builder: (context, state) => SubscribedTopicView(),
             ),
           ],
         ),
@@ -87,9 +113,9 @@ final router = GoRouter(
               path: RouteNames.blindSpot,
               builder:
                   (context, state) => BlindSpotRoot(
-                    onIssueSelected: (issueId) =>  context.push(
-                      RouteNames.shortsView + issueId,
-                    ),
+                    onIssueSelected:
+                        (issueId) =>
+                            context.push(RouteNames.shortsView + issueId),
                   ),
             ),
           ],
@@ -109,7 +135,10 @@ final router = GoRouter(
               builder:
                   (context, state) => MyPageView(
                     toWatchHistory: () => context.push(RouteNames.watchHistory),
-                    toSubscribedIssue: () => context.push(RouteNames.subscribedIssue,),
+                    toSubscribedIssue:
+                        () => context.push(RouteNames.subscribedIssue),
+                    toUserBiasStatus:
+                        () => context.push(RouteNames.userBiasStatus),
                   ),
             ),
           ],
