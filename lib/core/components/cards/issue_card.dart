@@ -55,7 +55,8 @@ class _IssueCardState extends State<IssueCard> with TickerProviderStateMixin {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.symmetric(horizontal: MyPaddings.largeMedium, vertical: MyPaddings.small),
+      padding: EdgeInsets.fromLTRB(MyPaddings.largeMedium, 0, MyPaddings.largeMedium,
+          widget.isDailyIssue? 0 : MyPaddings.large),
       child: AnimatedBuilder(
         animation: _scaleAnimation,
         builder: (context, child) {
@@ -141,6 +142,7 @@ class _IssueCardState extends State<IssueCard> with TickerProviderStateMixin {
                             // Bias Bar
                             SizedBox(height: MyPaddings.medium),
                             CardBiasBar(
+                              isDailyIssue: widget.isDailyIssue,
                               coverageSpectrum: widget.issue.coverageSpectrum,
                             ),
                             SizedBox(height: MyPaddings.medium),

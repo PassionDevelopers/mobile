@@ -93,7 +93,6 @@ class IssuesRepositoryImpl implements IssuesRepository {
           'Authorization' : demoToken
         },
       ),
-      queryParameters: {'limit': 10, 'lastIssueId': ''},
     );
     final issuesDTO = IssuesDTO.fromJson(response.data);
     return issuesDTO.toDomain();
@@ -109,6 +108,34 @@ class IssuesRepositoryImpl implements IssuesRepository {
         },
       ),
       // queryParameters: {'limit': 10, 'lastIssueId': ''},
+    );
+    final issuesDTO = IssuesDTO.fromJson(response.data);
+    return issuesDTO.toDomain();
+  }
+
+  @override
+  Future<Issues> fetchIssuesByTopicId(String topicId) async {
+    final response = await dio.get(
+      '/topics/$topicId/issues',
+      options: Options(
+        headers: {
+          'Authorization': demoToken,
+        },
+      ),
+    );
+    final issuesDTO = IssuesDTO.fromJson(response.data);
+    return issuesDTO.toDomain();
+  }
+
+  @override
+  Future<Issues> fetchSubscribedTopicIssues() async {
+    final response = await dio.get(
+      '/topics/subscribed/issues',
+      options: Options(
+        headers: {
+          'Authorization': demoToken,
+        },
+      ),
     );
     final issuesDTO = IssuesDTO.fromJson(response.data);
     return issuesDTO.toDomain();

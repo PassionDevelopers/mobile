@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 import '../../../ui/color.dart';
 import '../../../ui/fonts.dart';
 
-class IssueChip extends StatelessWidget {
-  const IssueChip({super.key, required this.title, required this.isActive, required this.onTap});
+class TopicChip extends StatelessWidget {
+  const TopicChip({super.key, required this.title, required this.isActive, required this.onTap});
   final String title;
   final bool isActive;
   final VoidCallback onTap;

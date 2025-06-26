@@ -49,7 +49,7 @@ class TopicDetailView extends StatelessWidget {
                   padding: EdgeInsets.symmetric(horizontal : MyPaddings.large),
                   child: Column(children: [
                     SizedBox(height: AppBar().preferredSize.height,),
-                    Material(child: Hero(tag: title, child: TopicCard(title: title, isBack: true,))),
+                    // Material(child: Hero(tag: title, child: TopicCard(title: title, isBack: true,))),
                     SizedBox(height: MyPaddings.large),
                     SizedBox(height: MyPaddings.large*2,
                       child: Align(alignment: Alignment.centerLeft, child: MyText.h2('관련 키워드')),

@@ -4,6 +4,6 @@ abstract class TopicsRepository {
 
   Future<Topics> fetchSubscribedTopics();
 
-  Future<Topics> fetchAllTopics();
+  Future<Topics> fetchSepecificCategoryTopics(String category);
 
 }

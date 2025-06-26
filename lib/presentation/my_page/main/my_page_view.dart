@@ -11,10 +11,12 @@ import '../../../core/themes/margins_paddings.dart';
 class MyPageView extends StatelessWidget {
   const MyPageView({super.key, required this.toWatchHistory,
     required this.toSubscribedIssue, required this.toUserBiasStatus,
+    required this.toManageMediaSubscription,
   });
   final VoidCallback toWatchHistory;
   final VoidCallback toSubscribedIssue;
   final VoidCallback toUserBiasStatus;
+  final VoidCallback toManageMediaSubscription;
 
   @override
   Widget build(BuildContext context) {
@@ -52,12 +54,9 @@ class MyPageView extends StatelessWidget {
 
             BigButton('나의 관심 이슈', onPressed: toSubscribedIssue),
             SizedBox(height: MyPaddings.medium,),
-            BigButton('나의 관심 매체', onPressed: (){
-        
-            }),
+            BigButton('나의 관심 매체', onPressed: toManageMediaSubscription),
             SizedBox(height: MyPaddings.medium,),
             BigButton('나의 관심 토픽', onPressed: (){
-
 
             }),
             SizedBox(height: MyPaddings.large,),
@@ -69,9 +68,9 @@ class MyPageView extends StatelessWidget {
         
             }),
             SizedBox(height: MyPaddings.medium,),
-            BigButton('내가 평가한 매체', onPressed: (){
-        
-            }),
+            // BigButton('내가 평가한 매체', onPressed: (){
+            //
+            // }),
           ],
         ),
       ),

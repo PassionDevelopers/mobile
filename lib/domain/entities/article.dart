@@ -1,5 +1,6 @@
 
 
+import 'package:could_be/domain/entities/articles_group_by_source.dart';
 import 'package:could_be/domain/entities/source.dart';
 
 class Article{

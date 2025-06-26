@@ -1,9 +1,4 @@
-
-
-
-
 import 'package:could_be/core/components/layouts/scaffold_layout.dart';
-import 'package:could_be/core/method/bias/bias_method.dart';
 import 'package:could_be/presentation/media/media_profile_component.dart';
 import 'package:could_be/presentation/media/whole_media/whole_media_view_model.dart';
 import 'package:flutter/material.dart';
@@ -16,11 +11,13 @@ class WholeMediaView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final viewModel = WholeMediaViewModel(fetchSourcesUseCase: fetchSourcesUseCase);
+    final viewModel = WholeMediaViewModel(
+        fetchSourcesUseCase: fetchSourcesUseCase,
+        manageMediaSubscriptionUseCase: manageMediaSubscriptionUseCase,
+    );
 
     return MyScaffold(
       appBarTitle: '관심 매체 설정',
-
       body: ListenableBuilder(
         listenable: viewModel,
         builder: (context, _) {
@@ -38,16 +35,16 @@ class WholeMediaView extends StatelessWidget {
               ),
               gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                 crossAxisCount: 4,
-                childAspectRatio: 74/106,
-                crossAxisSpacing: MyPaddings.small,
-                mainAxisSpacing: MyPaddings.small,
+                childAspectRatio: 0.7,
+                crossAxisSpacing: 0,
+                mainAxisSpacing: 0,
               ),
               itemCount: sources.length,
               itemBuilder: (context, index) {
                 final source = sources[index];
                 return MediaProfile(source: source,
                   isShowingArticles: false, onSubscribe: (){
-
+                    viewModel.manageSourceSubscriptionBySourceId(source.id);
                   },);
               },
             );

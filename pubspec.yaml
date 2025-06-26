@@ -55,6 +55,7 @@ dependencies:
   fl_chart: ^1.0.0
   google_fonts: ^6.2.1
   fluttertoast: ^8.2.12
+  sliding_up_panel: ^2.0.0+1
 
   #signin
   sign_button: ^2.0.6

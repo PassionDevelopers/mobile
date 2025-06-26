@@ -1,25 +1,54 @@
+import 'dart:async';
+import 'dart:developer';
 import 'package:could_be/core/routes/route_names.dart';
-import 'package:could_be/domain/entities/source.dart';
 import 'package:could_be/presentation/media/main/subscribed_media_view_model.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import '../../../core/components/cards/news_card.dart';
 import '../../../core/components/title/big_title_icon.dart';
 import '../../../core/di/use_case/use_case.dart';
-import '../../../core/method/bias/bias_method.dart';
 import '../../../core/themes/margins_paddings.dart';
 import '../media_profile_component.dart';
 import '../subscribed_media_loading_view.dart';
 
-class SubscribedMediaRoot extends StatelessWidget {
+class SubscribedMediaRoot extends StatefulWidget {
   const SubscribedMediaRoot({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    final viewModel = SubscribedMediaViewModel(
+  State<SubscribedMediaRoot> createState() => _SubscribedMediaRootState();
+}
+
+class _SubscribedMediaRootState extends State<SubscribedMediaRoot> {
+  late SubscribedMediaViewModel viewModel;
+  StreamSubscription? eventSubscription;
+
+  @override
+  void initState() {
+    super.initState();
+    viewModel = SubscribedMediaViewModel(
       fetchArticlesUseCase: fetchArticlesUseCase,
       fetchSourcesUseCase: fetchSourcesUseCase,
     );
+
+    eventSubscription = viewModel.eventStream.listen((event){
+      log(event.toString());
+      if(mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text(event.toString()),),
+        );
+      }
+    });
+  }
+
+  @override
+  dispose() {
+    eventSubscription?.cancel();
+    viewModel.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
 
     return ListenableBuilder(
       listenable: viewModel,
@@ -44,7 +73,10 @@ class SubscribedMediaRoot extends StatelessWidget {
                 child: state.isSourcesLoading
                     ? CircularProgressIndicator()
                     : state.sources == null
-                    ? SizedBox()
+                    ? SizedBox(
+                      height: 110,
+                      child: Center(child: Text('관심 매체가 없습니다.')),
+                    )
                     : SizedBox(
                       height: 110,
                       child: Center(

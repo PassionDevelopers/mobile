@@ -89,7 +89,9 @@ class MediaProfile extends StatelessWidget {
                                 child: ClipRRect(
                                   borderRadius: BorderRadius.circular(10),
                                   child: Image(
-                                    fit: BoxFit.contain,
+                                    width: 70,
+                                    height: 70,
+                                    fit: BoxFit.fill,
                                     image: NetworkImage(source.logoUrl),
                                   ),
                                 ),
@@ -120,13 +122,13 @@ class MediaProfile extends StatelessWidget {
                             height: 25,
                             width: 25,
                             decoration: BoxDecoration(
-                              color: AppColors.gray3,
+                              color: source.isSubscribed? AppColors.check : AppColors.gray3,
                               shape: BoxShape.circle,
                             ),
                             child: FittedBox(
                               fit: BoxFit.fill,
                               child: Icon(
-                                Icons.add_circle,
+                                source.isSubscribed? Icons.check_circle_outlined : Icons.add_circle_outline,
                                 color: AppColors.primaryLight,
                               ),
                             ),

@@ -8,14 +8,14 @@ class TopicDto {
   @JsonKey(name: '_id')
   final String id;
   final String name;
-  final List<String> categories;
+  final String category;
   final int issuesCount;
   final bool isSubscribed;
 
   TopicDto(
       {required this.id,
       required this.name,
-      required this.categories,
+      required this.category,
       required this.issuesCount,
       required this.isSubscribed}
   );
@@ -31,7 +31,7 @@ extension TopicDtoExtension on TopicDto {
     return Topic(
       id: id,
       name: name,
-      categories: categories,
+      category: category,
       issuesCount: issuesCount,
       isSubscribed: isSubscribed,
     );

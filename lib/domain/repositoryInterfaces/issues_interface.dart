@@ -8,4 +8,7 @@ abstract class IssuesRepository{
   Future<Issues> fetchForYouIssues();
   Future<Issues> fetchWatchHistoryIssues();
   Future<Issues> fetchSubscribedIssues();
+
+  Future<Issues> fetchIssuesByTopicId(String topicId);
+  Future<Issues> fetchSubscribedTopicIssues();
 }

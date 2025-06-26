@@ -62,7 +62,7 @@ class FeedView extends StatelessWidget {
               children: [
                 HotIssueRoot(),
                 Padding(
-                  padding: EdgeInsets.only(left: MyPaddings.largeMedium, bottom: MyPaddings.small),
+                  padding: EdgeInsets.only(left: MyPaddings.largeMedium, bottom: MyPaddings.large),
                   child: BigTitle(title: '데일리 이슈'),
                 ),
                 IssueListRoot(issueType: IssueType.daily),

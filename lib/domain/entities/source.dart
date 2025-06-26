@@ -12,4 +12,20 @@ class Source {
     required this.logoUrl,
     required this.isSubscribed,
   });
+
+  Source copyWith({
+    String? id,
+    String? name,
+    String? perspective,
+    String? logoUrl,
+    bool? isSubscribed,
+  }) {
+    return Source(
+      id: id ?? this.id,
+      name: name ?? this.name,
+      perspective: perspective ?? this.perspective,
+      logoUrl: logoUrl ?? this.logoUrl,
+      isSubscribed: isSubscribed ?? this.isSubscribed,
+    );
+  }
 } 

@@ -14,11 +14,11 @@ class ArticlesRepositoryImpl implements ArticlesRepository {
   Future<Articles> fetchArticlesByIssueId(String issueId) async {
     final response = await dio.get(
       '/issues/$issueId/articles',
-      // options: Options(
-      //   headers: {
-      //     'Authorization' : demoToken
-      //   },
-      // ),
+      options: Options(
+        headers: {
+          'Authorization' : demoToken
+        },
+      ),
     );
     final articlesDTO = ArticlesDTO.fromJson(response.data);
     return articlesDTO.toDomain();

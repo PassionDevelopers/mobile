@@ -28,7 +28,6 @@ class ShortsRoot extends StatelessWidget {
             if (state.issueDetail == null) {
               return Center(child: Text('발견된 이슈가 없습니다.'));
             }
-            print('state.issueDetail: ${state.issueDetail!.isSubscribed}');
             return ShortsComponent(issue: state.issueDetail!, manageIssueSubscripton: viewModel.manageIssueSubscription,);
 
           // return PageView(

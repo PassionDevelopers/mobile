@@ -32,4 +32,12 @@ class FetchIssuesUseCase{
   Future<Issues> fetchSubscribedIssues() async {
     return _issuesRepository.fetchSubscribedIssues();
   }
+
+  Future<Issues> fetchSubscribedTopicIssuesWhole() async {
+    return _issuesRepository.fetchSubscribedTopicIssues();
+  }
+
+  Future<Issues> fetchIssuesByTopicId(String topicId) async {
+    return _issuesRepository.fetchIssuesByTopicId(topicId);
+  }
 }

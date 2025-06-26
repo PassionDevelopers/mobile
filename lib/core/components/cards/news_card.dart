@@ -1,3 +1,4 @@
+import 'package:could_be/core/routes/route_names.dart';
 import 'package:could_be/domain/entities/article.dart';
 import 'package:could_be/ui/fonts.dart';
 import 'package:flutter/material.dart';
@@ -76,8 +77,8 @@ class _NewsCardState extends State<NewsCard> with TickerProviderStateMixin {
               child: InkWell(
                 borderRadius: BorderRadius.circular(16),
                 onTap: () {
-                  context.push('/webView/${widget.article.id}', extra: {
-                    'url': widget.article.url});
+                  context.push(RouteNames.webView, extra: {
+                    'isIssueId': false,  'article' : widget.article,});
                 },
                 child: Ink(
                   decoration: BoxDecoration(

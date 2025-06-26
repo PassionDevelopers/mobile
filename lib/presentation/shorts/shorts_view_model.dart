@@ -59,7 +59,6 @@ class ShortsViewModel with ChangeNotifier {
         isSubscribed: !state.issueDetail!.isSubscribed,
       ),
     );
-    print(_state.issueDetail!.isSubscribed);
 
     notifyListeners();
   }

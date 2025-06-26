@@ -7,14 +7,16 @@ import 'issue_list_view_model.dart';
 
 class IssueListRoot extends StatelessWidget {
   final IssueType issueType;
+  final String? topicId;
 
-  const IssueListRoot({super.key, required this.issueType});
+  const IssueListRoot({super.key, required this.issueType, this.topicId});
 
   @override
   Widget build(BuildContext context) {
     final viewModel = IssueListViewModel(
       fetchIssuesUseCase: fetchIssuesUseCase,
       issueType: issueType,
+      topicId: topicId,
     );
     return ListenableBuilder(
       listenable: viewModel,

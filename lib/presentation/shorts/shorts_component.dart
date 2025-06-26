@@ -1,4 +1,5 @@
 import 'package:could_be/core/components/title/issue_info_title.dart';
+import 'package:could_be/core/routes/route_names.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
@@ -40,7 +41,6 @@ class _ShortsComponentState extends State<ShortsComponent> with TickerProviderSt
         currentBias = [Bias.left, Bias.center, Bias.right][_tabController.index];
       });
     });
-    print('in conpo${issue.isSubscribed}');
   }
 
   @override
@@ -241,7 +241,9 @@ class ShortsInnerPage extends StatelessWidget {
                     iconData: Icons.newspaper_rounded,
                     label: '원문 기사',
                     onTap: () {
-                      context.push('/webView/${issueId}');
+                      context.push(RouteNames.webView, extra: {
+                        'isIssueId' : true, 'issueId' : issueId, 'bias': bias,
+                      });
                     },
                   ),
                 ),

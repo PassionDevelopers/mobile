@@ -1,0 +1,96 @@
+import 'package:could_be/presentation/topic/whole_topics/whole_topic_loading_view.dart';
+import 'package:could_be/presentation/topic/whole_topics/whole_topic_view_model.dart';
+import 'package:could_be/ui/color.dart';
+import 'package:flutter/material.dart';
+
+import '../../../core/components/cards/topic_card.dart';
+import '../../../core/components/layouts/scaffold_layout.dart';
+import '../../../core/di/use_case/use_case.dart';
+import '../../../core/themes/margins_paddings.dart';
+
+class WholeTopicView extends StatelessWidget {
+  const WholeTopicView({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    final viewModelPolitic = WholeTopicViewModel(category: 'politics',
+        fetchTopicsUseCase: fetchTopicsUseCase);
+    final viewModelEconomy = WholeTopicViewModel(category: 'economy',
+        fetchTopicsUseCase: fetchTopicsUseCase);
+    final viewModelSociety = WholeTopicViewModel(category: 'society',
+        fetchTopicsUseCase: fetchTopicsUseCase);
+    final viewModelCulture = WholeTopicViewModel(category: 'culture',
+        fetchTopicsUseCase: fetchTopicsUseCase);
+    final viewModelWorld = WholeTopicViewModel(category: 'international',
+        fetchTopicsUseCase: fetchTopicsUseCase);
+    return MyScaffold(
+      body: DefaultTabController(
+        length: 5,
+        child: Column(
+          children: [
+            Material(
+              color: AppColors.background,
+              child: TabBar(tabs: [
+                Tab(text: '정치'),
+                Tab(text: '경제'),
+                Tab(text: '사회'),
+                Tab(text: '문화'),
+                Tab(text: '세계'),
+              ]),
+            ),
+            Expanded(child: TabBarView(children: [
+              CategoryPartView(title: '정치', viewModel: viewModelPolitic),
+              CategoryPartView(title: '경제', viewModel: viewModelEconomy),
+              CategoryPartView(title: '사회', viewModel: viewModelSociety),
+              CategoryPartView(title: '문화', viewModel: viewModelCulture),
+              CategoryPartView(title: '세계', viewModel: viewModelWorld),
+            ]))
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class CategoryPartView extends StatelessWidget {
+  const CategoryPartView({super.key, required this.title, required this.viewModel});
+  final String title;
+  final WholeTopicViewModel viewModel;
+  @override
+  Widget build(BuildContext context) {
+    return ListenableBuilder(listenable: viewModel, builder:
+        (context, _) {
+      final state = viewModel.state;
+      if (state.isLoading) {
+        return WholeTopicLoadingView();
+      } else if (state.topics!.topics.isEmpty ||
+          state.topics == null) {
+        return Center(child: Text('아직 토픽이 없습니다'));
+      } else {
+        final topics = state.topics!.topics;
+        return GridView.builder(
+          shrinkWrap: true,
+          padding: EdgeInsets.symmetric(
+            horizontal: MyPaddings.largeMedium,
+            vertical: MyPaddings.medium,
+          ),
+          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+            crossAxisCount: 2,
+            childAspectRatio: 2.2,
+            crossAxisSpacing: 8,
+            mainAxisSpacing: 12,
+          ),
+          itemCount: topics.length,
+          itemBuilder: (context, index) {
+            final topic = topics[index];
+            // return Hero(tag:topics[index], child: TopicCard(title: topic.name, isBack: false,));
+            // return TopicChip(title: topic.name,
+            //     isActive: false, onTap: (){});
+            return TopicCard(topic: topic,);
+          },
+        );
+      }
+    });
+  }
+}
+

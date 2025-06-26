@@ -3,16 +3,21 @@ abstract class RouteNames{
   static const
   home = '/',
   login = '/login',
-  topic = '/topic',
-  topicDetail = '/topic/detail',
+
+
   blindSpot = '/blindSpot',
+
+  //topics
+  topic = '/topic',
+  wholeTopics = '$topic/wholeTopics',
+  topicDetail = '$topic/detail',
 
   //media
   media = '/media',
   wholeMedia = '$media/wholeMedia',
 
   //article
-  webView = '/webView/:issueId',
+  webView = '/webView',
 
   //my page
   myPage = '/myPage',

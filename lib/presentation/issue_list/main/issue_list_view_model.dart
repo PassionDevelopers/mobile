@@ -14,15 +14,16 @@ class IssueListViewModel with ChangeNotifier {
   IssueListViewModel({
     required FetchIssuesUseCase fetchIssuesUseCase,
     required IssueType issueType,
+    String? topicId,
   })  : _fetchIssuesUseCase = fetchIssuesUseCase,
         _issueType = issueType {
     _fetchIssues();
   }
 
-  void _fetchIssues() async {
+  void _fetchIssues({String? topicId}) async {
     _state = state.copyWith(isLoading: true);
     notifyListeners();
-    final result = await _fetchIssuesByType();
+    final result = await _fetchIssuesByType(topicId: topicId);
     _state = state.copyWith(
       issueList: result.issues,
       hasMore: result.hasMore,
@@ -32,7 +33,7 @@ class IssueListViewModel with ChangeNotifier {
     notifyListeners();
   }
 
-  Future<dynamic> _fetchIssuesByType() async {
+  Future<dynamic> _fetchIssuesByType({String? topicId}) async {
     switch (_issueType) {
       case IssueType.daily:
         return await _fetchIssuesUseCase.fetchDailyIssues();
@@ -48,6 +49,10 @@ class IssueListViewModel with ChangeNotifier {
         return await _fetchIssuesUseCase.fetchWatchHistoryIssues();
       case IssueType.subscribed:
         return await _fetchIssuesUseCase.fetchSubscribedIssues();
+      case IssueType.subscribedTopicIssuesWhole:
+        return await _fetchIssuesUseCase.fetchSubscribedTopicIssuesWhole();
+      case IssueType.subscribedTopicIssuesSpecific:
+        return await _fetchIssuesUseCase.fetchIssuesByTopicId(topicId!);
     }
   }
 } 

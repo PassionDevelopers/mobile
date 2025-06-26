@@ -35,6 +35,8 @@ abstract class AppColors {
   // static Color right = Color.fromRGBO(37, 99, 235, 1); // 클래식 블루
   static Color rightCenter = Colors.red.shade100;
 
+  static const Color check = Color.fromRGBO(46, 176, 134, 1);
+
   // 텍스트 컬러
   static Color textPrimary = Colors.black87;
   static Color textPrimaryLight = Color(0xffFAFAFA); // 라이트 모드에서의 기본 텍스트 색상

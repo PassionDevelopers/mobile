@@ -10,8 +10,9 @@ import '../../../ui/fonts.dart';
 import 'bias_label.dart';
 
 class CardBiasBar extends StatelessWidget {
-  const CardBiasBar({super.key, required this.coverageSpectrum});
+  const CardBiasBar({super.key, required this.coverageSpectrum, this.isDailyIssue = false});
   final CoverageSpectrum coverageSpectrum;
+  final bool isDailyIssue;
 
   Widget _buildBiasLabel({required CoverageSpectrum coverageSpectrum}) {
     return Row(
@@ -89,8 +90,8 @@ class CardBiasBar extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        _buildBiasLabel(coverageSpectrum: coverageSpectrum),
-        SizedBox(height: 4),
+        isDailyIssue? _buildBiasLabel(coverageSpectrum: coverageSpectrum) : SizedBox(),
+        SizedBox(height: isDailyIssue? 4 : 0),
         Container(
           height: 10,
           decoration: BoxDecoration(

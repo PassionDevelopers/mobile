@@ -1,4 +1,9 @@
 
+import 'dart:io';
+
+import 'package:could_be/core/domain/network_error.dart';
+import 'package:could_be/core/domain/result.dart';
+
 import '../entities/articles.dart';
 import '../repositoryInterfaces/articles_interface.dart';
 
@@ -15,7 +20,19 @@ class FetchArticlesUseCase {
     return await _articlesRepository.fetchArticlesByIssueId(issueId);
   }
 
-  Future<Articles> fetchArticlesSubscribed() async {
-    return await _articlesRepository.fetchArticlesSubscribed();
+  Future<Result<Articles, NetworkError>> fetchArticlesSubscribed() async {
+    try {
+      final articles = await _articlesRepository.fetchArticlesSubscribed();
+      return Result.success(articles);
+    } on SocketException catch (e) {
+      return Result.error(NetworkError.noInternetConnection);
+    // } on HttpException catch (e) {
+    //   return Result.error(NetWorkError.fromException(e));
+    // } on FormatException catch (e) {
+    //   return Result.error(NetWorkError.fromException(e));
+    } catch (e) {
+      return Result.error(NetworkError.unknown);
+    }
+
   }
 }

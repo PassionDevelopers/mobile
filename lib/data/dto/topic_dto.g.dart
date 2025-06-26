@@ -9,8 +9,7 @@ part of 'topic_dto.dart';
 TopicDto _$TopicDtoFromJson(Map<String, dynamic> json) => TopicDto(
   id: json['_id'] as String,
   name: json['name'] as String,
-  categories:
-      (json['categories'] as List<dynamic>).map((e) => e as String).toList(),
+  category: json['category'] as String,
   issuesCount: (json['issuesCount'] as num).toInt(),
   isSubscribed: json['isSubscribed'] as bool,
 );
@@ -18,7 +17,7 @@ TopicDto _$TopicDtoFromJson(Map<String, dynamic> json) => TopicDto(
 Map<String, dynamic> _$TopicDtoToJson(TopicDto instance) => <String, dynamic>{
   '_id': instance.id,
   'name': instance.name,
-  'categories': instance.categories,
+  'category': instance.category,
   'issuesCount': instance.issuesCount,
   'isSubscribed': instance.isSubscribed,
 };

@@ -5,6 +5,7 @@ import 'package:could_be/presentation/media/main/subscribed_media_root.dart';
 import 'package:could_be/presentation/my_page/user_bias_status/user_bias_status_view.dart';
 import 'package:could_be/presentation/shorts/shorts_root.dart';
 import 'package:could_be/presentation/topic/subscribed_topic/subscribed_topic_view.dart';
+import 'package:could_be/presentation/topic/whole_topics/whole_topic_view.dart';
 import 'package:could_be/presentation/web_view/web_view_view.dart';
 import 'package:go_router/go_router.dart';
 
@@ -15,6 +16,7 @@ import '../../presentation/my_page/main/my_page_view.dart';
 import '../../presentation/my_page/subscribed_issue_view.dart';
 import '../../presentation/my_page/watch_history_view.dart';
 import '../../presentation/topic/topic_detail_view.dart';
+import '../components/bias/bias_enum.dart';
 
 final router = GoRouter(
   initialLocation: '/',
@@ -41,7 +43,13 @@ final router = GoRouter(
       path: RouteNames.webView,
       builder: (context, state) {
         final extra = state.extra! as Map<String, dynamic>;
-        return WebViewView(url: extra['url']);
+        if(extra['isIssueId']) {
+          final issueId = extra['issueId'] as String;
+          final bias = extra['bias'] as Bias;
+          return WebViewView(issueId: issueId, bias: bias);
+        }else{
+          return WebViewView(article: extra['article']);
+        }
       },
     ),
 
@@ -49,6 +57,12 @@ final router = GoRouter(
     GoRoute(
       path: RouteNames.topicDetail,
       builder: (context, state) => TopicDetailView(),
+    ),
+    GoRoute(
+      path: RouteNames.wholeTopics,
+      builder: (context, state) {
+        return WholeTopicView();
+      },
     ),
 
     //media
@@ -139,6 +153,8 @@ final router = GoRouter(
                         () => context.push(RouteNames.subscribedIssue),
                     toUserBiasStatus:
                         () => context.push(RouteNames.userBiasStatus),
+                    toManageMediaSubscription:
+                        () => context.push(RouteNames.wholeMedia),
                   ),
             ),
           ],
