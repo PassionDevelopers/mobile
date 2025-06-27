@@ -27,15 +27,15 @@ abstract class AppColors {
   static Color leftCenter = Colors.blue.shade100;
   // static Color center = Colors.grey.shade700;
 
-  static Color center = Color(0xffE5D9F2);
-  // static Color center = Color(0xffA294F9);
+  // static Color center = Color(0xffE5D9F2);
+  static Color center = Color(0xffA294F9);
   // static Color centerLight = Color(0xffCDC1FF);
 
   static Color right = Color.fromRGBO(226, 93, 114, 1);
   // static Color right = Color.fromRGBO(37, 99, 235, 1); // 클래식 블루
   static Color rightCenter = Colors.red.shade100;
 
-  static const Color check = Color.fromRGBO(46, 176, 134, 1);
+  static const Color check = Color.fromRGBO(66, 196, 154, 1);
 
   // 텍스트 컬러
   static Color textPrimary = Colors.black87;

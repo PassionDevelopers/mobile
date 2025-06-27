@@ -30,6 +30,7 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+
   #network
   url_launcher: ^6.1.0
   http: ^1.4.0
@@ -40,7 +41,6 @@ dependencies:
   webview_flutter: ^4.13.0
   webview_flutter_android: ^4.7.0
   webview_flutter_wkwebview: ^3.22.0
-
 
   #router
   go_router: ^15.2.3
@@ -60,6 +60,9 @@ dependencies:
   #signin
   sign_button: ^2.0.6
   google_sign_in: ^6.3.0
+
+  #di
+  get_it: ^8.0.3
 
 
   # The following adds the Cupertino Icons font to your application.

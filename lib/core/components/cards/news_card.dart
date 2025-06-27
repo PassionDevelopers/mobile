@@ -9,8 +9,10 @@ import '../../themes/margins_paddings.dart';
 
 class NewsCard extends StatefulWidget {
   final Article article;
+  final VoidCallback? onWebViewSelected;
+  final bool? isSelected;
 
-  const NewsCard({super.key, required this.article});
+  const NewsCard({super.key, required this.article, this.onWebViewSelected, this.isSelected});
 
   @override
   State<NewsCard> createState() => _NewsCardState();
@@ -57,9 +59,16 @@ class _NewsCardState extends State<NewsCard> with TickerProviderStateMixin {
       super.dispose();
     }
 
-    return Padding(
+    return Container(
+      margin: EdgeInsets.symmetric(
+        horizontal: MyPaddings.small,
+      ),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(16),
+        color: widget.isSelected == true ? AppColors.black.withAlpha(50) : null,
+      ),
       padding: EdgeInsets.symmetric(
-        horizontal: MyPaddings.largeMedium,
+        horizontal: MyPaddings.medium,
         vertical: MyPaddings.small,
       ),
       child: AnimatedBuilder(
@@ -77,8 +86,11 @@ class _NewsCardState extends State<NewsCard> with TickerProviderStateMixin {
               child: InkWell(
                 borderRadius: BorderRadius.circular(16),
                 onTap: () {
-                  context.push(RouteNames.webView, extra: {
-                    'isIssueId': false,  'article' : widget.article,});
+                  if (widget.onWebViewSelected != null) {
+                    widget.onWebViewSelected!();
+                  }else{
+                    context.push(RouteNames.webView, extra: {'article' : widget.article,});
+                  }
                 },
                 child: Ink(
                   decoration: BoxDecoration(

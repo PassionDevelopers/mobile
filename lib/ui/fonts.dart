@@ -11,7 +11,7 @@ abstract class MyFontSizes {
   static const double medium = 14.0;
   static const double large = 16.0;
   static const double article = 17.0;
-  static const double extraLarge = 18.0;
+  static const double extraLarge = 20.0;
   static const double accent = 32.0;
 }
 
@@ -68,8 +68,8 @@ abstract class MyFontStyle{
 
 abstract class MyText {
 
-  static AutoSizeText h1(String text,){
-    return AutoSizeText(text, style: MyFontStyle.h1,);
+  static AutoSizeText h1(String text,{Color? color, AutoSizeGroup? group, int? maxLines}){
+    return AutoSizeText(text, style: MyFontStyle.h1, group: group, maxLines: maxLines ?? 1, minFontSize: 1, overflow: TextOverflow.ellipsis);
   }
 
   static AutoSizeText h2(String text, {Color? color, AutoSizeGroup? group, int? maxLines}){

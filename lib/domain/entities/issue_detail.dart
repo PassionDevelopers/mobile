@@ -5,7 +5,7 @@ class IssueDetail {
   final String title;
   final String category;
   final String summary;
-  final String imageUrl;
+  final String? imageUrl;
   final List<String> keywords;
   final DateTime createdAt;
   final int view;

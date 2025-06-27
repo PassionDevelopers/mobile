@@ -1,3 +1,4 @@
+import 'package:could_be/domain/entities/issue.dart';
 import 'package:could_be/domain/useCases/fetch_articles_use_case.dart';
 import 'package:could_be/presentation/web_view/web_view_state.dart';
 import 'package:flutter/cupertino.dart';
@@ -7,23 +8,22 @@ import 'package:webview_flutter_wkwebview/webview_flutter_wkwebview.dart';
 import '../../core/components/bias/bias_enum.dart';
 import '../../domain/entities/article.dart';
 import '../../domain/entities/articles.dart';
+import '../../domain/entities/issue_detail.dart';
 
 class WebViewViewModel with ChangeNotifier{
   final FetchArticlesUseCase _fetchArticlesUseCase;
-  final String? issueId;
-  final Bias? bias;
 
   WebViewState _state = WebViewState();
   WebViewState get state => _state;
 
   WebViewViewModel({
     required FetchArticlesUseCase fetchArticlesUseCase,
-    this.issueId,
-    this.bias,
+    String? issueId,
     Article? article,
+    Bias? bias,
   }) : _fetchArticlesUseCase = fetchArticlesUseCase{
     if(issueId != null) {
-      _fetchArticlesByIssueId();
+      _fetchArticlesByIssueId(issueId);
     }else{
       _state = state.copyWith(
         articlesGroupBySource: Articles(
@@ -95,11 +95,11 @@ class WebViewViewModel with ChangeNotifier{
     );
   }
 
-  void _fetchArticlesByIssueId() async {
+  void _fetchArticlesByIssueId(String issueId) async {
     _state = state.copyWith(isLoading: true);
     notifyListeners();
 
-    final result = await _fetchArticlesUseCase.fetchArticlesByIssueId(issueId!);
+    final result = await _fetchArticlesUseCase.fetchArticlesByIssueId(issueId);
 
     _state = state.copyWith(
       articlesGroupBySource: result.toGroupBySource(),

@@ -1,9 +1,11 @@
 import 'package:could_be/core/routes/route_names.dart';
+import 'package:could_be/domain/entities/issue_detail.dart';
 import 'package:could_be/presentation/home/feed_view.dart';
 import 'package:could_be/presentation/log_in/login_view.dart';
 import 'package:could_be/presentation/media/main/subscribed_media_root.dart';
 import 'package:could_be/presentation/my_page/user_bias_status/user_bias_status_view.dart';
 import 'package:could_be/presentation/shorts/shorts_root.dart';
+import 'package:could_be/presentation/shorts_player/shorts_player_view.dart';
 import 'package:could_be/presentation/topic/subscribed_topic/subscribed_topic_view.dart';
 import 'package:could_be/presentation/topic/whole_topics/whole_topic_view.dart';
 import 'package:could_be/presentation/web_view/web_view_view.dart';
@@ -37,15 +39,22 @@ final router = GoRouter(
         return ShortsRoot(issueId: issueId);
       },
     ),
+    GoRoute(
+      path: RouteNames.shortsPlayer,
+      builder: (context, state) {
+        final issueId = state.pathParameters['issueId']!;
+        return ShortsPlayerView(issueId: issueId,);
+      },
+    ),
 
     //article
     GoRoute(
       path: RouteNames.webView,
       builder: (context, state) {
         final extra = state.extra! as Map<String, dynamic>;
-        if(extra['isIssueId']) {
-          final issueId = extra['issueId'] as String;
-          final bias = extra['bias'] as Bias;
+        if(extra['issueInfo'] != null) {
+          final issueId = extra['issueInfo'].$1 as String;
+          final bias = extra['issueInfo'].$2 as Bias;
           return WebViewView(issueId: issueId, bias: bias);
         }else{
           return WebViewView(article: extra['article']);

@@ -7,5 +7,9 @@ enum IssueType {
   watchHistroy,
   subscribed,
   subscribedTopicIssuesWhole,
-  subscribedTopicIssuesSpecific,
+  subscribedTopicIssuesSpecific;
+
+  String get name{
+    return toString().split('.').last;
+  }
 } 

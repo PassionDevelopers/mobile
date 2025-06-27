@@ -1,6 +1,6 @@
 import 'package:could_be/core/components/chips/issue_chip.dart';
 import 'package:could_be/core/components/chips/topic_chip.dart';
-import 'package:could_be/core/di/use_case/use_case.dart';
+import 'package:could_be/core/di/di_setup.dart';
 import 'package:could_be/core/themes/margins_paddings.dart';
 import 'package:could_be/presentation/issue_list/issue_type.dart';
 import 'package:could_be/presentation/issue_list/main/issue_list_root.dart';
@@ -16,10 +16,7 @@ class SubscribedTopicView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final viewModel = SubscribedTopicViewModel(
-      fetchTopicsUseCase: fetchTopicsUseCase,
-      fetchIssuesUseCase: fetchIssuesUseCase,
-    );
+    final viewModel = getIt<SubscribedTopicViewModel>();
     return SingleChildScrollView(
       child: ListenableBuilder(
         listenable: viewModel,
@@ -37,7 +34,9 @@ class SubscribedTopicView extends StatelessWidget {
                 }),
               ),
               Padding(
-                padding: EdgeInsets.only(left: MyPaddings.largeMedium),
+                padding: EdgeInsets.only(
+                  top: MyPaddings.medium,
+                    left: MyPaddings.largeMedium),
                 child:
                     SizedBox(
                       height: 42,
@@ -60,7 +59,7 @@ class SubscribedTopicView extends StatelessWidget {
                           ),
                     ),
               ),
-              SizedBox(height: MyPaddings.medium),
+              SizedBox(height: MyPaddings.large),
               IssueListRoot(issueType: IssueType.subscribedTopicIssuesWhole)
             ],
           );

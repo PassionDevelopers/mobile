@@ -1,3 +1,4 @@
+import 'package:could_be/core/di/di_setup.dart';
 import 'package:could_be/presentation/topic/whole_topics/whole_topic_loading_view.dart';
 import 'package:could_be/presentation/topic/whole_topics/whole_topic_view_model.dart';
 import 'package:could_be/ui/color.dart';
@@ -5,7 +6,6 @@ import 'package:flutter/material.dart';
 
 import '../../../core/components/cards/topic_card.dart';
 import '../../../core/components/layouts/scaffold_layout.dart';
-import '../../../core/di/use_case/use_case.dart';
 import '../../../core/themes/margins_paddings.dart';
 
 class WholeTopicView extends StatelessWidget {
@@ -13,16 +13,21 @@ class WholeTopicView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final viewModelPolitic = WholeTopicViewModel(category: 'politics',
-        fetchTopicsUseCase: fetchTopicsUseCase);
-    final viewModelEconomy = WholeTopicViewModel(category: 'economy',
-        fetchTopicsUseCase: fetchTopicsUseCase);
-    final viewModelSociety = WholeTopicViewModel(category: 'society',
-        fetchTopicsUseCase: fetchTopicsUseCase);
-    final viewModelCulture = WholeTopicViewModel(category: 'culture',
-        fetchTopicsUseCase: fetchTopicsUseCase);
-    final viewModelWorld = WholeTopicViewModel(category: 'international',
-        fetchTopicsUseCase: fetchTopicsUseCase);
+    final viewModelPolitic = getIt<WholeTopicViewModel>(
+        param1: 'politics',
+    );
+    final viewModelEconomy = getIt<WholeTopicViewModel>(
+      param1: 'economy',
+    );
+    final viewModelSociety = getIt<WholeTopicViewModel>(
+      param1: 'society',
+    );
+    final viewModelCulture = getIt<WholeTopicViewModel>(
+      param1: 'culture',
+    );
+    final viewModelWorld = getIt<WholeTopicViewModel>(
+      param1: 'international',
+    );
     return MyScaffold(
       body: DefaultTabController(
         length: 5,
@@ -86,7 +91,9 @@ class CategoryPartView extends StatelessWidget {
             // return Hero(tag:topics[index], child: TopicCard(title: topic.name, isBack: false,));
             // return TopicChip(title: topic.name,
             //     isActive: false, onTap: (){});
-            return TopicCard(topic: topic,);
+            return TopicCard(topic: topic, onTap: (){
+              viewModel.manageTopicSubscription(topic.id);
+            },);
           },
         );
       }

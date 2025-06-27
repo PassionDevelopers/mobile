@@ -4,7 +4,7 @@ import '../../../ui/color.dart';
 import '../../../ui/fonts.dart';
 
 class MyScaffold extends StatelessWidget {
-  const MyScaffold({super.key, this.appBar, required this.body, this.bottomNavigationBar,
+  const MyScaffold({super.key, this.appBar, required this.body, this.bottomNavigationBar, this.appBarColor,
     this.drawer, this.endDrawer, this.showBottomBar = true, this.showAppBar = true, this.appBarTitle, this.backgroundColor, this.floatingActionButton,
     this.floatingActionButtonLocation});
   final PreferredSizeWidget? appBar;
@@ -14,6 +14,7 @@ class MyScaffold extends StatelessWidget {
   final Widget? endDrawer;
   final bool showBottomBar;
   final bool showAppBar;
+  final Color? appBarColor;
   final String? appBarTitle;
   final Color? backgroundColor;
   final FloatingActionButton? floatingActionButton;
@@ -24,13 +25,14 @@ class MyScaffold extends StatelessWidget {
     return Container(
       color: backgroundColor ?? AppColors.background,
       child: SafeArea(child: Scaffold(
+
           drawer: drawer,
           endDrawer: endDrawer,
           floatingActionButtonLocation: floatingActionButtonLocation,
           floatingActionButton: floatingActionButton,
           resizeToAvoidBottomInset: false,
           appBar: appBar ?? ( showAppBar ? AppBar(
-            backgroundColor: Colors.white,
+            backgroundColor: appBarColor ?? AppColors.background,
             elevation: 0,
             centerTitle: false,
             title: Text(appBarTitle ?? '', style: MyFontStyle.h1),

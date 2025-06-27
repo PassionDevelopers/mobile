@@ -1,9 +1,8 @@
 import 'package:could_be/core/components/layouts/scaffold_layout.dart';
+import 'package:could_be/core/di/di_setup.dart';
 import 'package:could_be/presentation/media/media_profile_component.dart';
 import 'package:could_be/presentation/media/whole_media/whole_media_view_model.dart';
 import 'package:flutter/material.dart';
-
-import '../../../core/di/use_case/use_case.dart';
 import '../../../core/themes/margins_paddings.dart';
 
 class WholeMediaView extends StatelessWidget {
@@ -11,10 +10,7 @@ class WholeMediaView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final viewModel = WholeMediaViewModel(
-        fetchSourcesUseCase: fetchSourcesUseCase,
-        manageMediaSubscriptionUseCase: manageMediaSubscriptionUseCase,
-    );
+    final viewModel = getIt<WholeMediaViewModel>();
 
     return MyScaffold(
       appBarTitle: '관심 매체 설정',

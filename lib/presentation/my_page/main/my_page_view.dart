@@ -1,8 +1,6 @@
-
-
 import 'package:could_be/core/components/buttons/big_button.dart';
 import 'package:could_be/core/components/title/big_title.dart';
-import 'package:could_be/core/di/use_case/use_case.dart';
+import 'package:could_be/core/di/di_setup.dart';
 import 'package:could_be/presentation/my_page/main/my_page_view_model.dart';
 import 'package:flutter/material.dart';
 import '../../../core/components/loading/skeleton.dart';
@@ -20,8 +18,7 @@ class MyPageView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
-    final viewModel = MyPageViewModel(fetchUserBiasUseCase: fetchUserBiasUseCase);
+    final viewModel = getIt<MyPageViewModel>();
     return Padding(
       padding: const EdgeInsets.symmetric(
         horizontal: MyPaddings.large,

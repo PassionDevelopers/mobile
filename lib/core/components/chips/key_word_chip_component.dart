@@ -5,13 +5,14 @@ import '../../../ui/color.dart';
 import 'my_chip.dart';
 
 class KeyWordChip extends StatelessWidget {
-  const KeyWordChip({super.key, required this.title, this.color});
+  const KeyWordChip({super.key, required this.title, this.color, this.borderColor});
   final String title;
   final Color? color;
+  final Color? borderColor;
   @override
   Widget build(BuildContext context) {
     return MyChip(content: MyText.small(title,
-
-    ), color: color ?? ColorStyles.gray5, borderColor: null,);
+      color: borderColor,
+    ), color: color ?? ColorStyles.gray5, borderColor: borderColor ?? ColorStyles.gray5,);
   }
 }

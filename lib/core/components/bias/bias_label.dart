@@ -5,10 +5,19 @@ import '../../../presentation/media/media_components.dart';
 import 'bias_enum.dart';
 
 class BiasLabel extends StatelessWidget {
-  const BiasLabel({super.key, required this.color, required this.label, this.mainAxisAlignment});
+  const BiasLabel({
+    super.key,
+    required this.color,
+    required this.label,
+    this.labelColor,
+    this.mainAxisAlignment,
+  });
+
   final Color color;
+  final Color? labelColor;
   final String label;
   final MainAxisAlignment? mainAxisAlignment;
+
   @override
   Widget build(BuildContext context) {
     return Row(
@@ -18,13 +27,10 @@ class BiasLabel extends StatelessWidget {
         Container(
           width: 8,
           height: 8,
-          decoration: BoxDecoration(
-            color: color,
-            shape: BoxShape.circle,
-          ),
+          decoration: BoxDecoration(color: color, shape: BoxShape.circle),
         ),
         SizedBox(width: 4),
-        Expanded(child: MyText.reg(label, color:  ColorStyles.gray1))
+        Expanded(child: MyText.reg(label, color: labelColor ?? ColorStyles.gray1)),
       ],
     );
   }

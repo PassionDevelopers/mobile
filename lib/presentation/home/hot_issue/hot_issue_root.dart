@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../../../core/di/use_case/use_case.dart';
+import '../../../core/di/di_setup.dart';
 import '../../issue_list/issue_list_loading_view.dart';
 import '../../issue_list/issue_type.dart';
 import '../../issue_list/main/issue_list_view_model.dart';
@@ -10,9 +10,8 @@ class HotIssueRoot extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final viewModel = IssueListViewModel(
-      fetchIssuesUseCase: fetchIssuesUseCase,
-      issueType: IssueType.hot,
+    final viewModel = getIt<IssueListViewModel>(
+      param1: IssueType.hot
     );
     return ListenableBuilder(
       listenable: viewModel,

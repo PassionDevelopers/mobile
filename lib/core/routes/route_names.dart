@@ -25,7 +25,8 @@ abstract class RouteNames{
   subscribedIssue = '$myPage/subscribedIssue',
   userBiasStatus = '$myPage/userBiasStatus',
 
-  shortsView = '/shortsView/:issueId'
+  shortsView = '/shortsView/:issueId',
+  shortsPlayer = '/shortsPlayer/:issueId'
   ;
 }
 

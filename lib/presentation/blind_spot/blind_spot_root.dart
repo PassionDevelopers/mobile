@@ -1,7 +1,7 @@
 import 'package:could_be/presentation/issue_list/issue_list_loading_view.dart';
 import 'package:could_be/ui/color.dart';
 import 'package:flutter/material.dart';
-import '../../core/di/use_case/use_case.dart';
+import '../../core/di/di_setup.dart';
 import '../issue_list/issue_type.dart';
 import '../issue_list/main/issue_list_view.dart';
 import '../issue_list/main/issue_list_view_model.dart';
@@ -11,15 +11,8 @@ class BlindSpotRoot extends StatelessWidget {
   final void Function(String issueId) onIssueSelected;
   @override
   Widget build(BuildContext context) {
-    IssueListViewModel viewModelLeft = IssueListViewModel(
-      fetchIssuesUseCase: fetchIssuesUseCase,
-      issueType: IssueType.blindSpotLeft,
-    );
-
-    IssueListViewModel viewModelRight = IssueListViewModel(
-      fetchIssuesUseCase: fetchIssuesUseCase,
-      issueType: IssueType.blindSpotRight,
-    );
+    IssueListViewModel viewModelLeft = getIt<IssueListViewModel>(param1: IssueType.blindSpotLeft);
+    IssueListViewModel viewModelRight = getIt<IssueListViewModel>(param1: IssueType.blindSpotRight);
     return DefaultTabController(length: 2, child: Column(
       children: [
         Material(

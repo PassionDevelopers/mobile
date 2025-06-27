@@ -9,8 +9,10 @@ import '../../../ui/fonts.dart';
 import '../../themes/margins_paddings.dart';
 
 class TopicCard extends StatelessWidget {
-  const TopicCard({super.key, required this.topic});
+  const TopicCard({super.key, required this.topic, required this.onTap});
   final Topic topic;
+  final VoidCallback onTap;
+
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -20,9 +22,7 @@ class TopicCard extends StatelessWidget {
         curve: Curves.easeInOut,
         child: InkWell(
           borderRadius: BorderRadius.circular(10),
-          onTap: (){
-
-          },
+          onTap: onTap,
           child: Ink(
             padding: EdgeInsets.symmetric(
               horizontal: MyPaddings.medium,
@@ -41,24 +41,19 @@ class TopicCard extends StatelessWidget {
                 SizedBox(
                   height: double.infinity,
                   width: 25,
-                  child: GestureDetector(
-                    onTap: () {
-                      Fluttertoast.showToast(msg: '관심 토픽을 구독/구독 해제할 수 있습니다.');
-                    },
-                    child: Center(
-                      child: Container(
-                        height: 25,
-                        width: 25,
-                        decoration: BoxDecoration(
-                          color: topic.isSubscribed? AppColors.check : AppColors.gray3,
-                          shape: BoxShape.circle,
-                        ),
-                        child: FittedBox(
-                          fit: BoxFit.fill,
-                          child: Icon(
-                            topic.isSubscribed? Icons.check_circle_outlined : Icons.add_circle_outline,
-                            color: AppColors.primaryLight,
-                          ),
+                  child: Center(
+                    child: Container(
+                      height: 25,
+                      width: 25,
+                      decoration: BoxDecoration(
+                        color: topic.isSubscribed? AppColors.check : AppColors.gray3,
+                        shape: BoxShape.circle,
+                      ),
+                      child: FittedBox(
+                        fit: BoxFit.fill,
+                        child: Icon(
+                          topic.isSubscribed? Icons.check_circle_outlined : Icons.add_circle_outline,
+                          color: AppColors.primaryLight,
                         ),
                       ),
                     ),

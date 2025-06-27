@@ -1,3 +1,4 @@
+import 'package:could_be/core/di/di_setup.dart';
 import 'package:could_be/core/routes/router.dart';
 import 'package:could_be/ui/color.dart';
 import 'package:flutter/material.dart';
@@ -12,6 +13,8 @@ void main() {
   //     SystemUiMode.manual,
   //     overlays:[]
   // );
+  //의존성 주입
+  diSetup();
   runApp(const MyApp());
 }
 

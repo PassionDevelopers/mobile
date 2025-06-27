@@ -1,8 +1,9 @@
 import 'package:could_be/core/components/title/issue_info_title.dart';
 import 'package:could_be/core/routes/route_names.dart';
+import 'package:could_be/presentation/shorts_player/shorts_player_view.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:go_router/go_router.dart';
-
 import '../../core/components/bias/bias_enum.dart';
 import '../../core/components/bias/bias_label.dart';
 import '../../core/components/buttons/label_icon_button.dart';
@@ -14,10 +15,14 @@ import '../../ui/color.dart';
 import '../../ui/fonts.dart';
 
 class ShortsComponent extends StatefulWidget {
-  const ShortsComponent({super.key, required this.issue, required this.manageIssueSubscripton});
+  const ShortsComponent({
+    super.key,
+    required this.issue,
+    required this.manageIssueSubscription,
+  });
 
   final IssueDetail issue;
-  final VoidCallback manageIssueSubscripton;
+  final VoidCallback manageIssueSubscription;
 
   @override
   State<ShortsComponent> createState() => _ShortsComponentState();
@@ -38,7 +43,8 @@ class _ShortsComponentState extends State<ShortsComponent> with TickerProviderSt
     super.initState();
     _tabController.addListener(() {
       setState(() {
-        currentBias = [Bias.left, Bias.center, Bias.right][_tabController.index];
+        currentBias =
+            [Bias.left, Bias.center, Bias.right][_tabController.index];
       });
     });
   }
@@ -50,11 +56,16 @@ class _ShortsComponentState extends State<ShortsComponent> with TickerProviderSt
     super.dispose();
   }
 
-  Tab tab(Bias bias){
+  Tab tab(Bias bias) {
     return Tab(
       child: Padding(
         padding: const EdgeInsets.all(8.0),
         child: BiasLabel(
+          labelColor:
+              _tabController.index ==
+                      [Bias.left, Bias.center, Bias.right].indexOf(bias)
+                  ? getBiasColor(bias)
+                  : null,
           mainAxisAlignment: MainAxisAlignment.center,
           color: getBiasColor(bias),
           label: getBiasName(bias, suffix: '매체'),
@@ -65,101 +76,162 @@ class _ShortsComponentState extends State<ShortsComponent> with TickerProviderSt
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: EdgeInsets.all(MyPaddings.medium),
+    return Ink(
       color: AppColors.primaryLight,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Row(
+          issue.imageUrl != null
+              ? Image.network(
+                issue.imageUrl!,
+                width: double.infinity,
+                height: 150,
+                fit: BoxFit.cover,
+              )
+              : SizedBox(),
+          Expanded(
+            child: Padding(
+              padding: EdgeInsetsGeometry.symmetric(
+                horizontal: MyPaddings.medium,
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Expanded(child: MyText.h1(issue.title)),
-                  IconButton(
-                    icon: Icon(
-                        issue.isSubscribed? Icons.bookmark :
-                          Icons.bookmark_add_outlined, color: AppColors.gray3),
-                    onPressed: (){
-                      widget.manageIssueSubscripton();
-                    },
-                  )
+                  Padding(
+                    padding: EdgeInsets.symmetric(vertical: MyPaddings.small),
+                    child: MyText.h1(issue.title, maxLines: 3),
+                  ),
+                  IssueInfoTitle(
+                    mediaTotal: issue.coverageSpectrum.total,
+                    viewCount: issue.view,
+                    time: issue.updatedAt ?? issue.createdAt,
+                  ),
+                  SizedBox(height: MyPaddings.small),
+                  Expanded(
+                    child: Column(
+                      children: [
+                        Container(
+                          decoration: BoxDecoration(
+                            color: AppColors.gray5,
+                            borderRadius: BorderRadius.circular(12),
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.grey.withOpacity(0.1),
+                                spreadRadius: 2,
+                                blurRadius: 5,
+                                offset: Offset(
+                                  0,
+                                  3,
+                                ), // changes position of shadow
+                              ),
+                            ],
+                          ),
+                          child: TabBar(
+                            tabAlignment: TabAlignment.fill,
+                            controller: _tabController,
+                            indicatorSize: TabBarIndicatorSize.tab,
+                            indicator: BoxDecoration(
+                              // color: getBiasColor([Bias.left, Bias.center, Bias.right][_tabController.index]).withAlpha(80),
+                              // borderRadius: BorderRadius.circular(12),
+                            ),
+                            // indicatorColor: AppColors.gray3,
+                            tabs: [
+                              tab(Bias.left),
+                              tab(Bias.center),
+                              tab(Bias.right),
+                            ],
+                          ),
+                        ),
+                        Expanded(
+                          child: TabBarView(
+                            controller: _tabController,
+                            children: [
+                              ShortsInnerPage(
+                                bias: Bias.left,
+                                text: issue.leftSummary,
+                                keywords: issue.leftKeywords,
+                                issueId: issue.id,
+                              ),
+                              ShortsInnerPage(
+                                bias: Bias.center,
+                                text: issue.centerSummary,
+                                keywords: issue.centerKeywords,
+                                issueId: issue.id,
+                              ),
+                              ShortsInnerPage(
+                                bias: Bias.right,
+                                text: issue.rightSummary,
+                                keywords: issue.rightKeywords,
+                                issueId: issue.id,
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
                 ],
               ),
-              IssueInfoTitle(
-                mediaTotal: issue.coverageSpectrum.total,
-                viewCount: issue.view,
-                time: issue.updatedAt ?? issue.createdAt,
-              ),
-            ],
+            ),
           ),
-          SizedBox(height: MyPaddings.small),
-          // 언론사 분포 바
-          // CardBiasBar(coverageSpectrum: issue.coverageSpectrum),
-          Expanded(
-            child: Column(
-              children: [
-                Container(
-                  decoration: BoxDecoration(
-                    color: AppColors.gray5,
-                    borderRadius: BorderRadius.circular(12),
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.grey.withOpacity(0.1),
-                        spreadRadius: 2,
-                        blurRadius: 5,
-                        offset: Offset(0, 3), // changes position of shadow
-                      ),
-                    ],
-                  ),
-                  child: TabBar(
-                    tabAlignment: TabAlignment.fill,
-                    controller: _tabController,
-                    indicatorSize: TabBarIndicatorSize.tab,
-                    // labelPadding: EdgeInsets.zero,
-                    // padding: EdgeInsets.zero,
-                    // unselectedLabelColor: AppColors.gray3,
-                    // labelColor: AppColors.gray1,
-                    // labelStyle: MyFontStyle.h2,
-                    // unselectedLabelStyle: MyFontStyle.reg,
-                    indicator: BoxDecoration(
-                      color: getBiasColor([Bias.left, Bias.center, Bias.right][_tabController.index]).withAlpha(80),
-                      borderRadius: BorderRadius.circular(12),
-                    ),
-                    // indicatorColor: AppColors.gray3,
-                    tabs: [
-                      tab(Bias.left),
-                      tab(Bias.center),
-                      tab(Bias.right),
-                    ],
-                  ),
+          Ink(
+            decoration: BoxDecoration(
+              color: AppColors.primaryLight,
+              borderRadius: BorderRadius.only(
+                topRight: Radius.circular(12),
+                topLeft: Radius.circular(12),
+              ),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.grey.withOpacity(0.1),
+                  spreadRadius: 2,
+                  blurRadius: 5,
+                  offset: Offset(0, -3), // changes position of shadow
                 ),
-                Expanded(
-                  child: TabBarView(
-                    controller: _tabController,
-                    children: [
-                      ShortsInnerPage(
-                        bias: Bias.left,
-                        text: issue.leftSummary,
-                        keywords: issue.leftKeywords,
-                        issueId: issue.id,
-                      ),
-                      ShortsInnerPage(
-                        bias: Bias.center,
-                        text: issue.centerSummary,
-                        keywords: issue.centerKeywords,
-                        issueId: issue.id,
-                      ),
-                      ShortsInnerPage(
-                        bias: Bias.right,
-                        text: issue.rightSummary,
-                        keywords: issue.rightKeywords,
-                        issueId: issue.id,
-                      ),
-                    ],
-                  ),
+              ],
+            ),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: [
+                LabelIconButton(
+                  iconData: Icons.newspaper_outlined,
+                  label: '원문 기사',
+                  onTap: () {
+                    context.push(
+                      RouteNames.webView,
+                      extra: {'issueInfo': (issue.id, Bias.center)},
+                    );
+                  },
+                ),
+                LabelIconButton(
+                  iconData: Icons.balance_outlined,
+                  label: '차이점 분석',
+                  onTap: () {
+                    context.push(
+                      '/shortsPlayer/${issue.id}',
+                    );
+                  },
+                ),
+                // Flexible(
+                //   child: LabelIconButton(
+                //     iconData: Icons.comment_outlined,
+                //     label: '1,376',
+                //     onTap: (){},
+                //   ),
+                // ),
+                LabelIconButton(
+                  iconData: Icons.thumb_up_outlined,
+                  label: '2,256',
+                  onTap: () {},
+                ),
+                LabelIconButton(
+                  iconData:
+                      issue.isSubscribed
+                          ? Icons.bookmark
+                          : Icons.bookmark_add_outlined,
+                  label: '구독',
+                  onTap: widget.manageIssueSubscription,
                 ),
               ],
             ),
@@ -202,7 +274,8 @@ class ShortsInnerPage extends StatelessWidget {
                       itemBuilder: (_, index) {
                         return KeyWordChip(
                           title: keywords[index],
-                          color: getBiasColor(bias),
+                          color: Colors.transparent,
+                          borderColor: getBiasColor(bias),
                         );
                       },
                       itemCount: keywords.length,
@@ -217,63 +290,7 @@ class ShortsInnerPage extends StatelessWidget {
             ),
           ),
         ),
-        Align(
-          alignment: Alignment.bottomCenter,
-          child: Container(
-            padding: EdgeInsets.all(MyPaddings.medium),
-            decoration: BoxDecoration(
-              color: getBiasColor(bias).withAlpha(50),
-              borderRadius: BorderRadius.circular(12),
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.grey.withOpacity(0.1),
-                  spreadRadius: 2,
-                  blurRadius: 5,
-                  offset: Offset(0, 3), // changes position of shadow
-                ),
-              ],
-            ),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: [
-                Flexible(
-                  child: LabelIconButton(
-                    iconData: Icons.newspaper_rounded,
-                    label: '원문 기사',
-                    onTap: () {
-                      context.push(RouteNames.webView, extra: {
-                        'isIssueId' : true, 'issueId' : issueId, 'bias': bias,
-                      });
-                    },
-                  ),
-                ),
-                Flexible(
-                  child: LabelIconButton(
-                    iconData: Icons.balance,
-                    label: '차이점 분석',
-                    onTap: (){},
-                  ),
-                ),
-                Flexible(
-                  child: LabelIconButton(
-                    iconData: Icons.comment,
-                    label: '1,376',
-                    onTap: (){},
-                  ),
-                ),
-                Flexible(
-                  child: LabelIconButton(
-                    iconData: Icons.thumb_up,
-                    label: '2,256',
-                    onTap: (){},
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ),
       ],
     );
   }
 }
-

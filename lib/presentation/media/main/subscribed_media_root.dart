@@ -1,12 +1,12 @@
 import 'dart:async';
 import 'dart:developer';
+import 'package:could_be/core/di/di_setup.dart';
 import 'package:could_be/core/routes/route_names.dart';
 import 'package:could_be/presentation/media/main/subscribed_media_view_model.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import '../../../core/components/cards/news_card.dart';
 import '../../../core/components/title/big_title_icon.dart';
-import '../../../core/di/use_case/use_case.dart';
 import '../../../core/themes/margins_paddings.dart';
 import '../media_profile_component.dart';
 import '../subscribed_media_loading_view.dart';
@@ -25,10 +25,7 @@ class _SubscribedMediaRootState extends State<SubscribedMediaRoot> {
   @override
   void initState() {
     super.initState();
-    viewModel = SubscribedMediaViewModel(
-      fetchArticlesUseCase: fetchArticlesUseCase,
-      fetchSourcesUseCase: fetchSourcesUseCase,
-    );
+    viewModel = getIt<SubscribedMediaViewModel>();
 
     eventSubscription = viewModel.eventStream.listen((event){
       log(event.toString());
