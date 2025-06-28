@@ -76,7 +76,6 @@ dependencies:
   flutter_sliding_up_panel: ^2.1.1
 
 
-  get: ^4.7.2
   rename_app: ^1.6.3
 
   #repository:

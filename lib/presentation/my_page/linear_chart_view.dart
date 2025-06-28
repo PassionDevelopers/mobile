@@ -1,9 +1,9 @@
 import 'dart:math';
+
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:could_be/presentation/my_page/user_bias_status/my_bias_status_view.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import '../../core/components/bias/bias_enum.dart';
 import '../../core/many_use.dart';
 import '../../ui/color.dart';
@@ -227,7 +227,6 @@ class _DailyUserDataChartState extends State<DailyUserDataChart> {
       future: getDailyData(),
       builder: (BuildContext context, AsyncSnapshot<Map<String, DailyUserData>> snapshot){
         if (snapshot.hasError) {
-          snapshot.printError();
           return Center(child: Text('Error 10'),);
         }
         if (snapshot.connectionState == ConnectionState.done) {

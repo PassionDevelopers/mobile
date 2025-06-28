@@ -1,13 +1,10 @@
-import 'dart:io';
 import 'package:could_be/presentation/log_in/login_view_model.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'package:sign_button/constants.dart';
 import 'package:sign_button/create_button.dart';
+
 import '../../core/components/layouts/scaffold_layout.dart';
 import '../../ui/color.dart';
-import '../home/home_view.dart';
 
 class LoginView extends StatefulWidget {
   const LoginView({super.key, required this.onLoginSuccess});

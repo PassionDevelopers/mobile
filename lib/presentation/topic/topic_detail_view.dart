@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import '../../core/components/layouts/scaffold_layout.dart';
 import 'topic_components.dart';
 import '../../core/many_use.dart';
@@ -8,7 +7,7 @@ import '../../ui/fonts.dart';
 
 class TopicDetailView extends StatelessWidget {
   TopicDetailView({super.key});
-  final String title = Get.arguments;
+
   @override
   Widget build(BuildContext context) {
     Widget _buildKeywordButton(String text, int index, bool isSelected) {
@@ -37,7 +36,6 @@ class TopicDetailView extends StatelessWidget {
               pinned: true,
               leading: IconButton(
                   onPressed:(){
-                    Get.back();
                   },
                   icon: const Icon(Icons.arrow_back)
               ),

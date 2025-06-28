@@ -1,8 +1,8 @@
+import 'package:could_be/presentation/shorts/shorts_component.dart';
 import 'package:flutter/material.dart';
 import '../../core/components/layouts/scaffold_layout.dart';
 import '../../core/di/di_setup.dart';
 import 'components/loading_indicator.dart';
-import 'components/news_feed_card.dart';
 import 'shorts_player_view_model.dart';
 
 class ShortsPlayerView extends StatefulWidget {
@@ -59,14 +59,9 @@ class _ShortsPlayerViewState extends State<ShortsPlayerView> {
               }
 
               final content = _viewModel.issueDetail[index];
-              return NewsFeedCard(
-                content: content,
-                isActive: index == _viewModel.currentIndex,
-                onBack: () => Navigator.of(context).pop(),
-                onSubscribeToggle: () => _viewModel.toggleSubscription(content.id),
-                onShare: () => _viewModel.shareContent(content),
-                onViewArticle: () => _viewModel.viewOriginalArticle(content),
-                onAnalyzeDifference: () => _viewModel.analyzeDifference(content),
+              return ShortsComponent(issue: content,
+                manageIssueSubscription: (){},
+                  // manageIssueSubscription: manageIssueSubscription
               );
             },
           );

@@ -1,8 +1,6 @@
 import 'package:could_be/core/components/title/issue_info_title.dart';
 import 'package:could_be/core/routes/route_names.dart';
-import 'package:could_be/presentation/shorts_player/shorts_player_view.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'package:go_router/go_router.dart';
 import '../../core/components/bias/bias_enum.dart';
 import '../../core/components/bias/bias_label.dart';
@@ -37,6 +35,57 @@ class _ShortsComponentState extends State<ShortsComponent> with TickerProviderSt
     vsync: this,
   );
 
+  final List<Color> _biasColors = [
+    AppColors.left,
+    AppColors.center,
+    AppColors.right,
+    // const Color(0xFFE53E3E), // 진보 - 빨강
+    // const Color(0xFF38A169), // 중도 - 초록
+    // const Color(0xFF3182CE), // 보수 - 파랑
+  ];
+
+  final List<String> _biasLabels = ['진보', '중도', '보수'];
+
+  _buildTab(int index){
+    final isSelected = index == _tabController.index;
+
+    return Expanded(
+      child: GestureDetector(
+        onTap: () {
+          _tabController.animateTo(index);
+        },
+        child: AnimatedContainer(
+          duration: const Duration(milliseconds: 200),
+          margin: const EdgeInsets.all(3),
+          padding: const EdgeInsets.symmetric(vertical: 10),
+          decoration: BoxDecoration(
+            color: isSelected ? _biasColors[index] : Colors.transparent,
+            borderRadius: BorderRadius.circular(9),
+            boxShadow:
+            isSelected
+                ? [
+              BoxShadow(
+                color: _biasColors[index].withOpacity(0.3),
+                blurRadius: 6,
+                offset: const Offset(0, 2),
+              ),
+            ]
+                : null,
+          ),
+          child: Text(
+            '${_biasLabels[index]} 언론',
+            textAlign: TextAlign.center,
+            style: TextStyle(
+              color: isSelected ? Colors.white : Colors.grey[600],
+              fontWeight: isSelected ? FontWeight.bold : FontWeight.w500,
+              fontSize: 13,
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
   @override
   void initState() {
     // TODO: implement initState
@@ -54,24 +103,6 @@ class _ShortsComponentState extends State<ShortsComponent> with TickerProviderSt
     // TODO: implement dispose
     _tabController.dispose();
     super.dispose();
-  }
-
-  Tab tab(Bias bias) {
-    return Tab(
-      child: Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: BiasLabel(
-          labelColor:
-              _tabController.index ==
-                      [Bias.left, Bias.center, Bias.right].indexOf(bias)
-                  ? getBiasColor(bias)
-                  : null,
-          mainAxisAlignment: MainAxisAlignment.center,
-          color: getBiasColor(bias),
-          label: getBiasName(bias, suffix: '매체'),
-        ),
-      ),
-    );
   }
 
   @override
@@ -115,32 +146,11 @@ class _ShortsComponentState extends State<ShortsComponent> with TickerProviderSt
                           decoration: BoxDecoration(
                             color: AppColors.gray5,
                             borderRadius: BorderRadius.circular(12),
-                            boxShadow: [
-                              BoxShadow(
-                                color: Colors.grey.withOpacity(0.1),
-                                spreadRadius: 2,
-                                blurRadius: 5,
-                                offset: Offset(
-                                  0,
-                                  3,
-                                ), // changes position of shadow
-                              ),
-                            ],
                           ),
-                          child: TabBar(
-                            tabAlignment: TabAlignment.fill,
-                            controller: _tabController,
-                            indicatorSize: TabBarIndicatorSize.tab,
-                            indicator: BoxDecoration(
-                              // color: getBiasColor([Bias.left, Bias.center, Bias.right][_tabController.index]).withAlpha(80),
-                              // borderRadius: BorderRadius.circular(12),
-                            ),
-                            // indicatorColor: AppColors.gray3,
-                            tabs: [
-                              tab(Bias.left),
-                              tab(Bias.center),
-                              tab(Bias.right),
-                            ],
+                          child: Row(
+                            children: List.generate(3, (index) {
+                              return _buildTab(index);
+                            }),
                           ),
                         ),
                         Expanded(
@@ -261,9 +271,22 @@ class ShortsInnerPage extends StatelessWidget {
     return Column(
       children: [
         SizedBox(height: MyPaddings.medium),
-        Expanded(
+        Container(
+          width: double.infinity,
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(16),
+            border: Border.all(
+              color: getBiasColor(bias).withOpacity(0.2),
+              width: 1,
+            ),
+          ),
+          padding: const EdgeInsets.symmetric(
+            horizontal: MyPaddings.medium,
+            vertical: MyPaddings.medium,
+          ),
           child: SingleChildScrollView(
             child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 SizedBox(
                   height: 26,
