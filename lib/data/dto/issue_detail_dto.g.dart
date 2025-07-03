@@ -13,7 +13,7 @@ IssueDetailDTO _$IssueDetailDTOFromJson(
   title: json['title'] as String,
   category: json['category'] as String,
   summary: json['summary'] as String,
-  imageUrl: json['imageUrl'] as String,
+  imageUrl: json['imageUrl'] as String?,
   keywords:
       (json['keywords'] as List<dynamic>).map((e) => e as String).toList(),
   createdAt: json['createdAt'] as String,
@@ -21,7 +21,7 @@ IssueDetailDTO _$IssueDetailDTOFromJson(
   coverageSpectrum: CoverageSpectrumDTO.fromJson(
     json['coverageSpectrum'] as Map<String, dynamic>,
   ),
-  updatedAt: json['updatedAt'] as String,
+  updatedAt: json['updatedAt'] as String?,
   leftSummary: json['leftSummary'] as String,
   centerSummary: json['centerSummary'] as String,
   rightSummary: json['rightSummary'] as String,
@@ -37,6 +37,7 @@ IssueDetailDTO _$IssueDetailDTOFromJson(
   nextIssueIds:
       (json['nextIssueIds'] as List<dynamic>).map((e) => e as String).toList(),
   isSubscribed: json['isSubscribed'] as bool,
+  articles: ArticlesDTO.fromJson(json['articles'] as Map<String, dynamic>),
 );
 
 Map<String, dynamic> _$IssueDetailDTOToJson(IssueDetailDTO instance) =>
@@ -60,4 +61,5 @@ Map<String, dynamic> _$IssueDetailDTOToJson(IssueDetailDTO instance) =>
       'rightKeywords': instance.rightKeywords,
       'nextIssueIds': instance.nextIssueIds,
       'isSubscribed': instance.isSubscribed,
+      'articles': instance.articles,
     };

@@ -4,9 +4,8 @@ abstract class ManageIssueEvaluationRepository {
     required String perspective,
   });
 
-  Future<void> unEvaluateIssue({
+  Future<void> deleteIssueEvaluation({
     required String issueId,
-    required String perspective,
   });
 
   Future<void> updateIssueEvaluation({

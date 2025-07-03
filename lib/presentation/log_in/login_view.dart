@@ -73,7 +73,13 @@ class _LoginViewState extends State<LoginView> {
                     //     ButtonType.apple) : const SizedBox(),
                     button(ButtonType.appleDark),
                     // button(ButtonType.custom),
-                    button(ButtonType.mail)
+                    button(ButtonType.mail),
+                    SignInButton(buttonType: ButtonType.custom,
+                      onPressed: () {
+                        widget.onLoginSuccess();
+                      },
+                      btnText: '로그인 없이 시작',
+                    ),
                     // SignInButton(
                     //   buttonType: ButtonType.mail,
                     //   onPressed: () {

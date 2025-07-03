@@ -10,25 +10,35 @@ import '../../domain/entities/article.dart';
 import '../../domain/entities/articles.dart';
 import '../../domain/entities/issue_detail.dart';
 
-class WebViewViewModel with ChangeNotifier{
+class WebViewViewModel with ChangeNotifier {
   final FetchArticlesUseCase _fetchArticlesUseCase;
 
-  WebViewState _state = WebViewState();
+  WebViewState _state = WebViewState(
+    currentSourceId: '',
+    currentArticleId: '',
+  );
   WebViewState get state => _state;
 
   WebViewViewModel({
     required FetchArticlesUseCase fetchArticlesUseCase,
     String? issueId,
-    Article? article,
+    List<Article>? articles,
+    String? selectedArticleId,
+    String? selectedSourceId,
     Bias? bias,
-  }) : _fetchArticlesUseCase = fetchArticlesUseCase{
-    if(issueId != null) {
+  }) : _fetchArticlesUseCase = fetchArticlesUseCase {
+    if (issueId != null) {
       _fetchArticlesByIssueId(issueId);
-    }else{
+    } else {
       _state = state.copyWith(
-        articlesGroupBySource: Articles(
-          articles: [article!], hasMore: false, lastArticleId: '',
-        ).toGroupBySource()
+        articlesGroupBySource:
+            Articles(
+              articles: articles!,
+              hasMore: false,
+              lastArticleId: '',
+            ).toGroupBySource(),
+        currentSourceId: selectedSourceId!,
+        currentArticleId: selectedArticleId!,
       );
       _getWebViewController();
     }
@@ -46,43 +56,51 @@ class WebViewViewModel with ChangeNotifier{
       params = const PlatformWebViewControllerCreationParams();
     }
     final WebViewController controller =
-    WebViewController.fromPlatformCreationParams(params)
-      ..setJavaScriptMode(JavaScriptMode.unrestricted)
-    // ..setBackgroundColor(const Color(0x00000000))
-      ..setNavigationDelegate(
-        NavigationDelegate(
-          onProgress: (int progress) {
-            debugPrint('WebView is loading (progress : $progress%)');
-          },
-          onPageStarted: (String url) {
-            debugPrint('Page started loading: $url');
-          },
-          onPageFinished: (String url) {
-            debugPrint('Page finished loading: $url');
-          },
-          onWebResourceError: (WebResourceError error) {
-            debugPrint('''Page resource error:
+        WebViewController.fromPlatformCreationParams(params)
+          ..setJavaScriptMode(JavaScriptMode.unrestricted)
+          // ..setBackgroundColor(const Color(0x00000000))
+          ..setNavigationDelegate(
+            NavigationDelegate(
+              onProgress: (int progress) {
+                debugPrint('WebView is loading (progress : $progress%)');
+              },
+              onPageStarted: (String url) {
+                debugPrint('Page started loading: $url');
+              },
+              onPageFinished: (String url) {
+                debugPrint('Page finished loading: $url');
+              },
+              onWebResourceError: (WebResourceError error) {
+                debugPrint('''Page resource error:
                           code: ${error.errorCode}
                           description: ${error.description}
                           errorType: ${error.errorType}
                           isForMainFrame: ${error.isForMainFrame}
                     ''');
-          },
-          onNavigationRequest: (NavigationRequest request) {
-            debugPrint('allowing navigation to ${request.url}');
-            return NavigationDecision.navigate;
-          },
-        ),
-      )
-    // ..addJavaScriptChannel(
-    //   'Toaster',
-    //   onMessageReceived: (JavaScriptMessage message) {
-    //     ScaffoldMessenger.of(
-    //       context,
-    //     ).showSnackBar(SnackBar(content: Text(message.message)));
-    //   },
-    // )
-      ..loadRequest(Uri.parse(state.articlesGroupBySource!.articlesWithSources[state.articlesGroupBySource!.sources[state.currentSourceIndex].id]![state.currentArticleIndex].url));
+              },
+              onNavigationRequest: (NavigationRequest request) {
+                debugPrint('allowing navigation to ${request.url}');
+                return NavigationDecision.navigate;
+              },
+            ),
+          )
+          // ..addJavaScriptChannel(
+          //   'Toaster',
+          //   onMessageReceived: (JavaScriptMessage message) {
+          //     ScaffoldMessenger.of(
+          //       context,
+          //     ).showSnackBar(SnackBar(content: Text(message.message)));
+          //   },
+          // )
+          ..loadRequest(
+            Uri.parse(
+              state
+                  .articlesGroupBySource!
+                  .articlesWithSources[state.currentSourceId]!
+                  .firstWhere((article) => article.id == state.currentArticleId)
+                  .url,
+            ),
+          );
 
     if (controller.platform is AndroidWebViewController) {
       AndroidWebViewController.enableDebugging(true);
@@ -90,9 +108,7 @@ class WebViewViewModel with ChangeNotifier{
           .setMediaPlaybackRequiresUserGesture(false);
     }
 
-    _state = state.copyWith(
-      controller: controller,
-    );
+    _state = state.copyWith(controller: controller);
   }
 
   void _fetchArticlesByIssueId(String issueId) async {
@@ -111,22 +127,27 @@ class WebViewViewModel with ChangeNotifier{
     notifyListeners();
   }
 
-  void changeCurrentSourceIndex(int index) {
+  void changeCurrentSourceId(String id) {
     _state = state.copyWith(
-      currentSourceIndex: index,
-      currentArticleIndex: 0,
+      currentSourceId: id,
     );
     notifyListeners();
   }
 
-  void changeCurrentArticleIndex(int index) {
+  void changeCurrentArticleId(String id) {
     _state = state.copyWith(
-      currentArticleIndex: index,
-      controller: state.controller!..loadRequest(
-        Uri.parse(state.articlesGroupBySource!.articlesWithSources[state.articlesGroupBySource!.sources[state.currentSourceIndex].id]![state.currentArticleIndex].url),
-      ),
+      currentArticleId: id,
+      controller:
+          state.controller!..loadRequest(
+            Uri.parse(
+              state
+                  .articlesGroupBySource!
+                  .articlesWithSources[state.currentSourceId]!
+                  .firstWhere((article) => article.id == id)
+                  .url,
+            ),
+          ),
     );
     notifyListeners();
   }
-
 }

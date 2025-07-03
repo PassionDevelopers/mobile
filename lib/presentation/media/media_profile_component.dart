@@ -41,6 +41,73 @@ class ProfileCircle extends StatelessWidget {
   }
 }
 
+class MediaProfileDetail extends StatelessWidget {
+  const MediaProfileDetail({super.key, required this.logoUrl});
+
+  final String logoUrl;
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      height: 70,
+      width: 70,
+      child: Card(
+        child: ClipRRect(
+          borderRadius: BorderRadius.circular(10),
+          child: Image(fit: BoxFit.fill, image: NetworkImage(logoUrl)),
+        ),
+      ),
+    );
+  }
+}
+
+class MediaProfileRef extends StatelessWidget {
+  const MediaProfileRef({super.key, required this.source, this.toDetailPage});
+
+  final VoidCallback? toDetailPage;
+  final Source source;
+
+  @override
+  Widget build(BuildContext context) {
+    return InkWell(
+      borderRadius: BorderRadius.circular(10),
+      onTap: toDetailPage,
+      child: Ink(
+        decoration: BoxDecoration(borderRadius: BorderRadius.circular(10)),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisSize: MainAxisSize.min,
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            SizedBox(
+              height: 60,
+              width: 60,
+              child: Card(
+                // shape: RoundedRectangleBorder(
+                //   borderRadius: BorderRadius.circular(10),
+                // ),
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(10),
+                  child: Image(
+                    fit: BoxFit.fill,
+                    image: NetworkImage(source.logoUrl),
+                  ),
+                ),
+              ),
+            ),
+            SizedBox(height: 2),
+            SizedBox(
+              height: 20,
+              width: 60,
+              child: Center(child: MyText.reg(source.name)),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
 class MediaProfile extends StatelessWidget {
   const MediaProfile({
     super.key,
@@ -107,7 +174,7 @@ class MediaProfile extends StatelessWidget {
                           //   borderRadius: BorderRadius.circular(10),
                           //   border: Border.all(color: getBiasColor(bias)),
                           // ),
-                          child: Center(child: MyText.reg(source.name, )),
+                          child: Center(child: MyText.reg(source.name)),
                         ),
                       ],
                     ),
@@ -120,13 +187,18 @@ class MediaProfile extends StatelessWidget {
                             height: 25,
                             width: 25,
                             decoration: BoxDecoration(
-                              color: source.isSubscribed? AppColors.check : AppColors.gray3,
+                              color:
+                                  source.isSubscribed
+                                      ? AppColors.check
+                                      : AppColors.gray3,
                               shape: BoxShape.circle,
                             ),
                             child: FittedBox(
                               fit: BoxFit.fill,
                               child: Icon(
-                                source.isSubscribed? Icons.check_circle_outlined : Icons.add_circle_outline,
+                                source.isSubscribed
+                                    ? Icons.check_circle_outlined
+                                    : Icons.add_circle_outline,
                                 color: AppColors.primaryLight,
                               ),
                             ),
@@ -152,7 +224,6 @@ class MediaProfile extends StatelessWidget {
     );
   }
 }
-
 
 class MediaProfileWebView extends StatelessWidget {
   const MediaProfileWebView({
@@ -219,13 +290,18 @@ class MediaProfileWebView extends StatelessWidget {
                             height: 25,
                             width: 25,
                             decoration: BoxDecoration(
-                              color: source.isSubscribed? AppColors.check : AppColors.gray3,
+                              color:
+                                  source.isSubscribed
+                                      ? AppColors.check
+                                      : AppColors.gray3,
                               shape: BoxShape.circle,
                             ),
                             child: FittedBox(
                               fit: BoxFit.fill,
                               child: Icon(
-                                source.isSubscribed? Icons.check_circle_outlined : Icons.add_circle_outline,
+                                source.isSubscribed
+                                    ? Icons.check_circle_outlined
+                                    : Icons.add_circle_outline,
                                 color: AppColors.primaryLight,
                               ),
                             ),

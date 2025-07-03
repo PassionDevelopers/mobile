@@ -28,11 +28,11 @@ class _HotIssueListViewState extends State<HotIssueListView> with TickerProvider
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: 510,
+      height: 410,
       child: Column(
         children: [
           Padding(
-            padding: EdgeInsets.only(left: MyPaddings.largeMedium,),
+            padding: EdgeInsets.only(left: MyPaddings.largeMedium, bottom: MyPaddings.small),
             child: BigTitle(title: '${DateTime.now().month}월 ${DateTime.now().day}일 주요 이슈'),
           ),
           Expanded(
@@ -44,8 +44,9 @@ class _HotIssueListViewState extends State<HotIssueListView> with TickerProvider
             ),
           ),
           TabPageSelector(
+            indicatorSize: 8,
             controller: tabController,
-            selectedColor: AppColors.gray2,
+            selectedColor: AppColors.primary,
             color: AppColors.gray4,
             borderStyle: BorderStyle.none,
           ),

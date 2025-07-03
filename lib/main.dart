@@ -1,19 +1,60 @@
 import 'package:could_be/core/di/di_setup.dart';
 import 'package:could_be/core/routes/router.dart';
 import 'package:could_be/ui/color.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
-
 import 'core/behavior/scroll_behavior.dart';
 import 'core/themes/app_bar_theme.dart';
 import 'core/themes/bottom_navigation_bar_theme.dart';
 
-void main() {
+@pragma('vm:entry-point')
+Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
+  await Firebase.initializeApp();
+}
+
+void main()async{
   WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
+  // await Firebase.initializeApp(
+  //     options: DefaultFirebaseOptions.currentPlatform
+  // );
   // SystemChrome.setEnabledSystemUIMode(
   //     SystemUiMode.manual,
   //     overlays:[]
   // );
+  // await UserSimplePreferences.init();
+
+  FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
+  FirebaseMessaging.onMessage.listen((RemoteMessage message) {
+
+    // RemoteNotification notification = message.notification;
+    // AndroidNotification android = message.notification?.android;
+    //
+    // if (notification != null && android != null) {
+    //   flutterLocalNotificationsPlugin.show(
+    //       notification.hashCode,
+    //       notification.title,
+    //       notification.body,
+    //       NotificationDetails(
+    //         android: AndroidNotificationDetails(
+    //           channel.id,
+    //           channel.name,
+    //           channel.description,
+    //           // TODO add a proper drawable resource to android, for now using
+    //           //      one that already exists in example app.
+    //           icon: 'launch_background',
+    //         ),
+    //       ));
+    // }
+    print('Got a message whilst in the foreground!');
+    print('Message data: ${message.data}');
+    if (message.notification != null) {
+      print('Message also contained a notification: ${message.notification}');
+    }
+  });
   //의존성 주입
+
   diSetup();
   runApp(const MyApp());
 }

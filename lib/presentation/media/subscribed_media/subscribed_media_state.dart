@@ -23,14 +23,14 @@ class SubscribedMediaState {
     Articles? articles,
     bool? isSourcesLoading,
     bool? isArticlesLoading,
-    String? selectedSourceId,
+    required String? selectedSourceId,
   }) {
     return SubscribedMediaState(
       sources: sources ?? this.sources,
       articles: articles ?? this.articles,
       isSourcesLoading: isSourcesLoading ?? this.isSourcesLoading,
       isArticlesLoading: isArticlesLoading ?? this.isArticlesLoading,
-      selectedSourceId: selectedSourceId ?? this.selectedSourceId,
+      selectedSourceId: selectedSourceId,
     );
   }
 }

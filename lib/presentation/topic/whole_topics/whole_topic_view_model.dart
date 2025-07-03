@@ -1,12 +1,10 @@
 import 'package:could_be/core/components/alert/toast.dart';
-import 'package:could_be/domain/entities/topics.dart';
+import 'package:could_be/core/events/topic_subscription_events.dart';
 import 'package:could_be/presentation/topic/whole_topics/whole_topic_state.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 
 import '../../../domain/useCases/fetch_topics_use_case.dart';
 import '../../../domain/useCases/manage_topic_subscription_use_case.dart';
-import '../../../ui/color.dart';
 
 class WholeTopicViewModel extends ChangeNotifier {
   final FetchTopicsUseCase _fetchTopicsUseCase;
@@ -69,6 +67,7 @@ class WholeTopicViewModel extends ChangeNotifier {
                 .toList(),
       ),
     );
+    TopicSubscriptionEvents.notifyTopicSubscribed(topicId);
   }
 
   Future<void> unsubscribeTopicByTopicId(String topicId) async {
@@ -86,5 +85,6 @@ class WholeTopicViewModel extends ChangeNotifier {
                 .toList(),
       ),
     );
+    TopicSubscriptionEvents.notifyTopicUnsubscribed(topicId);
   }
 }

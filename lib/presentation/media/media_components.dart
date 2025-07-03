@@ -1,123 +1,56 @@
-import 'package:chat_bubbles/bubbles/bubble_special_one.dart';
+import 'package:chat_bubbles/bubbles/bubble_special_three.dart';
+import 'package:could_be/core/method/bias/bias_method.dart';
+import 'package:could_be/core/themes/margins_paddings.dart';
+import 'package:could_be/domain/entities/article.dart';
+import 'package:could_be/domain/entities/source.dart';
 import 'package:flutter/material.dart';
-import '../../ui/color.dart';
+
 import '../../core/components/bias/bias_enum.dart';
 import 'media_profile_component.dart';
 
 class MediaChatBubble extends StatelessWidget {
-  const MediaChatBubble({super.key, required this.news});
-  final Map<String, String> news;
-
-  getBias(){
-    switch (news['orientation']) {
-      case 'left':
-        return Bias.left;
-      case 'leftCenter':
-        return Bias.leftCenter;
-      case 'right':
-        return Bias.right;
-      case 'rightCenter':
-        return Bias.rightCenter;
-      default:
-        return Bias.center;
-    }
-  }
+  const MediaChatBubble({super.key,
+    required this.article,
+    required this.toWebView,
+  });
+  final Article article;
+  final VoidCallback toWebView;
 
   @override
   Widget build(BuildContext context) {
-    Color cardColor;
 
-    switch (news['orientation']) {
-      case 'left':
-        cardColor = AppColors.leftCenter;
-        break;
-      case 'right':
-        cardColor = AppColors.rightCenter;
-        break;
-      default:
-        cardColor = Colors.grey.shade200;
-    }
-
+    final Bias bias = getBiasFromString(article.source.perspective);
+    final Source source = article.source;
     return GestureDetector(
-      onTap: () {
-        // Handle tap event
-        showDialog(context: context, builder: (context) {
-          return AlertDialog(
-            title: Text(news['title']!),
-            content: Text('원문 링크로 이동'),
-            actions: [
-              TextButton(
-                onPressed: () {
-                  Navigator.of(context).pop();
-                },
-                child: Text('닫기'),
-              ),
-            ],
-          );
-        });
-      },
+      onTap: toWebView,
       child: Padding(
-        padding: const EdgeInsets.all(8.0),
+        padding: EdgeInsets.only(bottom: MyPaddings.medium),
         child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            SizedBox(
-                width: 40,
-                child: ProfileCircle(bias: getBias(),
-                    name: news['channel']!)),
-            // Flexible(
-            //   child: Center(
-            //     child: BubbleSpecialOne(
-            //       text: news['title']!,
-            //       isSender: false,
-            //       color: cardColor,
-            //       textStyle: TextStyle(
-            //         fontSize: 14,
-            //         color: Colors.black,
-            //         fontStyle: FontStyle.italic,
-            //         fontWeight: FontWeight.bold,
-            //         overflow: TextOverflow.ellipsis,
-            //       ),
-            //     ),
-            //   ),
-            // ),
+            // SizedBox(
+            //     width: 40,
+            //     child: ProfileCircle(bias: bias, name: source.name)),
+            MediaProfileRef(source: source),
             Expanded(
-              child: BubbleSpecialOne(
-                text: news['title']!,
+              child: BubbleSpecialThree(
+                text: article.title,
                 isSender: false,
-                color: cardColor,
+                color: getBiasColor(bias).withAlpha(80),
+                // color: getBiasColor(bias),
                 textStyle: TextStyle(
                   fontSize: 14,
                   color: Colors.black,
-                  fontStyle: FontStyle.italic,
+                  // fontStyle: FontStyle.italic,
                   fontWeight: FontWeight.bold,
-                  overflow: TextOverflow.ellipsis,
+                  // overflow: TextOverflow.ellipsis,
                 ),
               ),
             ),
-            Icon(Icons.link, color: Colors.grey),
           ],
         ),
       ),
-    );
-  }
-}
-
-class MediaNews extends StatelessWidget {
-  const MediaNews({super.key, required this.news});
-  final List<Map<String, String>> news;
-  @override
-  Widget build(BuildContext context) {
-    return ListView.builder(
-      shrinkWrap: true,
-      physics: NeverScrollableScrollPhysics(),
-      itemCount: news.length,
-      itemBuilder: (context, index) {
-        return MediaChatBubble(
-          news: news[index],
-        );
-      },
     );
   }
 }

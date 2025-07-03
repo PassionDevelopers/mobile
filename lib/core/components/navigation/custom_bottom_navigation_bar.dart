@@ -166,7 +166,7 @@ class _CustomBottomNavigationBarState extends State<CustomBottomNavigationBar>
                           duration: Duration(milliseconds: 200),
                           style: MyFontStyle.small.copyWith(
                             color: isSelected
-                                ? AppColors.textPrimary
+                                ? AppColors.primary
                                 : AppColors.textSecondary,
                             fontWeight: isSelected
                                 ? FontWeight.w600

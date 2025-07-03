@@ -1,12 +1,9 @@
 import 'package:could_be/core/components/bias/bias_enum.dart';
 import 'package:could_be/core/method/bias/bias_method.dart';
 import 'package:flutter/material.dart';
-import 'package:glass_kit/glass_kit.dart';
-import 'package:shimmer/shimmer.dart';
+
 import '../../../domain/entities/coverage_spectrum.dart';
 import '../../../ui/color.dart';
-import '../../../ui/color_styles.dart';
-import '../../../ui/fonts.dart';
 import 'bias_label.dart';
 
 class CardBiasBar extends StatelessWidget {
@@ -17,11 +14,11 @@ class CardBiasBar extends StatelessWidget {
   Widget _buildBiasLabel({required CoverageSpectrum coverageSpectrum}) {
     return Row(
       children: [
-        Expanded(child: BiasLabel(label: '진보 ${coverageSpectrum.left + coverageSpectrum.centerLeft}개', color: getBiasColor(Bias.left),)),
+        Expanded(child: BiasLabel(label: '진보 언론 ${coverageSpectrum.left + coverageSpectrum.centerLeft}개', color: getBiasColor(Bias.left),)),
         SizedBox(width: 12),
-        Expanded(child: BiasLabel(label: '중도 ${coverageSpectrum.center}개', color: getBiasColor(Bias.center),)),
+        Expanded(child: BiasLabel(label: '중도 언론 ${coverageSpectrum.center}개', color: getBiasColor(Bias.center),)),
         SizedBox(width: 12),
-        Expanded(child: BiasLabel(label: '보수 ${coverageSpectrum.centerRight + coverageSpectrum.right}개', color: getBiasColor(Bias.right),)),
+        Expanded(child: BiasLabel(label: '보수 언론 ${coverageSpectrum.centerRight + coverageSpectrum.right}개', color: getBiasColor(Bias.right),)),
       ],
     );
   }
@@ -40,24 +37,32 @@ class CardBiasBar extends StatelessWidget {
     
     return LinearGradient(
       stops: [
+        // 0.0,                                    // 진보 영역 시작
+        // (leftEnd - transition),  // 진보 영역 끝 (순수 색상)
+        // (centerStart + transition), // 중도 영역 시작 (블렌딩 후)
+        // // ((centerStart + transition) + (centerEnd - transition))/2 ,
+        // (centerEnd - transition),  // 중도 영역 끝 (순수 색상)
+        // (rightStart + transition),  // 보수 영역 시작 (블렌딩 후)
+        // 1.0,                                    // 보수 영역 끝
         0.0,                                    // 진보 영역 시작
-        (leftEnd - transition),  // 진보 영역 끝 (순수 색상)
-        (centerStart + transition), // 중도 영역 시작 (블렌딩 후)
-        // ((centerStart + transition) + (centerEnd - transition))/2 ,
-        (centerEnd - transition),  // 중도 영역 끝 (순수 색상)
-        (rightStart + transition),  // 보수 영역 시작 (블렌딩 후)
+        leftEnd,
+        centerStart,
+        centerEnd,
+        rightStart,
         1.0,                                    // 보수 영역 끝
       ],
       colors: [
-        AppColors.left,          // 진보 시작
-        AppColors.leftCenter,
-        AppColors.center,
-        AppColors.center,
-        AppColors.rightCenter,         // 보수 시작 (블렌딩 후)
-        AppColors.right,         // 보수 끝
+        AppColors.left.withOpacity(0.6),
+        AppColors.left.withOpacity(0.6),  // 진보 영역 끝 (블렌딩 후)
+        // 진보 시작
+        // AppColors.leftCenter,
+        AppColors.center.withOpacity(0.6),
+        AppColors.center.withOpacity(0.6),
+        AppColors.right.withOpacity(0.6),         // 보수 시작 (블렌딩 후)
+        AppColors.right.withOpacity(0.6),         // 보수 끝
       ],
-      begin: Alignment.centerLeft,
-      end: Alignment.centerRight,
+      // begin: Alignment.centerLeft,
+      // end: Alignment.centerRight,
     );
   }
 

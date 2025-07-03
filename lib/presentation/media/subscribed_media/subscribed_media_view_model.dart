@@ -1,13 +1,12 @@
 import 'dart:async';
-
+import 'package:could_be/core/events/media_subscription_events.dart';
 import 'package:could_be/domain/useCases/fetch_articles_use_case.dart';
 import 'package:could_be/domain/useCases/fetch_sources_use_case.dart';
-import 'package:could_be/presentation/media/main/subscribed_media_state.dart';
 import 'package:flutter/cupertino.dart';
-
 import '../../../core/domain/network_error.dart';
 import '../../../core/domain/result.dart';
 import '../../../domain/entities/articles.dart';
+import 'subscribed_media_state.dart';
 
 class SubscribedMediaViewModel with ChangeNotifier {
   final FetchSourcesUseCase _fetchSourcesUseCase;
@@ -17,6 +16,10 @@ class SubscribedMediaViewModel with ChangeNotifier {
   final _eventController = StreamController<NetworkError>();
 
   Stream<NetworkError> get eventStream => _eventController.stream;
+
+  // Media subscription stream subscriptions
+  StreamSubscription<String>? _subscriptionStreamSubscription;
+  StreamSubscription<String>? _unsubscriptionStreamSubscription;
 
   SubscribedMediaState _state = SubscribedMediaState();
 
@@ -29,49 +32,67 @@ class SubscribedMediaViewModel with ChangeNotifier {
        _fetchArticlesUseCase = fetchArticlesUseCase {
     _fetchSubscribedSources();
     _fetchCommonArticles();
+    _setupSubscriptionListeners();
   }
 
-  void setSelectedSourceId(String? sourceId) {
-    _state = state.copyWith(selectedSourceId: sourceId);
-    print('selectedSourceId: ${_state.selectedSourceId}');
-
-    if (sourceId == null) {
+  void setSelectedSourceId(String sourceId) {
+    if (sourceId == _state.selectedSourceId) {
+      _state = state.copyWith(selectedSourceId: null);
       _fetchCommonArticles();
     } else {
+      _state = state.copyWith(selectedSourceId: sourceId);
       _fetchSpecificSourceArticles(sourceId);
     }
   }
 
   void _fetchSubscribedSources() async {
-    _state = state.copyWith(isSourcesLoading: true);
+    _state = state.copyWith(
+      isSourcesLoading: true,
+      selectedSourceId: state.selectedSourceId,
+    );
     notifyListeners();
 
     final result = await _fetchSourcesUseCase.fetchSubscribedSources();
-    _state = state.copyWith(sources: result, isSourcesLoading: false);
+    _state = state.copyWith(
+      sources: result,
+      isSourcesLoading: false,
+      selectedSourceId: state.selectedSourceId,
+    );
 
     notifyListeners();
   }
 
   void _fetchSpecificSourceArticles(String sourceId) async {
-    _state = state.copyWith(isArticlesLoading: true);
+    _state = state.copyWith(
+      isArticlesLoading: true,
+      selectedSourceId: state.selectedSourceId,
+    );
     notifyListeners();
 
     final result = await _fetchArticlesUseCase.fetchArticlesBySourceId(
       sourceId,
     );
-    _state = state.copyWith(articles: result, isArticlesLoading: false);
+    _state = state.copyWith(
+      articles: result,
+      isArticlesLoading: false,
+      selectedSourceId: state.selectedSourceId,
+    );
 
     notifyListeners();
   }
 
   void _fetchCommonArticles() async {
-    _state = state.copyWith(isArticlesLoading: true);
+    _state = state.copyWith(
+      isArticlesLoading: true,
+      selectedSourceId: state.selectedSourceId,
+    );
     notifyListeners();
 
     final result = await _fetchArticlesUseCase.fetchArticlesSubscribed();
     switch (result) {
       case ResultSuccess<Articles, NetworkError> success:
         _state = state.copyWith(
+          selectedSourceId: state.selectedSourceId,
           articles: result.data,
           isArticlesLoading: false,
         );
@@ -85,5 +106,29 @@ class SubscribedMediaViewModel with ChangeNotifier {
         }
         _eventController.add(result.error);
     }
+  }
+
+  void _setupSubscriptionListeners() {
+    _subscriptionStreamSubscription = MediaSubscriptionEvents.subscriptionStream.listen(
+      (sourceId) {
+        _fetchSubscribedSources();
+        _fetchCommonArticles();
+      },
+    );
+
+    _unsubscriptionStreamSubscription = MediaSubscriptionEvents.unsubscriptionStream.listen(
+      (sourceId) {
+        _fetchSubscribedSources();
+        _fetchCommonArticles();
+      },
+    );
+  }
+
+  @override
+  void dispose() {
+    _subscriptionStreamSubscription?.cancel();
+    _unsubscriptionStreamSubscription?.cancel();
+    _eventController.close();
+    super.dispose();
   }
 }

@@ -19,7 +19,7 @@ class TopicChip extends StatelessWidget {
         child: InkWell(
           borderRadius: BorderRadius.circular(25),
           onTap: onTap,
-          child: Container(
+          child: Ink(
             padding: EdgeInsets.symmetric(
               horizontal: MyPaddings.medium,
               vertical: MyPaddings.extraSmall,

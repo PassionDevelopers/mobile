@@ -1,24 +1,26 @@
 import 'dart:developer';
+import 'package:could_be/domain/useCases/manage_issue_evaluation_use_case.dart';
 import 'package:could_be/domain/useCases/manage_issue_subscription_use_case.dart';
 import 'package:could_be/presentation/shorts/shorts_state.dart';
 import 'package:flutter/cupertino.dart';
 import '../../core/components/alert/toast.dart';
 import '../../domain/useCases/fetch_whole_issue_use_case.dart';
 
-class
-ShortsViewModel with ChangeNotifier {
+class IssueDetailViewModel with ChangeNotifier {
   final FetchIssueDetailUseCase _fetchIssueDetailUseCase;
   final ManageIssueSubscriptionUseCase manageIssueSubscriptionUseCase;
+  final ManageIssueEvaluationUseCase manageIssueEvaluationUseCase;
   final String issueId;
 
   //상태
-  ShortsState _state = ShortsState();
+  IssueDetailState _state = IssueDetailState();
 
-  ShortsState get state => _state;
+  IssueDetailState get state => _state;
 
-  ShortsViewModel({
+  IssueDetailViewModel({
     required this.issueId,
     required FetchIssueDetailUseCase fetchIssueDetailUseCase,
+    required this.manageIssueEvaluationUseCase,
     required this.manageIssueSubscriptionUseCase,
   }) : _fetchIssueDetailUseCase = fetchIssueDetailUseCase {
     _fetchIssueDetailById();
@@ -50,5 +52,22 @@ ShortsViewModel with ChangeNotifier {
     );
     log('issueId: $issueId, isSubscribed: ${state.issueDetail!.isSubscribed}');
     notifyListeners();
+  }
+
+  void manageIssueEvaluation(String perspective) async {
+    // if (state.issueDetail!.) {
+    //   await manageIssueEvaluationUseCase.deleteIssueEvaluation(issueId: issueId);
+    //   _state = state.copyWith(
+    //     issueDetail: state.issueDetail!.copyWith(isEvaluated: false),
+    //   );
+    //   showMyToast(msg: "이슈 평가를 삭제하였습니다.");
+    // } else {
+    //   await manageIssueEvaluationUseCase.evaluateIssue(issueId: issueId, perspective: perspective);
+    //   _state = state.copyWith(
+    //     issueDetail: state.issueDetail!.copyWith(isEvaluated: true),
+    //   );
+    //   showMyToast(msg: "이슈 평가를 완료하였습니다.");
+    // }
+    // notifyListeners();
   }
 }

@@ -433,7 +433,7 @@ class _IssueViewState extends State<IssueView> with SingleTickerProviderStateMix
                               child: TabBarView(
                                 controller: _tabController,
                                 children: [
-                                  MediaNews(news: leftNews),MediaNews(news: centerNews), MediaNews(news: rightNews),
+                                  // MediaNews(news: leftNews),MediaNews(news: centerNews), MediaNews(news: rightNews),
                                 ],
                               ),
                             ),

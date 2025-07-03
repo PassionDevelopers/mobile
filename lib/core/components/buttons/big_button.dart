@@ -4,12 +4,16 @@ import 'package:flutter/material.dart';
 
 class BigButton extends StatelessWidget {
   final String text;
+  final Color? backgroundColor;
+  final Color? textColor;
   final void Function() onPressed;
 
   const BigButton(
       this.text, {
         super.key,
         required this.onPressed,
+        this.backgroundColor,
+        this.textColor,
       });
 
   @override
@@ -23,17 +27,17 @@ class BigButton extends StatelessWidget {
         height: 60,
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(10),
-          color: AppColors.primaryLight
+          color: backgroundColor ?? AppColors.primaryLight
         ),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            MyText.h3(text, ),
+            MyText.h3(text, color: textColor ?? AppColors.primary,),
             const SizedBox(width: 11),
             Icon(
               Icons.keyboard_arrow_right_rounded,
               size: 20,
-              color: AppColors.primary,
+              color: textColor ?? AppColors.primary,
             )
           ],
         ),

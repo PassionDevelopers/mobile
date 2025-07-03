@@ -1,28 +1,36 @@
 import 'package:could_be/core/routes/route_names.dart';
+import 'package:could_be/core/update_management/have_update.dart';
+import 'package:could_be/core/update_management/need_update.dart';
+import 'package:could_be/core/update_management/unsupported_device.dart';
 import 'package:could_be/domain/entities/issue_detail.dart';
 import 'package:could_be/presentation/home/feed_view.dart';
+import 'package:could_be/presentation/issue_detail_feed/issue_detail_feed_root.dart';
 import 'package:could_be/presentation/log_in/login_view.dart';
-import 'package:could_be/presentation/media/main/subscribed_media_root.dart';
+import 'package:could_be/presentation/my_page/manage_issue_evaluation/manage_issue_evaluation_view.dart';
 import 'package:could_be/presentation/my_page/user_bias_status/user_bias_status_view.dart';
 import 'package:could_be/presentation/shorts/shorts_root.dart';
 import 'package:could_be/presentation/shorts_player/shorts_player_view.dart';
 import 'package:could_be/presentation/topic/subscribed_topic/subscribed_topic_view.dart';
 import 'package:could_be/presentation/topic/whole_topics/whole_topic_view.dart';
 import 'package:could_be/presentation/web_view/web_view_view.dart';
+import 'package:could_be/root.dart';
 import 'package:go_router/go_router.dart';
-
+import '../../domain/entities/article.dart';
 import '../../presentation/blind_spot/blind_spot_root.dart';
 import '../../presentation/home/home_view.dart';
+import '../../presentation/media/media_detail/media_detail_view.dart';
+import '../../presentation/media/subscribed_media/subscribed_media_root.dart';
 import '../../presentation/media/whole_media/whole_media_view.dart';
 import '../../presentation/my_page/main/my_page_view.dart';
 import '../../presentation/my_page/subscribed_issue_view.dart';
 import '../../presentation/my_page/watch_history_view.dart';
-import '../../presentation/topic/topic_detail_view.dart';
+import '../../presentation/topic/topic_detail_view/topic_detail_view.dart';
 import '../components/bias/bias_enum.dart';
 
 final router = GoRouter(
   initialLocation: '/',
   routes: [
+    GoRoute(path: RouteNames.root, builder: (context, state) => Root()),
     GoRoute(
       path: RouteNames.login,
       builder:
@@ -32,6 +40,11 @@ final router = GoRouter(
             },
           ),
     ),
+    GoRoute(path: RouteNames.unsupportedDevice, builder: (context, state) => UnsupportedDevice()),
+    GoRoute(path: RouteNames.needUpdate, builder: (context, state) => NeedUpdate(isUpdate: true)),
+    GoRoute(path: RouteNames.serverCheck, builder: (context, state) => NeedUpdate(isUpdate: false)),
+    GoRoute(path: RouteNames.haveUpdate, builder: (context, state) => HaveUpdate(latestVersionNow: state.extra as String)),
+
     GoRoute(
       path: RouteNames.shortsView,
       builder: (context, state) {
@@ -43,7 +56,15 @@ final router = GoRouter(
       path: RouteNames.shortsPlayer,
       builder: (context, state) {
         final issueId = state.pathParameters['issueId']!;
-        return ShortsPlayerView(issueId: issueId,);
+        return ShortsPlayerView(issueId: issueId);
+      },
+    ),
+    GoRoute(
+      path: RouteNames.issueDetailFeed,
+      builder: (context, state) {
+        final extra = state.extra! as Map<String, dynamic>;
+        final issueId = extra['issueId'] as String;
+        return IssueDetailFeedRoot(issueId: issueId);
       },
     ),
 
@@ -52,12 +73,19 @@ final router = GoRouter(
       path: RouteNames.webView,
       builder: (context, state) {
         final extra = state.extra! as Map<String, dynamic>;
-        if(extra['issueInfo'] != null) {
+        if (extra['issueInfo'] != null) {
           final issueId = extra['issueInfo'].$1 as String;
           final bias = extra['issueInfo'].$2 as Bias;
           return WebViewView(issueId: issueId, bias: bias);
-        }else{
-          return WebViewView(article: extra['article']);
+        } else {
+          final articles = extra['articleInfo'].$1 as List<Article>;
+          final selectedArticleId = extra['articleInfo'].$2 as String;
+          final selectedSourceId = extra['articleInfo'].$3 as String;
+          return WebViewView(
+            articles: articles,
+            selectedArticleId: selectedArticleId,
+            selectedSourceId: selectedSourceId,
+          );
         }
       },
     ),
@@ -65,7 +93,10 @@ final router = GoRouter(
     //topic
     GoRoute(
       path: RouteNames.topicDetail,
-      builder: (context, state) => TopicDetailView(),
+      builder: (context, state) {
+        final extra = state.extra! as String;
+        return TopicDetailView(topicId: extra);
+      },
     ),
     GoRoute(
       path: RouteNames.wholeTopics,
@@ -78,6 +109,13 @@ final router = GoRouter(
     GoRoute(
       path: RouteNames.wholeMedia,
       builder: (context, state) => WholeMediaView(),
+    ),
+    GoRoute(
+      path: RouteNames.mediaDetail,
+      builder: (context, state) {
+        final sourceId = state.extra! as String;
+        return MediaDetailView(sourceId: sourceId);
+      },
     ),
 
     //my page
@@ -92,6 +130,10 @@ final router = GoRouter(
     GoRoute(
       path: RouteNames.userBiasStatus,
       builder: (context, state) => UserBiasStatusView(),
+    ),
+    GoRoute(
+      path: RouteNames.manageIssueEvalution,
+      builder: (context, state) => ManageIssueEvaluationView(),
     ),
 
     //bottom nav
@@ -164,6 +206,10 @@ final router = GoRouter(
                         () => context.push(RouteNames.userBiasStatus),
                     toManageMediaSubscription:
                         () => context.push(RouteNames.wholeMedia),
+                    toManageTopicSubscription:
+                        () => context.push(RouteNames.wholeTopics),
+                    toManageIssueEvaluation:
+                        () => context.push(RouteNames.manageIssueEvalution),
                   ),
             ),
           ],

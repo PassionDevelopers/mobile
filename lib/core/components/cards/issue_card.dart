@@ -1,9 +1,12 @@
 import 'package:could_be/core/components/bias/bias_enum.dart';
+import 'package:could_be/core/components/image/image_container.dart';
 import 'package:could_be/core/components/title/issue_info_title.dart';
+import 'package:could_be/core/routes/route_names.dart';
 import 'package:could_be/ui/color_styles.dart';
 import 'package:could_be/ui/fonts.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:shimmer/shimmer.dart';
 import '../../../domain/entities/issue.dart';
 import '../../../ui/color.dart';
 import '../../themes/margins_paddings.dart';
@@ -66,45 +69,74 @@ class _IssueCardState extends State<IssueCard> with TickerProviderStateMixin {
               onTapDown: (_) => _animationController.forward(),
               onTapUp: (_) {
                 _animationController.reverse();
-                context.push('/shortsView/${widget.issue.id}');
               },
               onTapCancel: () => _animationController.reverse(),
               child: InkWell(
                 borderRadius: BorderRadius.circular(16),
                 onTap: () {
-                  context.push('/shortsView/${widget.issue.id}');
+                  // context.push('/shortsView/${widget.issue.id}');
+                  context.push(RouteNames.issueDetailFeed,
+                    extra: {
+                      'issueId': widget.issue.id,
+                    },
+                  );
                 },
                 child: Ink(
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(16),
                     color: AppColors.primaryLight,
+                    boxShadow: [
+                      BoxShadow(
+                        color: AppColors.gray1.withOpacity(0.5),
+                        blurRadius: 3,
+                        offset: Offset(0, 0.2), // changes position of shadow
+                      ),
+                    ],
                   ),
                   child: Column(
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      if (widget.issue.imageUrl != null && widget.isDailyIssue)
-                        Container(
-                          height: 180,
-                          width: double.infinity,
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.vertical(
-                              top: Radius.circular(16),
-                            ),
-                          ),
-                          child: ClipRRect(
-                            borderRadius: BorderRadius.vertical(
-                              top: Radius.circular(16),
-                            ),
-                            child: Image.network(
-                              widget.issue.imageUrl!,
-                              fit: BoxFit.cover,
-                            ),
+                      if (widget.issue.imageUrl != null)
+                        SizedBox(
+                          height: 220,
+                          child: Stack(
+                            children: [
+                              ImageContainer(height: 220, imageUrl: widget.issue.imageUrl!),
+                              Align(
+                                alignment: Alignment.bottomCenter,
+                                child: Container(
+                                  padding: EdgeInsets.fromLTRB(
+                                    MyPaddings.large,
+                                    MyPaddings.small,
+                                    MyPaddings.large,
+                                    MyPaddings.small,
+                                  ),
+                                  decoration: BoxDecoration(
+                                    // borderRadius: BorderRadius.circular(16),
+                                    color: Colors.white.withOpacity(0.60),
+                                  ),
+                                  child: Column(
+                                    mainAxisSize: MainAxisSize.min,
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      MyText.h2(widget.issue.title, maxLines: 2,),
+                                      SizedBox(height: MyPaddings.small),
+                                      MyText.reg(
+                                        widget.issue.summary,
+                                        // color: AppColors.gray2,
+                                        maxLines: 3,
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              )
+                            ],
                           ),
                         ),
                       Padding(
                         padding: EdgeInsets.fromLTRB(
                           MyPaddings.large,
-                          MyPaddings.medium,
+                          MyPaddings.small,
                           MyPaddings.large,
                           MyPaddings.large,
                         ),
@@ -112,20 +144,7 @@ class _IssueCardState extends State<IssueCard> with TickerProviderStateMixin {
                           mainAxisSize: MainAxisSize.min,
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Row(
-                              children: [
-                                getBlindChip(),
-                                SizedBox(width: MyPaddings.small),
-                                Expanded(child: MyText.h2(widget.issue.title, maxLines: 2,)),
-                              ],
-                            ),
-                            SizedBox(height: MyPaddings.small),
-                            MyText.reg(
-                              widget.issue.summary,
-                              color: AppColors.gray2,
-                              maxLines: 3,
-                            ),
-                            SizedBox(height: MyPaddings.medium),
+                            // Bias Bar
                             SizedBox(
                               height: 26,
                               child: ListView.builder(
@@ -139,10 +158,9 @@ class _IssueCardState extends State<IssueCard> with TickerProviderStateMixin {
                                 shrinkWrap: true,
                               ),
                             ),
-                            // Bias Bar
                             SizedBox(height: MyPaddings.medium),
                             CardBiasBar(
-                              isDailyIssue: widget.isDailyIssue,
+                              isDailyIssue: true,
                               coverageSpectrum: widget.issue.coverageSpectrum,
                             ),
                             SizedBox(height: MyPaddings.medium),

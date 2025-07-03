@@ -69,7 +69,6 @@ class _ShortsLoadingIndicatorState extends State<ShortsLoadingIndicator>
       child: Stack(
         children: [
           _buildShimmerBackground(),
-          _buildLoadingContent(),
         ],
       ),
     );
@@ -89,70 +88,6 @@ class _ShortsLoadingIndicatorState extends State<ShortsLoadingIndicator>
             ],
           ),
         ),
-      ),
-    );
-  }
-
-  Widget _buildLoadingContent() {
-    return Center(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          AnimatedBuilder(
-            animation: _pulseAnimation,
-            builder: (context, child) {
-              return Transform.scale(
-                scale: _pulseAnimation.value,
-                child: AnimatedBuilder(
-                  animation: _rotationAnimation,
-                  builder: (context, child) {
-                    return Transform.rotate(
-                      angle: _rotationAnimation.value * 2 * 3.14159,
-                      child: Container(
-                        width: 60,
-                        height: 60,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(30),
-                          gradient: const LinearGradient(
-                            colors: [
-                              Colors.white,
-                              Colors.grey,
-                              Colors.white,
-                            ],
-                          ),
-                        ),
-                        child: const Icon(
-                          Icons.play_arrow,
-                          color: Colors.black,
-                          size: 30,
-                        ),
-                      ),
-                    );
-                  },
-                ),
-              );
-            },
-          ),
-          const SizedBox(height: 20),
-          AnimatedBuilder(
-            animation: _pulseAnimation,
-            builder: (context, child) {
-              return Opacity(
-                opacity: 0.5 + (_pulseAnimation.value - 0.8) / 0.8,
-                child: Text(
-                  widget.message ?? '로딩 중...',
-                  style: const TextStyle(
-                    color: Colors.white,
-                    fontSize: 16,
-                    fontWeight: FontWeight.w500,
-                  ),
-                ),
-              );
-            },
-          ),
-          const SizedBox(height: 40),
-          _buildLoadingDots(),
-        ],
       ),
     );
   }

@@ -1,8 +1,15 @@
 
 abstract class RouteNames{
   static const
-  home = '/',
+  root = '/',
+  home = '/home',
   login = '/login',
+
+  //forced update
+  unsupportedDevice = '/unsupportedDevice',
+  needUpdate = '/needUpdate',
+  serverCheck = '/serverCheck',
+  haveUpdate = '/haveUpdate',
 
 
   blindSpot = '/blindSpot',
@@ -14,6 +21,7 @@ abstract class RouteNames{
 
   //media
   media = '/media',
+  mediaDetail = '$media/detail',
   wholeMedia = '$media/wholeMedia',
 
   //article
@@ -24,7 +32,9 @@ abstract class RouteNames{
   watchHistory = '$myPage/watchHistory',
   subscribedIssue = '$myPage/subscribedIssue',
   userBiasStatus = '$myPage/userBiasStatus',
+  manageIssueEvalution = '$myPage/manageIssueEvalution',
 
+  issueDetailFeed = '/issueDetailFeed',
   shortsView = '/shortsView/:issueId',
   shortsPlayer = '/shortsPlayer/:issueId'
   ;

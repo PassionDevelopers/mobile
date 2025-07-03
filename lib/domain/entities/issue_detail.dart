@@ -1,3 +1,4 @@
+import 'articles.dart';
 import 'coverage_spectrum.dart';
 
 class IssueDetail {
@@ -20,6 +21,7 @@ class IssueDetail {
   final List<String> rightKeywords;
   final List<String> nextIssueIds;
   final bool isSubscribed;
+  final Articles articles;
 
   IssueDetail({
     required this.id,
@@ -41,6 +43,7 @@ class IssueDetail {
     required this.rightKeywords,
     required this.nextIssueIds,
     required this.isSubscribed,
+    required this.articles
   });
 
   IssueDetail copyWith({
@@ -63,6 +66,7 @@ class IssueDetail {
     List<String>? rightKeywords,
     List<String>? nextIssueIds,
     bool? isSubscribed,
+    Articles? articles,
   }) {
     return IssueDetail(
       id: id ?? this.id,
@@ -83,7 +87,8 @@ class IssueDetail {
       centerKeywords: centerKeywords ?? this.centerKeywords,
       rightKeywords: rightKeywords ?? this.rightKeywords,
       nextIssueIds: nextIssueIds ?? this.nextIssueIds,
-      isSubscribed: isSubscribed ?? this.isSubscribed
+      isSubscribed: isSubscribed ?? this.isSubscribed,
+      articles: articles ?? this.articles,
     );
   }
 } 

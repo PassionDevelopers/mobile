@@ -2,7 +2,6 @@ import 'dart:async';
 import 'dart:developer';
 import 'package:could_be/core/di/di_setup.dart';
 import 'package:could_be/core/routes/route_names.dart';
-import 'package:could_be/presentation/media/main/subscribed_media_view_model.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import '../../../core/components/cards/news_card.dart';
@@ -10,6 +9,7 @@ import '../../../core/components/title/big_title_icon.dart';
 import '../../../core/themes/margins_paddings.dart';
 import '../media_profile_component.dart';
 import '../subscribed_media_loading_view.dart';
+import 'subscribed_media_view_model.dart';
 
 class SubscribedMediaRoot extends StatefulWidget {
   const SubscribedMediaRoot({super.key});
@@ -26,9 +26,7 @@ class _SubscribedMediaRootState extends State<SubscribedMediaRoot> {
   void initState() {
     super.initState();
     viewModel = getIt<SubscribedMediaViewModel>();
-
     eventSubscription = viewModel.eventStream.listen((event){
-      log(event.toString());
       if(mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(content: Text(event.toString()),),
@@ -65,6 +63,7 @@ class _SubscribedMediaRootState extends State<SubscribedMediaRoot> {
               ),
               Padding(
                 padding: EdgeInsets.only(
+                  top: MyPaddings.large,
                   left: MyPaddings.largeMedium,
                 ),
                 child: state.isSourcesLoading
@@ -85,11 +84,7 @@ class _SubscribedMediaRootState extends State<SubscribedMediaRoot> {
                              source: source,
                               isShowingArticles: source.id == state.selectedSourceId,
                               onShowArticles: () {
-                                if(state.selectedSourceId == source.id) {
-                                  viewModel.setSelectedSourceId(null);
-                                } else {
-                                  viewModel.setSelectedSourceId(source.id);
-                                }
+                                viewModel.setSelectedSourceId(source.id);
                               },
                             );
                           },
@@ -98,6 +93,27 @@ class _SubscribedMediaRootState extends State<SubscribedMediaRoot> {
                       ),
                     ),
               ),
+
+              if(state.selectedSourceId != null) Align(
+                alignment: Alignment.centerRight,
+                child: Padding(
+                  padding: EdgeInsets.only(right: MyPaddings.large),
+                  child: ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.white,
+                    foregroundColor: Colors.black,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                  ), onPressed: (){
+                    if(state.selectedSourceId != null) {
+                      context.push(RouteNames.mediaDetail,
+                        extra: state.selectedSourceId);
+                    }
+                  }, child: Text('매체 상세 정보')),
+                ),
+              ),
+
               state.isArticlesLoading
                   ? SubscribedMediaLoadingView()
                   : state.articles == null

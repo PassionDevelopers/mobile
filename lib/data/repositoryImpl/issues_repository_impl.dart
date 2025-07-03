@@ -18,7 +18,7 @@ class IssuesRepositoryImpl implements IssuesRepository {
           'Authorization': demoToken,
         },
       ),
-      queryParameters: {'type': 'daily', 'limit': 10, 'lastIssueId': ''},
+      queryParameters: {'type': 'daily'},
     );
     final issuesDTO = IssuesDTO.fromJson(response.data);
     return issuesDTO.toDomain();
@@ -48,7 +48,7 @@ class IssuesRepositoryImpl implements IssuesRepository {
           'Authorization': demoToken,
         },
       ),
-      queryParameters: {'type': 'blind-spot-left', 'limit': 10, 'lastIssueId': ''},
+      queryParameters: {'type': 'blind-spot-left'},
     );
     final issuesDTO = IssuesDTO.fromJson(response.data);
     return issuesDTO.toDomain();
@@ -63,7 +63,7 @@ class IssuesRepositoryImpl implements IssuesRepository {
           'Authorization': demoToken,
         },
       ),
-      queryParameters: {'type': 'blind-spot-right', 'limit': 10, 'lastIssueId': ''},
+      queryParameters: {'type': 'blind-spot-right'},
     );
     final issuesDTO = IssuesDTO.fromJson(response.data);
     return issuesDTO.toDomain();
@@ -78,7 +78,7 @@ class IssuesRepositoryImpl implements IssuesRepository {
           'Authorization': demoToken,
         },
       ),
-      queryParameters: {'type': 'for-you', 'limit': 10, 'lastIssueId': ''},
+      queryParameters: {'type': 'for-you'},
     );
     final issuesDTO = IssuesDTO.fromJson(response.data);
     return issuesDTO.toDomain();

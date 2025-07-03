@@ -1,6 +1,7 @@
 import 'package:could_be/core/components/cards/news_card.dart';
 import 'package:could_be/core/components/layouts/scaffold_layout.dart';
 import 'package:could_be/core/di/di_setup.dart';
+import 'package:could_be/core/themes/margins_paddings.dart';
 import 'package:could_be/presentation/media/media_profile_component.dart';
 import 'package:could_be/presentation/web_view/web_view_view_model.dart';
 import 'package:could_be/ui/color.dart';
@@ -11,9 +12,18 @@ import '../../core/components/bias/bias_enum.dart';
 import '../../domain/entities/article.dart';
 
 class WebViewView extends StatelessWidget {
-  const WebViewView({super.key, this.article, this.issueId, this.bias});
+  const WebViewView({
+    super.key,
+    this.articles,
+    this.issueId,
+    this.bias,
+    this.selectedArticleId,
+    this.selectedSourceId,
+  });
 
-  final Article? article;
+  final List<Article>? articles;
+  final String? selectedArticleId;
+  final String? selectedSourceId;
   final String? issueId;
   final Bias? bias;
 
@@ -23,7 +33,9 @@ class WebViewView extends StatelessWidget {
       fetchArticlesUseCase: getIt(),
       issueId: issueId, // widget.issueId,
       bias: bias,
-      article: article,
+      articles: articles,
+      selectedArticleId: selectedArticleId,
+      selectedSourceId: selectedSourceId,
     );
 
     BorderRadiusGeometry radius = BorderRadius.only(
@@ -36,11 +48,7 @@ class WebViewView extends StatelessWidget {
         builder: (context, _) {
           final state = viewModel.state;
           final sources = state.articlesGroupBySource?.sources ?? [];
-          final articles =
-              state
-                  .articlesGroupBySource
-                  ?.articlesWithSources[sources[state.currentSourceIndex].id] ??
-              [];
+          final articles = state.articlesGroupBySource?.articlesWithSources[state.currentSourceId] ?? [];
           if (state.isLoading) {
             return Center(child: CircularProgressIndicator());
           } else if (state.articlesGroupBySource == null ||
@@ -49,6 +57,7 @@ class WebViewView extends StatelessWidget {
           } else {
             return SlidingUpPanel(
               panel: Ink(
+                padding: EdgeInsets.symmetric(horizontal: MyPaddings.medium),
                 decoration: BoxDecoration(
                   color: AppColors.background,
                   borderRadius: radius,
@@ -58,21 +67,24 @@ class WebViewView extends StatelessWidget {
                     Icon(Icons.drag_handle_rounded, color: AppColors.primary),
                     SizedBox(
                       height: 70,
-                      child: ListView.builder(
-                        scrollDirection: Axis.horizontal,
-                        itemBuilder: (context, index) {
-                          return MediaProfileWebView(
-                            source: state.articlesGroupBySource!.sources[index],
-                            isShowingArticles:
-                                index == state.currentSourceIndex,
-                            onShowArticles: () {
-                              viewModel.changeCurrentSourceIndex(index);
-                            },
-                          );
-                        },
-                        itemCount: state.articlesGroupBySource!.sources.length,
-                        shrinkWrap: true,
-                        physics: BouncingScrollPhysics(),
+                      child: Align(
+                          alignment: Alignment.centerLeft,
+                          child: ListView.builder(
+                              scrollDirection: Axis.horizontal,
+                              itemBuilder: (context, index) {
+                                final source = state.articlesGroupBySource!.sources[index];
+                                return MediaProfileWebView(
+                                  source: source,
+                                  isShowingArticles: state.currentSourceId == source.id,
+                                  onShowArticles: () {
+                                    viewModel.changeCurrentSourceId(source.id);
+                                  },
+                                );
+                              },
+                              itemCount: state.articlesGroupBySource!.sources
+                                  .length,
+                              shrinkWrap: true,
+                          )
                       ),
                     ),
                     SizedBox(height: 4),
@@ -85,10 +97,11 @@ class WebViewView extends StatelessWidget {
                           return NewsCard(
                             article: articles[index],
                             isSelected:
-                                state.currentArticleIndex == index &&
-                                sources[state.currentSourceIndex].id == articles[index].source.id,
+                            state.currentArticleId == articles[index].id &&
+                                state.currentSourceId ==
+                                    articles[index].source.id,
                             onWebViewSelected: () {
-                              viewModel.changeCurrentArticleIndex(index);
+                              viewModel.changeCurrentArticleId(articles[index].id);
                             },
                           );
                         },
@@ -99,6 +112,7 @@ class WebViewView extends StatelessWidget {
                 ),
               ),
               collapsed: Ink(
+                padding: EdgeInsets.symmetric(horizontal: MyPaddings.medium),
                 decoration: BoxDecoration(
                   color: AppColors.background,
                   borderRadius: radius,
@@ -107,29 +121,30 @@ class WebViewView extends StatelessWidget {
                   children: [
                     Icon(Icons.drag_handle_rounded, color: AppColors.primary),
                     Expanded(
-                      child: ListView.builder(
-                        scrollDirection: Axis.horizontal,
-                        itemBuilder: (context, index) {
-                          return MediaProfileWebView(
-                            source: state.articlesGroupBySource!.sources[index],
-                            isShowingArticles:
-                                index == state.currentSourceIndex,
-                            onShowArticles: () {
-                              viewModel.changeCurrentSourceIndex(index);
-                            },
-                          );
-                        },
-                        itemCount: state.articlesGroupBySource!.sources.length,
-                        shrinkWrap: true,
-                        physics: BouncingScrollPhysics(),
+                      child: Align(
+                        alignment: Alignment.centerLeft,
+                        child: ListView.builder(
+                          scrollDirection: Axis.horizontal,
+                          itemBuilder: (context, index) {
+                            final source = state.articlesGroupBySource!.sources[index];
+                            return MediaProfileWebView(
+                              source: source,
+                              isShowingArticles: source.id == state.currentSourceId,
+                              onShowArticles: () {
+                                viewModel.changeCurrentSourceId(source.id);
+                              },
+                            );
+                          },
+                          itemCount:
+                          state.articlesGroupBySource!.sources.length,
+                          shrinkWrap: true,
+                        ),
                       ),
                     ),
                   ],
                 ),
               ),
-
               body: WebViewWidget(controller: viewModel.state.controller!),
-
               borderRadius: radius,
             );
           }

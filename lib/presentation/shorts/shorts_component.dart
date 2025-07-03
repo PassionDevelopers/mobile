@@ -1,3 +1,4 @@
+import 'package:could_be/core/components/image/image_container.dart';
 import 'package:could_be/core/components/title/issue_info_title.dart';
 import 'package:could_be/core/routes/route_names.dart';
 import 'package:flutter/material.dart';
@@ -26,7 +27,8 @@ class ShortsComponent extends StatefulWidget {
   State<ShortsComponent> createState() => _ShortsComponentState();
 }
 
-class _ShortsComponentState extends State<ShortsComponent> with TickerProviderStateMixin {
+class _ShortsComponentState extends State<ShortsComponent>
+    with TickerProviderStateMixin {
   Bias currentBias = Bias.center;
   late final IssueDetail issue = widget.issue;
   late final TabController _tabController = TabController(
@@ -46,7 +48,7 @@ class _ShortsComponentState extends State<ShortsComponent> with TickerProviderSt
 
   final List<String> _biasLabels = ['진보', '중도', '보수'];
 
-  _buildTab(int index){
+  _buildTab(int index) {
     final isSelected = index == _tabController.index;
 
     return Expanded(
@@ -62,15 +64,15 @@ class _ShortsComponentState extends State<ShortsComponent> with TickerProviderSt
             color: isSelected ? _biasColors[index] : Colors.transparent,
             borderRadius: BorderRadius.circular(9),
             boxShadow:
-            isSelected
-                ? [
-              BoxShadow(
-                color: _biasColors[index].withOpacity(0.3),
-                blurRadius: 6,
-                offset: const Offset(0, 2),
-              ),
-            ]
-                : null,
+                isSelected
+                    ? [
+                      BoxShadow(
+                        color: _biasColors[index].withOpacity(0.3),
+                        blurRadius: 6,
+                        offset: const Offset(0, 2),
+                      ),
+                    ]
+                    : null,
           ),
           child: Text(
             '${_biasLabels[index]} 언론',
@@ -113,12 +115,7 @@ class _ShortsComponentState extends State<ShortsComponent> with TickerProviderSt
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           issue.imageUrl != null
-              ? Image.network(
-                issue.imageUrl!,
-                width: double.infinity,
-                height: 150,
-                fit: BoxFit.cover,
-              )
+              ? ImageContainer(height: 150, imageUrl: issue.imageUrl!)
               : SizedBox(),
           Expanded(
             child: Padding(
@@ -218,9 +215,7 @@ class _ShortsComponentState extends State<ShortsComponent> with TickerProviderSt
                   iconData: Icons.balance_outlined,
                   label: '차이점 분석',
                   onTap: () {
-                    context.push(
-                      '/shortsPlayer/${issue.id}',
-                    );
+                    context.push('/shortsPlayer/${issue.id}');
                   },
                 ),
                 // Flexible(

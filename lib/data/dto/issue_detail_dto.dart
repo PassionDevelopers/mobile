@@ -1,3 +1,4 @@
+import 'package:could_be/data/dto/articles_dto.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 import '../../domain/entities/issue_detail.dart';
@@ -12,12 +13,12 @@ class IssueDetailDTO {
   final String title;
   final String category;
   final String summary;
-  final String imageUrl;
+  final String? imageUrl;
   final List<String> keywords;
   final String createdAt;
   final int view;
   final CoverageSpectrumDTO coverageSpectrum;
-  final String updatedAt;
+  final String? updatedAt;
   final String leftSummary;
   final String centerSummary;
   final String rightSummary;
@@ -27,18 +28,19 @@ class IssueDetailDTO {
   final List<String> rightKeywords;
   final List<String> nextIssueIds;
   final bool isSubscribed;
+  final ArticlesDTO articles;
 
   IssueDetailDTO({
     required this.id,
     required this.title,
     required this.category,
     required this.summary,
-    required this.imageUrl,
+    this.imageUrl,
     required this.keywords,
     required this.createdAt,
     required this.view,
     required this.coverageSpectrum,
-    required this.updatedAt,
+    this.updatedAt,
     required this.leftSummary,
     required this.centerSummary,
     required this.rightSummary,
@@ -47,7 +49,8 @@ class IssueDetailDTO {
     required this.centerKeywords,
     required this.rightKeywords,
     required this.nextIssueIds,
-    required this.isSubscribed
+    required this.isSubscribed,
+    required this.articles,
   });
 
   factory IssueDetailDTO.fromJson(Map<String, dynamic> json) =>
@@ -69,7 +72,7 @@ extension IssueDetailDtx on IssueDetailDTO {
       createdAt: DateTime.parse(createdAt),
       view: view,
       coverageSpectrum: coverageSpectrum.toDomain(),
-      updatedAt: DateTime.parse(updatedAt),
+      updatedAt: updatedAt != null? DateTime.parse(updatedAt!) : null,
       leftSummary: leftSummary,
       centerSummary: centerSummary,
       rightSummary: rightSummary,
@@ -79,6 +82,7 @@ extension IssueDetailDtx on IssueDetailDTO {
       rightKeywords: rightKeywords,
       nextIssueIds: nextIssueIds,
       isSubscribed: isSubscribed,
+      articles: articles.toDomain(),
     );
   }
 }

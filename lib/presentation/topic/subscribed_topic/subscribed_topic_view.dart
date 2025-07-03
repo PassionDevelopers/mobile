@@ -1,4 +1,3 @@
-import 'package:could_be/core/components/chips/issue_chip.dart';
 import 'package:could_be/core/components/chips/topic_chip.dart';
 import 'package:could_be/core/di/di_setup.dart';
 import 'package:could_be/core/themes/margins_paddings.dart';
@@ -35,29 +34,48 @@ class SubscribedTopicView extends StatelessWidget {
               ),
               Padding(
                 padding: EdgeInsets.only(
-                  top: MyPaddings.medium,
+                  top: MyPaddings.large,
                     left: MyPaddings.largeMedium),
                 child:
                     SizedBox(
                       height: 42,
                       child: state.isTopicLoading
-                          ? Center(child: CircularProgressIndicator())
-                          : state.topics == null || state.topics!.topics.isEmpty
-                          ? Center(child: Text('관심 토픽이 없습니다.'))
-                          : ListView.builder(
-                            scrollDirection: Axis.horizontal,
-                            physics: NeverScrollableScrollPhysics(),
-                            itemCount: state.topics!.topics.length,
-                            itemBuilder: (context, index) {
-                              final topic = state.topics!.topics[index];
-                              return TopicChip(
-                                title: topic.name,
-                                isActive: false,
-                                onTap: () {},
-                              );
-                            },
-                          ),
+                        ? Center(child: CircularProgressIndicator())
+                        : state.topics == null || state.topics!.topics.isEmpty
+                        ? Center(child: Text('관심 토픽이 없습니다.'))
+                        : ListView.builder(
+                          scrollDirection: Axis.horizontal,
+                          itemCount: state.topics!.topics.length,
+                          itemBuilder: (context, index) {
+                            final topic = state.topics!.topics[index];
+                            return TopicChip(
+                              title: topic.name,
+                              isActive: topic.id == state.selectedTopicId,
+                              onTap: () {
+                                viewModel.setSelectedTopicId(topic.id);
+                              },
+                            );
+                          },
+                        ),
                     ),
+              ),
+              if(state.selectedTopicId != null) Align(
+                alignment: Alignment.centerRight,
+                child: Padding(
+                  padding: EdgeInsets.only(right: MyPaddings.large, top: MyPaddings.small),
+                  child: ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.white,
+                      foregroundColor: Colors.black,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                    ), onPressed: (){
+                    if(state.selectedTopicId != null) {
+                      context.push(RouteNames.topicDetail, extra: state.selectedTopicId);
+                    }
+                  }, child: Text('토픽 상세 정보')),
+                ),
               ),
               SizedBox(height: MyPaddings.large),
               IssueListRoot(issueType: IssueType.subscribedTopicIssuesWhole)

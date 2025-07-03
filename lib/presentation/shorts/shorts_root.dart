@@ -13,7 +13,7 @@ class ShortsRoot extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final viewModel = getIt<ShortsViewModel>(param1: issueId);
+    final viewModel = getIt<IssueDetailViewModel>(param1: issueId);
     return MyScaffold(
       body: ListenableBuilder(
         listenable: viewModel,

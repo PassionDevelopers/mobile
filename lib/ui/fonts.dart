@@ -12,6 +12,7 @@ abstract class MyFontSizes {
   static const double large = 16.0;
   static const double article = 17.0;
   static const double extraLarge = 20.0;
+  static const double h0 = 22.0;
   static const double accent = 32.0;
 }
 
@@ -35,7 +36,19 @@ abstract class MyFontStyle{
     color: AppColors.textPrimary,
   ));
 
-  static var h1 = GoogleFonts.notoSansKr(textStyle: TextStyle(
+  static TextStyle articleSmall = GoogleFonts.notoSansKr(textStyle: TextStyle(
+    fontSize: MyFontSizes.medium,
+    fontWeight: FontWeight.w400,
+    color: AppColors.textPrimary,
+  ));
+
+  static TextStyle h0 = GoogleFonts.notoSansKr(textStyle: TextStyle(
+      fontSize: MyFontSizes.h0,
+      fontWeight: FontWeight.w700,
+      color: AppColors.textPrimary
+  ));
+
+  static TextStyle h1 = GoogleFonts.notoSansKr(textStyle: TextStyle(
     fontSize: MyFontSizes.extraLarge,
     fontWeight: FontWeight.w700,
       color: AppColors.textPrimary
@@ -68,6 +81,10 @@ abstract class MyFontStyle{
 
 abstract class MyText {
 
+  static AutoSizeText h0(String text,{Color? color, AutoSizeGroup? group, int? maxLines}){
+    return AutoSizeText(text, style: MyFontStyle.h0, group: group, maxLines: maxLines ?? 1, minFontSize: 1, overflow: TextOverflow.ellipsis);
+  }
+
   static AutoSizeText h1(String text,{Color? color, AutoSizeGroup? group, int? maxLines}){
     return AutoSizeText(text, style: MyFontStyle.h1, group: group, maxLines: maxLines ?? 1, minFontSize: 1, overflow: TextOverflow.ellipsis);
   }
@@ -84,6 +101,10 @@ abstract class MyText {
 
   static Text article(String text, {Color? color}){
     return Text(text, style: MyFontStyle.article.copyWith(color: color));
+  }
+
+  static Text articleSmall(String text, {Color? color}){
+    return Text(text, style: MyFontStyle.articleSmall.copyWith(color: color));
   }
 
   static AutoSizeText reg(String text, {Color? color, AutoSizeGroup? group, int? maxLines}){

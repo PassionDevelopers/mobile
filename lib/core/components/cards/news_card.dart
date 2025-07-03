@@ -1,9 +1,9 @@
+import 'package:could_be/core/components/image/image_container.dart';
 import 'package:could_be/core/routes/route_names.dart';
 import 'package:could_be/domain/entities/article.dart';
 import 'package:could_be/ui/fonts.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-
 import '../../../ui/color.dart';
 import '../../themes/margins_paddings.dart';
 
@@ -12,7 +12,12 @@ class NewsCard extends StatefulWidget {
   final VoidCallback? onWebViewSelected;
   final bool? isSelected;
 
-  const NewsCard({super.key, required this.article, this.onWebViewSelected, this.isSelected});
+  const NewsCard({
+    super.key,
+    required this.article,
+    this.onWebViewSelected,
+    this.isSelected,
+  });
 
   @override
   State<NewsCard> createState() => _NewsCardState();
@@ -51,7 +56,6 @@ class _NewsCardState extends State<NewsCard> with TickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
-
     @override
     void dispose() {
       // TODO: implement dispose
@@ -60,9 +64,7 @@ class _NewsCardState extends State<NewsCard> with TickerProviderStateMixin {
     }
 
     return Container(
-      margin: EdgeInsets.symmetric(
-        horizontal: MyPaddings.small,
-      ),
+      margin: EdgeInsets.symmetric(horizontal: MyPaddings.small),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(16),
         color: widget.isSelected == true ? AppColors.black.withAlpha(50) : null,
@@ -88,8 +90,17 @@ class _NewsCardState extends State<NewsCard> with TickerProviderStateMixin {
                 onTap: () {
                   if (widget.onWebViewSelected != null) {
                     widget.onWebViewSelected!();
-                  }else{
-                    context.push(RouteNames.webView, extra: {'article' : widget.article,});
+                  } else {
+                    context.push(
+                      RouteNames.webView,
+                      extra: {
+                        'articleInfo': (
+                          [widget.article],
+                          widget.article.id,
+                          widget.article.source.id,
+                        ),
+                      },
+                    );
                   }
                 },
                 child: Ink(
@@ -109,12 +120,13 @@ class _NewsCardState extends State<NewsCard> with TickerProviderStateMixin {
                         ),
                         child: ClipRRect(
                           borderRadius: BorderRadius.circular(16),
-                          child: Image.network(
-                            widget.article.imageUrl!,
-                            fit: BoxFit.cover,
+                          child: ImageContainer(
+                            height: null,
+                            imageUrl: widget.article.imageUrl!,
                           ),
                         ),
                       ),
+
                       Expanded(
                         child: Padding(
                           padding: EdgeInsets.all(MyPaddings.small),

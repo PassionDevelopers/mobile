@@ -1,5 +1,5 @@
 
-
+import 'package:could_be/core/events/media_subscription_events.dart';
 import 'package:could_be/domain/useCases/fetch_sources_use_case.dart';
 import 'package:could_be/domain/useCases/manage_media_subscription_use_case.dart';
 import 'package:could_be/presentation/media/whole_media/whole_media_state.dart';
@@ -29,8 +29,10 @@ class WholeMediaViewModel with ChangeNotifier{
     final source = state.sources!.sources.firstWhere((source) => source.id == sourceId);
     if(source.isSubscribed) {
       await _manageMediaSubscriptionUseCase.unsubscribeSourceBySourceId(sourceId);
+      MediaSubscriptionEvents.notifyMediaUnsubscribed(sourceId);
     } else {
       await _manageMediaSubscriptionUseCase.subscribeSouceBySouceId(sourceId);
+      MediaSubscriptionEvents.notifyMediaSubscribed(sourceId);
     }
 
     Fluttertoast.showToast(

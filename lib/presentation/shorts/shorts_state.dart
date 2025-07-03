@@ -1,21 +1,21 @@
 import 'package:could_be/domain/entities/issue_detail.dart';
 
-class ShortsState{
+class IssueDetailState{
 
   final IssueDetail? issueDetail;
   final bool isLoading;
 
 
-  ShortsState({
+  IssueDetailState({
     this.isLoading = false,
     this.issueDetail,
   });
 
-  ShortsState copyWith({
+  IssueDetailState copyWith({
     IssueDetail? issueDetail,
     bool? isLoading,
   }) {
-    return ShortsState(
+    return IssueDetailState(
       issueDetail: issueDetail ?? this.issueDetail,
       isLoading: isLoading ?? this.isLoading,
     );

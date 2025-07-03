@@ -1,8 +1,31 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 
 abstract class AppColors {
+  // static Color right = Color.fromRGBO(223, 41, 53, 1); // 따뜻한 빨강
+  // static Color center = Color.fromRGBO(100, 17, 63, 1); // 따뜻한 보라
+  // static Color left = Color.fromRGBO(55, 114, 255, 1); // 따뜻한 파랑
+  // static Color card = Color.fromRGBO(252, 186, 4, 1); // 따뜻한 노랑
+  // static Color background = Color.fromRGBO(247, 240, 240, 1); // 따뜻한 오프 화이트
+  // static Color primary = Color.fromRGBO(7, 190, 184, 1);
 
+  // static Color right = Color.fromRGBO(243, 61, 73, 1);
+  // static Color center = Color.fromRGBO(120, 37, 83, 1); // 따뜻한 보라
+  // static Color left = Color.fromRGBO(75, 94, 235, 1); // 따뜻한 파랑
+  // static Color card = Color.fromRGBO(255, 206, 24, 1); // 따뜻한 노랑
+  // static Color background = Color.fromRGBO(247, 240, 240, 1); // 따뜻한 오프 화이트
+  // static Color primary = Color.fromRGBO(27, 210, 204, 1); // 따뜻한 민트
+
+  static Color right = Color.fromRGBO(226, 93, 114, 1);
+  // static Color center = Color(0xffE5D9F2);
+  static Color center = Color(0xffA294F9);
+  static Color left = Color.fromRGBO(53, 195, 243, 1);
+  static Color background = Colors.grey.shade100;
   static Color primary = Color(0xff0A0A0B);
+
+
+  /////////////////////////////////////////////
   static Color primaryLight = Colors.white; // 라이트 모드에서의 기본 색상
   static Color secondary = Colors.grey.shade600;
   static Color tertiary = Color(0xff2D2D30);// 라이
@@ -15,24 +38,14 @@ abstract class AppColors {
   static const Color gray5 = Color(0xFFF2F2F2);
   static const Color white = Color(0xFFFFFFFF);
 
-  // static Color background = Color(0xffffffff);
-  static Color background = Colors.grey.shade100;
   static Color surface = Color(0xffFAFAFA);// 오프 화이트
 
   // static Color card = Color(0xffF8F9FA); // 라이트 그레이
-  static Color card = Color(0xffffffff); // 글래스모피즘 효과를 위한 반투명 흰색
 
-  static Color left = Color.fromRGBO(53, 175, 223, 1);
-  // static Color left = Color.fromRGBO(220, 38, 38, 1); // 따뜻한 빨강
   static Color leftCenter = Colors.blue.shade100;
-  // static Color center = Colors.grey.shade700;
 
-  // static Color center = Color(0xffE5D9F2);
-  static Color center = Color(0xffA294F9);
+   // 연한 보라
   // static Color centerLight = Color(0xffCDC1FF);
-
-  static Color right = Color.fromRGBO(226, 93, 114, 1);
-  // static Color right = Color.fromRGBO(37, 99, 235, 1); // 클래식 블루
   static Color rightCenter = Colors.red.shade100;
 
   static const Color check = Color.fromRGBO(66, 196, 154, 1);
@@ -76,36 +89,6 @@ abstract class AppColors {
   static Color glassBorder = Color(0x33ffffff); // 반투명 테두리
   static Color glassBackdrop = Color(0x0dffffff); // 배경 블러용
 
-}
-
-
-class NoteColor{
-  static const Color
-  black = Colors.black,
-      red = Colors.red,
-      focused = Color(0xff21bf9b)
-  ;
-}
-
-class GenreColor{
-  static const Color
-  top20 = AbpColor.r19,
-      myMusic = AbpColor.c6,
-      purchased = AbpColor.c5,
-      jazz = Color(0xff27548A),
-      classic = Color(0xffA86523),
-      pop = Color(0xffFF8882),
-      ost = Color(0xffA4B465),
-      rnb = Color(0xffAA60C8),
-      rock = Color(0xffBF3131),
-  // hip = Color(0xff16C47F),
-      hip = Colors.green,
-      dance = Colors.orange,
-      indie = Colors.black,
-      religious = Color(0xff6FE6FC),
-      tradition = Color(0xffDDA853),
-      etc = Color(0xff735557)
-  ;
 }
 
 class AbpColor{

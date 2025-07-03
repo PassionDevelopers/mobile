@@ -1,7 +1,10 @@
 
 
+import 'package:could_be/core/method/bias/bias_method.dart';
+import 'package:could_be/domain/entities/articles_group_by_bias.dart';
 import 'package:could_be/domain/entities/source.dart';
 
+import '../../core/components/bias/bias_enum.dart';
 import 'article.dart';
 import 'articles_group_by_source.dart';
 
@@ -33,6 +36,24 @@ extension ArticlesExtension on Articles {
     return ArticlesGroupBySource(
       sources: sources,
       articlesWithSources: articlesWithSources,
+    );
+  }
+
+  ArticlesGroupByBias toGroupByBias() {
+    final Map<Bias, List<Article>> articlesByBias = {
+      Bias.left: [],
+      Bias.center: [],
+      Bias.right: [],
+    };
+
+    for (final article in articles) {
+      Bias bias = getBiasFromString(article.source.perspective);
+      if (bias == Bias.leftCenter) bias = Bias.left;
+      if (bias == Bias.rightCenter) bias = Bias.right;
+      articlesByBias[bias]!.add(article);
+    }
+    return ArticlesGroupByBias(articlesByBias: articlesByBias,
+      allArticles: articles,
     );
   }
 }
