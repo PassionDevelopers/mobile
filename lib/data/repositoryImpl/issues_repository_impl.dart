@@ -13,11 +13,7 @@ class IssuesRepositoryImpl implements IssuesRepository {
   Future<Issues> fetchDailyIssues() async {
     final response = await dio.get(
       '/issues',
-      options: Options(
-        headers: {
-          'Authorization': demoToken,
-        },
-      ),
+
       queryParameters: {'type': 'daily'},
     );
     final issuesDTO = IssuesDTO.fromJson(response.data);
@@ -28,11 +24,7 @@ class IssuesRepositoryImpl implements IssuesRepository {
   Future<Issues> fetchHotIssues() async {
     final response = await dio.get(
       '/issues',
-      options: Options(
-        headers: {
-          'Authorization': demoToken,
-        },
-      ),
+
       queryParameters: {'type': 'hot', 'limit': 10, 'lastIssueId': ''},
     );
     final issuesDTO = IssuesDTO.fromJson(response.data);
@@ -43,11 +35,7 @@ class IssuesRepositoryImpl implements IssuesRepository {
   Future<Issues> fetchBlindSpotLeftIssues() async {
     final response = await dio.get(
       '/issues',
-      options: Options(
-        headers: {
-          'Authorization': demoToken,
-        },
-      ),
+
       queryParameters: {'type': 'blind-spot-left'},
     );
     final issuesDTO = IssuesDTO.fromJson(response.data);
@@ -58,11 +46,7 @@ class IssuesRepositoryImpl implements IssuesRepository {
   Future<Issues> fetchBlindSpotRightIssues() async {
     final response = await dio.get(
       '/issues',
-      options: Options(
-        headers: {
-          'Authorization': demoToken,
-        },
-      ),
+
       queryParameters: {'type': 'blind-spot-right'},
     );
     final issuesDTO = IssuesDTO.fromJson(response.data);
@@ -73,11 +57,7 @@ class IssuesRepositoryImpl implements IssuesRepository {
   Future<Issues> fetchForYouIssues() async {
     final response = await dio.get(
       '/issues',
-      options: Options(
-        headers: {
-          'Authorization': demoToken,
-        },
-      ),
+
       queryParameters: {'type': 'for-you'},
     );
     final issuesDTO = IssuesDTO.fromJson(response.data);
@@ -117,11 +97,7 @@ class IssuesRepositoryImpl implements IssuesRepository {
   Future<Issues> fetchIssuesByTopicId(String topicId) async {
     final response = await dio.get(
       '/topics/$topicId/issues',
-      options: Options(
-        headers: {
-          'Authorization': demoToken,
-        },
-      ),
+
     );
     final issuesDTO = IssuesDTO.fromJson(response.data);
     return issuesDTO.toDomain();
@@ -131,11 +107,7 @@ class IssuesRepositoryImpl implements IssuesRepository {
   Future<Issues> fetchSubscribedTopicIssues() async {
     final response = await dio.get(
       '/topics/subscribed/issues',
-      options: Options(
-        headers: {
-          'Authorization': demoToken,
-        },
-      ),
+
     );
     final issuesDTO = IssuesDTO.fromJson(response.data);
     return issuesDTO.toDomain();

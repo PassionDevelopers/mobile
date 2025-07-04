@@ -1,22 +1,21 @@
+import 'dart:developer';
+
 import 'package:could_be/domain/repositoryInterfaces/manage_user_status_interface.dart';
 import 'package:dio/dio.dart';
-
-import '../../core/base_url.dart';
 
 class ManageUserStatusRepositoryImpl extends ManageUserStatusRepository{
   final Dio dio;
   ManageUserStatusRepositoryImpl(this.dio);
 
   @override
-  Future<void> registerUser()async{
+  Future<void> registerUserWithIdToken()async{
     final result = await dio.post(
-      '/user/register',
-      options: Options(
-        headers: {
-          'Authorization': demoToken,
-        },
-      ),
+      '/user/register'
+      // data: {
+      //   "perspective": "center"
+      // }
     );
+    log(result.data.toString());
   }
 
   @override

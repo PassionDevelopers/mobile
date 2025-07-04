@@ -1,6 +1,6 @@
 abstract class ManageUserStatusRepository {
 
-  Future<void> registerUser();
+  Future<void> registerUserWithIdToken();
 
   Future<void> deleteUser();
 }

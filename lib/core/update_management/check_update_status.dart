@@ -12,7 +12,7 @@ class CheckUpdateStatus extends StatelessWidget {
 
 
 
-  Future startListenMailBox(
+  Future startListenUpdateStatus(
       String version, int publicMailNumber, Function updateMail, BuildContext context) async {
     final Stream<DocumentSnapshot<Map<String, dynamic>>> usersStream =
     FirebaseFirestore.instance.collection(CheckUpdateField.collectionName)

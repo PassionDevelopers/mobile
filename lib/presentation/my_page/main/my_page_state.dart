@@ -4,20 +4,25 @@ import '../../../domain/entities/user_bias.dart';
 
 class MyPageState{
   final String? userBias;
-  final bool isLoading;
+  final bool isBiasLoading;
+  final bool isUserStatusLoading;
+
 
   MyPageState({
     this.userBias,
-    this.isLoading = false,
+    this.isBiasLoading = false,
+    this.isUserStatusLoading = false,
   });
 
   MyPageState copyWith({
     String? userBias,
-    bool? isLoading,
+    bool? isBiasLoading,
+    bool? isUserStatusLoading,
   }) {
     return MyPageState(
       userBias: userBias ?? this.userBias,
-      isLoading: isLoading ?? this.isLoading,
+      isBiasLoading: isBiasLoading ?? this.isBiasLoading,
+      isUserStatusLoading: isUserStatusLoading ?? this.isUserStatusLoading,
     );
   }
 }

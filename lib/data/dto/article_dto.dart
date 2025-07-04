@@ -38,7 +38,6 @@ class ArticleDTO {
   Map<String, dynamic> toJson() => _$ArticleDTOToJson(this);
 }
 
-
 extension ArticleDtx on ArticleDTO {
   // Converts the DTO to a domain entity
   Article toDomain() {

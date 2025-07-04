@@ -3,6 +3,7 @@ import 'package:could_be/data/repositoryImpl/issue_query_params_repository_impl.
 import 'package:could_be/data/repositoryImpl/manage_issue_evaluation_repository_impl.dart';
 import 'package:could_be/data/repositoryImpl/manage_topic_subscription_repository_impl.dart';
 import 'package:could_be/data/repositoryImpl/manage_user_status_repository_impl.dart';
+import 'package:could_be/data/repositoryImpl/token_storage_repository_impl.dart';
 import 'package:could_be/data/repositoryImpl/media_repository_impl.dart';
 import 'package:could_be/data/repositoryImpl/source_detail_impl.dart';
 import 'package:could_be/data/repositoryImpl/topic_detail_repository_impl.dart';
@@ -15,6 +16,7 @@ import 'package:could_be/domain/repositoryInterfaces/manage_issue_subscription_i
 import 'package:could_be/domain/repositoryInterfaces/manage_media_subscription_interface.dart';
 import 'package:could_be/domain/repositoryInterfaces/manage_topic_subscription_interface.dart';
 import 'package:could_be/domain/repositoryInterfaces/manage_user_status_interface.dart';
+import 'package:could_be/domain/repositoryInterfaces/token_storage_interface.dart';
 import 'package:could_be/domain/repositoryInterfaces/source_detail_interface.dart';
 import 'package:could_be/domain/repositoryInterfaces/topic_detail_interface.dart';
 import 'package:could_be/domain/repositoryInterfaces/topics_interface.dart';
@@ -24,11 +26,13 @@ import 'package:could_be/domain/useCases/fetch_source_detail_use_case.dart';
 import 'package:could_be/domain/useCases/fetch_topic_detail_use_case.dart';
 import 'package:could_be/domain/useCases/manage_issue_evaluation_use_case.dart';
 import 'package:could_be/domain/useCases/manage_user_status_use_case.dart';
+import 'package:could_be/presentation/log_in/login_view_model.dart';
 import 'package:could_be/presentation/media/subscribed_media/subscribed_media_view_model.dart';
 import 'package:could_be/presentation/topic/whole_topics/whole_topic_view_model.dart';
 import 'package:could_be/presentation/topic/topic_detail_view/topic_detail_view_model.dart';
 import 'package:could_be/presentation/web_view/web_view_view_model.dart';
 import 'package:get_it/get_it.dart';
+import 'package:dio/dio.dart';
 import '../../data/repositoryImpl/articles_repository_impl.dart';
 import '../../data/repositoryImpl/issue_detail_repository_impl.dart';
 import '../../data/repositoryImpl/issues_repository_impl.dart';
@@ -62,35 +66,65 @@ final getIt = GetIt.instance;
 
 //한군데서 di setup을 관리할 수 있다.
 void diSetup() {
+  //
+  // token storage (register first)
+  //
+  final tokenStorage = TokenStorageRepositoryImpl();
+  getIt.registerSingleton<TokenStorageRepository>(tokenStorage);
+
+  //
+  // dio with token interceptor
+  //
+  getIt.registerSingleton<Dio>(
+    createDio(tokenStorage),
+  );
 
   //
   // repository
   //
 
   //article
-  getIt.registerSingleton<ArticlesRepository>(ArticlesRepositoryImpl(dio));
+  getIt.registerSingleton<ArticlesRepository>(ArticlesRepositoryImpl(getIt<Dio>()));
 
   //issue
-  getIt.registerSingleton<IssueDetailRepository>(IssueDetailRepositoryImpl(dio));
-  getIt.registerSingleton<IssueQueryParamsRepository>(IssueQueryParamsRepositoryImpl(dio));
-  getIt.registerSingleton<IssuesRepository>(IssuesRepositoryImpl(dio));
-  getIt.registerSingleton<ManageIssueSubscriptionRepository>(ManageIssueSubscriptionRepositoryImpl(dio));
+  getIt.registerSingleton<IssueDetailRepository>(
+    IssueDetailRepositoryImpl(getIt<Dio>()),
+  );
+  getIt.registerSingleton<IssueQueryParamsRepository>(
+    IssueQueryParamsRepositoryImpl(getIt<Dio>()),
+  );
+  getIt.registerSingleton<IssuesRepository>(IssuesRepositoryImpl(getIt<Dio>()));
+  getIt.registerSingleton<ManageIssueSubscriptionRepository>(
+    ManageIssueSubscriptionRepositoryImpl(getIt<Dio>()),
+  );
 
   //user
-  getIt.registerSingleton<ManageIssueEvaluationRepository>(ManageIssueEvaluationRepositoryImpl(dio));
-  getIt.registerSingleton<ManageUserStatusRepository>(ManageUserStatusRepositoryImpl(dio));
-  getIt.registerSingleton<UserBiasRepository>(UserBiasRepositoryImpl(dio));
+  getIt.registerSingleton<ManageIssueEvaluationRepository>(
+    ManageIssueEvaluationRepositoryImpl(getIt<Dio>()),
+  );
+  getIt.registerSingleton<ManageUserStatusRepository>(
+    ManageUserStatusRepositoryImpl(getIt<Dio>()),
+  );
+  getIt.registerSingleton<UserBiasRepository>(UserBiasRepositoryImpl(getIt<Dio>()));
 
   //source
-  getIt.registerSingleton<ManageMediaSubscriptionRepository>(ManageMediaSubscriptionRepositoryImpl(dio));
-  getIt.registerSingleton<MediaRepository>(MediaRepositoryImpl(dio));
-  getIt.registerSingleton<SourceDetailRepository>(SourceDetailRepositoryImpl(dio));
-  getIt.registerSingleton<SourcesRepository>(SourcesRepositoryImpl(dio));
+  getIt.registerSingleton<ManageMediaSubscriptionRepository>(
+    ManageMediaSubscriptionRepositoryImpl(getIt<Dio>()),
+  );
+  getIt.registerSingleton<MediaRepository>(MediaRepositoryImpl(getIt<Dio>()));
+  getIt.registerSingleton<SourceDetailRepository>(
+    SourceDetailRepositoryImpl(getIt<Dio>()),
+  );
+  getIt.registerSingleton<SourcesRepository>(SourcesRepositoryImpl(getIt<Dio>()));
 
   //topic
-  getIt.registerSingleton<ManageTopicSubscriptionRepository>(ManageTopicSubscriptionRepositoryImpl(dio));
-  getIt.registerSingleton<TopicsRepository>(TopicsRepositoryImpl(dio));
-  getIt.registerSingleton<TopicDetailRepository>(TopicDetailRepositoryImpl(dio));
+  getIt.registerSingleton<ManageTopicSubscriptionRepository>(
+    ManageTopicSubscriptionRepositoryImpl(getIt<Dio>()),
+  );
+  getIt.registerSingleton<TopicsRepository>(TopicsRepositoryImpl(getIt<Dio>()));
+  getIt.registerSingleton<TopicDetailRepository>(
+    TopicDetailRepositoryImpl(getIt<Dio>()),
+  );
   ///////////////////////////////////////////////////////////////////////////
 
   //
@@ -103,10 +137,9 @@ void diSetup() {
   getIt.registerSingleton(ManageIssueSubscriptionUseCase(getIt()));
   getIt.registerSingleton(FetchIssueQueryParamsUseCase(getIt()));
 
-
   //user
   getIt.registerSingleton(FetchUserBiasUseCase(getIt()));
-  getIt.registerSingleton(ManageUserStatusUseCase(getIt()));
+  getIt.registerSingleton(ManageUserStatusUseCase(getIt(), getIt()));
   getIt.registerSingleton(ManageIssueEvaluationUseCase(getIt()));
 
   //articles
@@ -126,6 +159,11 @@ void diSetup() {
   //
   // viewModel
   //
+
+  //user
+  getIt.registerSingleton<LoginViewModel>(
+    LoginViewModel(manageUserStatusUseCase: getIt()),
+  );
 
   //issue
   getIt.registerFactoryParam<IssueListViewModel, IssueType, String?>(
@@ -187,11 +225,18 @@ void diSetup() {
 
   //my page
   getIt.registerFactory<MyPageViewModel>(
-    () => MyPageViewModel(fetchUserBiasUseCase: getIt()),
+    () => MyPageViewModel(
+      fetchUserBiasUseCase: getIt(),
+      manageUserStatusUseCase: getIt(),
+    ),
   );
 
   //web View
-  getIt.registerFactoryParam<WebViewViewModel, (String, Bias)?, (List<Article>, String, String)?>(
+  getIt.registerFactoryParam<
+    WebViewViewModel,
+    (String, Bias)?,
+    (List<Article>, String, String)?
+  >(
     (issueInfo, articleInfo) => WebViewViewModel(
       fetchArticlesUseCase: getIt(),
       issueId: issueInfo?.$1,

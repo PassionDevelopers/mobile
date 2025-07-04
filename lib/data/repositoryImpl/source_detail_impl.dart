@@ -15,11 +15,7 @@ class SourceDetailRepositoryImpl implements SourceDetailRepository {
     log('Fetching source detail for ID: $sourceId');
     final response = await dio.get(
       '/media/$sourceId',
-      options: Options(
-        headers: {
-          'Authorization': demoToken,
-        },
-      ),
+
     );
     final sourceDetailDTO = SourceDetailDto.fromJson(response.data);
     return sourceDetailDTO.toDomain();

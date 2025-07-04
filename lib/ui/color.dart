@@ -24,6 +24,8 @@ abstract class AppColors {
   static Color background = Colors.grey.shade100;
   static Color primary = Color(0xff0A0A0B);
 
+  static Color kakao = Color(0xffFEE500); // 카카오 색상
+  static Color kakaoText = Color.fromRGBO(0, 0, 0, 0.85); // 카카오 텍스트 색상
 
   /////////////////////////////////////////////
   static Color primaryLight = Colors.white; // 라이트 모드에서의 기본 색상

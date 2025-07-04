@@ -13,11 +13,7 @@ class IssueQueryParamsRepositoryImpl extends IssueQueryParamsRepository{
   Future<IssueQueryParams> fetchIssueQueryParams()async{
     final response = await dio.get(
       '/issues/query-parmas',
-      options: Options(
-        headers: {
-          'Authorization': demoToken,
-        },
-      ),
+
     );
     final issueQueryParamsDto = IssueQueryParamsDto.fromJson(response.data);
     return issueQueryParamsDto.toDomain();

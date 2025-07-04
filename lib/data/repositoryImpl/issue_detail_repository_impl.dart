@@ -13,11 +13,7 @@ class IssueDetailRepositoryImpl implements IssueDetailRepository {
   Future<IssueDetail?> fetchIssueDetailById(String id)async{
     final response = await dio.get(
       '/issues/$id',
-      options: Options(
-        headers: {
-          'Authorization': demoToken,
-        },
-      ),
+
     );
     final issueDetailDTO = IssueDetailDTO.fromJson(response.data);
     return issueDetailDTO.toDomain();
