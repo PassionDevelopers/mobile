@@ -1,5 +1,4 @@
 abstract class TokenStorageRepository {
-  Future<void> saveToken(String token);
+  Future<bool> saveToken(String token);
   Future<String?> getToken();
-  Future<void> clearToken();
 }

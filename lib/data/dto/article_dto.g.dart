@@ -13,7 +13,7 @@ ArticleDTO _$ArticleDTOFromJson(Map<String, dynamic> json) => ArticleDTO(
   url: json['url'] as String,
   reporter: json['reporter'] as String?,
   publishedAt: DateTime.parse(json['publishedAt'] as String),
-  issueId: json['issueId'] as String,
+  issueId: json['issueId'] as String?,
   category: json['category'] as String,
   imageUrl: json['imageUrl'] as String?,
   source: SourceDTO.fromJson(json['source'] as Map<String, dynamic>),

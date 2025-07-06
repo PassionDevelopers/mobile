@@ -8,6 +8,7 @@ import 'package:could_be/data/repositoryImpl/media_repository_impl.dart';
 import 'package:could_be/data/repositoryImpl/source_detail_impl.dart';
 import 'package:could_be/data/repositoryImpl/topic_detail_repository_impl.dart';
 import 'package:could_be/domain/entities/article.dart';
+import 'package:could_be/domain/entities/issue_query_params.dart';
 import 'package:could_be/domain/repositoryInterfaces/articles_interface.dart';
 import 'package:could_be/domain/repositoryInterfaces/issue_query_params_interface.dart';
 import 'package:could_be/domain/repositoryInterfaces/issues_interface.dart';
@@ -24,8 +25,10 @@ import 'package:could_be/domain/repositoryInterfaces/user_bias_interface.dart';
 import 'package:could_be/domain/useCases/fetch_issue_query_params_use_case.dart';
 import 'package:could_be/domain/useCases/fetch_source_detail_use_case.dart';
 import 'package:could_be/domain/useCases/fetch_topic_detail_use_case.dart';
+import 'package:could_be/domain/useCases/firebase_login_use_case.dart';
 import 'package:could_be/domain/useCases/manage_issue_evaluation_use_case.dart';
 import 'package:could_be/domain/useCases/manage_user_status_use_case.dart';
+import 'package:could_be/presentation/home/issue_query_params/issue_query_params_view_model.dart';
 import 'package:could_be/presentation/log_in/login_view_model.dart';
 import 'package:could_be/presentation/media/subscribed_media/subscribed_media_view_model.dart';
 import 'package:could_be/presentation/topic/whole_topics/whole_topic_view_model.dart';
@@ -53,38 +56,43 @@ import '../../domain/useCases/fetch_whole_issue_use_case.dart';
 import '../../domain/useCases/manage_issue_subscription_use_case.dart';
 import '../../domain/useCases/manage_media_subscription_use_case.dart';
 import '../../domain/useCases/manage_topic_subscription_use_case.dart';
+import '../../presentation/issue_detail_feed/issue_detail_view_model.dart';
 import '../../presentation/issue_list/issue_type.dart';
 import '../../presentation/issue_list/main/issue_list_view_model.dart';
 import '../../presentation/media/media_detail/media_detail_view_model.dart';
 import '../../presentation/media/whole_media/whole_media_view_model.dart';
 import '../../presentation/my_page/main/my_page_view_model.dart';
-import '../../presentation/shorts/shorts_view_model.dart';
 import '../../presentation/topic/subscribed_topic/subscribed_topic_view_model.dart';
 import 'api.dart';
 
 final getIt = GetIt.instance;
 
-//한군데서 di setup을 관리할 수 있다.
-void diSetup() {
-  //
-  // token storage (register first)
-  //
-  final tokenStorage = TokenStorageRepositoryImpl();
-  getIt.registerSingleton<TokenStorageRepository>(tokenStorage);
+Future<void> diSetupToken() async {
+  getIt.registerSingleton<TokenStorageRepository>(TokenStorageRepositoryImpl());
 
+  getIt.registerSingleton<FirebaseLoginUseCase>(
+    FirebaseLoginUseCase(tokenStorageRepository: getIt()),
+  );
+
+  getIt.registerSingleton<LoginViewModel>(
+    LoginViewModel(firebaseLoginUseCase: getIt()),
+  );
+}
+
+Future<void> diSetup() async{
   //
   // dio with token interceptor
   //
-  getIt.registerSingleton<Dio>(
-    createDio(tokenStorage),
-  );
+  getIt.registerSingleton<Dio>(createDio(getIt()));
 
   //
   // repository
   //
 
   //article
-  getIt.registerSingleton<ArticlesRepository>(ArticlesRepositoryImpl(getIt<Dio>()));
+  getIt.registerSingleton<ArticlesRepository>(
+    ArticlesRepositoryImpl(getIt<Dio>()),
+  );
 
   //issue
   getIt.registerSingleton<IssueDetailRepository>(
@@ -105,7 +113,9 @@ void diSetup() {
   getIt.registerSingleton<ManageUserStatusRepository>(
     ManageUserStatusRepositoryImpl(getIt<Dio>()),
   );
-  getIt.registerSingleton<UserBiasRepository>(UserBiasRepositoryImpl(getIt<Dio>()));
+  getIt.registerSingleton<UserBiasRepository>(
+    UserBiasRepositoryImpl(getIt<Dio>()),
+  );
 
   //source
   getIt.registerSingleton<ManageMediaSubscriptionRepository>(
@@ -115,7 +125,9 @@ void diSetup() {
   getIt.registerSingleton<SourceDetailRepository>(
     SourceDetailRepositoryImpl(getIt<Dio>()),
   );
-  getIt.registerSingleton<SourcesRepository>(SourcesRepositoryImpl(getIt<Dio>()));
+  getIt.registerSingleton<SourcesRepository>(
+    SourcesRepositoryImpl(getIt<Dio>()),
+  );
 
   //topic
   getIt.registerSingleton<ManageTopicSubscriptionRepository>(
@@ -139,7 +151,7 @@ void diSetup() {
 
   //user
   getIt.registerSingleton(FetchUserBiasUseCase(getIt()));
-  getIt.registerSingleton(ManageUserStatusUseCase(getIt(), getIt()));
+  getIt.registerSingleton(ManageUserStatusUseCase(getIt()));
   getIt.registerSingleton(ManageIssueEvaluationUseCase(getIt()));
 
   //articles
@@ -160,11 +172,6 @@ void diSetup() {
   // viewModel
   //
 
-  //user
-  getIt.registerSingleton<LoginViewModel>(
-    LoginViewModel(manageUserStatusUseCase: getIt()),
-  );
-
   //issue
   getIt.registerFactoryParam<IssueListViewModel, IssueType, String?>(
     (issueType, topicId) => IssueListViewModel(
@@ -180,6 +187,9 @@ void diSetup() {
       manageIssueSubscriptionUseCase: getIt(),
       issueId: issueId,
     ),
+  );
+  getIt.registerFactory<IssueQueryParamsViewModel>(
+    () => IssueQueryParamsViewModel(fetchIssueQueryParamsUseCase: getIt()),
   );
 
   //topic
@@ -226,6 +236,7 @@ void diSetup() {
   //my page
   getIt.registerFactory<MyPageViewModel>(
     () => MyPageViewModel(
+      firebaseLoginUseCase: getIt(),
       fetchUserBiasUseCase: getIt(),
       manageUserStatusUseCase: getIt(),
     ),

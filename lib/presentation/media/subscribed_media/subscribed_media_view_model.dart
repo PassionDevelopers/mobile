@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:could_be/core/events/media_subscription_events.dart';
+import 'package:could_be/domain/entities/article.dart' show Article;
 import 'package:could_be/domain/useCases/fetch_articles_use_case.dart';
 import 'package:could_be/domain/useCases/fetch_sources_use_case.dart';
 import 'package:flutter/cupertino.dart';
@@ -45,7 +46,51 @@ class SubscribedMediaViewModel with ChangeNotifier {
     }
   }
 
-  void _fetchSubscribedSources() async {
+  void fetchMoreIssues({required String lastArticleId}) async {
+    if(_state.isLoadingMore || !_state.articles!.hasMore || _state.articles!.articles.length >=50) return;
+
+    _state = state.copyWith(isLoadingMore: true, selectedSourceId: state.selectedSourceId);
+    notifyListeners();
+
+    if(state.selectedSourceId == null) {
+      final result = await _fetchArticlesUseCase.fetchArticlesSubscribed(lastArticleId: lastArticleId);
+      switch (result) {
+        case ResultSuccess<Articles, NetworkError> success:
+          addMoreLoadedArticles(result.data);
+        case ResultError<Articles, NetworkError>():
+          switch (result.error) {
+            case NetworkError.requestTimeout:
+            case NetworkError.noInternetConnection:
+            case NetworkError.serverError:
+            case NetworkError.unknown:
+          }
+          _eventController.add(result.error);
+      }
+    }else{
+      final result = await _fetchArticlesUseCase.fetchArticlesBySourceId(state.selectedSourceId!, lastArticleId: lastArticleId);
+      addMoreLoadedArticles(result);
+    }
+  }
+
+  void addMoreLoadedArticles(Articles newArticles) {
+    if (newArticles.articles.isEmpty) return;
+
+    List<Article> newArticleList = state.articles!.articles + newArticles.articles;
+    if(newArticleList.length > 50) {
+      newArticleList = newArticleList.sublist(newArticleList.length-50);
+    }
+    _state = state.copyWith(
+      articles: Articles(
+        articles: newArticleList,
+        hasMore: newArticles.hasMore,
+        lastArticleId: newArticles.lastArticleId,
+      ),
+      isLoadingMore: false, selectedSourceId: state.selectedSourceId,
+    );
+    notifyListeners();
+  }
+
+  void _fetchSubscribedSources({String? lastArticleId}) async {
     _state = state.copyWith(
       isSourcesLoading: true,
       selectedSourceId: state.selectedSourceId,
@@ -62,7 +107,7 @@ class SubscribedMediaViewModel with ChangeNotifier {
     notifyListeners();
   }
 
-  void _fetchSpecificSourceArticles(String sourceId) async {
+  void _fetchSpecificSourceArticles(String sourceId, {String? lastArticleId}) async {
     _state = state.copyWith(
       isArticlesLoading: true,
       selectedSourceId: state.selectedSourceId,

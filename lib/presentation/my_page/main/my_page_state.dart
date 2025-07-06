@@ -3,7 +3,7 @@
 import '../../../domain/entities/user_bias.dart';
 
 class MyPageState{
-  final String? userBias;
+  final UserBias? userBias;
   final bool isBiasLoading;
   final bool isUserStatusLoading;
 
@@ -15,7 +15,7 @@ class MyPageState{
   });
 
   MyPageState copyWith({
-    String? userBias,
+    UserBias? userBias,
     bool? isBiasLoading,
     bool? isUserStatusLoading,
   }) {

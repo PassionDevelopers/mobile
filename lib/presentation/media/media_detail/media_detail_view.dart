@@ -24,23 +24,6 @@ class MediaDetailView extends StatelessWidget {
     final viewModel = getIt<MediaDetailViewModel>(param1: sourceId);
     return MyScaffold(
       backgroundColor: primaryLight,
-      appBar: AppBar(
-        backgroundColor: primaryLight,
-        elevation: 0,
-        leading: IconButton(
-          icon: Icon(Icons.arrow_back_ios, color: primary),
-          onPressed: () => Navigator.pop(context),
-        ),
-        title: Text(
-          '매체 상세 정보',
-          style: TextStyle(
-            color: primary,
-            fontSize: 18,
-            fontWeight: FontWeight.w600,
-          ),
-        ),
-        centerTitle: false,
-      ),
       body: ListenableBuilder(
         listenable: viewModel,
         builder: (context, state) {
@@ -55,6 +38,23 @@ class MediaDetailView extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
+                  AppBar(
+                    backgroundColor: primaryLight,
+                    elevation: 0,
+                    leading: IconButton(
+                      icon: Icon(Icons.arrow_back_ios, color: primary),
+                      onPressed: () => Navigator.pop(context),
+                    ),
+                    title: Text(
+                      '매체 상세 정보',
+                      style: TextStyle(
+                        color: primary,
+                        fontSize: 18,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                    centerTitle: false,
+                  ),
                   const SizedBox(height: MyPaddings.medium),
                   // 매체 정보
                   Padding(

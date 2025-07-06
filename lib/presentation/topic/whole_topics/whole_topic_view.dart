@@ -1,3 +1,4 @@
+import 'package:could_be/core/components/app_bar/app_bar.dart';
 import 'package:could_be/core/di/di_setup.dart';
 import 'package:could_be/core/routes/route_names.dart';
 import 'package:could_be/presentation/topic/whole_topics/whole_topic_loading_view.dart';
@@ -20,13 +21,16 @@ class WholeTopicView extends StatelessWidget {
     final viewModelSociety = getIt<WholeTopicViewModel>(param1: 'society');
     final viewModelCulture = getIt<WholeTopicViewModel>(param1: 'culture');
     final viewModelWorld = getIt<WholeTopicViewModel>(param1: 'international');
+    final viewModelIt = getIt<WholeTopicViewModel>(param1: 'technology');
+
     return MyScaffold(
       body: DefaultTabController(
-        length: 5,
+        length: 6,
         child: Column(
           children: [
+            RegAppBar(title: '관심 토픽 설정'),
             Material(
-              color: AppColors.background,
+              color: AppColors.primaryLight,
               child: TabBar(
                 tabs: [
                   Tab(text: '정치'),
@@ -34,6 +38,7 @@ class WholeTopicView extends StatelessWidget {
                   Tab(text: '사회'),
                   Tab(text: '문화'),
                   Tab(text: '세계'),
+                  Tab(text: '기술'),
                 ],
               ),
             ),
@@ -45,6 +50,7 @@ class WholeTopicView extends StatelessWidget {
                   CategoryPartView(title: '사회', viewModel: viewModelSociety),
                   CategoryPartView(title: '문화', viewModel: viewModelCulture),
                   CategoryPartView(title: '세계', viewModel: viewModelWorld),
+                  CategoryPartView(title: '기술', viewModel: viewModelIt),
                 ],
               ),
             ),
@@ -103,7 +109,7 @@ class CategoryPartView extends StatelessWidget {
                 onTap: () {
                   context.push(
                     RouteNames.topicDetail,
-                    extra: {'topicId': topic.id},
+                    extra: topic.id,
                   );
                 },
               );

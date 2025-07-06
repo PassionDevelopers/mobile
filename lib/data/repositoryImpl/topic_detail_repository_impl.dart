@@ -13,11 +13,6 @@ class TopicDetailRepositoryImpl implements TopicDetailRepository {
   Future<TopicDetail> fetchTopicDetailById(String id) async {
     final response = await _dio.get(
       '/topics/detail/$id',
-        options: Options(
-          headers: {
-            'Authorization': demoToken,
-          },
-        ),
     );
     final topicDetailDto = TopicDetailDto.fromJson(response.data);
     return topicDetailDto.toDomain();

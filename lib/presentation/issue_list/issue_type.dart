@@ -1,9 +1,11 @@
 enum IssueType {
+
   daily,
   blindSpotLeft,
   blindSpotRight,
   forYou,
   hot,
+
   watchHistroy,
   subscribed,
   subscribedTopicIssuesWhole,
@@ -12,4 +14,4 @@ enum IssueType {
   String get name{
     return toString().split('.').last;
   }
-} 
+}

@@ -1,8 +1,10 @@
+import 'package:could_be/core/components/app_bar/app_bar.dart';
 import 'package:could_be/presentation/issue_list/issue_list_loading_view.dart';
 import 'package:could_be/ui/color.dart';
 import 'package:flutter/material.dart';
 import '../../core/di/di_setup.dart';
 import '../issue_list/issue_type.dart';
+import '../issue_list/main/issue_list_root.dart';
 import '../issue_list/main/issue_list_view.dart';
 import '../issue_list/main/issue_list_view_model.dart';
 
@@ -11,10 +13,11 @@ class BlindSpotRoot extends StatelessWidget {
   final void Function(String issueId) onIssueSelected;
   @override
   Widget build(BuildContext context) {
-    IssueListViewModel viewModelLeft = getIt<IssueListViewModel>(param1: IssueType.blindSpotLeft);
-    IssueListViewModel viewModelRight = getIt<IssueListViewModel>(param1: IssueType.blindSpotRight);
     return DefaultTabController(length: 2, child: Column(
       children: [
+        RegAppBar(title: '성향별 사각지대 이슈 보기'
+          , iconData: Icons.visibility_off,
+        ),
         Material(
           color: AppColors.background,
           child: TabBar(
@@ -29,22 +32,16 @@ class BlindSpotRoot extends StatelessWidget {
         ),
         SizedBox(height: 8),
         Expanded(child: TabBarView(children: [
-          ListenableBuilder(listenable: viewModelLeft, builder: (context, _){
-            final state = viewModelLeft.state;
-            if(state.isLoading){
-              return IssueListLoadingView();
-            }
-            return SingleChildScrollView(child: IssueListView(
-                issueList: state.issueList));
-          }),
-          ListenableBuilder(listenable: viewModelRight, builder: (context, _){
-            final state = viewModelRight.state;
-            if(state.isLoading){
-              return IssueListLoadingView();
-            }
-            return SingleChildScrollView(child: IssueListView(
-                issueList: state.issueList));
-          }),
+          SingleChildScrollView(
+            child: IssueListRoot(
+              issueType: IssueType.blindSpotLeft,
+            ),
+          ),
+          SingleChildScrollView(
+            child: IssueListRoot(
+              issueType: IssueType.blindSpotRight,
+            ),
+          ),
         ]))
       ],
     ));

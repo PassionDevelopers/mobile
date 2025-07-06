@@ -91,8 +91,7 @@ enum ContentLineType { twoLines, threeLines }
 class ContentPlaceholder extends StatelessWidget {
   final ContentLineType lineType;
 
-  const ContentPlaceholder({Key? key, required this.lineType})
-    : super(key: key);
+  const ContentPlaceholder({super.key, required this.lineType});
 
   @override
   Widget build(BuildContext context) {
@@ -138,3 +137,4 @@ class ContentPlaceholder extends StatelessWidget {
     );
   }
 }
+

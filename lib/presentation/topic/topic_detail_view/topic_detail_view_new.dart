@@ -20,23 +20,6 @@ class TopicDetailViewNew extends StatelessWidget {
     final viewModel = getIt<TopicDetailViewModel>(param1: topicId);
     return MyScaffold(
       backgroundColor: primaryLight,
-      appBar: AppBar(
-        backgroundColor: primaryLight,
-        elevation: 0,
-        leading: IconButton(
-          icon: Icon(Icons.arrow_back_ios, color: primary),
-          onPressed: () => Navigator.pop(context),
-        ),
-        title: Text(
-          '토픽 상세 정보',
-          style: TextStyle(
-            color: primary,
-            fontSize: 18,
-            fontWeight: FontWeight.w600,
-          ),
-        ),
-        centerTitle: false,
-      ),
       body: ListenableBuilder(
         listenable: viewModel,
         builder: (context, state) {
@@ -51,6 +34,23 @@ class TopicDetailViewNew extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
+                  AppBar(
+                    backgroundColor: primaryLight,
+                    elevation: 0,
+                    leading: IconButton(
+                      icon: Icon(Icons.arrow_back_ios, color: primary),
+                      onPressed: () => Navigator.pop(context),
+                    ),
+                    title: Text(
+                      '토픽 상세 정보',
+                      style: TextStyle(
+                        color: primary,
+                        fontSize: 18,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                    centerTitle: false,
+                  ),
                   const SizedBox(height: MyPaddings.medium),
                   // 토픽 정보
                   Padding(

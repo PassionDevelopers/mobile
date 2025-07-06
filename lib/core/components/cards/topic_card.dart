@@ -1,9 +1,5 @@
-
-
 import 'package:could_be/domain/entities/topic.dart';
 import 'package:flutter/material.dart';
-import 'package:fluttertoast/fluttertoast.dart';
-
 import '../../../ui/color.dart';
 import '../../../ui/fonts.dart';
 import '../../themes/margins_paddings.dart';
@@ -21,25 +17,25 @@ class TopicCard extends StatelessWidget {
       child: AnimatedContainer(
         duration: Duration(milliseconds: 200),
         curve: Curves.easeInOut,
-        child: Ink(
-          padding: EdgeInsets.symmetric(
-            horizontal: MyPaddings.medium,
-            vertical: MyPaddings.extraSmall,
-          ),
-          decoration: BoxDecoration(
-            color: AppColors.primaryLight,
-            borderRadius: BorderRadius.circular(10),
-            // border: Border.all(
-            //   color: AppColors.border,
-            //   width: 1,
-            // ),
-          ),
-          child: Row(
-            children: [
-              InkWell(
-                borderRadius: BorderRadius.circular(10),
-                onTap: onTapSubscribe,
-                child: Padding(
+        child: InkWell(
+          borderRadius: BorderRadius.circular(10),
+          onTap: onTapSubscribe,
+          child: Ink(
+            padding: EdgeInsets.symmetric(
+              horizontal: MyPaddings.medium,
+              vertical: MyPaddings.extraSmall,
+            ),
+            decoration: BoxDecoration(
+              color: AppColors.primaryLight,
+              borderRadius: BorderRadius.circular(10),
+              // border: Border.all(
+              //   color: AppColors.border,
+              //   width: 1,
+              // ),
+            ),
+            child: Row(
+              children: [
+                Padding(
                   padding: EdgeInsets.only(right: MyPaddings.medium),
                   child: Ink(
                     height: double.infinity,
@@ -63,24 +59,18 @@ class TopicCard extends StatelessWidget {
                     ),
                   ),
                 ),
-              ),
-              Expanded(
-                child: InkWell(
-                  borderRadius: BorderRadius.circular(10),
-                  onTap: onTap,
-                  child: Ink(
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        MyText.h3(topic.name, color: AppColors.textPrimary,),
-                        MyText.reg('이슈' + topic.issuesCount.toString(), color: AppColors.textSecondary,),
-                      ],
-                    ),
+                Expanded(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      MyText.h3(topic.name, color: AppColors.textPrimary,),
+                      MyText.reg('이슈' + topic.issuesCount.toString(), color: AppColors.textSecondary,),
+                    ],
                   ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
       ),

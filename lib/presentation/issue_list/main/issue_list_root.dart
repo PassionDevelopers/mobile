@@ -1,38 +1,103 @@
+import 'dart:developer';
+import 'package:could_be/core/components/loading/issue_card_skeleton.dart';
+import 'package:could_be/core/components/loading/not_found.dart';
+import 'package:could_be/presentation/home/issue_query_params/issue_query_params_view.dart';
 import 'package:flutter/material.dart';
+import '../../../core/components/app_bar/app_bar.dart';
 import '../../../core/di/di_setup.dart';
+import '../../topic/subscribed_topic/subscribed_topic_view.dart';
 import '../issue_list_loading_view.dart';
 import '../issue_type.dart';
 import 'issue_list_view.dart';
 import 'issue_list_view_model.dart';
 
-class IssueListRoot extends StatelessWidget {
+class IssueListRoot extends StatefulWidget {
   final IssueType issueType;
   final String? topicId;
+  final Widget? appBar;
+  final Widget? upperWidget;
+  final bool isFeedView;
+  final bool isTopicView;
 
-  const IssueListRoot({super.key, required this.issueType, this.topicId});
+  const IssueListRoot({
+    super.key,
+    this.appBar,
+    this.upperWidget,
+    this.isFeedView = false,
+    this.isTopicView = false,
+    required this.issueType,
+    this.topicId,
+  });
+
+  @override
+  State<IssueListRoot> createState() => _IssueListRootState();
+}
+
+class _IssueListRootState extends State<IssueListRoot> {
+  final ScrollController scrollController = ScrollController();
+  late IssueListViewModel viewModel;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    viewModel = getIt<IssueListViewModel>(
+      param1: widget.issueType,
+      param2: widget.topicId,
+    );
+    scrollController.addListener(() {
+      if (scrollController.position.pixels >=
+          scrollController.position.maxScrollExtent - 100) {
+        viewModel.fetchMoreIssues(topicId: widget.topicId,
+          lastIssueId: viewModel.state.lastIssueId);
+      }
+    });
+  }
+
+  @override
+  void dispose() {
+    scrollController.dispose();
+    viewModel.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
-    final viewModel = getIt<IssueListViewModel>(param1: issueType, param2: topicId);
-    return ListenableBuilder(
-      listenable: viewModel,
-      builder: (context, _) {
-        final state = viewModel.state;
-        if (state.isLoading) {
-          return IssueListLoadingView();
-        }else{
-          if (state.issueList.isEmpty) {
-            if(issueType == IssueType.watchHistroy){
-              return Center(child: Text('아직 본 이슈가 없습니다'));
-            }else if(issueType == IssueType.subscribed){
-              return Center(child: Text('아직 관심 이슈가 없습니다'));
-            }
-            return Center(child: Text('아직 이슈가 없습니다'));
-          }else{
-            return IssueListView(issueList: state.issueList);
-          }
-        }
-      },
+    return SingleChildScrollView(
+      controller: scrollController,
+      physics: ClampingScrollPhysics(),
+      child: Column(
+        children: [
+          widget.appBar ?? SizedBox.shrink(),
+          if(widget.isFeedView) IssueQueryParamsView(
+            changeQueryParam: viewModel.changeQueryParam,
+          ),
+          if(widget.isTopicView) SubscribedTopicView(
+            onTopicSelected: viewModel.changeTopicId,
+          ),
+          widget.upperWidget ?? SizedBox.shrink(),
+          ListenableBuilder(
+            listenable: viewModel,
+            builder: (context, _) {
+              final state = viewModel.state;
+              if (state.isLoading) {
+                return IssueListLoadingView();
+              } else {
+                if (state.issueList.isEmpty) {
+                  return NotFound(notFoundType: NotFoundType.issue);
+                } else {
+                  return Column(
+                    children: [
+                      IssueListView(issueList: state.issueList),
+                      if (state.isLoadingMore) IssueListLoadingView(),
+                    ],
+                  );
+                }
+              }
+            },
+          ),
+        ],
+      ),
     );
   }
-} 
+}

@@ -1,8 +1,6 @@
 import 'package:could_be/data/dto/source_dto.dart';
 import 'package:json_annotation/json_annotation.dart';
-
 import '../../domain/entities/article.dart';
-
 part 'article_dto.g.dart';
 
 @JsonSerializable()
@@ -14,7 +12,7 @@ class ArticleDTO {
   final String url;
   final String? reporter;
   final DateTime publishedAt;
-  final String issueId;
+  final String? issueId;
   final String category;
   final String? imageUrl;
   final SourceDTO source;
@@ -26,7 +24,7 @@ class ArticleDTO {
     required this.url,
     this.reporter,
     required this.publishedAt,
-    required this.issueId,
+    this.issueId,
     required this.category,
     this.imageUrl,
     required this.source,

@@ -1,3 +1,5 @@
+import 'package:could_be/domain/entities/issue_query_params.dart';
+
 import '../entities/issues.dart';
 import '../repositoryInterfaces/issues_interface.dart';
 
@@ -6,38 +8,42 @@ class FetchIssuesUseCase{
 
   const FetchIssuesUseCase(this._issuesRepository);
 
-  Future<Issues> fetchDailyIssues() async {
-    return _issuesRepository.fetchDailyIssues();
+  Future<Issues> fetchQueryParamIssues(IssueQueryParam issueQueryParam, {String? lastIssueId}) async {
+    return _issuesRepository.fetchQueryParamIssues(issueQueryParam, lastIssueId: lastIssueId);
   }
 
-  Future<Issues> fetchHotIssues() async {
-    return _issuesRepository.fetchHotIssues();
+  Future<Issues> fetchDailyIssues({String? lastIssueId}) async {
+    return _issuesRepository.fetchDailyIssues(lastIssueId: lastIssueId);
   }
 
-  Future<Issues> fetchBlindSpotLeftIssues() async {
-    return _issuesRepository.fetchBlindSpotLeftIssues();
-  }
-  Future<Issues> fetchBlindSpotRightIssues() async {
-    return _issuesRepository.fetchBlindSpotRightIssues();
+  Future<Issues> fetchHotIssues({String? lastIssueId}) async {
+    return _issuesRepository.fetchHotIssues(lastIssueId: lastIssueId);
   }
 
-  Future<Issues> fetchForYouIssues() async {
-    return _issuesRepository.fetchForYouIssues();
+  Future<Issues> fetchBlindSpotLeftIssues({String? lastIssueId}) async {
+    return _issuesRepository.fetchBlindSpotLeftIssues(lastIssueId: lastIssueId);
+  }
+  Future<Issues> fetchBlindSpotRightIssues({String? lastIssueId}) async {
+    return _issuesRepository.fetchBlindSpotRightIssues(lastIssueId: lastIssueId);
   }
 
-  Future<Issues> fetchWatchHistoryIssues() async {
-    return _issuesRepository.fetchWatchHistoryIssues();
+  Future<Issues> fetchForYouIssues({String? lastIssueId}) async {
+    return _issuesRepository.fetchForYouIssues(lastIssueId: lastIssueId);
   }
 
-  Future<Issues> fetchSubscribedIssues() async {
-    return _issuesRepository.fetchSubscribedIssues();
+  Future<Issues> fetchWatchHistoryIssues({String? lastIssueId}) async {
+    return _issuesRepository.fetchWatchHistoryIssues(lastIssueId: lastIssueId);
   }
 
-  Future<Issues> fetchSubscribedTopicIssuesWhole() async {
-    return _issuesRepository.fetchSubscribedTopicIssues();
+  Future<Issues> fetchSubscribedIssues({String? lastIssueId}) async {
+    return _issuesRepository.fetchSubscribedIssues(lastIssueId: lastIssueId);
   }
 
-  Future<Issues> fetchIssuesByTopicId(String topicId) async {
-    return _issuesRepository.fetchIssuesByTopicId(topicId);
+  Future<Issues> fetchSubscribedTopicIssuesWhole({String? lastIssueId}) async {
+    return _issuesRepository.fetchSubscribedTopicIssues(lastIssueId: lastIssueId);
+  }
+
+  Future<Issues> fetchIssuesByTopicId(String topicId, {String? lastIssueId}) async {
+    return _issuesRepository.fetchIssuesByTopicId(topicId, lastIssueId: lastIssueId);
   }
 }

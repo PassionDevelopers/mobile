@@ -2,6 +2,7 @@ import 'dart:developer';
 
 import 'package:could_be/core/components/alert/snack_bar.dart';
 import 'package:could_be/core/routes/route_names.dart';
+import 'package:could_be/domain/useCases/firebase_login_use_case.dart';
 import 'package:could_be/domain/useCases/manage_user_status_use_case.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
@@ -16,25 +17,27 @@ enum SignInMethod {
 
 class LoginViewModel with ChangeNotifier {
 
-  final ManageUserStatusUseCase _manageUserStatusUseCase;
+  final FirebaseLoginUseCase _firebaseLoginUseCase;
 
   // 상태
   LoginState _state = LoginState();
   LoginState get state => _state;
 
-  LoginViewModel({required ManageUserStatusUseCase manageUserStatusUseCase})
-      : _manageUserStatusUseCase = manageUserStatusUseCase;
+  LoginViewModel({required FirebaseLoginUseCase firebaseLoginUseCase})
+      : _firebaseLoginUseCase = firebaseLoginUseCase;
 
   Future<void> signIn(BuildContext context, {required SignInMethod signInMethod}) async {
     _state = _state.copyWith(isLoginInProgress: true);
     notifyListeners();
     try {
       if(switch(signInMethod) {
-        SignInMethod.google => await _manageUserStatusUseCase.signInWithGoogle(),
-        SignInMethod.apple => await _manageUserStatusUseCase.signInWithApple(),
-        SignInMethod.anonymous => await _manageUserStatusUseCase.signInAnon(),
+        SignInMethod.google => await _firebaseLoginUseCase.signInWithGoogle(),
+        SignInMethod.apple => await _firebaseLoginUseCase.signInWithApple(),
+        SignInMethod.anonymous => await _firebaseLoginUseCase.signInAnon(),
       }){
-        context.go(RouteNames.home);
+        _state = _state.copyWith(isLoginInProgress: false);
+        notifyListeners();
+        context.go(RouteNames.root);
       }else{
         showSnackBar(context, msg: '로그인 실패: 토큰을 받지 못했습니다.');
         _state = _state.copyWith(isLoginInProgress: false);
@@ -52,15 +55,7 @@ class LoginViewModel with ChangeNotifier {
   Future<void> signOut() async {
     _state = _state.copyWith(isLoginInProgress: true);
     notifyListeners();
-    await _manageUserStatusUseCase.signOut();
-    _state = _state.copyWith(isLoginInProgress: false);
-    notifyListeners();
-  }
-
-  Future<void> signOutWithGoogle() async {
-    _state = _state.copyWith(isLoginInProgress: true);
-    notifyListeners();
-    await _manageUserStatusUseCase.signOutWithGoogle();
+    await _firebaseLoginUseCase.signOut();
     _state = _state.copyWith(isLoginInProgress: false);
     notifyListeners();
   }

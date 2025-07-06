@@ -35,7 +35,6 @@ abstract class RouteNames{
   manageIssueEvalution = '$myPage/manageIssueEvalution',
 
   issueDetailFeed = '/issueDetailFeed',
-  shortsView = '/shortsView/:issueId',
   shortsPlayer = '/shortsPlayer/:issueId'
   ;
 }

@@ -24,6 +24,9 @@ IssueDTO _$IssueDTOFromJson(Map<String, dynamic> json) => IssueDTO(
   coverageSpectrum: CoverageSpectrumDTO.fromJson(
     json['coverageSpectrum'] as Map<String, dynamic>,
   ),
+  leftLikeCount: (json['leftLikeCount'] as num).toInt(),
+  centerLikeCount: (json['centerLikeCount'] as num).toInt(),
+  rightLikeCount: (json['rightLikeCount'] as num).toInt(),
 );
 
 Map<String, dynamic> _$IssueDTOToJson(IssueDTO instance) => <String, dynamic>{
@@ -33,6 +36,9 @@ Map<String, dynamic> _$IssueDTOToJson(IssueDTO instance) => <String, dynamic>{
   'summary': instance.summary,
   'createdAt': instance.createdAt.toIso8601String(),
   'updatedAt': instance.updatedAt?.toIso8601String(),
+  'leftLikeCount': instance.leftLikeCount,
+  'centerLikeCount': instance.centerLikeCount,
+  'rightLikeCount': instance.rightLikeCount,
   'keywords': instance.keywords,
   'imageUrl': instance.imageUrl,
   'view': instance.view,

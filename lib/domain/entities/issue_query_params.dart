@@ -1,5 +1,16 @@
 class IssueQueryParams{
-  final List<String> queryParams;
+  final List<IssueQueryParam> queryParams;
 
   IssueQueryParams(this.queryParams);
+}
+
+class IssueQueryParam{
+  final String queryParam;
+  final String displayName;
+
+  IssueQueryParam({
+    required this.queryParam,
+    required this.displayName,
+  });
+
 }

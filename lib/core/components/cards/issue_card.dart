@@ -2,11 +2,10 @@ import 'package:could_be/core/components/bias/bias_enum.dart';
 import 'package:could_be/core/components/image/image_container.dart';
 import 'package:could_be/core/components/title/issue_info_title.dart';
 import 'package:could_be/core/routes/route_names.dart';
-import 'package:could_be/ui/color_styles.dart';
 import 'package:could_be/ui/fonts.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:shimmer/shimmer.dart';
+
 import '../../../domain/entities/issue.dart';
 import '../../../ui/color.dart';
 import '../../themes/margins_paddings.dart';
@@ -36,15 +35,21 @@ class _IssueCardState extends State<IssueCard> with TickerProviderStateMixin {
     CurvedAnimation(parent: _animationController, curve: Curves.easeInOut),
   );
 
-  getBlindChip(){
-    if( (widget.issue.coverageSpectrum.left + widget.issue.coverageSpectrum.centerLeft)
-        < (widget.issue.coverageSpectrum.right + widget.issue.coverageSpectrum.centerRight) / 2){
-      return BlindChip(bias: Bias.left,);
-    } else if( (widget.issue.coverageSpectrum.left + widget.issue.coverageSpectrum.centerLeft)/2
-        > (widget.issue.coverageSpectrum.right + widget.issue.coverageSpectrum.centerRight) ){
-      return BlindChip(bias: Bias.right,);
-    }else{
-      return BlindChip(bias: Bias.center,);
+  getBlindChip() {
+    if ((widget.issue.coverageSpectrum.left +
+            widget.issue.coverageSpectrum.centerLeft) <
+        (widget.issue.coverageSpectrum.right +
+                widget.issue.coverageSpectrum.centerRight) /
+            2) {
+      return BlindChip(bias: Bias.left);
+    } else if ((widget.issue.coverageSpectrum.left +
+                widget.issue.coverageSpectrum.centerLeft) /
+            2 >
+        (widget.issue.coverageSpectrum.right +
+            widget.issue.coverageSpectrum.centerRight)) {
+      return BlindChip(bias: Bias.right);
+    } else {
+      return BlindChip(bias: Bias.center);
     }
   }
 
@@ -58,8 +63,12 @@ class _IssueCardState extends State<IssueCard> with TickerProviderStateMixin {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.fromLTRB(MyPaddings.largeMedium, 0, MyPaddings.largeMedium,
-          widget.isDailyIssue? 0 : MyPaddings.large),
+      padding: EdgeInsets.fromLTRB(
+        MyPaddings.largeMedium,
+        0,
+        MyPaddings.largeMedium,
+        MyPaddings.largeMedium,
+      ),
       child: AnimatedBuilder(
         animation: _scaleAnimation,
         builder: (context, child) {
@@ -74,11 +83,9 @@ class _IssueCardState extends State<IssueCard> with TickerProviderStateMixin {
               child: InkWell(
                 borderRadius: BorderRadius.circular(16),
                 onTap: () {
-                  // context.push('/shortsView/${widget.issue.id}');
-                  context.push(RouteNames.issueDetailFeed,
-                    extra: {
-                      'issueId': widget.issue.id,
-                    },
+                  context.push(
+                    RouteNames.issueDetailFeed,
+                    extra: widget.issue.id,
                   );
                 },
                 child: Ink(
@@ -87,9 +94,10 @@ class _IssueCardState extends State<IssueCard> with TickerProviderStateMixin {
                     color: AppColors.primaryLight,
                     boxShadow: [
                       BoxShadow(
-                        color: AppColors.gray1.withOpacity(0.5),
-                        blurRadius: 3,
-                        offset: Offset(0, 0.2), // changes position of shadow
+                        color: AppColors.gray4,
+                        spreadRadius: 1,
+                        blurRadius: 1,
+                        offset: Offset(0, 1), // changes position of shadow
                       ),
                     ],
                   ),
@@ -101,10 +109,14 @@ class _IssueCardState extends State<IssueCard> with TickerProviderStateMixin {
                           height: 220,
                           child: Stack(
                             children: [
-                              ImageContainer(height: 220, imageUrl: widget.issue.imageUrl!),
+                              ImageContainer(
+                                height: 220,
+                                imageUrl: widget.issue.imageUrl!,
+                              ),
                               Align(
                                 alignment: Alignment.bottomCenter,
                                 child: Container(
+                                  width: double.infinity,
                                   padding: EdgeInsets.fromLTRB(
                                     MyPaddings.large,
                                     MyPaddings.small,
@@ -117,19 +129,23 @@ class _IssueCardState extends State<IssueCard> with TickerProviderStateMixin {
                                   ),
                                   child: Column(
                                     mainAxisSize: MainAxisSize.min,
-                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
                                     children: [
-                                      MyText.h2(widget.issue.title, maxLines: 2,),
+                                      MyText.h2(
+                                        widget.issue.title,
+                                        maxLines: 2,
+                                      ),
                                       SizedBox(height: MyPaddings.small),
-                                      MyText.reg(
+                                      MyText.regSummary(
                                         widget.issue.summary,
                                         // color: AppColors.gray2,
-                                        maxLines: 3,
+                                        maxLines: 2,
                                       ),
                                     ],
                                   ),
                                 ),
-                              )
+                              ),
                             ],
                           ),
                         ),
@@ -164,7 +180,7 @@ class _IssueCardState extends State<IssueCard> with TickerProviderStateMixin {
                               coverageSpectrum: widget.issue.coverageSpectrum,
                             ),
                             SizedBox(height: MyPaddings.medium),
-                           IssueInfoTitle(
+                            IssueInfoTitle(
                               mediaTotal: widget.issue.coverageSpectrum.total,
                               viewCount: widget.issue.view,
                               time: widget.issue.createdAt,

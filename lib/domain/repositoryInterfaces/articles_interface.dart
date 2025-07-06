@@ -3,9 +3,9 @@ import '../entities/articles.dart';
 
 abstract class ArticlesRepository{
 
-  Future<Articles> fetchArticlesByIssueId(String issueId);
+  Future<Articles> fetchArticlesByIssueId(String issueId, {String? lastArticleId});
 
-  Future<Articles> fetchArticlesBySourceId(String sourceId);
+  Future<Articles> fetchArticlesBySourceId(String sourceId, {String? lastArticleId});
 
-  Future<Articles> fetchArticlesSubscribed();
+  Future<Articles> fetchArticlesSubscribed({String? lastArticleId});
 }

@@ -8,7 +8,9 @@ part of 'issue_query_params_dto.dart';
 
 IssueQueryParamsDto _$IssueQueryParamsDtoFromJson(Map<String, dynamic> json) =>
     IssueQueryParamsDto(
-      (json['queryParams'] as List<dynamic>).map((e) => e as String).toList(),
+      (json['queryParams'] as List<dynamic>)
+          .map((e) => (e as List<dynamic>).map((e) => e as String).toList())
+          .toList(),
     );
 
 Map<String, dynamic> _$IssueQueryParamsDtoToJson(

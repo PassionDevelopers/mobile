@@ -13,11 +13,6 @@ class ManageTopicSubscriptionRepositoryImpl
   Future<void> subscribeTopicByTopicId(String topicId) async {
     final response = await dio.post(
         '/topics/subscribe/$topicId',
-      options: Options(
-        headers: {
-          'Authorization' : demoToken
-        }
-      )
     );
     final statusCode = response.statusCode;
     if (statusCode != 200) {
@@ -29,11 +24,7 @@ class ManageTopicSubscriptionRepositoryImpl
   Future<void> unsubscribeTopicByTopicId(String topicId) async {
     final response = await dio.delete(
         '/topics/subscribe/$topicId',
-        options: Options(
-            headers: {
-              'Authorization' : demoToken
-            }
-        )
+
     );
     final statusCode = response.statusCode;
     if (statusCode != 200) {

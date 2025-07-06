@@ -1,4 +1,8 @@
+import 'package:could_be/core/components/buttons/back_button.dart';
+import 'package:could_be/core/components/cards/text_card.dart';
 import 'package:could_be/core/components/image/image_container.dart';
+import 'package:could_be/core/method/text_parsing.dart';
+import 'package:could_be/presentation/issue_detail_feed/components/move_to_next_button.dart';
 import 'package:could_be/ui/color.dart';
 import 'package:flutter/material.dart';
 import '../../../core/components/bias/bias_bar.dart';
@@ -8,43 +12,71 @@ import '../../../ui/fonts.dart';
 import 'header.dart';
 
 class IssueDetailSummary extends StatelessWidget {
-  const IssueDetailSummary({super.key, required this.issue});
+  const IssueDetailSummary({
+    super.key,
+    required this.issue,
+    required this.moveToNextPage,
+  });
+
   final IssueDetail issue;
+  final VoidCallback moveToNextPage;
+
   @override
   Widget build(BuildContext context) {
-    return Column(
+    return Stack(
       children: [
-        issue.imageUrl != null
-            ?
-        ImageContainer(height: 200, imageUrl: issue.imageUrl!, borderRadius: BorderRadius.zero,)
-            : SizedBox(),
-        Expanded(
-          child: Padding(
-            padding: EdgeInsets.symmetric(horizontal: MyPaddings.large),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                IssueDetailHeader(issue: issue),
-                SizedBox(height: MyPaddings.medium),
-                CardBiasBar(
-                  coverageSpectrum: issue.coverageSpectrum,
-                  isDailyIssue: true,
-                ),
-                SizedBox(height: MyPaddings.medium),
-                MyText.article(issue.summary, color: AppColors.gray2),
-              ],
-            ),
-          ),
-        ),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.center,
+        Column(
           children: [
-            Icon(Icons.keyboard_double_arrow_down_rounded, color: AppColors.gray2),
-            SizedBox(width: MyPaddings.small),
-            MyText.reg('성향별 보도 내용을 확인하세요.', color: AppColors.gray2),
+            issue.imageUrl != null
+                ? ImageContainer(
+                  height: 200,
+                  imageUrl: issue.imageUrl,
+                  borderRadius: BorderRadius.zero,
+                )
+                : SizedBox(height: MyPaddings.small,),
+            Expanded(
+              child: Padding(
+                padding: EdgeInsets.symmetric(horizontal: MyPaddings.large),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    IssueDetailHeader(issue: issue),
+                    SizedBox(height: MyPaddings.small),
+                    CardBiasBar(
+                      coverageSpectrum: issue.coverageSpectrum,
+                      isDailyIssue: true,
+                    ),
+                    SizedBox(height: MyPaddings.small),
+                    Expanded(
+                      child: TextCard(
+                        color: AppColors.gray2,
+                        child: SingleChildScrollView(
+                          child: Column(
+                            children: [
+                              for (String para in parseAiText(issue.summary))
+                                MyText.article(para, color: AppColors.gray2),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+            Padding(
+              padding: EdgeInsets.symmetric(horizontal: MyPaddings.large),
+              child: MoveToNextButton(
+                moveToNextPage: moveToNextPage,
+                buttonText: '성향별 보도 내용 보기',
+              ),
+            ),
           ],
         ),
-        SizedBox(height: MyPaddings.medium),
+        Align(
+          alignment: Alignment.topLeft,
+          child: MyBackButton()
+        ),
       ],
     );
   }

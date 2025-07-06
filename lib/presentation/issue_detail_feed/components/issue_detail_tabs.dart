@@ -1,19 +1,23 @@
+import 'package:could_be/core/components/buttons/back_button.dart';
 import 'package:could_be/core/components/cards/text_card.dart';
 import 'package:could_be/core/components/title/big_title.dart';
+import 'package:could_be/presentation/issue_detail_feed/components/move_to_next_button.dart';
 import 'package:flutter/material.dart';
 
 import '../../../core/components/bias/bias_enum.dart';
 import '../../../core/components/chips/key_word_chip_component.dart';
 import '../../../core/method/bias/bias_method.dart';
+import '../../../core/method/text_parsing.dart';
 import '../../../core/themes/margins_paddings.dart';
 import '../../../domain/entities/issue_detail.dart';
 import '../../../ui/color.dart';
 import '../../../ui/fonts.dart';
 
 class IssueDetailTabs extends StatefulWidget {
-  const IssueDetailTabs({super.key, required this.issue});
+  const IssueDetailTabs({super.key, required this.issue, required this.moveToNextPage});
 
   final IssueDetail issue;
+  final VoidCallback moveToNextPage;
 
   @override
   State<IssueDetailTabs> createState() => _IssueDetailTabsState();
@@ -87,31 +91,41 @@ class _IssueDetailTabsState extends State<IssueDetailTabs>
   }) {
     return TextCard(
       color: getBiasColor(bias),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          SizedBox(
-            height: 26,
-            child: Align(
-              alignment: Alignment.centerLeft,
-              child: ListView.builder(
-                scrollDirection: Axis.horizontal,
-                itemBuilder: (_, index) {
-                  return KeyWordChip(
-                    title: keywords[index],
-                    color: Colors.transparent,
-                    borderColor: getBiasColor(bias),
-                  );
-                },
-                itemCount: keywords.length,
-                shrinkWrap: true,
+      child: SingleChildScrollView(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            SizedBox(
+              height: 26,
+              child: Align(
+                alignment: Alignment.centerLeft,
+                child: ListView.builder(
+                  scrollDirection: Axis.horizontal,
+                  itemBuilder: (_, index) {
+                    return KeyWordChip(
+                      title: keywords[index],
+                      color: Colors.transparent,
+                      borderColor: getBiasColor(bias),
+                    );
+                  },
+                  itemCount: keywords.length,
+                  shrinkWrap: true,
+                ),
               ),
             ),
-          ),
-          SizedBox(height: MyPaddings.medium),
-          MyText.article(text),
-          SizedBox(height: MyPaddings.medium),
-        ],
+            SizedBox(height: MyPaddings.medium),
+            Column(
+              children: [
+                for(String para in parseAiText(text))
+                  ...[MyText.article(
+                    '• $para',
+                    color: AppColors.gray2,
+                  ),SizedBox(height: MyPaddings.small),]
+              ],
+            ),
+            SizedBox(height: MyPaddings.medium),
+          ],
+        ),
       ),
     );
   }
@@ -122,6 +136,7 @@ class _IssueDetailTabsState extends State<IssueDetailTabs>
     super.initState();
     _tabController.addListener(() {
       setState(() {
+
       });
     });
   }
@@ -138,43 +153,61 @@ class _IssueDetailTabsState extends State<IssueDetailTabs>
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        MyText.h1('언론 성향별 요약'),
-        SizedBox(height: MyPaddings.medium),
-        Container(
-          decoration: BoxDecoration(
-            color: AppColors.gray5,
-            borderRadius: BorderRadius.circular(12),
-          ),
-          child: Row(
-            children: List.generate(3, (index) {
-              return _buildTab(index);
-            }),
-          ),
-        ),
-        SizedBox(height: MyPaddings.small),
-        Expanded(
-          child: TabBarView(
-            controller: _tabController,
+        Row(children: [
+          BackButton(),
+          Column(
             children: [
-              _buildTabViewPage(
-                bias: Bias.left,
-                text: issue.leftSummary ?? '진보 언론의 기사가 없습니다.',
-                keywords: issue.leftKeywords ?? [],
-              ),
-              _buildTabViewPage(
-                bias: Bias.center,
-                text: issue.centerSummary ?? '중도 언론의 기사가 없습니다.',
-                keywords: issue.centerKeywords ?? [],
-              ),
-              _buildTabViewPage(
-                bias: Bias.right,
-                text: issue.rightSummary ?? '보수 언론의 기사가 없습니다.',
-                keywords: issue.rightKeywords ?? [],
-              ),
+              SizedBox(height: MyPaddings.medium),
+              MyText.h1('언론 성향별 요약'),
+              SizedBox(height: MyPaddings.medium),
             ],
+          )
+        ],),
+        Expanded(
+          child: Padding(
+            padding: EdgeInsets.symmetric(
+                horizontal: MyPaddings.large),
+            child: Column(
+              children: [
+                Container(
+                  decoration: BoxDecoration(
+                    color: AppColors.gray5,
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                  child: Row(
+                    children: List.generate(3, (index) {
+                      return _buildTab(index);
+                    }),
+                  ),
+                ),
+                SizedBox(height: MyPaddings.small),
+                Expanded(
+                  child: TabBarView(
+                    controller: _tabController,
+                    children: [
+                      _buildTabViewPage(
+                        bias: Bias.left,
+                        text: issue.leftSummary ?? '진보 언론의 기사가 없습니다.',
+                        keywords: issue.leftKeywords ?? [],
+                      ),
+                      _buildTabViewPage(
+                        bias: Bias.center,
+                        text: issue.centerSummary ?? '중도 언론의 기사가 없습니다.',
+                        keywords: issue.centerKeywords ?? [],
+                      ),
+                      _buildTabViewPage(
+                        bias: Bias.right,
+                        text: issue.rightSummary ?? '보수 언론의 기사가 없습니다.',
+                        keywords: issue.rightKeywords ?? [],
+                      ),
+                    ],
+                  ),
+                ),
+                MoveToNextButton(moveToNextPage: widget.moveToNextPage, buttonText: '성향별 차이점 보기')
+              ],
+            ),
           ),
-        ),
-        SizedBox(height: MyPaddings.medium),
+        )
       ],
     );
   }

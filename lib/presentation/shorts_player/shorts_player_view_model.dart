@@ -1,10 +1,8 @@
+import 'dart:async';
 import 'dart:developer';
-
-import 'package:could_be/domain/entities/issue.dart';
 import 'package:could_be/domain/entities/issue_detail.dart';
 import 'package:could_be/domain/useCases/fetch_whole_issue_use_case.dart';
 import 'package:flutter/material.dart';
-import 'dart:async';
 import 'shorts_player_state.dart';
 
 class ShortsPlayerViewModel extends ChangeNotifier {
@@ -96,8 +94,6 @@ class ShortsPlayerViewModel extends ChangeNotifier {
 
   void _cleanupOldContent(int currentIndexValue) {
     final startRemoveIndex = currentIndexValue - (_maxCacheSize ~/ 2);
-
-
     if (startRemoveIndex > _cacheRemoveCount) {
       final updatedContents = List<IssueDetail>.from(_state.contents);
       for (int i = 0; i < _cacheRemoveCount; i++) {
@@ -168,7 +164,9 @@ class ShortsPlayerViewModel extends ChangeNotifier {
   void toggleSubscription(String contentId) {
     final updatedContents = _state.contents.map((content) {
       if (content.id == contentId) {
-        return content.copyWith(isSubscribed: !content.isSubscribed);
+        return content.copyWith(
+          userEvaluation: content.userEvaluation,
+            isSubscribed: !content.isSubscribed);
       }
       return content;
     }).toList();

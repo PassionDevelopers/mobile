@@ -1,8 +1,7 @@
-import '../../core/base_url.dart';
+import 'package:could_be/domain/entities/issue_query_params.dart';
 import '../../domain/entities/issues.dart';
 import '../../domain/repositoryInterfaces/issues_interface.dart';
 import 'package:dio/dio.dart';
-
 import '../dto/issues_dto.dart';
 
 class IssuesRepositoryImpl implements IssuesRepository {
@@ -10,104 +9,103 @@ class IssuesRepositoryImpl implements IssuesRepository {
   IssuesRepositoryImpl(this.dio);
 
   @override
-  Future<Issues> fetchDailyIssues() async {
+  Future<Issues> fetchQueryParamIssues(IssueQueryParam issueQueryParam, {String? lastIssueId}) async {
     final response = await dio.get(
       '/issues',
-
-      queryParameters: {'type': 'daily'},
+      queryParameters: {'type': issueQueryParam.queryParam, 'lastIssueId': lastIssueId},
     );
     final issuesDTO = IssuesDTO.fromJson(response.data);
     return issuesDTO.toDomain();
   }
 
   @override
-  Future<Issues> fetchHotIssues() async {
+  Future<Issues> fetchDailyIssues({String? lastIssueId}) async {
     final response = await dio.get(
       '/issues',
-
-      queryParameters: {'type': 'hot', 'limit': 10, 'lastIssueId': ''},
+      queryParameters: {'type': 'daily', 'lastIssueId': lastIssueId},
     );
     final issuesDTO = IssuesDTO.fromJson(response.data);
     return issuesDTO.toDomain();
   }
 
   @override
-  Future<Issues> fetchBlindSpotLeftIssues() async {
+  Future<Issues> fetchHotIssues({String? lastIssueId}) async {
     final response = await dio.get(
       '/issues',
 
-      queryParameters: {'type': 'blind-spot-left'},
+      queryParameters: {'type': 'hot', 'lastIssueId': lastIssueId},
     );
     final issuesDTO = IssuesDTO.fromJson(response.data);
     return issuesDTO.toDomain();
   }
 
   @override
-  Future<Issues> fetchBlindSpotRightIssues() async {
+  Future<Issues> fetchBlindSpotLeftIssues({String? lastIssueId}) async {
     final response = await dio.get(
       '/issues',
 
-      queryParameters: {'type': 'blind-spot-right'},
+      queryParameters: {'type': 'blind-spot-left', 'lastIssueId': lastIssueId},
     );
     final issuesDTO = IssuesDTO.fromJson(response.data);
     return issuesDTO.toDomain();
   }
 
   @override
-  Future<Issues> fetchForYouIssues() async {
+  Future<Issues> fetchBlindSpotRightIssues({String? lastIssueId}) async {
     final response = await dio.get(
       '/issues',
 
-      queryParameters: {'type': 'for-you'},
+      queryParameters: {'type': 'blind-spot-right', 'lastIssueId': lastIssueId},
     );
     final issuesDTO = IssuesDTO.fromJson(response.data);
     return issuesDTO.toDomain();
   }
 
   @override
-  Future<Issues> fetchWatchHistoryIssues() async {
+  Future<Issues> fetchForYouIssues({String? lastIssueId}) async {
+    final response = await dio.get(
+      '/issues',
+      queryParameters: {'type': 'for-you', 'lastIssueId': lastIssueId},
+    );
+    final issuesDTO = IssuesDTO.fromJson(response.data);
+    return issuesDTO.toDomain();
+  }
+
+  @override
+  Future<Issues> fetchWatchHistoryIssues({String? lastIssueId}) async {
     final response = await dio.get(
       '/user/watch-history',
-      options: Options(
-        headers: {
-          'Authorization' : demoToken
-        },
-      ),
+      queryParameters: {'lastIssueId': lastIssueId},
     );
     final issuesDTO = IssuesDTO.fromJson(response.data);
     return issuesDTO.toDomain();
   }
 
   @override
-  Future<Issues> fetchSubscribedIssues() async{
+  Future<Issues> fetchSubscribedIssues({String? lastIssueId}) async{
     final response = await dio.get(
       '/issues/subscribed',
-      options: Options(
-        headers: {
-          'Authorization' : demoToken
-        },
-      ),
-      // queryParameters: {'limit': 10, 'lastIssueId': ''},
+      queryParameters: {'lastIssueId': lastIssueId},
     );
     final issuesDTO = IssuesDTO.fromJson(response.data);
     return issuesDTO.toDomain();
   }
 
   @override
-  Future<Issues> fetchIssuesByTopicId(String topicId) async {
+  Future<Issues> fetchIssuesByTopicId(String topicId, {String? lastIssueId}) async {
     final response = await dio.get(
       '/topics/$topicId/issues',
-
+      queryParameters: {'lastIssueId': lastIssueId},
     );
     final issuesDTO = IssuesDTO.fromJson(response.data);
     return issuesDTO.toDomain();
   }
 
   @override
-  Future<Issues> fetchSubscribedTopicIssues() async {
+  Future<Issues> fetchSubscribedTopicIssues({String? lastIssueId}) async {
     final response = await dio.get(
       '/topics/subscribed/issues',
-
+      queryParameters: {'lastIssueId': lastIssueId},
     );
     final issuesDTO = IssuesDTO.fromJson(response.data);
     return issuesDTO.toDomain();

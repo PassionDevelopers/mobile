@@ -1,4 +1,5 @@
 import 'dart:developer';
+import 'dart:io';
 import 'package:could_be/core/components/buttons/login_button.dart';
 import 'package:could_be/core/di/di_setup.dart';
 import 'package:could_be/presentation/log_in/login_view_model.dart';
@@ -17,7 +18,6 @@ class LoginView extends StatelessWidget {
     final viewModel = getIt<LoginViewModel>();
 
     return MyScaffold(
-      showAppBar: false,
       backgroundColor: AppColors.primaryLight,
       body: Container(
         width: double.infinity,
@@ -50,10 +50,10 @@ class LoginView extends StatelessWidget {
                                 await viewModel.signIn(context, signInMethod: SignInMethod.google);
                               },
                             ),
-                            LoginButton(
+                            if(Platform.isIOS) LoginButton(
                               buttonType: ButtonType.appleDark,
                               onPressed: () async {
-                                await viewModel.signOutWithGoogle();
+                                await viewModel.signIn(context, signInMethod: SignInMethod.apple);
                               },
                             ),
                             LoginButton(

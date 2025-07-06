@@ -8,12 +8,12 @@ import 'package:could_be/presentation/issue_detail_feed/issue_detail_feed_root.d
 import 'package:could_be/presentation/log_in/login_view.dart';
 import 'package:could_be/presentation/my_page/manage_issue_evaluation/manage_issue_evaluation_view.dart';
 import 'package:could_be/presentation/my_page/user_bias_status/user_bias_status_view.dart';
-import 'package:could_be/presentation/shorts/shorts_root.dart';
 import 'package:could_be/presentation/shorts_player/shorts_player_view.dart';
+import 'package:could_be/presentation/topic/subscribed_topic/subscribed_topic_root.dart';
 import 'package:could_be/presentation/topic/subscribed_topic/subscribed_topic_view.dart';
 import 'package:could_be/presentation/topic/whole_topics/whole_topic_view.dart';
 import 'package:could_be/presentation/web_view/web_view_view.dart';
-import 'package:could_be/root.dart';
+import 'package:could_be/presentation/init/root.dart';
 import 'package:go_router/go_router.dart';
 import '../../domain/entities/article.dart';
 import '../../presentation/blind_spot/blind_spot_root.dart';
@@ -40,30 +40,36 @@ final router = GoRouter(
             },
           ),
     ),
-    GoRoute(path: RouteNames.unsupportedDevice, builder: (context, state) => UnsupportedDevice()),
-    GoRoute(path: RouteNames.needUpdate, builder: (context, state) => NeedUpdate(isUpdate: true)),
-    GoRoute(path: RouteNames.serverCheck, builder: (context, state) => NeedUpdate(isUpdate: false)),
-    GoRoute(path: RouteNames.haveUpdate, builder: (context, state) => HaveUpdate(latestVersionNow: state.extra as String)),
+    GoRoute(
+      path: RouteNames.unsupportedDevice,
+      builder: (context, state) => UnsupportedDevice(),
+    ),
+    GoRoute(
+      path: RouteNames.needUpdate,
+      builder: (context, state) => NeedUpdate(isUpdate: true),
+    ),
+    GoRoute(
+      path: RouteNames.serverCheck,
+      builder: (context, state) => NeedUpdate(isUpdate: false),
+    ),
+    GoRoute(
+      path: RouteNames.haveUpdate,
+      builder:
+          (context, state) =>
+              HaveUpdate(latestVersionNow: state.extra as String),
+    ),
 
-    GoRoute(
-      path: RouteNames.shortsView,
-      builder: (context, state) {
-        final issueId = state.pathParameters['issueId']!;
-        return ShortsRoot(issueId: issueId);
-      },
-    ),
-    GoRoute(
-      path: RouteNames.shortsPlayer,
-      builder: (context, state) {
-        final issueId = state.pathParameters['issueId']!;
-        return ShortsPlayerView(issueId: issueId);
-      },
-    ),
+    // GoRoute(
+    //   path: RouteNames.shortsPlayer,
+    //   builder: (context, state) {
+    //     final issueId = state.pathParameters['issueId']!;
+    //     return ShortsPlayerView(issueId: issueId);
+    //   },
+    // ),
     GoRoute(
       path: RouteNames.issueDetailFeed,
       builder: (context, state) {
-        final extra = state.extra! as Map<String, dynamic>;
-        final issueId = extra['issueId'] as String;
+        final issueId = state.extra as String;
         return IssueDetailFeedRoot(issueId: issueId);
       },
     ),
@@ -94,7 +100,7 @@ final router = GoRouter(
     GoRoute(
       path: RouteNames.topicDetail,
       builder: (context, state) {
-        final extra = state.extra! as String;
+        final extra = state.extra as String;
         return TopicDetailView(topicId: extra);
       },
     ),
@@ -155,12 +161,7 @@ final router = GoRouter(
           routes: [
             GoRoute(
               path: RouteNames.home,
-              builder:
-                  (context, state) => FeedView(
-                    onIssueSelected:
-                        (issueId) =>
-                            context.push(RouteNames.shortsView + issueId),
-                  ),
+              builder: (context, state) => FeedView(),
             ),
           ],
         ),
@@ -168,7 +169,7 @@ final router = GoRouter(
           routes: [
             GoRoute(
               path: RouteNames.topic,
-              builder: (context, state) => SubscribedTopicView(),
+              builder: (context, state) => SubscribedTopicRoot(),
             ),
           ],
         ),
@@ -179,8 +180,10 @@ final router = GoRouter(
               builder:
                   (context, state) => BlindSpotRoot(
                     onIssueSelected:
-                        (issueId) =>
-                            context.push(RouteNames.shortsView + issueId),
+                        (issueId) => context.push(
+                          RouteNames.issueDetailFeed,
+                          extra: issueId,
+                        ),
                   ),
             ),
           ],
@@ -198,19 +201,19 @@ final router = GoRouter(
             GoRoute(
               path: RouteNames.myPage,
               builder:
-                  (context, state) => MyPageView(
-                    toWatchHistory: () => context.push(RouteNames.watchHistory),
-                    toSubscribedIssue:
-                        () => context.push(RouteNames.subscribedIssue),
-                    toUserBiasStatus:
-                        () => context.push(RouteNames.userBiasStatus),
-                    toManageMediaSubscription:
-                        () => context.push(RouteNames.wholeMedia),
-                    toManageTopicSubscription:
-                        () => context.push(RouteNames.wholeTopics),
-                    toManageIssueEvaluation:
-                        () => context.push(RouteNames.manageIssueEvalution),
-                  ),
+                (context, state) => MyPageView(
+                  toWatchHistory: () => context.push(RouteNames.watchHistory),
+                  toSubscribedIssue:
+                      () => context.push(RouteNames.subscribedIssue),
+                  toUserBiasStatus:
+                      () => context.push(RouteNames.userBiasStatus),
+                  toManageMediaSubscription:
+                      () => context.push(RouteNames.wholeMedia),
+                  toManageTopicSubscription:
+                      () => context.push(RouteNames.wholeTopics),
+                  toManageIssueEvaluation:
+                      () => context.push(RouteNames.manageIssueEvalution),
+                ),
             ),
           ],
         ),

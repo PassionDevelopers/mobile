@@ -108,7 +108,12 @@ abstract class MyText {
   }
 
   static AutoSizeText reg(String text, {Color? color, AutoSizeGroup? group, int? maxLines}){
-    return AutoSizeText(text, style: MyFontStyle.reg.copyWith(color: color, ), group: group, maxLines: maxLines ?? 1, minFontSize: 1, overflow: TextOverflow.ellipsis);
+    return AutoSizeText(text, style: MyFontStyle.reg.copyWith(color: color, ), group: group, maxLines: maxLines ?? 1, minFontSize: 1,
+        overflow: TextOverflow.ellipsis);
+  }
+
+  static Text regSummary(String text, {Color? color, int? maxLines}){
+    return Text(text, style: MyFontStyle.reg.copyWith(color: color, ), maxLines: maxLines ?? 1, overflow: TextOverflow.ellipsis);
   }
 
   static AutoSizeText small(String text, {Color? color, AutoSizeGroup? group, int? maxLines}){

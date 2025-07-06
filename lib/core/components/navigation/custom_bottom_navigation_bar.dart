@@ -109,7 +109,10 @@ class _CustomBottomNavigationBarState extends State<CustomBottomNavigationBar>
       height: 80,
       decoration: BoxDecoration(
         color: Colors.white.withOpacity(0.9),
-        borderRadius: BorderRadius.circular(25),
+        borderRadius: BorderRadius.only(
+          topLeft: Radius.circular(16),
+          topRight: Radius.circular(16),
+        ),
         border: Border.all(
           color: Colors.white.withOpacity(0.2),
           width: 1,
@@ -132,7 +135,6 @@ class _CustomBottomNavigationBarState extends State<CustomBottomNavigationBar>
                     child: Column(
                       mainAxisSize: MainAxisSize.min,
                       children: [
-                        // Icon container with gradient background when selected
                         Container(
                           width: 40,
                           height: 40,
@@ -161,7 +163,6 @@ class _CustomBottomNavigationBarState extends State<CustomBottomNavigationBar>
                           ),
                         ),
                         SizedBox(height: 4),
-                        // Label
                         AnimatedDefaultTextStyle(
                           duration: Duration(milliseconds: 200),
                           style: MyFontStyle.small.copyWith(

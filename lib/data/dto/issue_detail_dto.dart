@@ -19,13 +19,17 @@ class IssueDetailDTO {
   final int view;
   final CoverageSpectrumDTO coverageSpectrum;
   final String? updatedAt;
-  final String leftSummary;
-  final String centerSummary;
-  final String rightSummary;
-  final String biasComparison;
-  final List<String> leftKeywords;
-  final List<String> centerKeywords;
-  final List<String> rightKeywords;
+  final String? userEvaluation;
+  final int leftLikeCount;
+  final int centerLikeCount;
+  final int rightLikeCount;
+  final String? leftSummary;
+  final String? centerSummary;
+  final String? rightSummary;
+  final String? biasComparison;
+  final List<String>? leftKeywords;
+  final List<String>? centerKeywords;
+  final List<String>? rightKeywords;
   final List<String> nextIssueIds;
   final bool isSubscribed;
   final ArticlesDTO articles;
@@ -41,13 +45,17 @@ class IssueDetailDTO {
     required this.view,
     required this.coverageSpectrum,
     this.updatedAt,
-    required this.leftSummary,
-    required this.centerSummary,
-    required this.rightSummary,
-    required this.biasComparison,
-    required this.leftKeywords,
-    required this.centerKeywords,
-    required this.rightKeywords,
+    this.userEvaluation,
+    this.leftSummary,
+    this.centerSummary,
+    this.rightSummary,
+    required this.leftLikeCount,
+    required this.centerLikeCount,
+    required this.rightLikeCount,
+    this.biasComparison,
+    this.leftKeywords,
+     this.centerKeywords,
+     this.rightKeywords,
     required this.nextIssueIds,
     required this.isSubscribed,
     required this.articles,
@@ -63,6 +71,9 @@ extension IssueDetailDtx on IssueDetailDTO {
   // Converts the DTO to a domain entity
   IssueDetail toDomain() {
     return IssueDetail(
+      leftLikeCount: leftLikeCount,
+      centerLikeCount: centerLikeCount,
+      rightLikeCount: rightLikeCount,
       id: id,
       title: title,
       category: category,
@@ -73,16 +84,17 @@ extension IssueDetailDtx on IssueDetailDTO {
       view: view,
       coverageSpectrum: coverageSpectrum.toDomain(),
       updatedAt: updatedAt != null? DateTime.parse(updatedAt!) : null,
-      leftSummary: leftSummary,
-      centerSummary: centerSummary,
-      rightSummary: rightSummary,
-      biasComparison: biasComparison,
-      leftKeywords: leftKeywords,
-      centerKeywords: centerKeywords,
-      rightKeywords: rightKeywords,
+      leftSummary: leftSummary != null && leftSummary!.isEmpty ? null : leftSummary,
+      centerSummary: centerSummary != null && centerSummary!.isEmpty ? null : centerSummary,
+      rightSummary: rightSummary != null && rightSummary!.isEmpty ? null : rightSummary,
+      biasComparison: biasComparison != null && biasComparison!.isEmpty ? null : biasComparison,
+      leftKeywords: leftKeywords != null && leftKeywords!.isEmpty ? null : leftKeywords,
+      centerKeywords: centerKeywords != null && centerKeywords!.isEmpty ? null : centerKeywords,
+      rightKeywords: rightKeywords != null && rightKeywords!.isEmpty ? null : rightKeywords,
       nextIssueIds: nextIssueIds,
       isSubscribed: isSubscribed,
       articles: articles.toDomain(),
+      userEvaluation: userEvaluation,
     );
   }
 }

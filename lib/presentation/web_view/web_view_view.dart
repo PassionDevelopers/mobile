@@ -96,8 +96,7 @@ class WebViewView extends StatelessWidget {
                         itemBuilder: (context, index) {
                           return NewsCard(
                             article: articles[index],
-                            isSelected:
-                            state.currentArticleId == articles[index].id &&
+                            isSelected: state.currentArticleId == articles[index].id &&
                                 state.currentSourceId ==
                                     articles[index].source.id,
                             onWebViewSelected: () {
@@ -111,39 +110,39 @@ class WebViewView extends StatelessWidget {
                   ],
                 ),
               ),
-              collapsed: Ink(
-                padding: EdgeInsets.symmetric(horizontal: MyPaddings.medium),
-                decoration: BoxDecoration(
-                  color: AppColors.background,
-                  borderRadius: radius,
-                ),
-                child: Column(
-                  children: [
-                    Icon(Icons.drag_handle_rounded, color: AppColors.primary),
-                    Expanded(
-                      child: Align(
-                        alignment: Alignment.centerLeft,
-                        child: ListView.builder(
-                          scrollDirection: Axis.horizontal,
-                          itemBuilder: (context, index) {
-                            final source = state.articlesGroupBySource!.sources[index];
-                            return MediaProfileWebView(
-                              source: source,
-                              isShowingArticles: source.id == state.currentSourceId,
-                              onShowArticles: () {
-                                viewModel.changeCurrentSourceId(source.id);
-                              },
-                            );
-                          },
-                          itemCount:
-                          state.articlesGroupBySource!.sources.length,
-                          shrinkWrap: true,
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
+              // collapsed: Ink(
+              //   padding: EdgeInsets.symmetric(horizontal: MyPaddings.medium),
+              //   decoration: BoxDecoration(
+              //     color: AppColors.background,
+              //     borderRadius: radius,
+              //   ),
+              //   child: Column(
+              //     children: [
+              //       Icon(Icons.drag_handle_rounded, color: AppColors.primary),
+              //       Expanded(
+              //         child: Align(
+              //           alignment: Alignment.centerLeft,
+              //           child: ListView.builder(
+              //             scrollDirection: Axis.horizontal,
+              //             itemBuilder: (context, index) {
+              //               final source = state.articlesGroupBySource!.sources[index];
+              //               return MediaProfileWebView(
+              //                 source: source,
+              //                 isShowingArticles: source.id == state.currentSourceId,
+              //                 onShowArticles: () {
+              //                   viewModel.changeCurrentSourceId(source.id);
+              //                 },
+              //               );
+              //             },
+              //             itemCount:
+              //             state.articlesGroupBySource!.sources.length,
+              //             shrinkWrap: true,
+              //           ),
+              //         ),
+              //       ),
+              //     ],
+              //   ),
+              // ),
               body: WebViewWidget(controller: viewModel.state.controller!),
               borderRadius: radius,
             );

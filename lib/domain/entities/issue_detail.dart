@@ -12,13 +12,17 @@ class IssueDetail {
   final int view;
   final CoverageSpectrum coverageSpectrum;
   final DateTime? updatedAt;
-  final String leftSummary;
-  final String centerSummary;
-  final String rightSummary;
-  final String biasComparison;
-  final List<String> leftKeywords;
-  final List<String> centerKeywords;
-  final List<String> rightKeywords;
+  final String? userEvaluation;
+  final String? leftSummary;
+  final String? centerSummary;
+  final String? rightSummary;
+  final int leftLikeCount;
+  final int centerLikeCount;
+  final int rightLikeCount;
+  final String? biasComparison;
+  final List<String>? leftKeywords;
+  final List<String>? centerKeywords;
+  final List<String>? rightKeywords;
   final List<String> nextIssueIds;
   final bool isSubscribed;
   final Articles articles;
@@ -43,7 +47,11 @@ class IssueDetail {
     required this.rightKeywords,
     required this.nextIssueIds,
     required this.isSubscribed,
-    required this.articles
+    required this.articles,
+    required this.userEvaluation,
+    required this.leftLikeCount,
+    required this.centerLikeCount,
+    required this.rightLikeCount,
   });
 
   IssueDetail copyWith({
@@ -67,6 +75,10 @@ class IssueDetail {
     List<String>? nextIssueIds,
     bool? isSubscribed,
     Articles? articles,
+    required String? userEvaluation,
+    int? leftLikeCount,
+    int? centerLikeCount,
+    int? rightLikeCount,
   }) {
     return IssueDetail(
       id: id ?? this.id,
@@ -89,6 +101,10 @@ class IssueDetail {
       nextIssueIds: nextIssueIds ?? this.nextIssueIds,
       isSubscribed: isSubscribed ?? this.isSubscribed,
       articles: articles ?? this.articles,
+      userEvaluation: userEvaluation,
+      leftLikeCount: leftLikeCount ?? this.leftLikeCount,
+      centerLikeCount: centerLikeCount ?? this.centerLikeCount,
+      rightLikeCount: rightLikeCount ?? this.rightLikeCount,
     );
   }
 } 

@@ -1,6 +1,7 @@
 import 'package:could_be/core/components/layouts/scaffold_layout.dart';
 import 'package:could_be/core/di/di_setup.dart';
 import 'package:could_be/presentation/media/media_profile_component.dart';
+import 'package:could_be/presentation/media/whole_media/whole_media_loading_view.dart' show WholeMediaLoadingView;
 import 'package:could_be/presentation/media/whole_media/whole_media_view_model.dart';
 import 'package:flutter/material.dart';
 import '../../../core/themes/margins_paddings.dart';
@@ -19,7 +20,7 @@ class WholeMediaView extends StatelessWidget {
         builder: (context, _) {
           final state = viewModel.state;
           if (state.isLoading) {
-            return Center(child: CircularProgressIndicator());
+            return WholeMediaLoadingView();
           } else if (state.sources == null || state.sources!.sources.isEmpty) {
             return Center(child: Text('현재 매체 정보를 불러올 수 없습니다.'));
           } else {
@@ -39,6 +40,7 @@ class WholeMediaView extends StatelessWidget {
               itemBuilder: (context, index) {
                 final source = sources[index];
                 return MediaProfile(source: source,
+                  isFirst: false,
                   isShowingArticles: false, onSubscribe: (){
                     viewModel.manageSourceSubscriptionBySourceId(source.id);
                   },);

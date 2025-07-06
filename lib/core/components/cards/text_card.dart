@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-
-import '../../method/bias/bias_method.dart';
 import '../../themes/margins_paddings.dart';
 
 class TextCard extends StatelessWidget {
@@ -22,7 +20,7 @@ class TextCard extends StatelessWidget {
         horizontal: MyPaddings.medium,
         vertical: MyPaddings.medium,
       ),
-      child: SingleChildScrollView(child: child),
+      child: child,
     );
   }
 }

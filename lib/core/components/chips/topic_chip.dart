@@ -4,15 +4,16 @@ import '../../../ui/color.dart';
 import '../../../ui/fonts.dart';
 
 class TopicChip extends StatelessWidget {
-  const TopicChip({super.key, required this.title, required this.isActive, required this.onTap});
+  const TopicChip({super.key, this.padding, required this.title, required this.isActive, required this.onTap});
   final String title;
   final bool isActive;
   final VoidCallback onTap;
+  final double? padding;
 
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.only(right: MyPaddings.small),
+      padding: EdgeInsets.only(left: padding ?? MyPaddings.small),
       child: AnimatedContainer(
         duration: Duration(milliseconds: 200),
         curve: Curves.easeInOut,

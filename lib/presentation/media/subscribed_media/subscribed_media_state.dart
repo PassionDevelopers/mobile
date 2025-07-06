@@ -9,12 +9,14 @@ class SubscribedMediaState {
   final bool isSourcesLoading;
   final bool isArticlesLoading;
   final String? selectedSourceId;
+  final bool isLoadingMore;
 
   SubscribedMediaState({
     this.sources,
     this.articles,
     this.isSourcesLoading = false,
     this.isArticlesLoading = false,
+    this.isLoadingMore = false,
     this.selectedSourceId,
   });
 
@@ -24,6 +26,7 @@ class SubscribedMediaState {
     bool? isSourcesLoading,
     bool? isArticlesLoading,
     required String? selectedSourceId,
+    bool? isLoadingMore,
   }) {
     return SubscribedMediaState(
       sources: sources ?? this.sources,
@@ -31,6 +34,7 @@ class SubscribedMediaState {
       isSourcesLoading: isSourcesLoading ?? this.isSourcesLoading,
       isArticlesLoading: isArticlesLoading ?? this.isArticlesLoading,
       selectedSourceId: selectedSourceId,
+      isLoadingMore: isLoadingMore ?? this.isLoadingMore,
     );
   }
 }

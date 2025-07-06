@@ -12,12 +12,7 @@ class MediaRepositoryImpl implements MediaRepository {
   Future<Media> fetchSubscribedMedia() async {
     final response = await dio.get(
       '/media',
-      options: Options(
-        headers: {
-          'Authorization' : demoToken
-        },
-      ),
-      queryParameters: {'type': 'subscribed', 'limit': 2, 'lastIssueId': ''},
+      queryParameters: {'type': 'subscribed'},
     );
     final mediaDTO = MediaDTO.fromJson(response.data);
     return mediaDTO.toDomain();

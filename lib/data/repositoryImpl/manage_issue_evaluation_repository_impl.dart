@@ -11,12 +11,7 @@ class ManageIssueEvaluationRepositoryImpl extends ManageIssueEvaluationRepositor
     required String perspective,
   }) async {
     final response = await dio.post(
-      '/issue/evaluate/$issueId',
-      options: Options(
-        headers: {
-          'Authorization': 'demoToken', // Replace with actual token
-        },
-      ),
+      '/user/evaluate/$issueId',
       data: {
         'perspective': perspective,
       },
@@ -28,12 +23,7 @@ class ManageIssueEvaluationRepositoryImpl extends ManageIssueEvaluationRepositor
     required String issueId,
   }) async {
     final response = await dio.delete(
-      '/issue/evaluate/$issueId',
-      options: Options(
-        headers: {
-          'Authorization': 'demoToken', // Replace with actual token
-        },
-      ),
+      '/user/evaluate/$issueId',
     );
   }
 
@@ -43,12 +33,7 @@ class ManageIssueEvaluationRepositoryImpl extends ManageIssueEvaluationRepositor
     required String perspective,
   }) async {
     final response = await dio.put(
-      '/issue/evaluate/$issueId',
-      options: Options(
-        headers: {
-          'Authorization': 'demoToken', // Replace with actual token
-        },
-      ),
+      '/user/evaluate/$issueId',
       data: {
         'perspective': perspective,
       },

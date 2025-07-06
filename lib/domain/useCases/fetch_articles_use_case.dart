@@ -12,17 +12,17 @@ class FetchArticlesUseCase {
 
   FetchArticlesUseCase(this._articlesRepository);
 
-  Future<Articles> fetchArticlesBySourceId(String sourceId) async {
-    return await _articlesRepository.fetchArticlesBySourceId(sourceId);
+  Future<Articles> fetchArticlesBySourceId(String sourceId, {String? lastArticleId}) async {
+    return await _articlesRepository.fetchArticlesBySourceId(sourceId, lastArticleId: lastArticleId);
   }
 
-  Future<Articles> fetchArticlesByIssueId(String issueId) async {
-    return await _articlesRepository.fetchArticlesByIssueId(issueId);
+  Future<Articles> fetchArticlesByIssueId(String issueId, {String? lastArticleId}) async {
+    return await _articlesRepository.fetchArticlesByIssueId(issueId, lastArticleId: lastArticleId);
   }
 
-  Future<Result<Articles, NetworkError>> fetchArticlesSubscribed() async {
+  Future<Result<Articles, NetworkError>> fetchArticlesSubscribed({String? lastArticleId}) async {
     try {
-      final articles = await _articlesRepository.fetchArticlesSubscribed();
+      final articles = await _articlesRepository.fetchArticlesSubscribed(lastArticleId: lastArticleId);
       return Result.success(articles);
     } on SocketException catch (e) {
       return Result.error(NetworkError.noInternetConnection);

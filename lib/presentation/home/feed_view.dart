@@ -1,77 +1,42 @@
-import 'package:could_be/core/components/title/big_title.dart';
-import 'package:could_be/presentation/home/hot_issue/hot_issue_root.dart';
+import 'package:could_be/core/components/app_bar/app_bar.dart';
+import 'package:could_be/core/themes/margins_paddings.dart';
+import 'package:could_be/ui/color.dart';
 import 'package:flutter/material.dart';
-
-import '../../../core/components/chips/issue_chip.dart';
-import '../../../ui/color.dart';
-import '../../core/themes/margins_paddings.dart';
+import '../../ui/fonts.dart';
 import '../issue_list/issue_type.dart';
 import '../issue_list/main/issue_list_root.dart';
 
 class FeedView extends StatelessWidget {
-  final void Function(String issueId) onIssueSelected;
-
-  FeedView({super.key, required this.onIssueSelected});
-
-  final List<String> issueCategories = [
-    '데일리 이슈',
-    '추천 이슈',
-    '심한 대립'
-  ];
-
-  late List<bool> issueActive = List.generate(
-    issueCategories.length,
-    (index) => index == 0,
-  );
-
+  const FeedView({super.key});
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        Material(
-          color: AppColors.background,
-          child: Container(
-            height: 50,
-            padding: EdgeInsets.symmetric(vertical: MyPaddings.small, horizontal: MyPaddings.largeMedium),
-            child: StatefulBuilder(
-              builder: (context, setChipState) {
-                return ListView.builder(
-                  scrollDirection: Axis.horizontal,
-                  itemCount: issueCategories.length,
-                  itemBuilder: (context, index) {
-                    return IssueChip(
-                      title: issueCategories[index],
-                      isActive: issueActive[index],
-                      onTap: () {
-                        setChipState(() {
-                          for (int i = 0; i < issueActive.length; i++) {
-                            issueActive[i] = i == index;
-                          }
-                        });
-                      },
-                    );
-                  },
-                );
-              },
-            ),
-          ),
-        ),
-        Expanded(
-          child: SingleChildScrollView(
-            child: Column(
-              children: [
-                // HotIssueRoot(),
-                // SizedBox(height: MyPaddings.medium,),
-                Padding(
-                  padding: EdgeInsets.only(left: MyPaddings.largeMedium, bottom: MyPaddings.large),
-                  child: BigTitle(title: '데일리 이슈'),
-                ),
-                IssueListRoot(issueType: IssueType.daily),
-              ],
-            ),
-          ),
-        ),
-      ],
+    return IssueListRoot(issueType: IssueType.daily,
+      isFeedView: true,
+      isTopicView: false,
+      appBar: MainAppBar(),
+      upperWidget: SizedBox(height: MyPaddings.medium,)
+      // upperWidget: Padding(
+      //   padding: EdgeInsets.symmetric(horizontal: MyPaddings.largeMedium,
+      //   vertical: MyPaddings.mediumLarge),
+      //   child: InkWell(
+      //     onTap: () {
+      //
+      //     },
+      //     child: Ink(
+      //       height: 100,
+      //       width: double.infinity,
+      //       padding: EdgeInsets.symmetric(
+      //         vertical: MyPaddings.mediumLarge,
+      //       ),
+      //       decoration: BoxDecoration(
+      //         color: AppColors.primaryLight,
+      //         borderRadius: BorderRadius.circular(16.0),
+      //         boxShadow: myShadow
+      //       ),
+      //       child: MyText.h3('오늘의 이슈'),
+      //     )
+      //   )
+      // )
     );
   }
 }

@@ -17,6 +17,9 @@ class IssueDTO{
   final DateTime createdAt;
   final DateTime? updatedAt;
 
+  final int leftLikeCount;
+  final int centerLikeCount;
+  final int rightLikeCount;
 
   final List<String> keywords;
   final String? imageUrl;
@@ -36,6 +39,9 @@ class IssueDTO{
     this.imageUrl,
     required this.view,
     required this.coverageSpectrum,
+    required this.leftLikeCount,
+    required this.centerLikeCount,
+    required this.rightLikeCount,
   });
 
   factory IssueDTO.fromJson(Map<String, dynamic> json) => _$IssueDTOFromJson(json);
@@ -46,6 +52,9 @@ class IssueDTO{
 extension IssueDtoX on IssueDTO {
   Issue toDomain() {
     return Issue(
+      leftLikeCount: leftLikeCount,
+      centerLikeCount: centerLikeCount,
+      rightLikeCount: rightLikeCount,
       id: id,
       title: title,
       category: category,

@@ -8,8 +8,12 @@ part 'user_bias_dto.g.dart';
 @JsonSerializable()
 class UserBiasDTO {
   final String perspective;
+  final String nickname;
 
-  UserBiasDTO(this.perspective);
+  UserBiasDTO({
+    required this.perspective,
+    required this.nickname,
+});
 
   factory UserBiasDTO.fromJson(Map<String, dynamic> json) =>
       _$UserBiasDTOFromJson(json);
@@ -21,6 +25,7 @@ extension UserBiasDtx on UserBiasDTO {
 
   UserBias toDomain() {
     return UserBias(
+      nickname: nickname,
       bias: getBiasFromString(perspective),
     );
   }

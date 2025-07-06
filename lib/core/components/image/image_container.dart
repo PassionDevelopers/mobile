@@ -5,7 +5,7 @@ import '../../../ui/color.dart';
 class ImageContainer extends StatelessWidget {
   const ImageContainer({super.key, required this.height, required this.imageUrl, this.borderRadius});
   final double? height;
-  final String imageUrl;
+  final String? imageUrl;
   final BorderRadius? borderRadius;
   @override
   Widget build(BuildContext context) {
@@ -22,7 +22,14 @@ class ImageContainer extends StatelessWidget {
         borderRadius: borderRadius ?? BorderRadius.vertical(
           top: Radius.circular(16),
         ),
-        child: Image.network(
+        child: imageUrl == null? Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Center(
+            child: Icon(Icons.image_not_supported, color: AppColors.gray2, size: 48),
+          ),
+        ) :
+
+          Image.network(
           // loadingBuilder: (_, child, loadingProgress) {
           //   if (loadingProgress == null) return child;
           //   return Center(
@@ -43,7 +50,7 @@ class ImageContainer extends StatelessWidget {
               ),
             );
           },
-          imageUrl,
+          imageUrl!,
           fit: BoxFit.cover,
         ),
       ),

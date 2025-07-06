@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import '../../../core/components/cards/issue_card.dart';
 import '../../../domain/entities/issue.dart';
 
-
 class IssueListView extends StatelessWidget {
   const IssueListView({super.key, required this.issueList});
+
   final List<Issue> issueList;
 
   @override

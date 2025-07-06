@@ -10,22 +10,34 @@ class ArticlesRepositoryImpl implements ArticlesRepository {
   ArticlesRepositoryImpl(this.dio);
 
   @override
-  Future<Articles> fetchArticlesByIssueId(String issueId) async {
+  Future<Articles> fetchArticlesByIssueId(
+    String issueId, {
+    String? lastArticleId,
+  }) async {
     final response = await dio.get('/issues/$issueId/articles');
     final articlesDTO = ArticlesDTO.fromJson(response.data);
     return articlesDTO.toDomain();
   }
 
   @override
-  Future<Articles> fetchArticlesBySourceId(String sourceId) async {
-    final response = await dio.get('/media/$sourceId/articles');
+  Future<Articles> fetchArticlesBySourceId(
+    String sourceId, {
+    String? lastArticleId,
+  }) async {
+    final response = await dio.get(
+      '/media/$sourceId/articles',
+      queryParameters: {'lastArticleId': lastArticleId},
+    );
     final articlesDTO = ArticlesDTO.fromJson(response.data);
     return articlesDTO.toDomain();
   }
 
   @override
-  Future<Articles> fetchArticlesSubscribed() async {
-    final response = await dio.get('/media/subscribed/articles');
+  Future<Articles> fetchArticlesSubscribed({String? lastArticleId}) async {
+    final response = await dio.get(
+      '/media/subscribed/articles',
+      queryParameters: {'lastArticleId': lastArticleId},
+    );
     final articlesDTO = ArticlesDTO.fromJson(response.data);
     return articlesDTO.toDomain();
   }

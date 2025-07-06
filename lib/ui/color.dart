@@ -2,6 +2,13 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 
+List<BoxShadow> myShadow = [BoxShadow(
+  color: AppColors.gray4,
+  spreadRadius: 1,
+  blurRadius: 1,
+  offset: Offset(0, 1), // changes position of shadow
+)];
+
 abstract class AppColors {
   // static Color right = Color.fromRGBO(223, 41, 53, 1); // 따뜻한 빨강
   // static Color center = Color.fromRGBO(100, 17, 63, 1); // 따뜻한 보라

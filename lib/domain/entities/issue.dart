@@ -10,6 +10,9 @@ class Issue{
   final DateTime createdAt;
   final DateTime? updatedAt;
 
+  final int leftLikeCount;
+  final int centerLikeCount;
+  final int rightLikeCount;
 
   final List<String> keywords;
   final String? imageUrl;
@@ -28,6 +31,9 @@ class Issue{
     required this.imageUrl,
     required this.view,
     required this.coverageSpectrum,
-    required this.isSubscribed
+    required this.isSubscribed,
+    required this.leftLikeCount,
+    required this.centerLikeCount,
+    required this.rightLikeCount,
   });
 }

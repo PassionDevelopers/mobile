@@ -1,7 +1,8 @@
 import 'package:could_be/core/di/di_setup.dart';
 import 'package:could_be/core/domain/error_view.dart';
 import 'package:could_be/core/routes/router.dart';
-import 'package:could_be/root.dart';
+import 'package:could_be/data/data_source/local/user_preferences.dart';
+import 'package:could_be/presentation/init/root.dart';
 import 'package:could_be/splash_screen.dart';
 import 'package:could_be/ui/color.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -14,10 +15,10 @@ import 'core/themes/app_bar_theme.dart';
 import 'core/themes/bottom_navigation_bar_theme.dart';
 import 'firebase_options.dart';
 
-@pragma('vm:entry-point')
-Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
-  await Firebase.initializeApp();
-}
+// @pragma('vm:entry-point')
+// Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
+//   await Firebase.initializeApp();
+// }
 
 void main()async{
   WidgetsFlutterBinding.ensureInitialized();
@@ -32,37 +33,39 @@ void main()async{
   // );
   // await UserSimplePreferences.init();
 
-  FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
-  FirebaseMessaging.onMessage.listen((RemoteMessage message) {
-
-    // RemoteNotification notification = message.notification;
-    // AndroidNotification android = message.notification?.android;
-    //
-    // if (notification != null && android != null) {
-    //   flutterLocalNotificationsPlugin.show(
-    //       notification.hashCode,
-    //       notification.title,
-    //       notification.body,
-    //       NotificationDetails(
-    //         android: AndroidNotificationDetails(
-    //           channel.id,
-    //           channel.name,
-    //           channel.description,
-    //           // TODO add a proper drawable resource to android, for now using
-    //           //      one that already exists in example app.
-    //           icon: 'launch_background',
-    //         ),
-    //       ));
-    // }
-    print('Got a message whilst in the foreground!');
-    print('Message data: ${message.data}');
-    if (message.notification != null) {
-      print('Message also contained a notification: ${message.notification}');
-    }
-  });
+  // FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
+  // FirebaseMessaging.onMessage.listen((RemoteMessage message) {
+  //
+  //   // RemoteNotification notification = message.notification;
+  //   // AndroidNotification android = message.notification?.android;
+  //   //
+  //   // if (notification != null && android != null) {
+  //   //   flutterLocalNotificationsPlugin.show(
+  //   //       notification.hashCode,
+  //   //       notification.title,
+  //   //       notification.body,
+  //   //       NotificationDetails(
+  //   //         android: AndroidNotificationDetails(
+  //   //           channel.id,
+  //   //           channel.name,
+  //   //           channel.description,
+  //   //           // TODO add a proper drawable resource to android, for now using
+  //   //           //      one that already exists in example app.
+  //   //           icon: 'launch_background',
+  //   //         ),
+  //   //       ));
+  //   // }
+  //   print('Got a message whilst in the foreground!');
+  //   print('Message data: ${message.data}');
+  //   if (message.notification != null) {
+  //     print('Message also contained a notification: ${message.notification}');
+  //   }
+  // });
   //의존성 주입
-
-  diSetup();
+  // diSetup()
+  await UserPreferences.init();
+  await diSetupToken();
+  await diSetup();
   runApp(const MyApp());
 }
 
@@ -71,6 +74,7 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
     return FutureBuilder(
       future: Init.instance.initialize(context),
       builder: (context, AsyncSnapshot snapshot) {

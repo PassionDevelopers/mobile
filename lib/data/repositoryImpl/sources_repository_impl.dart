@@ -15,11 +15,6 @@ class SourcesRepositoryImpl extends SourcesRepository {
   Future<Sources> fetchSubscribedSources() async {
     final response = await dio.get(
         '/media/subscribed',
-        options: Options(
-          headers: {
-            'Authorization': demoToken
-          },
-        )
     );
     final sourcesDTO = SourcesDTO.fromJson(response.data);
     return sourcesDTO.toDomain();
@@ -29,11 +24,6 @@ class SourcesRepositoryImpl extends SourcesRepository {
   Future<Sources> fetchAllSources() async {
     final response = await dio.get(
         '/media',
-        options: Options(
-          headers: {
-            'Authorization': demoToken
-          },
-        )
     );
     final sourcesDTO = SourcesDTO.fromJson(response.data);
     return sourcesDTO.toDomain();

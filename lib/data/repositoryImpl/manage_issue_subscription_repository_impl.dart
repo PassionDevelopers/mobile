@@ -13,11 +13,6 @@ class ManageIssueSubscriptionRepositoryImpl
   Future<void> subscribeIssueByIssueId(String issueId) async {
     await dio.post(
       '/issues/$issueId/subscribe',
-      options: Options(
-        headers: {
-          'Authorization' : demoToken
-        },
-      ),
     );
   }
 
@@ -25,11 +20,6 @@ class ManageIssueSubscriptionRepositoryImpl
   Future<void> unsubscribeIssueByIssueId(String issueId) async {
     await dio.delete(
       '/issues/$issueId/subscribe',
-      options: Options(
-        headers: {
-          'Authorization' : demoToken
-        },
-      ),
     );
   }
 }

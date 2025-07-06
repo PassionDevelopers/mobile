@@ -68,6 +68,7 @@ class _NewsCardState extends State<NewsCard> with TickerProviderStateMixin {
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(16),
         color: widget.isSelected == true ? AppColors.black.withAlpha(50) : null,
+
       ),
       padding: EdgeInsets.symmetric(
         horizontal: MyPaddings.medium,
@@ -107,9 +108,16 @@ class _NewsCardState extends State<NewsCard> with TickerProviderStateMixin {
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(16),
                     color: AppColors.primaryLight,
+                    boxShadow: [
+                      BoxShadow(
+                        color: AppColors.gray4,
+                        spreadRadius: 1,
+                        blurRadius: 1,
+                        offset: Offset(0, 1), // changes position of shadow
+                      ),
+                    ],
                   ),
                   child: Row(
-                    mainAxisSize: MainAxisSize.min,
                     children: [
                       Container(
                         height: 100,
@@ -122,7 +130,7 @@ class _NewsCardState extends State<NewsCard> with TickerProviderStateMixin {
                           borderRadius: BorderRadius.circular(16),
                           child: ImageContainer(
                             height: null,
-                            imageUrl: widget.article.imageUrl!,
+                            imageUrl: widget.article.imageUrl,
                           ),
                         ),
                       ),
@@ -134,7 +142,7 @@ class _NewsCardState extends State<NewsCard> with TickerProviderStateMixin {
                             mainAxisSize: MainAxisSize.min,
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              MyText.h2(widget.article.title, maxLines: 2),
+                              MyText.h2(widget.article.title, maxLines: 5),
                               SizedBox(height: MyPaddings.small),
                               MyText.reg(
                                 widget.article.source.name +

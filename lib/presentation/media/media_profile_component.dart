@@ -1,3 +1,4 @@
+import 'package:could_be/core/themes/margins_paddings.dart';
 import 'package:could_be/domain/entities/source.dart';
 import 'package:flutter/material.dart';
 import '../../ui/color.dart';
@@ -115,8 +116,10 @@ class MediaProfile extends StatelessWidget {
     required this.isShowingArticles,
     this.onSubscribe,
     this.onShowArticles,
+    required this.isFirst,
   });
 
+  final bool isFirst;
   final bool isShowingArticles;
   final VoidCallback? onSubscribe;
   final VoidCallback? onShowArticles;
@@ -125,10 +128,21 @@ class MediaProfile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.all(2.0),
+      padding: EdgeInsets.fromLTRB(
+        isFirst ? MyPaddings.largeMedium : 2,
+        2,
+        2,
+        2,
+      ),
       child: InkWell(
         borderRadius: BorderRadius.circular(10),
-        onTap: onShowArticles,
+        onTap: () {
+          if (onSubscribe != null) {
+            onSubscribe!();
+          } else if (onShowArticles != null){
+            onShowArticles!();
+          }
+        },
         child: Stack(
           children: [
             Padding(
@@ -174,7 +188,14 @@ class MediaProfile extends StatelessWidget {
                           //   borderRadius: BorderRadius.circular(10),
                           //   border: Border.all(color: getBiasColor(bias)),
                           // ),
-                          child: Center(child: MyText.reg(source.name)),
+                          child: Center(
+                            child: MyText.h3(
+                              source.name,
+                              color: getBiasColor(
+                                getBiasFromString(source.perspective),
+                              ),
+                            ),
+                          ),
                         ),
                       ],
                     ),
