@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import '../../../ui/color.dart';
 import '../../../ui/fonts.dart';
 import '../../themes/margins_paddings.dart';
+import '../../responsive/responsive_utils.dart';
 
 class TopicCard extends StatelessWidget {
   const TopicCard({super.key, required this.topic, required this.onTap, required this.onTapSubscribe});
@@ -12,8 +13,12 @@ class TopicCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final responsivePadding = ResponsiveUtils.isMobile(context) 
+        ? MyPaddings.small.toDouble() 
+        : MyPaddings.medium.toDouble();
+
     return Padding(
-      padding: EdgeInsets.only(right: MyPaddings.small),
+      padding: EdgeInsets.only(right: responsivePadding),
       child: AnimatedContainer(
         duration: Duration(milliseconds: 200),
         curve: Curves.easeInOut,
@@ -22,8 +27,8 @@ class TopicCard extends StatelessWidget {
           onTap: onTapSubscribe,
           child: Ink(
             padding: EdgeInsets.symmetric(
-              horizontal: MyPaddings.medium,
-              vertical: MyPaddings.extraSmall,
+              horizontal: ResponsiveUtils.isMobile(context) ? MyPaddings.medium.toDouble() : MyPaddings.large.toDouble(),
+              vertical: ResponsiveUtils.isMobile(context) ? MyPaddings.extraSmall.toDouble() : MyPaddings.small.toDouble(),
             ),
             decoration: BoxDecoration(
               color: AppColors.primaryLight,

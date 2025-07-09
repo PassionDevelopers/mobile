@@ -1,3 +1,5 @@
+import 'package:amplitude_flutter/amplitude.dart';
+import 'package:amplitude_flutter/configuration.dart';
 import 'package:could_be/core/components/bias/bias_enum.dart';
 import 'package:could_be/data/repositoryImpl/issue_query_params_repository_impl.dart';
 import 'package:could_be/data/repositoryImpl/manage_issue_evaluation_repository_impl.dart';
@@ -44,9 +46,13 @@ import '../../data/repositoryImpl/manage_media_subscription_repository_impl.dart
 import '../../data/repositoryImpl/sources_repository_impl.dart';
 import '../../data/repositoryImpl/topics_repository_impl.dart';
 import '../../data/repositoryImpl/user_bias_repository_impl.dart';
+import '../../data/repositoryImpl/feedback_repository_impl.dart';
 import '../../domain/repositoryInterfaces/issue_detail_interface.dart';
 import '../../domain/repositoryInterfaces/media_interface.dart';
 import '../../domain/repositoryInterfaces/sources_interface.dart';
+import '../../domain/repositoryInterfaces/feedback_interface.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import '../../domain/useCases/fetch_articles_use_case.dart';
 import '../../domain/useCases/fetch_issues_use_case.dart';
 import '../../domain/useCases/fetch_sources_use_case.dart';
@@ -56,7 +62,9 @@ import '../../domain/useCases/fetch_whole_issue_use_case.dart';
 import '../../domain/useCases/manage_issue_subscription_use_case.dart';
 import '../../domain/useCases/manage_media_subscription_use_case.dart';
 import '../../domain/useCases/manage_topic_subscription_use_case.dart';
+import '../../domain/useCases/submit_feedback_use_case.dart';
 import '../../presentation/issue_detail_feed/issue_detail_view_model.dart';
+import '../../presentation/customer_services/feedback_view_model.dart';
 import '../../presentation/issue_list/issue_type.dart';
 import '../../presentation/issue_list/main/issue_list_view_model.dart';
 import '../../presentation/media/media_detail/media_detail_view_model.dart';
@@ -68,10 +76,23 @@ import 'api.dart';
 final getIt = GetIt.instance;
 
 Future<void> diSetupToken() async {
-  getIt.registerSingleton<TokenStorageRepository>(TokenStorageRepositoryImpl());
 
+  getIt.registerSingleton<Amplitude>(Amplitude(Configuration(
+          apiKey: "f7b82ddae07365f5aa64dc2496a44dc8"
+        ))
+  );
+
+  getIt.registerSingleton<TokenStorageRepository>(TokenStorageRepositoryImpl());
+  //
+  // Firebase instances
+  //
+  getIt.registerSingleton<FirebaseFirestore>(FirebaseFirestore.instance);
+  getIt.registerSingleton<FirebaseAuth>(FirebaseAuth.instance);
   getIt.registerSingleton<FirebaseLoginUseCase>(
-    FirebaseLoginUseCase(tokenStorageRepository: getIt()),
+    FirebaseLoginUseCase(
+      tokenStorageRepository: getIt(),
+      firebaseAuth: getIt(),
+    ),
   );
 
   getIt.registerSingleton<LoginViewModel>(
@@ -80,6 +101,7 @@ Future<void> diSetupToken() async {
 }
 
 Future<void> diSetup() async{
+
   //
   // dio with token interceptor
   //
@@ -137,6 +159,11 @@ Future<void> diSetup() async{
   getIt.registerSingleton<TopicDetailRepository>(
     TopicDetailRepositoryImpl(getIt<Dio>()),
   );
+
+  //feedback
+  getIt.registerSingleton<FeedbackInterface>(
+    FeedbackRepositoryImpl(getIt<FirebaseFirestore>(), getIt<FirebaseAuth>()),
+  );
   ///////////////////////////////////////////////////////////////////////////
 
   //
@@ -166,6 +193,9 @@ Future<void> diSetup() async{
   getIt.registerSingleton(FetchSourcesUseCase(getIt()));
   getIt.registerSingleton(ManageMediaSubscriptionUseCase(getIt()));
   getIt.registerSingleton(FetchSourceDetailUseCase(getIt()));
+
+  //feedback
+  getIt.registerSingleton(SubmitFeedbackUseCase(getIt()));
   ///////////////////////////////////////////////////////////////////////////
 
   //
@@ -176,6 +206,7 @@ Future<void> diSetup() async{
   getIt.registerFactoryParam<IssueListViewModel, IssueType, String?>(
     (issueType, topicId) => IssueListViewModel(
       fetchIssuesUseCase: getIt(),
+      manageIssueEvaluationUseCase: getIt(),
       issueType: issueType,
       topicId: topicId,
     ),
@@ -240,6 +271,11 @@ Future<void> diSetup() async{
       fetchUserBiasUseCase: getIt(),
       manageUserStatusUseCase: getIt(),
     ),
+  );
+
+  //feedback
+  getIt.registerFactory<FeedbackViewModel>(
+    () => FeedbackViewModel(getIt()),
   );
 
   //web View

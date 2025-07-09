@@ -1,9 +1,7 @@
+import 'package:could_be/data/dto/issue_tag_dto.dart';
 import 'package:json_annotation/json_annotation.dart';
-
-import '../../domain/entities/coverage_spectrum.dart';
 import '../../domain/entities/issue.dart';
 import 'coverage_spectrum_dto.dart';
-
 part 'issue_dto.g.dart';
 
 @JsonSerializable()
@@ -13,6 +11,8 @@ class IssueDTO{
   final String title;
   final String category;
   final String summary;
+
+  final List<IssueTagDto> tags;
 
   final DateTime createdAt;
   final DateTime? updatedAt;
@@ -27,8 +27,11 @@ class IssueDTO{
   final bool isSubscribed;
   final CoverageSpectrumDTO coverageSpectrum;
 
+  final String? userEvaluatedPerspective;
+
   IssueDTO({
     required this.id,
+    required this.tags,
     required this.summary,
     required this.title,
     required this.createdAt,
@@ -42,6 +45,7 @@ class IssueDTO{
     required this.leftLikeCount,
     required this.centerLikeCount,
     required this.rightLikeCount,
+    this.userEvaluatedPerspective
   });
 
   factory IssueDTO.fromJson(Map<String, dynamic> json) => _$IssueDTOFromJson(json);
@@ -52,6 +56,8 @@ class IssueDTO{
 extension IssueDtoX on IssueDTO {
   Issue toDomain() {
     return Issue(
+      tags: tags.map((tag) => tag.toDomain()).toList(),
+      userEvaluatedPerspective: userEvaluatedPerspective,
       leftLikeCount: leftLikeCount,
       centerLikeCount: centerLikeCount,
       rightLikeCount: rightLikeCount,

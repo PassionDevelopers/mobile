@@ -10,6 +10,8 @@ import 'package:sliding_up_panel/sliding_up_panel.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 import '../../core/components/bias/bias_enum.dart';
 import '../../domain/entities/article.dart';
+import '../../core/responsive/responsive_layout.dart';
+import '../../core/responsive/responsive_utils.dart';
 
 class WebViewView extends StatelessWidget {
   const WebViewView({
@@ -42,112 +44,112 @@ class WebViewView extends StatelessWidget {
       topLeft: Radius.circular(24.0),
       topRight: Radius.circular(24.0),
     );
-    return MyScaffold(
+    return RegScaffold(
       body: ListenableBuilder(
-        listenable: viewModel,
-        builder: (context, _) {
-          final state = viewModel.state;
-          final sources = state.articlesGroupBySource?.sources ?? [];
-          final articles = state.articlesGroupBySource?.articlesWithSources[state.currentSourceId] ?? [];
-          if (state.isLoading) {
-            return Center(child: CircularProgressIndicator());
-          } else if (state.articlesGroupBySource == null ||
-              state.articlesGroupBySource!.articlesWithSources.isEmpty) {
-            return Center(child: Text('해당 이슈에 대한 기사가 없습니다.'));
-          } else {
-            return SlidingUpPanel(
-              panel: Ink(
-                padding: EdgeInsets.symmetric(horizontal: MyPaddings.medium),
-                decoration: BoxDecoration(
-                  color: AppColors.background,
-                  borderRadius: radius,
-                ),
-                child: Column(
-                  children: [
-                    Icon(Icons.drag_handle_rounded, color: AppColors.primary),
-                    SizedBox(
-                      height: 70,
-                      child: Align(
-                          alignment: Alignment.centerLeft,
-                          child: ListView.builder(
-                              scrollDirection: Axis.horizontal,
-                              itemBuilder: (context, index) {
-                                final source = state.articlesGroupBySource!.sources[index];
-                                return MediaProfileWebView(
-                                  source: source,
-                                  isShowingArticles: state.currentSourceId == source.id,
-                                  onShowArticles: () {
-                                    viewModel.changeCurrentSourceId(source.id);
-                                  },
-                                );
-                              },
-                              itemCount: state.articlesGroupBySource!.sources
-                                  .length,
-                              shrinkWrap: true,
-                          )
-                      ),
-                    ),
-                    SizedBox(height: 4),
-                    Divider(color: AppColors.gray5, height: 1),
-                    SizedBox(height: 4),
-                    Expanded(
-                      child: ListView.builder(
-                        itemCount: articles.length,
-                        itemBuilder: (context, index) {
-                          return NewsCard(
-                            article: articles[index],
-                            isSelected: state.currentArticleId == articles[index].id &&
-                                state.currentSourceId ==
-                                    articles[index].source.id,
-                            onWebViewSelected: () {
-                              viewModel.changeCurrentArticleId(articles[index].id);
-                            },
-                          );
-                        },
-                        physics: BouncingScrollPhysics(),
-                      ),
-                    ),
-                  ],
-                ),
+      listenable: viewModel,
+      builder: (context, _) {
+        final state = viewModel.state;
+        final sources = state.articlesGroupBySource?.sources ?? [];
+        final articles = state.articlesGroupBySource?.articlesWithSources[state.currentSourceId] ?? [];
+        if (state.isLoading) {
+          return Center(child: CircularProgressIndicator());
+        } else if (state.articlesGroupBySource == null ||
+            state.articlesGroupBySource!.articlesWithSources.isEmpty) {
+          return Center(child: Text('해당 이슈에 대한 기사가 없습니다.'));
+        } else {
+          return SlidingUpPanel(
+            panel: Ink(
+              padding: EdgeInsets.symmetric(horizontal: MyPaddings.medium),
+              decoration: BoxDecoration(
+                color: AppColors.background,
+                borderRadius: radius,
               ),
-              // collapsed: Ink(
-              //   padding: EdgeInsets.symmetric(horizontal: MyPaddings.medium),
-              //   decoration: BoxDecoration(
-              //     color: AppColors.background,
-              //     borderRadius: radius,
-              //   ),
-              //   child: Column(
-              //     children: [
-              //       Icon(Icons.drag_handle_rounded, color: AppColors.primary),
-              //       Expanded(
-              //         child: Align(
-              //           alignment: Alignment.centerLeft,
-              //           child: ListView.builder(
-              //             scrollDirection: Axis.horizontal,
-              //             itemBuilder: (context, index) {
-              //               final source = state.articlesGroupBySource!.sources[index];
-              //               return MediaProfileWebView(
-              //                 source: source,
-              //                 isShowingArticles: source.id == state.currentSourceId,
-              //                 onShowArticles: () {
-              //                   viewModel.changeCurrentSourceId(source.id);
-              //                 },
-              //               );
-              //             },
-              //             itemCount:
-              //             state.articlesGroupBySource!.sources.length,
-              //             shrinkWrap: true,
-              //           ),
-              //         ),
-              //       ),
-              //     ],
-              //   ),
-              // ),
-              body: WebViewWidget(controller: viewModel.state.controller!),
-              borderRadius: radius,
-            );
-          }
-        },
+              child: Column(
+                children: [
+                  Icon(Icons.drag_handle_rounded, color: AppColors.primary),
+                  SizedBox(
+                    height: 70,
+                    child: Align(
+                        alignment: Alignment.centerLeft,
+                        child: ListView.builder(
+                            scrollDirection: Axis.horizontal,
+                            itemBuilder: (context, index) {
+                              final source = state.articlesGroupBySource!.sources[index];
+                              return MediaProfileWebView(
+                                source: source,
+                                isShowingArticles: state.currentSourceId == source.id,
+                                onShowArticles: () {
+                                  viewModel.changeCurrentSourceId(source.id);
+                                },
+                              );
+                            },
+                            itemCount: state.articlesGroupBySource!.sources
+                                .length,
+                            shrinkWrap: true,
+                        )
+                    ),
+                  ),
+                  SizedBox(height: 4),
+                  Divider(color: AppColors.gray5, height: 1),
+                  SizedBox(height: 4),
+                  Expanded(
+                    child: ListView.builder(
+                      itemCount: articles.length,
+                      itemBuilder: (context, index) {
+                        return NewsCard(
+                          article: articles[index],
+                          isSelected: state.currentArticleId == articles[index].id &&
+                              state.currentSourceId ==
+                                  articles[index].source.id,
+                          onWebViewSelected: () {
+                            viewModel.changeCurrentArticleId(articles[index].id);
+                          },
+                        );
+                      },
+                      physics: BouncingScrollPhysics(),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            // collapsed: Ink(
+            //   padding: EdgeInsets.symmetric(horizontal: MyPaddings.medium),
+            //   decoration: BoxDecoration(
+            //     color: AppColors.background,
+            //     borderRadius: radius,
+            //   ),
+            //   child: Column(
+            //     children: [
+            //       Icon(Icons.drag_handle_rounded, color: AppColors.primary),
+            //       Expanded(
+            //         child: Align(
+            //           alignment: Alignment.centerLeft,
+            //           child: ListView.builder(
+            //             scrollDirection: Axis.horizontal,
+            //             itemBuilder: (context, index) {
+            //               final source = state.articlesGroupBySource!.sources[index];
+            //               return MediaProfileWebView(
+            //                 source: source,
+            //                 isShowingArticles: source.id == state.currentSourceId,
+            //                 onShowArticles: () {
+            //                   viewModel.changeCurrentSourceId(source.id);
+            //                 },
+            //               );
+            //             },
+            //             itemCount:
+            //             state.articlesGroupBySource!.sources.length,
+            //             shrinkWrap: true,
+            //           ),
+            //         ),
+            //       ),
+            //     ],
+            //   ),
+            // ),
+            body: WebViewWidget(controller: viewModel.state.controller!),
+            borderRadius: radius,
+          );
+        }
+      },
       ),
     );
   }

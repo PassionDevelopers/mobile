@@ -44,4 +44,13 @@ class MyPageViewModel extends ChangeNotifier {
     _state = state.copyWith(isUserStatusLoading: false);
     notifyListeners();
   }
+
+  Future<void> deleteAccount(BuildContext context) async {
+    _state = state.copyWith(isUserStatusLoading: true);
+    notifyListeners();
+    await _manageUserStatusUseCase.deleteUserAccount();
+    await _firebaseLoginUseCase.deleteUserAccount(context);
+    _state = state.copyWith(isUserStatusLoading: false);
+    notifyListeners();
+  }
 }

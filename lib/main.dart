@@ -1,32 +1,27 @@
+import 'package:clarity_flutter/clarity_flutter.dart';
 import 'package:could_be/core/di/di_setup.dart';
-import 'package:could_be/core/domain/error_view.dart';
 import 'package:could_be/core/routes/router.dart';
 import 'package:could_be/data/data_source/local/user_preferences.dart';
-import 'package:could_be/presentation/init/root.dart';
-import 'package:could_be/splash_screen.dart';
 import 'package:could_be/ui/color.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
-import 'package:kakao_flutter_sdk/kakao_flutter_sdk.dart';
-import 'package:package_info_plus/package_info_plus.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'core/behavior/scroll_behavior.dart';
 import 'core/themes/app_bar_theme.dart';
 import 'core/themes/bottom_navigation_bar_theme.dart';
 import 'firebase_options.dart';
 
-// @pragma('vm:entry-point')
-// Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
-//   await Firebase.initializeApp();
-// }
+@pragma('vm:entry-point')
+Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
+  await Firebase.initializeApp();
+}
 
-void main()async{
+void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   // KakaoSdk.init(nativeAppKey: 'c0f1b2d3e4f5g6h7i8j9k0l1m2n3o4p5'); // 카카오 SDK 초기화
 
-  await Firebase.initializeApp(
-      options: DefaultFirebaseOptions.currentPlatform
-  );
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   // SystemChrome.setEnabledSystemUIMode(
   //     SystemUiMode.manual,
   //     overlays:[]
@@ -63,10 +58,16 @@ void main()async{
   // });
   //의존성 주입
   // diSetup()
+
   await UserPreferences.init();
+  final config = ClarityConfig(
+    projectId: "sbiwi1dz8s",
+    logLevel: LogLevel.None, // Note: Use "LogLevel.Verbose" value while testing to debug initialization issues.
+  );
+
   await diSetupToken();
   await diSetup();
-  runApp(const MyApp());
+  runApp(ClarityWidget(app: MyApp(), clarityConfig: config));
 }
 
 class MyApp extends StatelessWidget {
@@ -74,104 +75,66 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
-    return FutureBuilder(
-      future: Init.instance.initialize(context),
-      builder: (context, AsyncSnapshot snapshot) {
-        if (snapshot.connectionState == ConnectionState.waiting) {
-          return MaterialApp(home: SplashScreen()); // 초기 로딩 시 Splash Screen
-        } else if (snapshot.hasError) {
-          return MaterialApp(home: ErrorView()); // 초기 로딩 에러 시 Error Screen
-        } else {
-          return MaterialApp.router(
-            routerConfig: router,
-            debugShowCheckedModeBanner: false,
-            title: '다시 스탠드',
-            scrollBehavior: MyBehavior(),
-            theme: ThemeData(
-              // primarySwatch: Colors.blue,
-              // brightness: Brightness.light,
-              // cardColor: Colors.white,
-              primaryColor: AppColors.primary,
-              colorScheme: ColorScheme.fromSeed(
-                seedColor: AppColors.primary, brightness: Brightness.light,
-                primary: AppColors.primary,
-              ),
-              scaffoldBackgroundColor: AppColors.background,
-              appBarTheme: MyAppBarTheme(),
-              cardTheme: CardThemeData(
-                  color: Colors.white
-              ),
-              tabBarTheme: TabBarThemeData(
-                dividerColor: Colors.transparent,
-                labelColor: AppColors.primary,
-                unselectedLabelColor: Colors.grey,
-                labelStyle: TextStyle(
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-              bottomNavigationBarTheme: MyBottomNavigationBarTheme(),
-              elevatedButtonTheme: ElevatedButtonThemeData(
-                style: ElevatedButton.styleFrom(
-                  elevation: 0,
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 16,
-                    vertical: 12,
-                  ),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(8),
-                  ),
-                ),
-              ),
-              inputDecorationTheme: InputDecorationTheme(
-                filled: true,
-                fillColor: Colors.grey[100],
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(8),
-                  borderSide: BorderSide.none,
-                ),
-                enabledBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(8),
-                  borderSide: BorderSide.none,
-                ),
-                focusedBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(8),
-                  borderSide: const BorderSide(
-                    color: Colors.blue,
-                    width: 2,
-                  ),
-                ),
-                errorBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(8),
-                  borderSide: const BorderSide(
-                    color: Colors.red,
-                    width: 2,
-                  ),
-                ),
-                contentPadding: const EdgeInsets.symmetric(
-                  horizontal: 16,
-                  vertical: 12,
-                ),
-              ),
+    return MaterialApp.router(
+      routerConfig: router,
+      debugShowCheckedModeBanner: false,
+      title: '다시 스탠드',
+      scrollBehavior: MyBehavior(),
+      theme: ThemeData(
+        // primarySwatch: Colors.blue,
+        // brightness: Brightness.light,
+        // cardColor: Colors.white,
+        primaryColor: AppColors.primary,
+        colorScheme: ColorScheme.fromSeed(
+          seedColor: AppColors.primary,
+          brightness: Brightness.light,
+          primary: AppColors.primary,
+        ),
+        scaffoldBackgroundColor: AppColors.background,
+        appBarTheme: MyAppBarTheme(),
+        cardTheme: CardThemeData(color: Colors.white),
+        tabBarTheme: TabBarThemeData(
+          dividerColor: Colors.transparent,
+          labelColor: AppColors.primary,
+          unselectedLabelColor: Colors.grey,
+          labelStyle: TextStyle(fontWeight: FontWeight.bold),
+        ),
+        bottomNavigationBarTheme: MyBottomNavigationBarTheme(),
+        elevatedButtonTheme: ElevatedButtonThemeData(
+          style: ElevatedButton.styleFrom(
+            elevation: 0,
+            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(8),
             ),
-            // themeMode: ThemeMode.system,
-          );
-        }
-      },
+          ),
+        ),
+        inputDecorationTheme: InputDecorationTheme(
+          filled: true,
+          fillColor: Colors.grey[100],
+          border: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(8),
+            borderSide: BorderSide.none,
+          ),
+          enabledBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(8),
+            borderSide: BorderSide.none,
+          ),
+          focusedBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(8),
+            borderSide: const BorderSide(color: Colors.blue, width: 2),
+          ),
+          errorBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(8),
+            borderSide: const BorderSide(color: Colors.red, width: 2),
+          ),
+          contentPadding: const EdgeInsets.symmetric(
+            horizontal: 16,
+            vertical: 12,
+          ),
+        ),
+      ),
+      // themeMode: ThemeMode.system,
     );
-  }
-}
-
-class Init {
-  Init._();
-  static final instance = Init._();
-
-  Future<Widget?> initialize(BuildContext context) async {
-    // await Future.delayed(Duration(milliseconds: 1000));
-
-    PackageInfo packageInfo = await PackageInfo.fromPlatform();
-    String version = packageInfo.version;
-
-    return Root(); // 초기 로딩 완료 시 띄울 앱 첫 화면
   }
 }

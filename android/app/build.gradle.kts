@@ -31,6 +31,8 @@ android {
     ndkVersion = "27.0.12077973"
 
     compileOptions {
+        // Core library desugaring 활성화 firebase local notification
+        isCoreLibraryDesugaringEnabled = true
         sourceCompatibility = JavaVersion.VERSION_11
         targetCompatibility = JavaVersion.VERSION_11
     }
@@ -71,6 +73,10 @@ flutter {
 }
 
 dependencies {
+
+    // Core library desugaring 의존성 추가 firebase local notification
+    coreLibraryDesugaring("com.android.tools:desugar_jdk_libs:2.1.4")
+
     // Import the BoM for the Firebase platform
     implementation(platform("com.google.firebase:firebase-bom:32.7.4"))
 

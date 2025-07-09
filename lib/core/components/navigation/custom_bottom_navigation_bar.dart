@@ -4,6 +4,7 @@ import 'package:flutter/services.dart';
 import '../../../ui/color.dart';
 import '../../../ui/fonts.dart';
 import '../../themes/margins_paddings.dart';
+import '../../responsive/responsive_utils.dart';
 
 class CustomBottomNavigationBar extends StatefulWidget {
   final int currentIndex;
@@ -39,7 +40,7 @@ class _CustomBottomNavigationBarState extends State<CustomBottomNavigationBar>
     ),
     BottomNavItem(
       icon: Icons.article_rounded,
-      label: '매체',
+      label: '언론',
     ),
     BottomNavItem(
       icon: Icons.account_circle_rounded,
@@ -105,6 +106,11 @@ class _CustomBottomNavigationBarState extends State<CustomBottomNavigationBar>
 
   @override
   Widget build(BuildContext context) {
+    // 데스크탑에서는 하단 네비게이션 바 숨김
+    if (ResponsiveUtils.isDesktop(context)) {
+      return SizedBox.shrink();
+    }
+
     return Container(
       height: 80,
       decoration: BoxDecoration(

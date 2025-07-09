@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import 'color.dart';
+import '../core/responsive/responsive_utils.dart';
 
 abstract class MyFontSizes {
   static const double smaller = 10.0;
@@ -14,6 +15,87 @@ abstract class MyFontSizes {
   static const double extraLarge = 20.0;
   static const double h0 = 22.0;
   static const double accent = 32.0;
+}
+
+abstract class ResponsiveFontSizes {
+  // 모바일 폰트 사이즈
+  static const double mobileSmaller = 10.0;
+  static const double mobileSmall = 12.0;
+  static const double mobileMedium = 14.0;
+  static const double mobileLarge = 16.0;
+  static const double mobileExtraLarge = 20.0;
+  static const double mobileH0 = 22.0;
+  static const double mobileAccent = 32.0;
+  
+  // 태블릿 폰트 사이즈
+  static const double tabletSmaller = 11.0;
+  static const double tabletSmall = 13.0;
+  static const double tabletMedium = 15.0;
+  static const double tabletLarge = 17.0;
+  static const double tabletExtraLarge = 22.0;
+  static const double tabletH0 = 24.0;
+  static const double tabletAccent = 36.0;
+  
+  // 데스크탑 폰트 사이즈
+  static const double desktopSmaller = 12.0;
+  static const double desktopSmall = 14.0;
+  static const double desktopMedium = 16.0;
+  static const double desktopLarge = 18.0;
+  static const double desktopExtraLarge = 24.0;
+  static const double desktopH0 = 28.0;
+  static const double desktopAccent = 40.0;
+}
+
+class ResponsiveFontSize {
+  static double getSmaller(BuildContext context) {
+    if (ResponsiveUtils.isMobile(context)) {
+      return ResponsiveFontSizes.mobileSmaller;
+    } else if (ResponsiveUtils.isTablet(context)) {
+      return ResponsiveFontSizes.tabletSmaller;
+    } else {
+      return ResponsiveFontSizes.desktopSmaller;
+    }
+  }
+  
+  static double getSmall(BuildContext context) {
+    if (ResponsiveUtils.isMobile(context)) {
+      return ResponsiveFontSizes.mobileSmall;
+    } else if (ResponsiveUtils.isTablet(context)) {
+      return ResponsiveFontSizes.tabletSmall;
+    } else {
+      return ResponsiveFontSizes.desktopSmall;
+    }
+  }
+  
+  static double getMedium(BuildContext context) {
+    if (ResponsiveUtils.isMobile(context)) {
+      return ResponsiveFontSizes.mobileMedium;
+    } else if (ResponsiveUtils.isTablet(context)) {
+      return ResponsiveFontSizes.tabletMedium;
+    } else {
+      return ResponsiveFontSizes.desktopMedium;
+    }
+  }
+  
+  static double getLarge(BuildContext context) {
+    if (ResponsiveUtils.isMobile(context)) {
+      return ResponsiveFontSizes.mobileLarge;
+    } else if (ResponsiveUtils.isTablet(context)) {
+      return ResponsiveFontSizes.tabletLarge;
+    } else {
+      return ResponsiveFontSizes.desktopLarge;
+    }
+  }
+  
+  static double getExtraLarge(BuildContext context) {
+    if (ResponsiveUtils.isMobile(context)) {
+      return ResponsiveFontSizes.mobileExtraLarge;
+    } else if (ResponsiveUtils.isTablet(context)) {
+      return ResponsiveFontSizes.tabletExtraLarge;
+    } else {
+      return ResponsiveFontSizes.desktopExtraLarge;
+    }
+  }
 }
 
 abstract class MyFontStyle{
@@ -86,11 +168,11 @@ abstract class MyText {
   }
 
   static AutoSizeText h1(String text,{Color? color, AutoSizeGroup? group, int? maxLines}){
-    return AutoSizeText(text, style: MyFontStyle.h1, group: group, maxLines: maxLines ?? 1, minFontSize: 1, overflow: TextOverflow.ellipsis);
+    return AutoSizeText(text, style: MyFontStyle.h1.copyWith(color: color), group: group, maxLines: maxLines ?? 1, minFontSize: 1, overflow: TextOverflow.ellipsis);
   }
 
-  static AutoSizeText h2(String text, {Color? color, AutoSizeGroup? group, int? maxLines}){
-    return AutoSizeText(text, style: MyFontStyle.h2.copyWith(color: color), group: group, maxLines: maxLines ?? 1, minFontSize: 1, overflow: TextOverflow.ellipsis);
+  static AutoSizeText h2(String text, {Color? color, AutoSizeGroup? group, int? maxLines, double? fontSize}){
+    return AutoSizeText(text, style: MyFontStyle.h2.copyWith(color: color, fontSize: fontSize), group: group, maxLines: maxLines ?? 1, minFontSize: 1, overflow: TextOverflow.ellipsis);
   }
   static AutoSizeText h2w(String text, {Color? color, AutoSizeGroup? group, int? maxLines}){
     return AutoSizeText(text, style: MyFontStyle.h2w.copyWith(color: color),group: group, maxLines: maxLines ?? 1, minFontSize: 1, overflow: TextOverflow.ellipsis);

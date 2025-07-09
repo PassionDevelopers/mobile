@@ -18,7 +18,7 @@ class TopicDetailViewNew extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final viewModel = getIt<TopicDetailViewModel>(param1: topicId);
-    return MyScaffold(
+    return RegScaffold(
       backgroundColor: primaryLight,
       body: ListenableBuilder(
         listenable: viewModel,

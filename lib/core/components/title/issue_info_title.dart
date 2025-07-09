@@ -1,5 +1,6 @@
 
 
+import 'package:could_be/core/method/time.dart';
 import 'package:flutter/material.dart';
 
 import '../../../domain/entities/issue.dart';
@@ -12,24 +13,7 @@ class IssueInfoTitle extends StatelessWidget {
   final int viewCount;
   final DateTime time;
 
-  String getTimeAgo(DateTime createdAt) {
-    final now = DateTime.now();
-    final difference = now.difference(createdAt);
 
-    if (difference.inDays > 365) {
-      return '${(difference.inDays / 365).floor()}년 전';
-    } else if (difference.inDays > 30) {
-      return '${(difference.inDays / 30).floor()}달 전';
-    } else if (difference.inDays > 0) {
-      return '${difference.inDays}일 전';
-    } else if (difference.inHours > 0) {
-      return '${difference.inHours}시간 전';
-    } else if (difference.inMinutes > 0) {
-      return '${difference.inMinutes}분 전';
-    } else {
-      return '방금 전';
-    }
-  }
 
   String refineViewCount(int viewCount) {
     if (viewCount >= 10000) {
@@ -52,7 +36,7 @@ class IssueInfoTitle extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MyText.reg(
-      '${mediaTotal}개 매체 · 조회수 ${refineViewCount(viewCount)} · ${getTimeAgo(time)}',
+      '${mediaTotal}개 언론 · 조회수 ${refineViewCount(viewCount)} · ${getTimeAgo(time)}',
       color: AppColors.gray2,
     );
   }

@@ -1,5 +1,6 @@
 import 'dart:developer';
 
+import 'package:could_be/core/components/bias/bias_check_button.dart';
 import 'package:could_be/core/components/cards/text_card.dart';
 import 'package:could_be/core/components/title/big_title.dart';
 import 'package:could_be/core/method/text_parsing.dart';
@@ -134,12 +135,7 @@ class IssueDetailBiasComparison extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        Row(
-          children: [
-            BackButton(),
-            BigTitle(title: '언론 성향별 차이점'),
-          ],
-        ),
+        Row(children: [BackButton(), BigTitle(title: '언론 성향별 차이점')]),
         SizedBox(height: MyPaddings.medium),
         Expanded(
           child: Padding(
@@ -149,67 +145,43 @@ class IssueDetailBiasComparison extends StatelessWidget {
                 Expanded(
                   child: TextCard(
                     color: AppColors.primary,
-                    child: SingleChildScrollView(child: Column(
-                      children: [
-                            for(String para in parseAiText(biasComparison))
-                              ...[MyText.article(
-                                '• $para',
-                                color: AppColors.gray2,
-                              ),SizedBox(height: MyPaddings.small),]
-                      ],
-                    )),
+                    child: SingleChildScrollView(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          for (String para in parseAiText(biasComparison)) ...[
+                            MyText.article('• $para', color: AppColors.gray2),
+                            SizedBox(height: MyPaddings.small),
+                          ],
+                        ],
+                      ),
+                    ),
                   ),
                 ),
                 Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: MyPaddings.large),
-                  child: Column(
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.only(top: MyPaddings.small),
-                        child: userEvaluation == null
-                          ? MyText.h3('어떤 관점에 동의하시나요?')
-                          : Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              MyText.h3('내가 동의한 관점 : '),
-                              MyText.h3(
-                                getBiasName(getBiasFromString(userEvaluation!)),
-                                color: getBiasColor(
-                                  getBiasFromString(userEvaluation!),
-                                ),
-                              ),
-                            ],
-                          ),
-                      ),
-                      ListenableBuilder(
-                        listenable: ValueNotifier(userEvaluation),
-                        builder: (context, listenable) {
-                          return Row(
-                            mainAxisSize: MainAxisSize.min,
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children:
-                                userEvaluation == null
-                                    ? [
-                                      if (existLeft) _buildBiasCircle(Bias.left),
-                                      if (existCenter) _buildBiasCircle(Bias.center),
-                                      if (existRight) _buildBiasCircle(Bias.right),
-                                    ]
-                                    : [
-                                      if (existLeft) _buildBiasRect(Bias.left),
-                                      if (existCenter) _buildBiasRect(Bias.center),
-                                      if (existRight) _buildBiasRect(Bias.right),
-                                    ],
-                          );
-                        },
-                      ),
-                    ],
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: MyPaddings.large,
+                  ),
+                  child: BiasCheckButton(
+                    userEvaluation: userEvaluation,
+                    onBiasSelected: onBiasSelected,
+                    leftLikeCount: leftLikeCount,
+                    centerLikeCount: centerLikeCount,
+                    rightLikeCount: rightLikeCount,
+                    isEvaluating: isEvaluating,
+                    existLeft: existLeft,
+                    existCenter: existCenter,
+                    existRight: existRight,
                   ),
                 ),
-                MoveToNextButton(moveToNextPage: moveToNextPage, buttonText: '언론의 원문 기사 보기'),
+                MoveToNextButton(
+                  moveToNextPage: moveToNextPage,
+                  buttonText: '언론의 원문 기사 보기',
+                ),
               ],
             ),
           ),
-        )
+        ),
       ],
     );
   }

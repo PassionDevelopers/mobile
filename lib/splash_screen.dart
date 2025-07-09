@@ -6,15 +6,13 @@ class SplashScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MyScaffold(body:
-      Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Image.asset('assets/images/logo/logo_rect.png', height: 100),
-            const SizedBox(height: 20),
-          ],
-        ),
+    return RegScaffold(body:
+      Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Image.asset('assets/images/logo/logo_rect.png', height: 100),
+          const SizedBox(height: 20),
+        ],
       ),
     );
   }

@@ -32,7 +32,10 @@ class ManageUserStatusRepositoryImpl extends ManageUserStatusRepository{
   }
 
   @override
-  Future<void> deleteUser()async{
-
+  Future<void> deleteUserAccount()async{
+    final result = await dio.delete(
+        '/user/delete-account'
+    );
+    log(result.data.toString());
   }
 }

@@ -1,3 +1,4 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:could_be/core/components/bias/bias_enum.dart';
 import 'package:could_be/core/method/bias/bias_method.dart';
 import 'package:flutter/material.dart';
@@ -7,18 +8,20 @@ import '../../../ui/color.dart';
 import 'bias_label.dart';
 
 class CardBiasBar extends StatelessWidget {
-  const CardBiasBar({super.key, required this.coverageSpectrum, this.isDailyIssue = false});
+  CardBiasBar({super.key, required this.coverageSpectrum, this.isDailyIssue = false});
   final CoverageSpectrum coverageSpectrum;
   final bool isDailyIssue;
+
+  final AutoSizeGroup titleGroup = AutoSizeGroup();
 
   Widget _buildBiasLabel({required CoverageSpectrum coverageSpectrum}) {
     return Row(
       children: [
-        Expanded(child: BiasLabel(label: '진보 언론 ${coverageSpectrum.left + coverageSpectrum.centerLeft}개', color: getBiasColor(Bias.left),)),
+        Expanded(child: BiasLabel(group: titleGroup, label: '진보 언론 ${coverageSpectrum.left + coverageSpectrum.centerLeft}개', color: getBiasColor(Bias.left),)),
         SizedBox(width: 12),
-        Expanded(child: BiasLabel(label: '중도 언론 ${coverageSpectrum.center}개', color: getBiasColor(Bias.center),)),
+        Expanded(child: BiasLabel(group: titleGroup, label: '중도 언론 ${coverageSpectrum.center}개', color: getBiasColor(Bias.center),)),
         SizedBox(width: 12),
-        Expanded(child: BiasLabel(label: '보수 언론 ${coverageSpectrum.centerRight + coverageSpectrum.right}개', color: getBiasColor(Bias.right),)),
+        Expanded(child: BiasLabel(group: titleGroup, label: '보수 언론 ${coverageSpectrum.centerRight + coverageSpectrum.right}개', color: getBiasColor(Bias.right),)),
       ],
     );
   }

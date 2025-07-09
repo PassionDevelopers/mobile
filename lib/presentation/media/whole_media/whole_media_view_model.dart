@@ -37,8 +37,8 @@ class WholeMediaViewModel with ChangeNotifier{
 
     Fluttertoast.showToast(
         msg: source.isSubscribed?
-        "관심 매체에서 해제하였습니다."
-            : "관심 매체로 등록하였습니다.",
+        "관심 언론에서 해제하였습니다."
+            : "관심 언론으로 등록하였습니다.",
         toastLength: Toast.LENGTH_SHORT,
         gravity: ToastGravity.BOTTOM,
         timeInSecForIosWeb: 1,

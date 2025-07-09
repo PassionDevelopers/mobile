@@ -1,9 +1,7 @@
-import 'dart:developer';
-import 'package:could_be/core/components/loading/issue_card_skeleton.dart';
 import 'package:could_be/core/components/loading/not_found.dart';
 import 'package:could_be/presentation/home/issue_query_params/issue_query_params_view.dart';
+import 'package:could_be/ui/color.dart';
 import 'package:flutter/material.dart';
-import '../../../core/components/app_bar/app_bar.dart';
 import '../../../core/di/di_setup.dart';
 import '../../topic/subscribed_topic/subscribed_topic_view.dart';
 import '../issue_list_loading_view.dart';
@@ -18,6 +16,7 @@ class IssueListRoot extends StatefulWidget {
   final Widget? upperWidget;
   final bool isFeedView;
   final bool isTopicView;
+  final bool isEvaluatedView;
 
   const IssueListRoot({
     super.key,
@@ -25,6 +24,7 @@ class IssueListRoot extends StatefulWidget {
     this.upperWidget,
     this.isFeedView = false,
     this.isTopicView = false,
+    this.isEvaluatedView = false,
     required this.issueType,
     this.topicId,
   });
@@ -63,40 +63,51 @@ class _IssueListRootState extends State<IssueListRoot> {
 
   @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
-      controller: scrollController,
-      physics: ClampingScrollPhysics(),
-      child: Column(
-        children: [
-          widget.appBar ?? SizedBox.shrink(),
-          if(widget.isFeedView) IssueQueryParamsView(
-            changeQueryParam: viewModel.changeQueryParam,
-          ),
-          if(widget.isTopicView) SubscribedTopicView(
-            onTopicSelected: viewModel.changeTopicId,
-          ),
-          widget.upperWidget ?? SizedBox.shrink(),
-          ListenableBuilder(
-            listenable: viewModel,
-            builder: (context, _) {
-              final state = viewModel.state;
-              if (state.isLoading) {
-                return IssueListLoadingView();
-              } else {
-                if (state.issueList.isEmpty) {
-                  return NotFound(notFoundType: NotFoundType.issue);
+    return RefreshIndicator(
+      onRefresh: () async {
+        viewModel.fetchInitalIssues(topicId: widget.topicId);
+      },
+      backgroundColor: AppColors.primaryLight,
+      color: AppColors.primary,
+      child: SingleChildScrollView(
+        controller: scrollController,
+        physics: ClampingScrollPhysics(),
+        child: Column(
+          children: [
+            widget.appBar ?? SizedBox.shrink(),
+            if(widget.isFeedView) IssueQueryParamsView(
+              changeQueryParam: viewModel.changeQueryParam,
+            ),
+            if(widget.isTopicView) SubscribedTopicView(
+              onTopicSelected: viewModel.changeTopicId,
+            ),
+            widget.upperWidget ?? SizedBox.shrink(),
+            ListenableBuilder(
+              listenable: viewModel,
+              builder: (context, _) {
+                final state = viewModel.state;
+                if (state.isLoading) {
+                  return IssueListLoadingView();
                 } else {
-                  return Column(
-                    children: [
-                      IssueListView(issueList: state.issueList),
-                      if (state.isLoadingMore) IssueListLoadingView(),
-                    ],
-                  );
+                  if (state.issueList.isEmpty) {
+                    return NotFound(notFoundType: NotFoundType.issue);
+                  } else {
+                    return Column(
+                      children: [
+                        IssueListView(issueList: state.issueList,
+                          onBiasSelected: viewModel.manageIssueEvaluation,
+                          isEvaluating: state.isEvaluating,
+                          isEvaluatedView: widget.isEvaluatedView,
+                        ),
+                        if (state.isLoadingMore) IssueListLoadingView(),
+                      ],
+                    );
+                  }
                 }
-              }
-            },
-          ),
-        ],
+              },
+            ),
+          ],
+        ),
       ),
     );
   }

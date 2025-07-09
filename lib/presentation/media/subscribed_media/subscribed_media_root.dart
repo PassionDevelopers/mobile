@@ -12,6 +12,9 @@ import '../../../core/components/title/big_title_icon.dart';
 import '../../../core/themes/margins_paddings.dart';
 import '../media_profile_component.dart';
 import 'subscribed_media_view_model.dart';
+import '../../../core/responsive/responsive_layout.dart';
+import '../../../core/responsive/responsive_utils.dart';
+import '../../../core/components/layouts/responsive_grid.dart';
 
 class SubscribedMediaRoot extends StatefulWidget {
   const SubscribedMediaRoot({super.key});
@@ -55,23 +58,29 @@ class _SubscribedMediaRootState extends State<SubscribedMediaRoot> {
 
   @override
   Widget build(BuildContext context) {
-    return ListenableBuilder(
-      listenable: viewModel,
-      builder: (context, _) {
-        final state = viewModel.state;
-        bool isSourcesEmpty =
-            state.sources != null && state.sources!.sources.isEmpty;
-        return SingleChildScrollView(
-          controller: scrollController,
-          child: Column(
+    return RefreshIndicator(
+      onRefresh: () async {
+        viewModel.refreshArticles();
+      },
+      color: Colors.black,
+      backgroundColor: Colors.white,
+      child: ListenableBuilder(
+        listenable: viewModel,
+        builder: (context, _) {
+          final state = viewModel.state;
+          bool isSourcesEmpty =
+              state.sources != null && state.sources!.sources.isEmpty;
+          return SingleChildScrollView(
+            controller: scrollController,
+            child: Column(
             children: [
               RegAppBar(
-                title: '관심 매체의 기사 보기',
+                title: '관심 언론의 기사 보기',
                 iconData: Icons.article_rounded,
               ),
               isSourcesEmpty? Center(
                 child: EmptyTitleAdd(
-                  title: '관심 매체를 추가해보세요.',
+                  title: '관심 언론을 추가해보세요.',
                   onTap: () {
                     context.push(RouteNames.wholeMedia);
                   },
@@ -83,7 +92,7 @@ class _SubscribedMediaRootState extends State<SubscribedMediaRoot> {
                   top: MyPaddings.medium,
                 ),
                 child: BigTitleAdd(
-                  title: '관심 매체',
+                  title: '관심 언론',
                   onTap: () {
                     context.push(RouteNames.wholeMedia);
                   },
@@ -137,7 +146,7 @@ class _SubscribedMediaRootState extends State<SubscribedMediaRoot> {
               //             );
               //           }
               //         },
-              //         child: Text('매체 상세 정보'),
+              //         child: Text('언론 상세 정보'),
               //       ),
               //     ),
               //   ),
@@ -145,17 +154,37 @@ class _SubscribedMediaRootState extends State<SubscribedMediaRoot> {
                   ? NewsListLoadingView()
                   : state.articles == null || state.articles!.articles.isEmpty
                   ? NotFound(notFoundType: NotFoundType.article)
-                  : Column(
-                    children: [
-                      for (int i = 0; i < state.articles!.articles.length; i++)
-                        NewsCard(article: state.articles!.articles[i]),
-                      if (state.isLoadingMore) NewsListLoadingView(),
-                    ],
-                  ),
-            ],
-          ),
-        );
-      },
+                  : ResponsiveBuilder(
+                      builder: (context, deviceType) {
+                        if (ResponsiveUtils.isMobile(context)) {
+                          // 모바일에서는 기존 Column 방식 유지
+                          return Column(
+                            children: [
+                              for (int i = 0; i < state.articles!.articles.length; i++)
+                                NewsCard(article: state.articles!.articles[i]),
+                              if (state.isLoadingMore) NewsListLoadingView(),
+                            ],
+                          );
+                        }
+
+                        // 태블릿/데스크탑에서는 반응형 그리드 사용
+                        return Column(
+                          children: [
+                            ResponsiveGrid(
+                              children: state.articles!.articles
+                                  .map((article) => NewsCard(article: article))
+                                  .toList(),
+                            ),
+                            if (state.isLoadingMore) NewsListLoadingView(),
+                          ],
+                        );
+                      },
+                    ),
+              ],
+            ),
+          );
+        },
+      ),
     );
   }
 }

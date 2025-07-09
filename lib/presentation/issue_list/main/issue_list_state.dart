@@ -13,6 +13,7 @@ class IssueListState{
   final String? topicId;
   final bool isLoading;
   final bool isLoadingMore;
+  final bool isEvaluating;
 
   IssueListState({
     this.issueQueryParam,
@@ -20,6 +21,7 @@ class IssueListState{
     this.issueList = const [],
     this.isLoading = false,
     this.isLoadingMore = false,
+    this.isEvaluating = false,
     this.hasMore = false,
     this.lastIssueId = '',
   });
@@ -32,6 +34,7 @@ class IssueListState{
     bool? isLoadingMore,
     IssueQueryParam? issueQueryParam,
     String? topicId,
+    bool? isEvaluating,
   }) {
     return IssueListState(
       issueQueryParam: issueQueryParam ?? this.issueQueryParam,
@@ -41,6 +44,7 @@ class IssueListState{
       isLoading: isLoading ?? this.isLoading,
       isLoadingMore: isLoadingMore ?? this.isLoadingMore,
       topicId: topicId ?? this.topicId,
+      isEvaluating: isEvaluating ?? this.isEvaluating,
     );
   }
 }

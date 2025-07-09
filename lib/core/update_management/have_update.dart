@@ -1,9 +1,12 @@
+import 'dart:io';
+
 import 'package:could_be/core/components/layouts/scaffold_layout.dart';
 import 'package:could_be/core/routes/route_names.dart';
 import 'package:could_be/data/data_source/local/user_preferences.dart';
 import 'package:could_be/ui/color.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:language_code/language_code.dart';
 import 'package:upgrader/upgrader.dart';
 
 import '../components/alert/dialog.dart';
@@ -22,7 +25,8 @@ class HaveUpdate extends StatelessWidget {
       });
       return true;
     }
-    return MyScaffold(
+    final languageCode = LanguageCode.code.code;
+    return RegScaffold(
         body: Container(
             padding: const EdgeInsets.all(8.0),
             height: double.infinity,
@@ -38,13 +42,29 @@ class HaveUpdate extends StatelessWidget {
                   if(snapshot.connectionState == ConnectionState.done && snapshot.hasData) {
                     if(snapshot.data!){
                       return Center(
-                        child: UpgradeCard(
-                          showLater: false,
-                          upgrader: Upgrader(
-                            debugDisplayAlways: true,
+                        child: Theme(
+                          data: ThemeData(
+                            textTheme: TextTheme(
+                              bodyLarge: TextStyle(fontSize: 16, color: AppColors.black),
+                              bodyMedium: TextStyle(fontSize: 14, color: AppColors.black),
+                            ),
+                            cardColor: AppColors.white,
+                            cardTheme: CardThemeData(
+                              color: AppColors.black,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(12),
+                              ),
+                            ),
+                            primaryColor: AppColors.primary,
                           ),
-                          onIgnore: ignored,
-                          onLater: ignored,
+                          child: UpgradeCard(
+                            showLater: false,
+                            upgrader: Upgrader(
+                              messages: UpgraderMessages(code: 'ko'),
+                              debugDisplayAlways: true,
+                            ),
+                            onIgnore: ignored,
+                          ),
                         ),
                       );
                     }

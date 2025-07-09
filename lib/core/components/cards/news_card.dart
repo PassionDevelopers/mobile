@@ -5,7 +5,9 @@ import 'package:could_be/ui/fonts.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import '../../../ui/color.dart';
+import '../../method/time.dart';
 import '../../themes/margins_paddings.dart';
+import '../../responsive/responsive_utils.dart';
 
 class NewsCard extends StatefulWidget {
   final Article article;
@@ -35,24 +37,7 @@ class _NewsCardState extends State<NewsCard> with TickerProviderStateMixin {
     CurvedAnimation(parent: _animationController, curve: Curves.easeInOut),
   );
 
-  String getTimeAgo(DateTime createdAt) {
-    final now = DateTime.now();
-    final difference = now.difference(createdAt);
 
-    if (difference.inDays > 365) {
-      return '${(difference.inDays / 365).floor()}년 전';
-    } else if (difference.inDays > 30) {
-      return '${(difference.inDays / 30).floor()}달 전';
-    } else if (difference.inDays > 0) {
-      return '${difference.inDays}일 전';
-    } else if (difference.inHours > 0) {
-      return '${difference.inHours}시간 전';
-    } else if (difference.inMinutes > 0) {
-      return '${difference.inMinutes}분 전';
-    } else {
-      return '방금 전';
-    }
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -63,16 +48,23 @@ class _NewsCardState extends State<NewsCard> with TickerProviderStateMixin {
       super.dispose();
     }
 
+    final responsiveMargin = ResponsiveUtils.getResponsiveMargin(
+      context,
+      mobile: MyPaddings.small.toDouble(),
+      tablet: MyPaddings.medium.toDouble(),
+      desktop: MyPaddings.large.toDouble(),
+    );
+
     return Container(
-      margin: EdgeInsets.symmetric(horizontal: MyPaddings.small),
+      margin: EdgeInsets.symmetric(horizontal: responsiveMargin.left),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(16),
         color: widget.isSelected == true ? AppColors.black.withAlpha(50) : null,
 
       ),
       padding: EdgeInsets.symmetric(
-        horizontal: MyPaddings.medium,
-        vertical: MyPaddings.small,
+        horizontal: ResponsiveUtils.isMobile(context) ? MyPaddings.medium.toDouble() : MyPaddings.large.toDouble(),
+        vertical: ResponsiveUtils.isMobile(context) ? MyPaddings.small.toDouble() : MyPaddings.medium.toDouble(),
       ),
       child: AnimatedBuilder(
         animation: _scaleAnimation,
@@ -120,9 +112,9 @@ class _NewsCardState extends State<NewsCard> with TickerProviderStateMixin {
                   child: Row(
                     children: [
                       Container(
-                        height: 100,
-                        width: 100,
-                        padding: EdgeInsets.all(MyPaddings.extraSmall),
+                        height: ResponsiveUtils.isMobile(context) ? 100 : 120,
+                        width: ResponsiveUtils.isMobile(context) ? 100 : 120,
+                        padding: EdgeInsets.all(ResponsiveUtils.isMobile(context) ? MyPaddings.extraSmall.toDouble() : MyPaddings.small.toDouble()),
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(16),
                         ),

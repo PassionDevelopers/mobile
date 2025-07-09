@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:could_be/core/components/buttons/login_button.dart';
 import 'package:could_be/core/di/di_setup.dart';
 import 'package:could_be/presentation/log_in/login_view_model.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:sign_button/constants.dart';
 import '../../core/components/layouts/scaffold_layout.dart';
@@ -17,7 +18,7 @@ class LoginView extends StatelessWidget {
   Widget build(BuildContext context) {
     final viewModel = getIt<LoginViewModel>();
 
-    return MyScaffold(
+    return RegScaffold(
       backgroundColor: AppColors.primaryLight,
       body: Container(
         width: double.infinity,
@@ -50,18 +51,18 @@ class LoginView extends StatelessWidget {
                                 await viewModel.signIn(context, signInMethod: SignInMethod.google);
                               },
                             ),
-                            if(Platform.isIOS) LoginButton(
+                            if(kIsWeb || Platform.isIOS) LoginButton(
                               buttonType: ButtonType.appleDark,
                               onPressed: () async {
                                 await viewModel.signIn(context, signInMethod: SignInMethod.apple);
                               },
                             ),
-                            LoginButton(
-                              buttonType: ButtonType.mail,
-                              onPressed: () async {
-
-                              },
-                            ),
+                            // LoginButton(
+                            //   buttonType: ButtonType.mail,
+                            //   onPressed: () async {
+                            //
+                            //   },
+                            // ),
                             LoginButton(
                               buttonType: ButtonType.custom,
                               onPressed: () async {

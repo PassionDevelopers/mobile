@@ -23,11 +23,11 @@ class LoginButton extends StatelessWidget {
         buttonSize: ButtonSize.medium,
         buttonType: buttonType,
         btnText: switch(buttonType) {
-          ButtonType.googleDark => 'Google로 시작하기',
-          ButtonType.appleDark => 'Apple로 시작하기',
-          ButtonType.mail => 'Email로 시작하기',
-          ButtonType.custom => 'Guest로 시작하기',
-          ButtonType.amazon => 'Kakao로 시작하기',
+          ButtonType.googleDark => 'Google로 로그인',
+          ButtonType.appleDark => 'Apple로 로그인',
+          ButtonType.mail => 'Email로 로그인',
+          ButtonType.custom => 'Guest로 로그인',
+          ButtonType.amazon => 'Kakao로 로그인',
           _ => '',
         },
         btnColor: switch(buttonType) {
@@ -39,7 +39,7 @@ class LoginButton extends StatelessWidget {
           _ => null,
         },
         customImage: switch(buttonType) {
-          ButtonType.custom => CustomImage('assets/images/logo/app_icon.png'),
+          ButtonType.custom => CustomImage('assets/images/logo/app_icon2.png'),
           ButtonType.amazon => CustomImage('assets/images/login/kakao.png'),
           _ => null,
         },

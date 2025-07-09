@@ -1,22 +1,24 @@
 import 'dart:async';
 import 'dart:developer';
 import 'dart:io';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:could_be/core/components/layouts/scaffold_layout.dart';
 import 'package:could_be/core/routes/route_names.dart';
+import 'package:could_be/core/routes/router.dart';
 import 'package:could_be/domain/useCases/manage_user_status_use_case.dart';
-import 'package:could_be/presentation/log_in/login_view.dart';
-import 'package:dio/dio.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 
 import '../../core/di/di_setup.dart';
 import '../../core/update_management/check_update_field.dart';
 import '../../data/data_source/local/user_preferences.dart';
 import '../../domain/repositoryInterfaces/token_storage_interface.dart';
-import '../home/home_view.dart';
+
+
 
 class Root extends StatefulWidget {
   const Root({super.key});
@@ -27,10 +29,13 @@ class Root extends StatefulWidget {
 
 class _RootState extends State<Root> {
   late StreamSubscription fireSubscription;
+  final _flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
 
-  Future startListenUpdateStatus(String version, BuildContext context) async {
+  Future startListenUpdateStatus() async {
+    PackageInfo packageInfo = await PackageInfo.fromPlatform();
+    String version = packageInfo.version;
     final Stream<DocumentSnapshot<Map<String, dynamic>>> usersStream =
-    FirebaseFirestore.instance.collection(CheckUpdateField.collectionName)
+    getIt<FirebaseFirestore>().collection(CheckUpdateField.collectionName)
         .doc(CheckUpdateField.documentName)
         .snapshots();
 
@@ -73,61 +78,104 @@ class _RootState extends State<Root> {
     }
 
     usersStream.listen((snapshot){
+      log('update stream : ${snapshot.data()}');
       if (Platform.isAndroid) {
         if (snapshot.data()![CheckUpdateField.androidServerCheck]) {
-          context.go(RouteNames.serverCheck);
+          router.go(RouteNames.serverCheck);
         } else if (isNeedUpdate(snapshot.data()![CheckUpdateField.androidVersionForce], version)) {
-          context.go(RouteNames.needUpdate);
+          router.go(RouteNames.needUpdate);
         } else if (isHaveUpdate(snapshot.data()![CheckUpdateField.androidVersionLatest], version)) {
-          context.go(RouteNames.haveUpdate, extra: snapshot.data()![CheckUpdateField.androidVersionLatest]);
+          router.go(RouteNames.haveUpdate, extra: snapshot.data()![CheckUpdateField.androidVersionLatest]);
         }
       } else if (Platform.isIOS) {
         if (snapshot.data()![CheckUpdateField.iosServerCheck]) {
-          context.go(RouteNames.serverCheck);
+          router.go(RouteNames.serverCheck);
         } else if (isNeedUpdate(snapshot.data()![CheckUpdateField.iosVersionForce], version)) {
-          context.go(RouteNames.needUpdate);
+          router.go(RouteNames.needUpdate);
         } else if (isHaveUpdate(snapshot.data()![CheckUpdateField.iosVersionLatest], version)) {
-          context.go(RouteNames.haveUpdate, extra: snapshot.data()![CheckUpdateField.iosVersionLatest]);
+          router.go(RouteNames.haveUpdate, extra: snapshot.data()![CheckUpdateField.iosVersionLatest]);
         }
       } else {
-        context.go(RouteNames.unsupportedDevice);
+        router.go(RouteNames.unsupportedDevice);
       }
     });
   }
 
-  Map<String, List<int>> typeCasting(Map data) {
-    List keys = data.keys.toList();
-    List values = data.values.toList();
-    Map<String, List<int>> result = {};
-    for (int i = 0; i < keys.length; i++) {
-      result['${keys[i]}'] = values[i].cast<int>();
-    }
-    return result;
-  }
-
-  Future<void> userLogined(BuildContext context) async {
-    PackageInfo packageInfo = await PackageInfo.fromPlatform();
-    String version = packageInfo.version;
-    String? idToken = await FirebaseAuth.instance.currentUser!.getIdToken();
+  Future<void> userLogined() async {
+    String? idToken = await getIt<FirebaseAuth>().currentUser!.getIdToken();
     final tokenRepo = getIt<TokenStorageRepository>();
     if (idToken == null) {
       log('idToken is null');
-      context.go(RouteNames.login);
+      router.go(RouteNames.login);
       return;
     }
     await tokenRepo.saveToken(idToken);
 
-    startListenUpdateStatus(version, context);
+    startListenUpdateStatus();
 
     ManageUserStatusUseCase manageUserStatusUseCase = getIt<ManageUserStatusUseCase>();
-
     var result = await manageUserStatusUseCase.checkUserRegisterStatus();
     if (!result.exists) {
       await manageUserStatusUseCase.registerIdToken(idToken);
-      context.go(RouteNames.home);
+      router.go(RouteNames.home);
     } else {
-      context.go(RouteNames.home);
+      router.go(RouteNames.home);
     }
+  }
+
+  void initializeNotification() async {
+    // await Firebase.initializeApp();
+    FirebaseMessaging messaging = FirebaseMessaging.instance;
+
+    final channel = const AndroidNotificationChannel(
+      'Dasi Stand', // id
+      'High Importance Notifications', // title// description
+      importance: Importance.high,
+    );
+
+    await _flutterLocalNotificationsPlugin
+        .resolvePlatformSpecificImplementation<
+        AndroidFlutterLocalNotificationsPlugin>()
+        ?.createNotificationChannel(channel);
+
+    FirebaseMessaging.onMessage.listen((RemoteMessage message) {
+      RemoteNotification? notification = message.notification;
+      AndroidNotification? android = message.notification?.android;
+
+      if (notification != null && android != null) {
+        _flutterLocalNotificationsPlugin.show(
+            notification.hashCode,
+            notification.title,
+            notification.body,
+            NotificationDetails(
+              android: AndroidNotificationDetails(
+                channel.id,
+                channel.name,
+                // icon: 'app_icon2',
+              ),
+            ));
+      }
+    });
+
+    await messaging.setAutoInitEnabled(true);
+
+    await messaging.setForegroundNotificationPresentationOptions(
+      alert: true,
+      badge: true,
+      sound: true,
+    );
+  }
+
+  void _requestPermission() async {
+    await FirebaseMessaging.instance.requestPermission(
+      alert: true,
+      announcement: false,
+      badge: true,
+      carPlay: false,
+      criticalAlert: false,
+      provisional: false,
+      sound: true,
+    );
   }
 
   @override
@@ -137,20 +185,21 @@ class _RootState extends State<Root> {
     fireSubscription = FirebaseAuth.instance.userChanges().listen((User? user)async{
       log(FirebaseAuth.instance.currentUser.toString());
       if (user == null) {
-        context.go(RouteNames.login);
+        router.go(RouteNames.login);
         log('User is null');
       }else{
         if (FirebaseAuth.instance.currentUser == null) {
-          context.go(RouteNames.login);
+          router.go(RouteNames.login);
           log('FirebaseAuth.instance.currentUser is null');
         } else {
           String? token = await FirebaseAuth.instance.currentUser!.getIdToken();
           if(token == null){
-            context.go(RouteNames.login);
+            router.go(RouteNames.login);
             log('FirebaseAuth.instance.currentUser!.getIdToken() is null');
           }else{
             log('${token}');
-            await userLogined(context);
+            _requestPermission();
+            await userLogined();
           }
         }
       }
@@ -165,9 +214,20 @@ class _RootState extends State<Root> {
 
   @override
   Widget build(BuildContext context) {
-    return MyScaffold(body: Center(
-      child: Text('root'),
-    ));
+    return RegScaffold(
+      backgroundColor: Colors.white,
+      body: Container(
+        width: double.infinity,
+        height: double.infinity,
+        color: Colors.white,
+        child: Center(
+          child: Image.asset(
+            'assets/images/logo/logo_rect.png',
+            width: 200,
+          ),
+        ),
+      ),
+    );
   }
 }
 

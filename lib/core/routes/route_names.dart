@@ -34,6 +34,9 @@ abstract class RouteNames{
   userBiasStatus = '$myPage/userBiasStatus',
   manageIssueEvalution = '$myPage/manageIssueEvalution',
 
+  //customer services
+  feedback = '/feedback',
+
   issueDetailFeed = '/issueDetailFeed',
   shortsPlayer = '/shortsPlayer/:issueId'
   ;

@@ -28,7 +28,7 @@ void showConfirm({
     builder: (context) {
       return AlertDialog(
         title: Text('알림'),
-        content: Text('앱을 종료하시겠습니까?'),
+        content: Text(msg),
         actions: [
           TextButton(
             onPressed: () => Navigator.of(context).pop(),

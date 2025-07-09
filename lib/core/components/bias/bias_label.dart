@@ -1,3 +1,4 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import '../../../ui/color_styles.dart';
 import '../../../ui/fonts.dart';
@@ -9,6 +10,7 @@ class BiasLabel extends StatelessWidget {
     super.key,
     required this.color,
     required this.label,
+    this.group,
     this.labelColor,
     this.mainAxisAlignment,
   });
@@ -16,6 +18,7 @@ class BiasLabel extends StatelessWidget {
   final Color color;
   final Color? labelColor;
   final String label;
+  final AutoSizeGroup? group;
   final MainAxisAlignment? mainAxisAlignment;
 
   @override
@@ -30,7 +33,7 @@ class BiasLabel extends StatelessWidget {
           decoration: BoxDecoration(color: color, shape: BoxShape.circle),
         ),
         SizedBox(width: 4),
-        Expanded(child: MyText.reg(label, color: labelColor ?? ColorStyles.gray1)),
+        Expanded(child: MyText.reg(label, color: labelColor ?? ColorStyles.gray1, group: group)),
       ],
     );
   }

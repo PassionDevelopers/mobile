@@ -7,7 +7,7 @@ class UnsupportedDevice extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MyScaffold(
+    return RegScaffold(
         body: Container(
           height: double.infinity,
           width: double.infinity,

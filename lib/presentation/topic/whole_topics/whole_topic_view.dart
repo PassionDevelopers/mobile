@@ -23,7 +23,7 @@ class WholeTopicView extends StatelessWidget {
     final viewModelWorld = getIt<WholeTopicViewModel>(param1: 'international');
     final viewModelIt = getIt<WholeTopicViewModel>(param1: 'technology');
 
-    return MyScaffold(
+    return RegScaffold(
       body: DefaultTabController(
         length: 6,
         child: Column(

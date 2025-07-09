@@ -1,12 +1,15 @@
+import 'package:could_be/core/components/navigation/custom_bottom_navigation_bar.dart';
+import 'package:could_be/core/responsive/responsive_constants.dart';
 import 'package:could_be/ui/fonts.dart';
 import 'package:flutter/material.dart';
 import '../../../ui/color.dart';
+import '../../responsive/responsive_layout.dart';
+import '../navigation/side_navigation_bar.dart';
 
-class MyScaffold extends StatelessWidget {
-  const MyScaffold({
+class RegScaffold extends StatelessWidget {
+  const RegScaffold({
     super.key,
     required this.body,
-    this.bottomNavigationBar,
     this.appBar,
     this.drawer,
     this.endDrawer,
@@ -15,10 +18,10 @@ class MyScaffold extends StatelessWidget {
     this.backgroundColor,
     this.floatingActionButton,
     this.floatingActionButtonLocation,
+    this.sideNavigationBar,
   });
 
   final Widget body;
-  final Widget? bottomNavigationBar;
   final Widget? drawer;
   final Widget? endDrawer;
   final bool showBottomBar;
@@ -27,27 +30,172 @@ class MyScaffold extends StatelessWidget {
   final Color? backgroundColor;
   final FloatingActionButton? floatingActionButton;
   final FloatingActionButtonLocation? floatingActionButtonLocation;
+  final Widget? sideNavigationBar;
 
   @override
   Widget build(BuildContext context) {
+    return ResponsiveBuilder(
+      builder: (context, deviceType) {
+        switch (deviceType) {
+          case DeviceType.mobile:
+            return _buildMobileLayout(context);
+          case DeviceType.tablet:
+
+          case DeviceType.desktop:
+            return _buildDesktopLayout(context);
+        }
+      },
+    );
+  }
+
+  Widget _buildMobileLayout(BuildContext context) {
     return Container(
       color: backgroundColor ?? AppColors.background,
       child: SafeArea(
         child: Scaffold(
           appBar: appBar ?? (appBarTitle != null
-                  ? AppBar(
-                    title: MyText.h2(appBarTitle!),
-                    backgroundColor: AppColors.primaryLight,
-                  )
-                  : null),
+              ? AppBar(
+            title: MyText.h2(appBarTitle!),
+            backgroundColor: AppColors.primaryLight,
+          )
+              : null),
           drawer: drawer,
           endDrawer: endDrawer,
           floatingActionButtonLocation: floatingActionButtonLocation,
           floatingActionButton: floatingActionButton,
           resizeToAvoidBottomInset: false,
           body: body,
-          bottomNavigationBar: bottomNavigationBar,
         ),
+      ),
+    );
+  }
+
+  Widget _buildDesktopLayout(BuildContext context) {
+    return SafeArea(
+      child: Scaffold(
+        appBar: appBar ?? (appBarTitle != null
+            ? AppBar(
+          title: MyText.h2(appBarTitle!),
+          backgroundColor: AppColors.primaryLight,
+        )
+            : null),
+        drawer: drawer,
+        endDrawer: endDrawer,
+        floatingActionButtonLocation: floatingActionButtonLocation,
+        floatingActionButton: floatingActionButton,
+        resizeToAvoidBottomInset: false,
+        body: body,
+        // 데스크탑에서는 하단 네비게이션 숨김
+        bottomNavigationBar: null,
+      ),
+    );
+  }
+
+}
+
+class HomeScaffold extends StatelessWidget {
+  const HomeScaffold({
+    super.key,
+    required this.body,
+    this.appBar,
+    this.drawer,
+    this.endDrawer,
+    this.showBottomBar = true,
+    this.appBarTitle,
+    this.backgroundColor,
+    this.floatingActionButton,
+    this.floatingActionButtonLocation,
+    this.sideNavigationBar,
+    required this.currentNavigationIndex,
+    required this.onNavigationChanged,
+  });
+
+  final Widget body;
+  final Widget? drawer;
+  final Widget? endDrawer;
+  final bool showBottomBar;
+  final String? appBarTitle;
+  final PreferredSizeWidget? appBar;
+  final Color? backgroundColor;
+  final FloatingActionButton? floatingActionButton;
+  final FloatingActionButtonLocation? floatingActionButtonLocation;
+  final Widget? sideNavigationBar;
+  final int currentNavigationIndex;
+  final Function(int) onNavigationChanged;
+
+  @override
+  Widget build(BuildContext context) {
+    return ResponsiveBuilder(
+      builder: (context, deviceType) {
+        switch (deviceType) {
+          case DeviceType.mobile:
+            return _buildMobileLayout(context);
+          case DeviceType.tablet:
+          case DeviceType.desktop:
+            return _buildDesktopLayout(context);
+        }
+      },
+    );
+  }
+
+  Widget _buildMobileLayout(BuildContext context) {
+    return Container(
+      color: backgroundColor ?? AppColors.background,
+      child: SafeArea(
+        child: Scaffold(
+          appBar: appBar ?? (appBarTitle != null
+            ? AppBar(
+              title: MyText.h2(appBarTitle!),
+              backgroundColor: AppColors.primaryLight,
+            )
+            : null),
+          drawer: drawer,
+          endDrawer: endDrawer,
+          floatingActionButtonLocation: floatingActionButtonLocation,
+          floatingActionButton: floatingActionButton,
+          resizeToAvoidBottomInset: false,
+          body: body,
+          bottomNavigationBar: CustomBottomNavigationBar(
+            currentIndex: currentNavigationIndex,
+            onTap: onNavigationChanged,
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildDesktopLayout(BuildContext context) {
+    return SafeArea(
+      child: Scaffold(
+        appBar: appBar ?? (appBarTitle != null
+                ? AppBar(
+                  title: MyText.h2(appBarTitle!),
+                  backgroundColor: AppColors.primaryLight,
+                )
+                : null),
+        drawer: drawer,
+        endDrawer: endDrawer,
+        floatingActionButtonLocation: floatingActionButtonLocation,
+        floatingActionButton: floatingActionButton,
+        resizeToAvoidBottomInset: false,
+        body: Row(
+          children: [
+            // 사이드 네비게이션
+            if (sideNavigationBar != null)
+              sideNavigationBar!
+            else
+              SideNavigationBar(
+                currentIndex: currentNavigationIndex!,
+                onTap: onNavigationChanged!,
+              ),
+            // 메인 컨텐츠
+            Expanded(
+              child: body,
+            ),
+          ],
+        ),
+        // 데스크탑에서는 하단 네비게이션 숨김
+        bottomNavigationBar: null,
       ),
     );
   }

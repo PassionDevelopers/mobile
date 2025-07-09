@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
-
 import '../../../core/components/layouts/scaffold_layout.dart';
-import '../../../core/components/navigation/custom_bottom_navigation_bar.dart';
 import '../../../ui/color.dart';
 
 class HomeView extends StatelessWidget {
@@ -18,12 +16,10 @@ class HomeView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MyScaffold(
+    return HomeScaffold(
+      currentNavigationIndex: currentPageIndex,
+      onNavigationChanged: setCurrentIndex,
       body: Ink(color: AppColors.background, child: body),
-      bottomNavigationBar: CustomBottomNavigationBar(
-        currentIndex: currentPageIndex,
-        onTap: setCurrentIndex,
-      ),
     );
   }
 }

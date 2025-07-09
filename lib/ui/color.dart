@@ -25,9 +25,12 @@ abstract class AppColors {
   // static Color primary = Color.fromRGBO(27, 210, 204, 1); // 따뜻한 민트
 
   static Color right = Color.fromRGBO(226, 93, 114, 1);
+  // E25D72
+
   // static Color center = Color(0xffE5D9F2);
   static Color center = Color(0xffA294F9);
   static Color left = Color.fromRGBO(53, 195, 243, 1);
+  // 35C3F3
   static Color background = Colors.grey.shade100;
   static Color primary = Color(0xff0A0A0B);
 

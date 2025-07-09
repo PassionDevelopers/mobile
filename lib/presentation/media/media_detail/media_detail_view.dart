@@ -9,6 +9,9 @@ import 'package:flutter/material.dart';
 import '../../../core/components/bias/bias_enum.dart';
 import '../../../core/components/cards/news_card.dart';
 import '../../../core/themes/margins_paddings.dart';
+import '../../../core/responsive/responsive_layout.dart';
+import '../../../core/responsive/responsive_utils.dart';
+import '../../../core/components/layouts/responsive_grid.dart';
 import 'media_detail_view_model.dart';
 
 class MediaDetailView extends StatelessWidget {
@@ -22,105 +25,117 @@ class MediaDetailView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final viewModel = getIt<MediaDetailViewModel>(param1: sourceId);
-    return MyScaffold(
+    return RegScaffold(
       backgroundColor: primaryLight,
       body: ListenableBuilder(
-        listenable: viewModel,
-        builder: (context, state) {
-          final state = viewModel.state;
-          if(state.isLoading) {
-            return const Center(child: CircularProgressIndicator());
-          }else{
-            if (state.sourceDetail == null) {
-              return Center(child: Text('발견된 매체가 없습니다.'));
-            }
-            return SingleChildScrollView(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  AppBar(
-                    backgroundColor: primaryLight,
-                    elevation: 0,
-                    leading: IconButton(
-                      icon: Icon(Icons.arrow_back_ios, color: primary),
-                      onPressed: () => Navigator.pop(context),
-                    ),
-                    title: Text(
-                      '매체 상세 정보',
-                      style: TextStyle(
-                        color: primary,
-                        fontSize: 18,
-                        fontWeight: FontWeight.w600,
-                      ),
-                    ),
-                    centerTitle: false,
+      listenable: viewModel,
+      builder: (context, state) {
+        final state = viewModel.state;
+        if(state.isLoading) {
+          return const Center(child: CircularProgressIndicator());
+        }else{
+          if (state.sourceDetail == null) {
+            return Center(child: Text('발견된 언론이 없습니다.'));
+          }
+          return SingleChildScrollView(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                AppBar(
+                  backgroundColor: primaryLight,
+                  elevation: 0,
+                  leading: IconButton(
+                    icon: Icon(Icons.arrow_back_ios, color: primary),
+                    onPressed: () => Navigator.pop(context),
                   ),
-                  const SizedBox(height: MyPaddings.medium),
-                  // 매체 정보
-                  Padding(
-                    padding: EdgeInsets.symmetric(horizontal: MyPaddings.largeMedium),
-                    child: Row(
-                      children: [
-                        MediaProfileDetail(logoUrl: state.sourceDetail!.logoUrl,),
-                        const SizedBox(width: 16),
-                        Expanded(
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              MyText.h1(state.sourceDetail!.name),
-                              const SizedBox(height: 4),
-                              MyText.reg('구독자 ${state.sourceDetail!.totalIssuesCount}명'),
-                            ],
-                          ),
-                        ),
-                        Container(
-                          padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-                          decoration: BoxDecoration(
-                            color: const Color(0xFFE8E8E8),
-                            borderRadius: BorderRadius.circular(8),
-                          ),
-                          child: const Text(
-                            '구독',
-                            style: TextStyle(
-                              fontSize: 14,
-                              fontWeight: FontWeight.w500,
-                            ),
-                          ),
-                        ),
-                      ],
+                  title: Text(
+                    '언론 상세 정보',
+                    style: TextStyle(
+                      color: primary,
+                      fontSize: 18,
+                      fontWeight: FontWeight.w600,
                     ),
                   ),
-
-                  const SizedBox(height: MyPaddings.medium),
-
-                  // 평가 결과들
-                  _buildEvaluationItem('편향 평가 결과', getBiasFromString(state.sourceDetail!.perspective)),
-                  _buildEvaluationItem('다시 스탠드 AI 평가', getBiasFromString(state.sourceDetail!.aiEvaluatedPerspective)),
-                  if(state.sourceDetail!.expertEvaluatedPerspective != null)
-                    _buildEvaluationItem('전문가 평가', getBiasFromString(state.sourceDetail!.expertEvaluatedPerspective!)),
-
-                  const SizedBox(height: MyPaddings.medium),
-
-                  Padding(
-                    padding: EdgeInsets.only(left: MyPaddings.largeMedium),
-                    child: BigTitle(title: '최근 기사'),
-                  ),
-
-                  state.sourceDetail!.recentArticles.articles.isEmpty
-                      ? Center(child: Text('발견된 기사가 없습니다.'))
-                      : Column(
+                  centerTitle: false,
+                ),
+                const SizedBox(height: MyPaddings.medium),
+                // 언론 정보
+                Padding(
+                  padding: EdgeInsets.symmetric(horizontal: MyPaddings.largeMedium),
+                  child: Row(
                     children: [
-                      for (int i = 0; i < state.sourceDetail!.recentArticles.articles.length; i++)
-                        NewsCard(article: state.sourceDetail!.recentArticles.articles[i]),
+                      MediaProfileDetail(logoUrl: state.sourceDetail!.logoUrl,),
+                      const SizedBox(width: 16),
+                      Expanded(
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            MyText.h1(state.sourceDetail!.name),
+                            const SizedBox(height: 4),
+                            MyText.reg('구독자 ${state.sourceDetail!.totalIssuesCount}명'),
+                          ],
+                        ),
+                      ),
+                      Container(
+                        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                        decoration: BoxDecoration(
+                          color: const Color(0xFFE8E8E8),
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                        child: const Text(
+                          '구독',
+                          style: TextStyle(
+                            fontSize: 14,
+                            fontWeight: FontWeight.w500,
+                          ),
+                        ),
+                      ),
                     ],
                   ),
+                ),
 
-                ],
-              ),
-            );
-          }
+                const SizedBox(height: MyPaddings.medium),
+
+                // 평가 결과들
+                _buildEvaluationItem('편향 평가 결과', getBiasFromString(state.sourceDetail!.perspective)),
+                _buildEvaluationItem('다시 스탠드 AI 평가', getBiasFromString(state.sourceDetail!.aiEvaluatedPerspective)),
+                if(state.sourceDetail!.expertEvaluatedPerspective != null)
+                  _buildEvaluationItem('전문가 평가', getBiasFromString(state.sourceDetail!.expertEvaluatedPerspective!)),
+
+                const SizedBox(height: MyPaddings.medium),
+
+                Padding(
+                  padding: EdgeInsets.only(left: MyPaddings.largeMedium),
+                  child: BigTitle(title: '최근 기사'),
+                ),
+
+                state.sourceDetail!.recentArticles.articles.isEmpty
+                    ? Center(child: Text('발견된 기사가 없습니다.'))
+                    : ResponsiveBuilder(
+                        builder: (context, deviceType) {
+                          if (ResponsiveUtils.isMobile(context)) {
+                            return Column(
+                              children: [
+                                for (int i = 0; i < state.sourceDetail!.recentArticles.articles.length; i++)
+                                  NewsCard(article: state.sourceDetail!.recentArticles.articles[i]),
+                              ],
+                            );
+                          }
+
+                          return ResponsiveGrid(
+                            children: state.sourceDetail!.recentArticles.articles
+                                .map((article) => NewsCard(article: article))
+                                .toList(),
+                          );
+                        },
+                      ),
+
+              ],
+            ),
+          );
         }
+      }
       ),
     );
   }

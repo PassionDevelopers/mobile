@@ -13,7 +13,7 @@ class WatchHistoryView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MyScaffold(
+    return RegScaffold(
       body: IssueListRoot(
         appBar: RegAppBar(title: '내가 본 이슈'),
         upperWidget: SizedBox(height: MyPaddings.large,),

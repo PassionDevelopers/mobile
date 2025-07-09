@@ -32,17 +32,25 @@ class SubscribedMediaViewModel with ChangeNotifier {
   }) : _fetchSourcesUseCase = fetchSourcesUseCase,
        _fetchArticlesUseCase = fetchArticlesUseCase {
     _fetchSubscribedSources();
-    _fetchCommonArticles();
+    fetchCommonArticles();
     _setupSubscriptionListeners();
+  }
+
+  void refreshArticles() {
+    if (state.selectedSourceId == null) {
+      fetchCommonArticles();
+    } else {
+      fetchSpecificSourceArticles(state.selectedSourceId!);
+    }
   }
 
   void setSelectedSourceId(String sourceId) {
     if (sourceId == _state.selectedSourceId) {
       _state = state.copyWith(selectedSourceId: null);
-      _fetchCommonArticles();
+      fetchCommonArticles();
     } else {
       _state = state.copyWith(selectedSourceId: sourceId);
-      _fetchSpecificSourceArticles(sourceId);
+      fetchSpecificSourceArticles(sourceId);
     }
   }
 
@@ -90,7 +98,7 @@ class SubscribedMediaViewModel with ChangeNotifier {
     notifyListeners();
   }
 
-  void _fetchSubscribedSources({String? lastArticleId}) async {
+  void _fetchSubscribedSources() async {
     _state = state.copyWith(
       isSourcesLoading: true,
       selectedSourceId: state.selectedSourceId,
@@ -107,7 +115,7 @@ class SubscribedMediaViewModel with ChangeNotifier {
     notifyListeners();
   }
 
-  void _fetchSpecificSourceArticles(String sourceId, {String? lastArticleId}) async {
+  void fetchSpecificSourceArticles(String sourceId, {String? lastArticleId}) async {
     _state = state.copyWith(
       isArticlesLoading: true,
       selectedSourceId: state.selectedSourceId,
@@ -126,7 +134,7 @@ class SubscribedMediaViewModel with ChangeNotifier {
     notifyListeners();
   }
 
-  void _fetchCommonArticles() async {
+  void fetchCommonArticles() async {
     _state = state.copyWith(
       isArticlesLoading: true,
       selectedSourceId: state.selectedSourceId,
@@ -157,14 +165,25 @@ class SubscribedMediaViewModel with ChangeNotifier {
     _subscriptionStreamSubscription = MediaSubscriptionEvents.subscriptionStream.listen(
       (sourceId) {
         _fetchSubscribedSources();
-        _fetchCommonArticles();
+        if (state.selectedSourceId == sourceId) {
+          return;
+        }
+        if (state.selectedSourceId == null) {
+          fetchCommonArticles();
+        } else {
+          fetchSpecificSourceArticles(sourceId);
+        }
       },
     );
 
     _unsubscriptionStreamSubscription = MediaSubscriptionEvents.unsubscriptionStream.listen(
       (sourceId) {
         _fetchSubscribedSources();
-        _fetchCommonArticles();
+        if(state.selectedSourceId == sourceId) {
+          _state = state.copyWith(selectedSourceId: null);
+          notifyListeners();
+          fetchCommonArticles();
+        }
       },
     );
   }

@@ -8,6 +8,10 @@ part of 'issue_dto.dart';
 
 IssueDTO _$IssueDTOFromJson(Map<String, dynamic> json) => IssueDTO(
   id: json['_id'] as String,
+  tags:
+      (json['tags'] as List<dynamic>)
+          .map((e) => IssueTagDto.fromJson(e as Map<String, dynamic>))
+          .toList(),
   summary: json['summary'] as String,
   title: json['title'] as String,
   createdAt: DateTime.parse(json['createdAt'] as String),
@@ -27,6 +31,7 @@ IssueDTO _$IssueDTOFromJson(Map<String, dynamic> json) => IssueDTO(
   leftLikeCount: (json['leftLikeCount'] as num).toInt(),
   centerLikeCount: (json['centerLikeCount'] as num).toInt(),
   rightLikeCount: (json['rightLikeCount'] as num).toInt(),
+  userEvaluatedPerspective: json['userEvaluatedPerspective'] as String?,
 );
 
 Map<String, dynamic> _$IssueDTOToJson(IssueDTO instance) => <String, dynamic>{
@@ -34,6 +39,7 @@ Map<String, dynamic> _$IssueDTOToJson(IssueDTO instance) => <String, dynamic>{
   'title': instance.title,
   'category': instance.category,
   'summary': instance.summary,
+  'tags': instance.tags,
   'createdAt': instance.createdAt.toIso8601String(),
   'updatedAt': instance.updatedAt?.toIso8601String(),
   'leftLikeCount': instance.leftLikeCount,
@@ -44,4 +50,5 @@ Map<String, dynamic> _$IssueDTOToJson(IssueDTO instance) => <String, dynamic>{
   'view': instance.view,
   'isSubscribed': instance.isSubscribed,
   'coverageSpectrum': instance.coverageSpectrum,
+  'userEvaluatedPerspective': instance.userEvaluatedPerspective,
 };

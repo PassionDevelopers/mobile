@@ -9,10 +9,11 @@ class SubscribedIssueView extends StatelessWidget {
   const SubscribedIssueView({super.key});
   @override
   Widget build(BuildContext context) {
-    return MyScaffold(
+    return RegScaffold(
       body: IssueListRoot(
         appBar: RegAppBar(
           title: '나의 관심 이슈',
+
         ),
         upperWidget: SizedBox(height: MyPaddings.large,),
         issueType: IssueType.subscribed,),

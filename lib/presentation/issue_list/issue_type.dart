@@ -6,6 +6,7 @@ enum IssueType {
   forYou,
   hot,
 
+  evaluated,
   watchHistroy,
   subscribed,
   subscribedTopicIssuesWhole,

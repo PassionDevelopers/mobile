@@ -13,8 +13,8 @@ class WholeMediaView extends StatelessWidget {
   Widget build(BuildContext context) {
     final viewModel = getIt<WholeMediaViewModel>();
 
-    return MyScaffold(
-      appBarTitle: '관심 매체 설정',
+    return RegScaffold(
+      appBarTitle: '관심 언론 설정',
       body: ListenableBuilder(
         listenable: viewModel,
         builder: (context, _) {
@@ -22,7 +22,7 @@ class WholeMediaView extends StatelessWidget {
           if (state.isLoading) {
             return WholeMediaLoadingView();
           } else if (state.sources == null || state.sources!.sources.isEmpty) {
-            return Center(child: Text('현재 매체 정보를 불러올 수 없습니다.'));
+            return Center(child: Text('현재 언론 정보를 불러올 수 없습니다.'));
           } else {
             final sources = state.sources!.sources;
             return GridView.builder(

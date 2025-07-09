@@ -10,7 +10,7 @@ class AuthInterceptor extends Interceptor {
   AuthInterceptor(this.tokenStorageRepository);
 
   Future<String?> _refreshToken() async {
-    final user = FirebaseAuth.instance.currentUser;
+    final user = getIt<FirebaseAuth>().currentUser;
     if (user != null) {
       return await user.getIdToken(true);
     }

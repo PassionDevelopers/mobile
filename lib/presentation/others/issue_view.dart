@@ -179,7 +179,7 @@ class _IssueViewState extends State<IssueView> with SingleTickerProviderStateMix
   Widget build(BuildContext context) {
     //키워드 워드 클라우드
     // 경쟁관계에 있는 다양한 주제로 확장할 수 있다.
-    // 선정 매체들의 조회수를 통한
+    // 선정 언론들의 조회수를 통한
     // 관점 차이점 헤더로 박기
     // 트리 구조로 정리 (트리의 깊이가 한 페이지) 대표 기능 , 구성을 명시적으로, 고객 어필 포인트 -> 기능, 현재 고객의 니즈를 파악
     // 현재 정치 뉴스 사용자들의 uX 정리
@@ -189,7 +189,7 @@ class _IssueViewState extends State<IssueView> with SingleTickerProviderStateMix
     // 링크 표시
     return Stack(
       children: [
-        MyScaffold(
+        RegScaffold(
           body: SingleChildScrollView(
             child: Column(
               children: [
@@ -333,7 +333,7 @@ class _IssueViewState extends State<IssueView> with SingleTickerProviderStateMix
 
                         SizedBox(height: 30),
                         // Text(
-                        //   '매체 성향별 보도율',
+                        //   '언론 성향별 보도율',
                         //   style: TextStyle(
                         //     fontSize: 18,
                         //     fontWeight: FontWeight.bold,
@@ -422,9 +422,9 @@ class _IssueViewState extends State<IssueView> with SingleTickerProviderStateMix
                               indicatorColor: _tabController.index == 0? AppColors.left :
                               _tabController.index == 1?  AppColors.center : AppColors.right,
                               tabs: [
-                                Tab(text: '진보 매체'),
-                                Tab(text: '중도 매체'),
-                                Tab(text: '보수 매체'),
+                                Tab(text: '진보 언론'),
+                                Tab(text: '중도 언론'),
+                                Tab(text: '보수 언론'),
                               ],
                             ),
                             Container(

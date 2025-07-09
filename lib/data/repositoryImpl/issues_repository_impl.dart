@@ -110,4 +110,14 @@ class IssuesRepositoryImpl implements IssuesRepository {
     final issuesDTO = IssuesDTO.fromJson(response.data);
     return issuesDTO.toDomain();
   }
+
+  @override
+  Future<Issues> fetchIssuesEvaluated({String? lastIssueId}) async {
+    final response = await dio.get(
+      '/issues/evaluated',
+      queryParameters: {'lastIssueId': lastIssueId},
+    );
+    final issuesDTO = IssuesDTO.fromJson(response.data);
+    return issuesDTO.toDomain();
+  }
 }

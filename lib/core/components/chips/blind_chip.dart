@@ -1,28 +1,26 @@
-import 'package:could_be/core/method/bias/bias_method.dart';
+import 'package:could_be/domain/entities/issue_tag.dart';
 import 'package:flutter/cupertino.dart';
-
 import '../../../ui/color.dart';
 import '../../many_use.dart';
-import '../bias/bias_enum.dart';
 
 class BlindChip extends StatelessWidget {
-  const BlindChip({super.key, required this.bias});
-  final Bias bias;
+  const BlindChip({super.key, required this.tag});
+  final IssueTag tag;
 
   @override
   Widget build(BuildContext context) {
-    Color primary = bias == Bias.center? AppColors.primary : getBiasColor(bias);
-    Color secondary = primary.withAlpha(80);
+    Color primary = tag.color;
+    // Color secondary = primary.withAlpha(80);
     return Container(
       padding: EdgeInsets.symmetric(horizontal: 8, vertical: 4),
       decoration: BoxDecoration(
-        color: secondary,
+        color: primary,
         borderRadius: BorderRadius.circular(12),
         border: Border.all(color: primary),
       ),
-      child: autoSizeText(bias == Bias.center? '심한 대립' : '사각지대',
-        color: primary,
-        fontSize: 10,
+      child: autoSizeText(tag.name,
+        color: AppColors.primaryLight,
+        fontSize: 12,
         fontWeight: FontWeight.bold,
       ),
     );

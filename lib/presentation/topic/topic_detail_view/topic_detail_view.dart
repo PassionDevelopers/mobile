@@ -7,6 +7,9 @@ import '../../../core/di/di_setup.dart';
 import '../../../core/many_use.dart';
 import '../../../core/themes/margins_paddings.dart';
 import '../../../ui/fonts.dart';
+import '../../../core/responsive/responsive_layout.dart';
+import '../../../core/responsive/responsive_utils.dart';
+import '../../../core/components/layouts/responsive_grid.dart';
 
 class TopicDetailView extends StatelessWidget {
   const TopicDetailView({super.key, required this.topicId});
@@ -18,108 +21,120 @@ class TopicDetailView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final viewModel = getIt<TopicDetailViewModel>(param1: topicId);
-    return MyScaffold(
+    return RegScaffold(
       backgroundColor: primaryLight,
       body: ListenableBuilder(
-          listenable: viewModel,
-          builder: (context, state) {
-            final state = viewModel.state;
-            if (state.isLoading) {
-              return const Center(child: CircularProgressIndicator());
-            } else {
-              if (state.topicDetail == null) {
-                return Center(child: Text('발견된 토픽이 없습니다.'));
-              }
-              return SingleChildScrollView(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    AppBar(
-                      backgroundColor: primaryLight,
-                      elevation: 0,
-                      leading: IconButton(
-                        icon: Icon(Icons.arrow_back_ios, color: primary),
-                        onPressed: () => Navigator.pop(context),
-                      ),
-                      title: Text(
-                        '토픽 상세 정보',
-                        style: TextStyle(
-                          color: primary,
-                          fontSize: 18,
-                          fontWeight: FontWeight.w600,
-                        ),
-                      ),
-                      centerTitle: false,
+        listenable: viewModel,
+        builder: (context, state) {
+          final state = viewModel.state;
+          if (state.isLoading) {
+            return const Center(child: CircularProgressIndicator());
+          } else {
+            if (state.topicDetail == null) {
+              return Center(child: Text('발견된 토픽이 없습니다.'));
+            }
+            return SingleChildScrollView(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  AppBar(
+                    backgroundColor: primaryLight,
+                    elevation: 0,
+                    leading: IconButton(
+                      icon: Icon(Icons.arrow_back_ios, color: primary),
+                      onPressed: () => Navigator.pop(context),
                     ),
-                    const SizedBox(height: MyPaddings.medium),
-                    // 토픽 정보
-                    Padding(
-                      padding: EdgeInsets.symmetric(horizontal: MyPaddings.largeMedium),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          MyText.h1(state.topicDetail!.name),
-                          const SizedBox(height: 8),
-                          MyText.reg('카테고리: ${state.topicDetail!.category}'),
-                          const SizedBox(height: 8),
-                          MyText.reg('구독자 ${state.topicDetail!.subscribersCount}명'),
-                          const SizedBox(height: 8),
-                          MyText.reg('총 이슈 수: ${state.topicDetail!.totalIssuesCount}개'),
-                          const SizedBox(height: 16),
-                          MyText.reg(state.topicDetail!.description, maxLines: 3),
-                        ],
+                    title: Text(
+                      '토픽 상세 정보',
+                      style: TextStyle(
+                        color: primary,
+                        fontSize: 18,
+                        fontWeight: FontWeight.w600,
                       ),
                     ),
-
-                    const SizedBox(height: MyPaddings.medium),
-
-                    // 구독 버튼
-                    Padding(
-                      padding: EdgeInsets.symmetric(horizontal: MyPaddings.largeMedium),
-                      child: Container(
-                        width: double.infinity,
-                        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 12),
-                        decoration: BoxDecoration(
-                          color: state.topicDetail!.isSubscribed
-                              ? const Color(0xFFE8E8E8)
-                              : primary,
-                          borderRadius: BorderRadius.circular(8),
-                        ),
-                        child: Text(
-                          state.topicDetail!.isSubscribed ? '구독 중' : '구독하기',
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                            fontSize: 16,
-                            fontWeight: FontWeight.w600,
-                            color: state.topicDetail!.isSubscribed
-                                ? primary
-                                : primaryLight,
-                          ),
-                        ),
-                      ),
-                    ),
-
-                    const SizedBox(height: MyPaddings.medium),
-
-                    Padding(
-                      padding: EdgeInsets.only(left: MyPaddings.largeMedium),
-                      child: BigTitle(title: '최근 이슈'),
-                    ),
-
-                    state.topicDetail!.recentIssues.issues.isEmpty
-                        ? Center(child: Text('발견된 이슈가 없습니다.'))
-                        : Column(
+                    centerTitle: false,
+                  ),
+                  const SizedBox(height: MyPaddings.medium),
+                  // 토픽 정보
+                  Padding(
+                    padding: EdgeInsets.symmetric(horizontal: MyPaddings.largeMedium),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        for (int i = 0; i < state.topicDetail!.recentIssues.issues.length; i++)
-                          IssueCard(issue: state.topicDetail!.recentIssues.issues[i], isDailyIssue: false),
+                        MyText.h1(state.topicDetail!.name),
+                        const SizedBox(height: 8),
+                        MyText.reg('카테고리: ${state.topicDetail!.category}'),
+                        const SizedBox(height: 8),
+                        MyText.reg('구독자 ${state.topicDetail!.subscribersCount}명'),
+                        const SizedBox(height: 8),
+                        MyText.reg('총 이슈 수: ${state.topicDetail!.totalIssuesCount}개'),
+                        const SizedBox(height: 16),
+                        MyText.reg(state.topicDetail!.description, maxLines: 3),
                       ],
                     ),
+                  ),
 
-                  ],
-                ),
-              );
-            }
+                  const SizedBox(height: MyPaddings.medium),
+
+                  // 구독 버튼
+                  Padding(
+                    padding: EdgeInsets.symmetric(horizontal: MyPaddings.largeMedium),
+                    child: Container(
+                      width: double.infinity,
+                      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 12),
+                      decoration: BoxDecoration(
+                        color: state.topicDetail!.isSubscribed
+                            ? const Color(0xFFE8E8E8)
+                            : primary,
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                      child: Text(
+                        state.topicDetail!.isSubscribed ? '구독 중' : '구독하기',
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.w600,
+                          color: state.topicDetail!.isSubscribed
+                              ? primary
+                              : primaryLight,
+                        ),
+                      ),
+                    ),
+                  ),
+
+                  const SizedBox(height: MyPaddings.medium),
+
+                  Padding(
+                    padding: EdgeInsets.only(left: MyPaddings.largeMedium),
+                    child: BigTitle(title: '최근 이슈'),
+                  ),
+
+                  state.topicDetail!.recentIssues.issues.isEmpty
+                      ? Center(child: Text('발견된 이슈가 없습니다.'))
+                      : ResponsiveBuilder(
+                          builder: (context, deviceType) {
+                            if (ResponsiveUtils.isMobile(context)) {
+                              return Column(
+                                children: [
+                                  for (int i = 0; i < state.topicDetail!.recentIssues.issues.length; i++)
+                                    IssueCard(issue: state.topicDetail!.recentIssues.issues[i], isDailyIssue: false),
+                                ],
+                              );
+                            }
+
+                            return ResponsiveGrid(
+                              children: state.topicDetail!.recentIssues.issues
+                                  .map((issue) => IssueCard(issue: issue, isDailyIssue: false))
+                                  .toList(),
+                            );
+                          },
+                        ),
+
+                ],
+              ),
+            );
           }
+        }
       ),
     );
   }

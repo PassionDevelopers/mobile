@@ -20,23 +20,25 @@ class IssueQueryParamsView extends StatelessWidget {
         listenable: viewModel,
         builder: (context, _) {
           final state = viewModel.state;
+          final List<IssueQueryParam> queryParams = state.issueQueryParams?.queryParams.where(
+            (param) => param.displayName.isNotEmpty).toList() ?? [];
           if(state.isLoading) {
             return ChipLoadingView();
           }else{
-            if(state.issueQueryParams == null || state.issueQueryParams!.queryParams.isEmpty) {
+            if(queryParams.isEmpty) {
               return Center(child: Text('이슈 카테고리가 없습니다.'));
             }else{
               return ListView.builder(
                 scrollDirection: Axis.horizontal,
-                itemCount: state.issueQueryParams!.queryParams.length,
+                itemCount: queryParams.length,
                 itemBuilder: (context, index) {
                   return IssueChip(
                     padding: index == 0 ? MyPaddings.largeMedium : null,
-                    title: state.issueQueryParams!.queryParams[index].displayName,
+                    title: queryParams[index].displayName,
                     isActive: state.selectedIndex == index,
                     onTap: () {
                       viewModel.setSelectedIndex(index);
-                      changeQueryParam(state.issueQueryParams!.queryParams[index]);
+                      changeQueryParam(queryParams[index]);
                     },
                   );
                 },
