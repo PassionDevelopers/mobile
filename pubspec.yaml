@@ -141,7 +141,7 @@ flutter_native_splash:
   ios: true
   android: true
   android_12:
-    image: assets/images/logo/appIcon5.png
+    image: assets/images/logo/appIcon6.png
     color: "#000000"
   # dart run flutter_native_splash:create
 

@@ -42,9 +42,10 @@ class MainAppBar extends StatelessWidget {
 }
 
 class RegAppBar extends StatelessWidget {
-  const RegAppBar({super.key, this.iconData, required this.title, });
+  const RegAppBar({super.key, this.iconData, required this.title, this.actions });
   final IconData? iconData;
   final String title;
+  final List<Widget>? actions;
   @override
   Widget build(BuildContext context) {
     final isDesktop = ResponsiveUtils.isDesktop(context);
@@ -75,6 +76,7 @@ class RegAppBar extends StatelessWidget {
           ],
         ),
       ),
+      actions: actions,
     );
   }
 }

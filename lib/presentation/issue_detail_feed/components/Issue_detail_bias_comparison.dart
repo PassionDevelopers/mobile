@@ -137,8 +137,7 @@ class IssueDetailBiasComparison extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        // Row(children: [BackButton(), BigTitle(title: '언론 성향별 차이점')]),
-        Row(children: [BackButton(), BigTitle(title: '공통 보도 내용')]),
+        Row(children: [BackButton(), BigTitle(title: '차이점 정리')]),
         SizedBox(height: MyPaddings.medium),
         Expanded(
           child: Padding(
@@ -168,22 +167,22 @@ class IssueDetailBiasComparison extends StatelessWidget {
                     ),
                   ),
                 ),
-                // Padding(
-                //   padding: const EdgeInsets.symmetric(
-                //     horizontal: MyPaddings.large,
-                //   ),
-                //   child: BiasCheckButton(
-                //     userEvaluation: userEvaluation,
-                //     onBiasSelected: onBiasSelected,
-                //     leftLikeCount: leftLikeCount,
-                //     centerLikeCount: centerLikeCount,
-                //     rightLikeCount: rightLikeCount,
-                //     isEvaluating: isEvaluating,
-                //     existLeft: existLeft,
-                //     existCenter: existCenter,
-                //     existRight: existRight,
-                //   ),
-                // ),
+                Padding(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: MyPaddings.large,
+                  ),
+                  child: BiasCheckButton(
+                    userEvaluation: userEvaluation,
+                    onBiasSelected: onBiasSelected,
+                    leftLikeCount: leftLikeCount,
+                    centerLikeCount: centerLikeCount,
+                    rightLikeCount: rightLikeCount,
+                    isEvaluating: isEvaluating,
+                    existLeft: existLeft,
+                    existCenter: existCenter,
+                    existRight: existRight,
+                  ),
+                ),
                 MoveToNextButton(
                   moveToNextPage: moveToNextPage,
                   buttonText: '언론의 원문 기사 보기',

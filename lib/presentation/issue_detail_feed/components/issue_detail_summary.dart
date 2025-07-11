@@ -1,6 +1,9 @@
+import 'dart:developer';
+
 import 'package:could_be/core/components/buttons/back_button.dart';
 import 'package:could_be/core/components/cards/text_card.dart';
 import 'package:could_be/core/components/image/image_container.dart';
+import 'package:could_be/core/components/layouts/nested_page_view.dart';
 import 'package:could_be/core/method/text_parsing.dart';
 import 'package:could_be/presentation/issue_detail_feed/components/move_to_next_button.dart';
 import 'package:could_be/ui/color.dart';
@@ -8,10 +11,9 @@ import 'package:flutter/material.dart';
 import '../../../core/components/bias/bias_bar.dart';
 import '../../../core/themes/margins_paddings.dart';
 import '../../../domain/entities/issue_detail.dart';
-import '../../../ui/fonts.dart';
 import 'header.dart';
 
-class IssueDetailSummary extends StatelessWidget {
+class IssueDetailSummary extends StatefulWidget {
   const IssueDetailSummary({
     super.key,
     required this.issue,
@@ -24,48 +26,90 @@ class IssueDetailSummary extends StatelessWidget {
   final VoidCallback moveToNextPage;
 
   @override
+  State<IssueDetailSummary> createState() => _IssueDetailSummaryState();
+}
+
+class _IssueDetailSummaryState extends State<IssueDetailSummary> {
+  final ScrollController scrollController = ScrollController();
+  bool _atBottom = false;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    scrollController.addListener(() {
+      if (scrollController.position.atEdge) {
+        log('Reached the end of the summary');
+        // widget.moveToNextPage();
+        if(_atBottom){
+          widget.moveToNextPage();
+        }else{
+          _atBottom = true;
+        }
+      }
+    });
+  }
+  @override
   Widget build(BuildContext context) {
+
     return Stack(
       children: [
         Column(
           children: [
-            issue.imageUrl != null
+            widget.issue.imageUrl != null
                 ? ImageContainer(
                   height: 200,
-                  imageUrl: issue.imageUrl,
+                  imageUrl: widget.issue.imageUrl,
                   borderRadius: BorderRadius.zero,
                 )
-                : SizedBox(height: MyPaddings.small,),
+                : SizedBox(height: MyPaddings.small),
             Expanded(
               child: Padding(
                 padding: EdgeInsets.symmetric(horizontal: MyPaddings.large),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    IssueDetailHeader(issue: issue),
+                    IssueDetailHeader(issue: widget.issue),
                     SizedBox(height: MyPaddings.small),
                     CardBiasBar(
-                      coverageSpectrum: issue.coverageSpectrum,
+                      coverageSpectrum: widget.issue.coverageSpectrum,
                       isDailyIssue: true,
                     ),
                     SizedBox(height: MyPaddings.small),
                     Expanded(
-                      child: TextCard(
-                        color: AppColors.gray1,
-                        child: SingleChildScrollView(
-                          child: Column(
-                            children: [
-                              for (String para in parseAiText(issue.summary))
-                                Text(
-                                  para,
-                                  style: TextStyle(
-                                    fontSize: fontSize.toDouble(),
-                                    color: AppColors.gray1,
+                      child: GestureDetector(
+                        onVerticalDragUpdate: (details) {
+                          if (details.delta.dy < 0) {
+                            if( !_atBottom) {
+                              // User is scrolling up
+                              _atBottom = false;
+                            }else{
+                              widget.moveToNextPage();
+                            }
+                          } else if (details.delta.dy > 0) {
+                            // User is scrolling down
+                            _atBottom = true;
+                          }
+
+                        },
+                        child: TextCard(
+                          color: AppColors.gray1,
+                          child: SingleChildScrollView(
+                            controller: scrollController,
+                            child: Column(
+                              children: [
+                                for (String para in parseAiText(widget.issue.summary))
+                                  Text(
+                                    para,
+                                    style: TextStyle(
+                                      fontSize: widget.fontSize.toDouble(),
+                                      color: AppColors.gray1,
+                                    ),
+                                    textAlign: TextAlign.justify,
                                   ),
-                                  textAlign: TextAlign.justify,
-                                ),
                                 // MyText.article(para, color: AppColors.gray1),
-                            ],
+                              ],
+                            ),
                           ),
                         ),
                       ),
@@ -77,16 +121,13 @@ class IssueDetailSummary extends StatelessWidget {
             Padding(
               padding: EdgeInsets.symmetric(horizontal: MyPaddings.large),
               child: MoveToNextButton(
-                moveToNextPage: moveToNextPage,
+                moveToNextPage: widget.moveToNextPage,
                 buttonText: '성향별 보도 내용 보기',
               ),
             ),
           ],
         ),
-        Align(
-          alignment: Alignment.topLeft,
-          child: MyBackButton()
-        ),
+        Align(alignment: Alignment.topLeft, child: MyBackButton()),
       ],
     );
   }

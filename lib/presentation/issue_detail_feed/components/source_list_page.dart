@@ -92,33 +92,37 @@ class _SourceListPageState extends State<SourceListPage>
   }
 
   _buildTabViewPage({required Bias bias, required List<Article> biasArticles}) {
-    return TextCard(
-      color: getBiasColor(bias),
-      child:
-          biasArticles.isEmpty
-              ? NotFound(notFoundType: NotFoundType.article)
-              : SingleChildScrollView(
-                child: Column(
-                  children: [
-                    for (final article in biasArticles)
-                      MediaChatBubble(
-                        article: article,
-                        toWebView: () {
-                          context.push(
-                            RouteNames.webView,
-                            extra: {
-                              'articleInfo': (
-                                widget.articles.allArticles,
-                                article.id,
-                                article.source.id,
-                              ),
-                            },
-                          );
-                        },
-                      ),
-                  ],
+    return Padding(
+      padding: EdgeInsets.symmetric(
+          horizontal: MyPaddings.large),
+      child: TextCard(
+        color: getBiasColor(bias),
+        child:
+            biasArticles.isEmpty
+                ? NotFound(notFoundType: NotFoundType.article)
+                : SingleChildScrollView(
+                  child: Column(
+                    children: [
+                      for (final article in biasArticles)
+                        MediaChatBubble(
+                          article: article,
+                          toWebView: () {
+                            context.push(
+                              RouteNames.webView,
+                              extra: {
+                                'articleInfo': (
+                                  widget.articles.allArticles,
+                                  article.id,
+                                  article.source.id,
+                                ),
+                              },
+                            );
+                          },
+                        ),
+                    ],
+                  ),
                 ),
-              ),
+      ),
     );
   }
 
@@ -150,37 +154,39 @@ class _SourceListPageState extends State<SourceListPage>
         ),
         SizedBox(height: MyPaddings.medium),
         Expanded(
-          child: Padding(
-            padding: EdgeInsets.symmetric(horizontal: MyPaddings.large),
-            child: Column(
-              children: [
-                Container(
-                  decoration: BoxDecoration(
-                    color: AppColors.gray5,
-                    borderRadius: BorderRadius.circular(12),
-                  ),
-                  child: Row(
-                    children: List.generate(3, (index) {
-                      return _buildTab(index);
-                    }),
-                  ),
+          child: Column(
+            children: [
+              Container(
+                margin: EdgeInsets.symmetric(horizontal: MyPaddings.large),
+                decoration: BoxDecoration(
+                  color: AppColors.gray5,
+                  borderRadius: BorderRadius.circular(12),
                 ),
-                SizedBox(height: MyPaddings.small),
-                Expanded(
-                  child: TabBarView(
-                    controller: _tabController,
-                    children: [
-                      _buildTabViewPage(bias: Bias.left, biasArticles: leftArticles),
-                      _buildTabViewPage(
-                        bias: Bias.center,
-                        biasArticles: centerArticles,
-                      ),
-                      _buildTabViewPage(bias: Bias.right, biasArticles: rightArticles),
-                    ],
-                  ),
+                child: Row(
+                  children: List.generate(3, (index) {
+                    return _buildTab(index);
+                  }),
                 ),
-                SizedBox(height: MyPaddings.medium),
-                BigButton(
+              ),
+              SizedBox(height: MyPaddings.small),
+              Expanded(
+                child: TabBarView(
+                  controller: _tabController,
+                  children: [
+                    _buildTabViewPage(bias: Bias.left, biasArticles: leftArticles),
+                    _buildTabViewPage(
+                      bias: Bias.center,
+                      biasArticles: centerArticles,
+                    ),
+                    _buildTabViewPage(bias: Bias.right, biasArticles: rightArticles),
+                  ],
+                ),
+              ),
+              SizedBox(height: MyPaddings.medium),
+              Padding(
+                padding: EdgeInsets.symmetric(
+                    horizontal: MyPaddings.large),
+                child: BigButton(
                   widget.hasNextIssue? '다음 이슈 보기' : '홈으로 돌아가기',
                   backgroundColor: AppColors.primary,
                   textColor: AppColors.primaryLight,
@@ -188,8 +194,8 @@ class _SourceListPageState extends State<SourceListPage>
                     context.pop();
                   },
                 ),
-              ],
-            ),
+              ),
+            ],
           ),
         ),
         SizedBox(height: MyPaddings.medium),

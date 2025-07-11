@@ -13,6 +13,7 @@ class IssueDetailDTO {
   final String title;
   final String category;
   final String summary;
+  final String? commonSummary;
   final String? imageUrl;
   final List<String> keywords;
   final String createdAt;
@@ -39,6 +40,7 @@ class IssueDetailDTO {
     required this.title,
     required this.category,
     required this.summary,
+    this.commonSummary,
     this.imageUrl,
     required this.keywords,
     required this.createdAt,
@@ -78,6 +80,7 @@ extension IssueDetailDtx on IssueDetailDTO {
       title: title,
       category: category,
       summary: summary,
+      commonSummary: commonSummary,
       imageUrl: imageUrl,
       keywords: keywords,
       createdAt: DateTime.parse(createdAt),

@@ -7,6 +7,7 @@ import 'package:could_be/core/components/layouts/scaffold_layout.dart';
 import 'package:could_be/core/routes/route_names.dart';
 import 'package:could_be/core/routes/router.dart';
 import 'package:could_be/domain/useCases/manage_user_status_use_case.dart';
+import 'package:could_be/presentation/log_in/login_view_model.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
@@ -17,8 +18,6 @@ import '../../core/di/di_setup.dart';
 import '../../core/update_management/check_update_field.dart';
 import '../../data/data_source/local/user_preferences.dart';
 import '../../domain/repositoryInterfaces/token_storage_interface.dart';
-
-
 
 class Root extends StatefulWidget {
   const Root({super.key});
@@ -101,14 +100,8 @@ class _RootState extends State<Root> {
     });
   }
 
-  Future<void> userLogined() async {
-    String? idToken = await getIt<FirebaseAuth>().currentUser!.getIdToken();
+  Future<void> userLogined(String idToken) async {
     final tokenRepo = getIt<TokenStorageRepository>();
-    if (idToken == null) {
-      log('idToken is null');
-      router.go(RouteNames.login);
-      return;
-    }
     await tokenRepo.saveToken(idToken);
 
     startListenUpdateStatus();
@@ -181,26 +174,38 @@ class _RootState extends State<Root> {
   @override
   void initState(){
     super.initState();
-
-    fireSubscription = FirebaseAuth.instance.userChanges().listen((User? user)async{
-      log(FirebaseAuth.instance.currentUser.toString());
+    final firebaseAuth = getIt<FirebaseAuth>();
+    final viewModel = getIt<LoginViewModel>();
+    fireSubscription = firebaseAuth.userChanges().listen((User? user)async{
+      log(firebaseAuth.currentUser.toString());
       if (user == null) {
-        router.go(RouteNames.login);
-        log('User is null');
+        viewModel.signIn(context, signInMethod: SignInMethod.anonymous);
       }else{
-        if (FirebaseAuth.instance.currentUser == null) {
-          router.go(RouteNames.login);
-          log('FirebaseAuth.instance.currentUser is null');
-        } else {
-          String? token = await FirebaseAuth.instance.currentUser!.getIdToken();
-          if(token == null){
-            router.go(RouteNames.login);
-            log('FirebaseAuth.instance.currentUser!.getIdToken() is null');
-          }else{
-            log('${token}');
-            _requestPermission();
-            await userLogined();
+        String? token = await firebaseAuth.currentUser!.getIdToken();
+        //id token이 만료되었을때
+        if(token == null){
+          // 게스트 로그인 사용자이면
+          if (user.isAnonymous) {
+            // 리프레쉬 토큰 마저 만료되었으면 다시 게스트로 로그인
+            if(user.refreshToken == null){
+              viewModel.signIn(context, signInMethod: SignInMethod.anonymous);
+            }else{
+              //리프레쉬 토큰이 남아있으면 id token 재발급
+              user.getIdToken(true);
+            }
+          } else {
+            //게스트 로그인 사용자가 아니라면 로그인 페이지로 이동
+            if(user.refreshToken == null){
+              viewModel.resignIn(context);
+            }else{
+              //리프레쉬 토큰이 남아있으면 id token 재발급
+              user.getIdToken(true);
+            }
           }
+        }else{
+          log('login success');
+          _requestPermission();
+          await userLogined(token);
         }
       }
     });

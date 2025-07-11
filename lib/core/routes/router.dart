@@ -1,20 +1,18 @@
+import 'package:could_be/core/init/root.dart';
 import 'package:could_be/core/routes/route_names.dart';
 import 'package:could_be/core/update_management/have_update.dart';
 import 'package:could_be/core/update_management/need_update.dart';
 import 'package:could_be/core/update_management/unsupported_device.dart';
-import 'package:could_be/domain/entities/issue_detail.dart';
+import 'package:could_be/presentation/customer_services/feedback_root.dart';
 import 'package:could_be/presentation/home/feed_view.dart';
 import 'package:could_be/presentation/issue_detail_feed/issue_detail_feed_root.dart';
 import 'package:could_be/presentation/log_in/login_view.dart';
 import 'package:could_be/presentation/my_page/manage_issue_evaluation_view.dart';
 import 'package:could_be/presentation/my_page/user_bias_status/user_bias_status_view.dart';
-import 'package:could_be/presentation/shorts_player/shorts_player_view.dart';
+import 'package:could_be/presentation/setting/setting_view.dart';
 import 'package:could_be/presentation/topic/subscribed_topic/subscribed_topic_root.dart';
-import 'package:could_be/presentation/topic/subscribed_topic/subscribed_topic_view.dart';
 import 'package:could_be/presentation/topic/whole_topics/whole_topic_view.dart';
 import 'package:could_be/presentation/web_view/web_view_view.dart';
-import 'package:could_be/presentation/init/root.dart';
-import 'package:could_be/presentation/customer_services/feedback_root.dart';
 import 'package:go_router/go_router.dart';
 import '../../domain/entities/article.dart';
 import '../../presentation/blind_spot/blind_spot_root.dart';
@@ -27,21 +25,20 @@ import '../../presentation/my_page/subscribed_issue_view.dart';
 import '../../presentation/my_page/watch_history_view.dart';
 import '../../presentation/topic/topic_detail_view/topic_detail_view.dart';
 import '../components/bias/bias_enum.dart';
-import '../responsive/responsive_layout.dart';
 
 final router = GoRouter(
   initialLocation: '/',
   routes: [
-    GoRoute(path: RouteNames.root, builder: (context, state) => Root()),
-    GoRoute(
-      path: RouteNames.login,
-      builder:
-          (context, state) => LoginView(
-            onLoginSuccess: () {
-              context.go(RouteNames.home);
-            },
-          ),
-    ),
+    GoRoute(path: RouteNames.root, builder: (context, state) =>Root()),
+    // GoRoute(
+    //   path: RouteNames.login,
+    //   builder:
+    //       (context, state) => LoginView(
+    //         onLoginSuccess: () {
+    //           context.go(RouteNames.home);
+    //         },
+    //       ),
+    // ),
     GoRoute(
       path: RouteNames.unsupportedDevice,
       builder: (context, state) => UnsupportedDevice(),
@@ -142,6 +139,10 @@ final router = GoRouter(
     GoRoute(
       path: RouteNames.manageIssueEvalution,
       builder: (context, state) => ManageIssueEvaluationView(),
+    ),
+    GoRoute(
+      path: RouteNames.settings,
+      builder: (context, state) => SettingView()
     ),
 
     //customer services

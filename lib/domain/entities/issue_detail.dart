@@ -6,6 +6,7 @@ class IssueDetail {
   final String title;
   final String category;
   final String summary;
+  final String? commonSummary;
   final String? imageUrl;
   final List<String> keywords;
   final DateTime createdAt;
@@ -32,6 +33,7 @@ class IssueDetail {
     required this.title,
     required this.category,
     required this.summary,
+    required this.commonSummary,
     required this.imageUrl,
     required this.keywords,
     required this.createdAt,
@@ -85,6 +87,7 @@ class IssueDetail {
       title: title ?? this.title,
       category: category ?? this.category,
       summary: summary ?? this.summary,
+      commonSummary: commonSummary ?? this.commonSummary,
       imageUrl: imageUrl ?? this.imageUrl,
       keywords: keywords ?? this.keywords,
       createdAt: createdAt ?? this.createdAt,

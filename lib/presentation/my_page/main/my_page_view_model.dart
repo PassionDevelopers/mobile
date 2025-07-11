@@ -12,7 +12,7 @@ class MyPageViewModel extends ChangeNotifier {
   final ManageUserStatusUseCase _manageUserStatusUseCase;
   final FirebaseLoginUseCase _firebaseLoginUseCase;
 
-  MyPageState _state = MyPageState();
+  MyPageState _state = MyPageState(isGuestLogin: true);
   MyPageState get state => _state;
 
   MyPageViewModel({
@@ -23,6 +23,12 @@ class MyPageViewModel extends ChangeNotifier {
       _firebaseLoginUseCase = firebaseLoginUseCase,
        _manageUserStatusUseCase = manageUserStatusUseCase {
     _fetchUserBias();
+    _checkIsGuestLogin();
+  }
+
+  void _checkIsGuestLogin() {
+    _state = state.copyWith(isGuestLogin: _firebaseLoginUseCase.isGuest());
+    notifyListeners();
   }
 
   void _fetchUserBias() async{

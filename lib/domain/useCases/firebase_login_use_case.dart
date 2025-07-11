@@ -5,6 +5,7 @@ import 'package:could_be/core/amplitude/amplitude.dart';
 import 'package:could_be/core/components/alert/dialog.dart';
 import 'package:could_be/core/di/di_setup.dart';
 import 'package:could_be/core/routes/route_names.dart';
+import 'package:could_be/presentation/log_in/login_view_model.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:go_router/go_router.dart';
@@ -22,6 +23,14 @@ class FirebaseLoginUseCase {
     required TokenStorageRepository tokenStorageRepository,
   })  : _tokenStorageRepository = tokenStorageRepository,
         _firebaseAuth = firebaseAuth;
+
+  bool isGuest(){
+    final user = _firebaseAuth.currentUser;
+    if (user == null) {
+      return true;
+    }
+    return user.isAnonymous;
+  }
 
   Future<bool> saveToken(String token) async {
     return await _tokenStorageRepository.saveToken(token);
@@ -112,9 +121,26 @@ class FirebaseLoginUseCase {
     }
   }
 
+  SignInMethod checkSignInMethod() {
+    final user = _firebaseAuth.currentUser;
+    if (user == null) {
+      return SignInMethod.anonymous;
+    }
+    if (user.isAnonymous) {
+      return SignInMethod.anonymous;
+    }
+    String? providerId = user.providerData.isNotEmpty ? user.providerData.first.providerId : null;
+    if (providerId == 'google.com') {
+      return SignInMethod.google;
+    } else if (providerId == 'apple.com') {
+      return SignInMethod.apple;
+    }
+    return SignInMethod.anonymous; // Default to anonymous if no provider matches
+  }
+
   Future<void> deleteUserAccount(BuildContext context) async {
     getIt<Amplitude>().track(AmplitudeEvents.deleteUserAccount);
-    context.go(RouteNames.login);
+    context.go(RouteNames.root);
     final user = _firebaseAuth.currentUser;
     if (user == null) {
       log("No user is currently signed in.");
@@ -171,7 +197,7 @@ class FirebaseLoginUseCase {
           await GoogleSignIn().disconnect();
         }
         if(!context.mounted) return;
-        context.go(RouteNames.login);
+        context.go(RouteNames.root);
         showAlert(msg: '마지막 로그인 후 시간이 오래지났습니다. 계정을 삭제하시려면 다시 로그인한 뒤 재시도하시기 바랍니다.', context: context);
       }
     }

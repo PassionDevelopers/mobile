@@ -1,6 +1,7 @@
 import 'package:could_be/core/components/bias/bias_check_button.dart';
 import 'package:could_be/core/components/buttons/back_button.dart';
 import 'package:could_be/core/components/cards/text_card.dart';
+import 'package:could_be/core/components/loading/not_found.dart';
 import 'package:could_be/core/components/title/big_title.dart';
 import 'package:could_be/presentation/issue_detail_feed/components/move_to_next_button.dart';
 import 'package:flutter/material.dart';
@@ -91,50 +92,55 @@ class _IssueDetailTabsState extends State<IssueDetailTabs>
 
   _buildTabViewPage({
     required Bias bias,
-    required String text,
-    required List<String> keywords,
+    required String? text,
+    required List<String>? keywords,
   }) {
-    return TextCard(
-      color: getBiasColor(bias),
-      child: SingleChildScrollView(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            SizedBox(
-              height: 26,
-              child: Align(
-                alignment: Alignment.centerLeft,
-                child: ListView.builder(
-                  scrollDirection: Axis.horizontal,
-                  itemBuilder: (_, index) {
-                    return KeyWordChip(
-                      title: keywords[index],
-                      color: Colors.transparent,
-                      borderColor: getBiasColor(bias),
-                    );
-                  },
-                  itemCount: keywords.length,
-                  shrinkWrap: true,
+    return Padding(
+      padding: EdgeInsets.symmetric(
+          horizontal: MyPaddings.large),
+      child: TextCard(
+        color: getBiasColor(bias),
+        child: text == null? Center(child: NotFound(notFoundType: NotFoundType.article,)) :
+          SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              if(keywords != null) SizedBox(
+                height: 26,
+                child: Align(
+                  alignment: Alignment.centerLeft,
+                  child: ListView.builder(
+                    scrollDirection: Axis.horizontal,
+                    itemBuilder: (_, index) {
+                      return KeyWordChip(
+                        title: keywords[index],
+                        color: Colors.transparent,
+                        borderColor: getBiasColor(bias),
+                      );
+                    },
+                    itemCount: keywords.length,
+                    shrinkWrap: true,
+                  ),
                 ),
               ),
-            ),
-            SizedBox(height: MyPaddings.medium),
-            Column(
-              children: [
-                for(String para in parseAiText(text))
-                  ...[
-                  Text(
-                    '• $para',
-                    style: TextStyle(
-                      fontSize: widget.fontSize,
-                      color: AppColors.gray1,
+              SizedBox(height: MyPaddings.medium),
+              Column(
+                children: [
+                  for(String para in parseAiText(text))
+                    ...[
+                    Text(
+                      '• $para',
+                      style: TextStyle(
+                        fontSize: widget.fontSize,
+                        color: AppColors.gray1,
+                      ),
                     ),
-                  ),
-                ]
-              ],
-            ),
-            SizedBox(height: MyPaddings.medium),
-          ],
+                  ]
+                ],
+              ),
+              SizedBox(height: MyPaddings.medium),
+            ],
+          ),
         ),
       ),
     );
@@ -175,64 +181,49 @@ class _IssueDetailTabsState extends State<IssueDetailTabs>
           )
         ],),
         Expanded(
-          child: Padding(
-            padding: EdgeInsets.symmetric(
-                horizontal: MyPaddings.large),
-            child: Column(
-              children: [
-                Container(
-                  decoration: BoxDecoration(
-                    color: AppColors.gray5,
-                    borderRadius: BorderRadius.circular(12),
-                  ),
-                  child: Row(
-                    children: List.generate(3, (index) {
-                      return _buildTab(index);
-                    }),
-                  ),
+          child: Column(
+            children: [
+              Container(
+                margin: EdgeInsets.symmetric(horizontal: MyPaddings.large),
+                decoration: BoxDecoration(
+                  color: AppColors.gray5,
+                  borderRadius: BorderRadius.circular(12),
                 ),
-                SizedBox(height: MyPaddings.small),
-                Expanded(
-                  child: TabBarView(
-                    controller: _tabController,
-                    children: [
-                      _buildTabViewPage(
-                        bias: Bias.left,
-                        text: issue.leftSummary ?? '진보 언론의 기사가 없습니다.',
-                        keywords: issue.leftKeywords ?? [],
-                      ),
-                      _buildTabViewPage(
-                        bias: Bias.center,
-                        text: issue.centerSummary ?? '중도 언론의 기사가 없습니다.',
-                        keywords: issue.centerKeywords ?? [],
-                      ),
-                      _buildTabViewPage(
-                        bias: Bias.right,
-                        text: issue.rightSummary ?? '보수 언론의 기사가 없습니다.',
-                        keywords: issue.rightKeywords ?? [],
-                      ),
-                    ],
-                  ),
+                child: Row(
+                  children: List.generate(3, (index) {
+                    return _buildTab(index);
+                  }),
                 ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: MyPaddings.large,
-                  ),
-                  child: BiasCheckButton(
-                    existCenter: issue.centerSummary != null,
-                    existLeft: issue.leftSummary != null,
-                    existRight: issue.rightSummary != null,
-                    isEvaluating: false,
-                    onBiasSelected: (Bias bias){},
-                    leftLikeCount: issue.leftLikeCount,
-                    centerLikeCount: issue.centerLikeCount,
-                    rightLikeCount: issue.rightLikeCount,
-                    userEvaluation: issue.userEvaluation,
-                  ),
+              ),
+              SizedBox(height: MyPaddings.small),
+              Expanded(
+                child: TabBarView(
+                  controller: _tabController,
+                  children: [
+                    _buildTabViewPage(
+                      bias: Bias.left,
+                      text: issue.leftSummary,
+                      keywords: issue.leftKeywords,
+                    ),
+                    _buildTabViewPage(
+                      bias: Bias.center,
+                      text: issue.centerSummary,
+                      keywords: issue.centerKeywords,
+                    ),
+                    _buildTabViewPage(
+                      bias: Bias.right,
+                      text: issue.rightSummary,
+                      keywords: issue.rightKeywords,
+                    ),
+                  ],
                 ),
-                MoveToNextButton(moveToNextPage: widget.moveToNextPage, buttonText: '성향별 차이점 보기')
-              ],
-            ),
+              ),
+              Padding(
+                padding: EdgeInsets.symmetric(
+                    horizontal: MyPaddings.large),
+                child: MoveToNextButton(moveToNextPage: widget.moveToNextPage, buttonText: '성향별 차이점 보기'),
+              )
+            ],
           ),
         )
       ],

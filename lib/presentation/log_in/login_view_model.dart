@@ -5,7 +5,6 @@ import 'package:could_be/core/routes/route_names.dart';
 import 'package:could_be/core/routes/router.dart';
 import 'package:could_be/domain/useCases/firebase_login_use_case.dart';
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
 
 import 'login_state.dart';
 
@@ -50,6 +49,13 @@ class LoginViewModel with ChangeNotifier {
       _state = _state.copyWith(isLoginInProgress: false);
       notifyListeners();
     }
+  }
+
+  Future<void> resignIn(BuildContext context) async {
+    _state = _state.copyWith(isLoginInProgress: true);
+    notifyListeners();
+    final signInMethod = _firebaseLoginUseCase.checkSignInMethod();
+    signIn(context, signInMethod: signInMethod);
   }
 
   Future<void> signOut() async {

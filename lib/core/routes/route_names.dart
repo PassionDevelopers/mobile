@@ -3,7 +3,7 @@ abstract class RouteNames{
   static const
   root = '/',
   home = '/home',
-  login = '/login',
+  // login = '/login',
 
   //forced update
   unsupportedDevice = '/unsupportedDevice',
@@ -33,6 +33,7 @@ abstract class RouteNames{
   subscribedIssue = '$myPage/subscribedIssue',
   userBiasStatus = '$myPage/userBiasStatus',
   manageIssueEvalution = '$myPage/manageIssueEvalution',
+  settings = '$myPage/settings',
 
   //customer services
   feedback = '/feedback',
