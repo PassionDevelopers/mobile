@@ -10,6 +10,7 @@ class TextCard extends StatelessWidget {
     return Container(
       width: double.infinity,
       decoration: BoxDecoration(
+
         borderRadius: BorderRadius.circular(16),
         border: Border.all(
           color: color,

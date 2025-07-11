@@ -11,7 +11,7 @@ abstract class MyFontSizes {
   static const double small = 12.0;
   static const double medium = 14.0;
   static const double large = 16.0;
-  static const double article = 17.0;
+  static const double article = 19.0;
   static const double extraLarge = 20.0;
   static const double h0 = 22.0;
   static const double accent = 32.0;
@@ -115,7 +115,9 @@ abstract class MyFontStyle{
   static TextStyle article = GoogleFonts.notoSansKr(textStyle: TextStyle(
     fontSize: MyFontSizes.article,
     fontWeight: FontWeight.w400,
-    color: AppColors.textPrimary,
+    color: AppColors.gray1,
+    letterSpacing: 0.6,
+    height: 1.5
   ));
 
   static TextStyle articleSmall = GoogleFonts.notoSansKr(textStyle: TextStyle(

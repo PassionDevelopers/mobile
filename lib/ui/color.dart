@@ -78,16 +78,6 @@ abstract class AppColors {
   // 현대적 그라데이션 컬러 (젊은층 타겟)
   static Color gradientStart = Color(0xff667eea); // 보라-파랑 그라데이션 시작
   static Color gradientEnd = Color(0xff764ba2); // 보라-파랑 그라데이션 끝
-  static Color accentGradientStart = Color(0xffff6b6b); // 핑크-오렌지 그라데이션 시작  
-  static Color accentGradientEnd = Color(0xfffeca57); // 핑크-오렌지 그라데이션 끝
-  
-  // 카테고리별 그라데이션 컬러
-  static Color dailyGradientStart = Color(0xff4facfe); // 파랑 그라데이션
-  static Color dailyGradientEnd = Color(0xff00f2fe);
-  static Color recommendGradientStart = Color(0xfffa709a); // 핑크 그라데이션
-  static Color recommendGradientEnd = Color(0xfffee140);
-  static Color economyGradientStart = Color(0xff43e97b); // 초록 그라데이션
-  static Color economyGradientEnd = Color(0xff38f9d7);
   
   // 액센트 컬러 (CTA, 강조용)
   static Color accent = Color(0xff6c5ce7); // 보라 액센트
@@ -95,12 +85,6 @@ abstract class AppColors {
   static Color success = Color(0xff00b894); // 성공 색상
   static Color warning = Color(0xffe17055); // 경고 색상
   static Color info = Color(0xff74b9ff); // 정보 색상
-  
-  // 글래스모피즘 효과용 색상
-  static Color glassBg = Color(0x1affffff); // 반투명 흰색
-  static Color glassBorder = Color(0x33ffffff); // 반투명 테두리
-  static Color glassBackdrop = Color(0x0dffffff); // 배경 블러용
-
 }
 
 class AbpColor{

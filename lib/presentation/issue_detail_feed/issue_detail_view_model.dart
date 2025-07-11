@@ -28,6 +28,11 @@ class IssueDetailViewModel with ChangeNotifier {
     fetchIssueDetailById(issueId);
   }
 
+  void setFontSize() {
+    _state = state.copyWith(fontSize: state.fontSize == 16 ? 20 : 16);
+    notifyListeners();
+  }
+
   void fetchIssueDetailById(String issueId) async {
     this.issueId = issueId;
     _state = state.copyWith(isLoading: true);

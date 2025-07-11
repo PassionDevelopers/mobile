@@ -27,6 +27,7 @@ class IssueDetailBiasComparison extends StatelessWidget {
     required this.existCenter,
     required this.existRight,
     required this.moveToNextPage,
+    required this.fontSize
   });
 
   final String biasComparison;
@@ -38,6 +39,7 @@ class IssueDetailBiasComparison extends StatelessWidget {
   final bool existLeft;
   final bool existCenter;
   final bool existRight;
+  final double fontSize;
   final void Function(Bias bias) onBiasSelected;
   final VoidCallback moveToNextPage;
 
@@ -135,7 +137,8 @@ class IssueDetailBiasComparison extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        Row(children: [BackButton(), BigTitle(title: '언론 성향별 차이점')]),
+        // Row(children: [BackButton(), BigTitle(title: '언론 성향별 차이점')]),
+        Row(children: [BackButton(), BigTitle(title: '공통 보도 내용')]),
         SizedBox(height: MyPaddings.medium),
         Expanded(
           child: Padding(
@@ -150,30 +153,37 @@ class IssueDetailBiasComparison extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           for (String para in parseAiText(biasComparison)) ...[
-                            MyText.article('• $para', color: AppColors.gray2),
-                            SizedBox(height: MyPaddings.small),
+                            Text(
+                              para,
+                              style: TextStyle(
+                                fontSize: fontSize.toDouble(),
+                                color: AppColors.gray1,
+                              ),
+                              textAlign: TextAlign.justify,
+                            ),
+                            // MyText.article('• $para\n', color: AppColors.gray1),
                           ],
                         ],
                       ),
                     ),
                   ),
                 ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: MyPaddings.large,
-                  ),
-                  child: BiasCheckButton(
-                    userEvaluation: userEvaluation,
-                    onBiasSelected: onBiasSelected,
-                    leftLikeCount: leftLikeCount,
-                    centerLikeCount: centerLikeCount,
-                    rightLikeCount: rightLikeCount,
-                    isEvaluating: isEvaluating,
-                    existLeft: existLeft,
-                    existCenter: existCenter,
-                    existRight: existRight,
-                  ),
-                ),
+                // Padding(
+                //   padding: const EdgeInsets.symmetric(
+                //     horizontal: MyPaddings.large,
+                //   ),
+                //   child: BiasCheckButton(
+                //     userEvaluation: userEvaluation,
+                //     onBiasSelected: onBiasSelected,
+                //     leftLikeCount: leftLikeCount,
+                //     centerLikeCount: centerLikeCount,
+                //     rightLikeCount: rightLikeCount,
+                //     isEvaluating: isEvaluating,
+                //     existLeft: existLeft,
+                //     existCenter: existCenter,
+                //     existRight: existRight,
+                //   ),
+                // ),
                 MoveToNextButton(
                   moveToNextPage: moveToNextPage,
                   buttonText: '언론의 원문 기사 보기',

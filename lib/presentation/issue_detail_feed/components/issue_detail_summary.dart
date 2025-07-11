@@ -15,10 +15,12 @@ class IssueDetailSummary extends StatelessWidget {
   const IssueDetailSummary({
     super.key,
     required this.issue,
+    required this.fontSize,
     required this.moveToNextPage,
   });
 
   final IssueDetail issue;
+  final double fontSize;
   final VoidCallback moveToNextPage;
 
   @override
@@ -49,12 +51,20 @@ class IssueDetailSummary extends StatelessWidget {
                     SizedBox(height: MyPaddings.small),
                     Expanded(
                       child: TextCard(
-                        color: AppColors.gray2,
+                        color: AppColors.gray1,
                         child: SingleChildScrollView(
                           child: Column(
                             children: [
                               for (String para in parseAiText(issue.summary))
-                                MyText.article(para, color: AppColors.gray2),
+                                Text(
+                                  para,
+                                  style: TextStyle(
+                                    fontSize: fontSize.toDouble(),
+                                    color: AppColors.gray1,
+                                  ),
+                                  textAlign: TextAlign.justify,
+                                ),
+                                // MyText.article(para, color: AppColors.gray1),
                             ],
                           ),
                         ),

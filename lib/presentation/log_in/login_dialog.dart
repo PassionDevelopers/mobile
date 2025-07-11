@@ -1,19 +1,7 @@
-import 'dart:io';
-
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:could_be/core/components/alert/dialog.dart';
 import 'package:could_be/core/components/buttons/big_button.dart';
-import 'package:could_be/core/components/buttons/login_button.dart';
-import 'package:could_be/core/di/di_setup.dart';
-import 'package:could_be/core/routes/route_names.dart';
-import 'package:could_be/domain/useCases/firebase_login_use_case.dart';
 import 'package:could_be/ui/color.dart';
 import 'package:could_be/ui/fonts.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
-import 'package:google_sign_in/google_sign_in.dart';
-import 'package:sign_button/constants.dart';
 
 class LoginDialog extends StatelessWidget {
   const LoginDialog({super.key, required this.onDeleteAccount, });

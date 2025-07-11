@@ -1,3 +1,4 @@
+import 'package:could_be/core/components/bias/bias_check_button.dart';
 import 'package:could_be/core/components/buttons/back_button.dart';
 import 'package:could_be/core/components/cards/text_card.dart';
 import 'package:could_be/core/components/title/big_title.dart';
@@ -14,10 +15,14 @@ import '../../../ui/color.dart';
 import '../../../ui/fonts.dart';
 
 class IssueDetailTabs extends StatefulWidget {
-  const IssueDetailTabs({super.key, required this.issue, required this.moveToNextPage});
+  const IssueDetailTabs({super.key,
+    required this.fontSize,
+    required this.issue,
+    required this.moveToNextPage});
 
   final IssueDetail issue;
   final VoidCallback moveToNextPage;
+  final double fontSize;
 
   @override
   State<IssueDetailTabs> createState() => _IssueDetailTabsState();
@@ -117,10 +122,15 @@ class _IssueDetailTabsState extends State<IssueDetailTabs>
             Column(
               children: [
                 for(String para in parseAiText(text))
-                  ...[MyText.article(
+                  ...[
+                  Text(
                     '• $para',
-                    color: AppColors.gray2,
-                  ),SizedBox(height: MyPaddings.small),]
+                    style: TextStyle(
+                      fontSize: widget.fontSize,
+                      color: AppColors.gray1,
+                    ),
+                  ),
+                ]
               ],
             ),
             SizedBox(height: MyPaddings.medium),
@@ -158,7 +168,8 @@ class _IssueDetailTabsState extends State<IssueDetailTabs>
           Column(
             children: [
               SizedBox(height: MyPaddings.medium),
-              MyText.h1('언론 성향별 요약'),
+              // MyText.h1('언론 성향별 요약'),
+              MyText.h1('언론 성향별 차이점'),
               SizedBox(height: MyPaddings.medium),
             ],
           )
@@ -201,6 +212,22 @@ class _IssueDetailTabsState extends State<IssueDetailTabs>
                         keywords: issue.rightKeywords ?? [],
                       ),
                     ],
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: MyPaddings.large,
+                  ),
+                  child: BiasCheckButton(
+                    existCenter: issue.centerSummary != null,
+                    existLeft: issue.leftSummary != null,
+                    existRight: issue.rightSummary != null,
+                    isEvaluating: false,
+                    onBiasSelected: (Bias bias){},
+                    leftLikeCount: issue.leftLikeCount,
+                    centerLikeCount: issue.centerLikeCount,
+                    rightLikeCount: issue.rightLikeCount,
+                    userEvaluation: issue.userEvaluation,
                   ),
                 ),
                 MoveToNextButton(moveToNextPage: widget.moveToNextPage, buttonText: '성향별 차이점 보기')

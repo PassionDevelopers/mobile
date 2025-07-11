@@ -1,9 +1,8 @@
+import 'package:could_be/ui/color.dart';
 import 'package:flutter/material.dart';
 import 'package:sign_button/constants.dart';
 import 'package:sign_button/create_button.dart';
 import 'package:sign_button/custom_image.dart';
-
-import '../../../ui/color.dart';
 
 class LoginButton extends StatelessWidget {
   const LoginButton({super.key, required this.buttonType, required this.onPressed});

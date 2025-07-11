@@ -49,7 +49,7 @@ class AuthInterceptor extends Interceptor {
       final originalRequest = err.requestOptions;
       try {
         final newToken = await _refreshToken();
-
+        log('New Token: $newToken');
         if (newToken != null) {
           await tokenStorageRepository.saveToken(newToken);
           final retryRequest = await getIt<Dio>().request(
@@ -67,6 +67,7 @@ class AuthInterceptor extends Interceptor {
           return handler.resolve(retryRequest);
         }
       } catch (e) {
+        log('Error refreshing token: $e');
         return handler.reject(err);
       }
     }

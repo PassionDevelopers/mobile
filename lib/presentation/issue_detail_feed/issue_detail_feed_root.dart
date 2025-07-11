@@ -11,7 +11,6 @@ import 'components/issue_detail_summary.dart';
 import 'components/issue_detail_tabs.dart';
 import 'components/source_list_page.dart';
 import 'issue_detail_view_model.dart';
-import '../../core/responsive/responsive_layout.dart';
 import '../../core/responsive/responsive_utils.dart';
 
 class IssueDetailFeedRoot extends StatefulWidget {
@@ -49,6 +48,27 @@ class _IssueDetailFeedRootState extends State<IssueDetailFeedRoot> {
     });
   }
 
+  Widget floatingButton({required VoidCallback onPressed, required IconData icon}) {
+    return Padding(
+      padding: EdgeInsets.all(
+          ResponsiveUtils.isMobile(context)
+              ? MyPaddings.large.toDouble()
+              : MyPaddings.extraLarge.toDouble()
+      ),
+      child: FloatingActionButton(
+        onPressed: onPressed,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(30),
+        ),
+        backgroundColor: AppColors.primaryLight,
+        child: Icon(
+          size: 30,
+          icon,
+        ),
+      ),
+    );
+  }
+
   void moveToNextPage(int page) {
     controller.animateToPage(
       page,
@@ -82,21 +102,17 @@ class _IssueDetailFeedRootState extends State<IssueDetailFeedRoot> {
                 Row(
                   children: [
                     Expanded(
-                      child: PageView(
+                      child:
+                      PageView(
                         scrollDirection: Axis.vertical,
                         controller: controller,
+
                         children: [
                           IssueDetailSummary(
                             issue: issue,
+                            fontSize: state.fontSize,
                             moveToNextPage: () {
                               moveToNextPage(1);
-                            },
-                          ),
-
-                          IssueDetailTabs(
-                            issue: issue,
-                            moveToNextPage: () {
-                              moveToNextPage(2);
                             },
                           ),
 
@@ -105,6 +121,7 @@ class _IssueDetailFeedRootState extends State<IssueDetailFeedRoot> {
                               listenable: ValueNotifier(state.isEvaluating),
                               builder: (context, listenable) {
                                 return IssueDetailBiasComparison(
+                                  fontSize: state.fontSize,
                                   moveToNextPage: () {
                                     moveToNextPage(3);
                                   },
@@ -113,7 +130,7 @@ class _IssueDetailFeedRootState extends State<IssueDetailFeedRoot> {
                                   existRight: issue.rightSummary != null,
                                   isEvaluating: state.isEvaluating,
                                   onBiasSelected:
-                                      viewModel.manageIssueEvaluation,
+                                  viewModel.manageIssueEvaluation,
                                   leftLikeCount: issue.leftLikeCount,
                                   centerLikeCount: issue.centerLikeCount,
                                   rightLikeCount: issue.rightLikeCount,
@@ -122,6 +139,14 @@ class _IssueDetailFeedRootState extends State<IssueDetailFeedRoot> {
                                 );
                               },
                             ),
+
+                          IssueDetailTabs(
+                            fontSize: state.fontSize,
+                            issue: issue,
+                            moveToNextPage: () {
+                              moveToNextPage(2);
+                            },
+                          ),
 
                           SourceListPage(
                             articles: issue.articles.toGroupByBias(),
@@ -167,30 +192,23 @@ class _IssueDetailFeedRootState extends State<IssueDetailFeedRoot> {
                   ],
                 ),
                 Align(
-                  alignment: Alignment.bottomRight,
-                  child: Padding(
-                    padding: EdgeInsets.all(
-                      ResponsiveUtils.isMobile(context)
-                          ? MyPaddings.large.toDouble()
-                          : MyPaddings.extraLarge.toDouble()
-                    ),
-                    child: FloatingActionButton(
-                      onPressed: () {
-                        viewModel.manageIssueSubscription();
-                      },
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(30),
-                      ),
-                      backgroundColor: AppColors.primaryLight,
-                      child: Icon(
-                        size: 30,
-                        viewModel.state.issueDetail!.isSubscribed
-                            ? Icons.bookmark
-                            : Icons.bookmark_add_outlined,
-                      ),
-                    ),
+                  alignment: Alignment.bottomCenter,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      floatingButton(onPressed: (){
+                        viewModel.setFontSize();
+                      }, icon: viewModel.state.fontSize == 16
+                          ? Icons.format_size_outlined
+                          : Icons.format_size),
+                      floatingButton(
+                          onPressed: viewModel.manageIssueSubscription,
+                          icon: viewModel.state.issueDetail!.isSubscribed
+                          ? Icons.bookmark
+                          : Icons.bookmark_add_outlined)
+                    ],
                   ),
-                ),
+                )
               ],
             );
           }
