@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:could_be/core/components/app_bar/app_bar.dart';
 import 'package:could_be/core/components/buttons/big_button.dart';
 import 'package:could_be/core/components/title/big_title.dart';
@@ -144,15 +146,27 @@ class MyPageView extends StatelessWidget {
                   ],
                 ),
               ),
-              if(viewModel.state.isGuestLogin)Center(
-                child: Container(
-                  width: double.infinity,
-                  height: double.infinity,
-                  decoration: BoxDecoration(
-                      color: AppColors.black.withAlpha(180)
-                  ),
-                  child: LoginView(onLoginSuccess: () {  },),
-                ),
+              ListenableBuilder(listenable: viewModel,
+                builder: (context, _) {
+                  if(viewModel.state.isGuestLogin){
+                    return Center(
+                      child: Container(
+                        width: double.infinity,
+                        height: double.infinity,
+                        decoration: BoxDecoration(
+                            color: AppColors.black.withAlpha(180)
+                        ),
+                        child: LoginView(onLoginSuccess: () {
+                          log('what the fuckkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk');
+                          viewModel.checkIsGuestLogin();
+                          log('isGuestLogin: ${viewModel.state.isGuestLogin}');
+                        },),
+                      ),
+                    );
+                  }else{
+                    return const SizedBox.shrink();
+                  }
+                }
               )
             ],
           ),

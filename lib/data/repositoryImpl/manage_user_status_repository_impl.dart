@@ -24,10 +24,10 @@ class ManageUserStatusRepositoryImpl extends ManageUserStatusRepository{
   @override
   Future<void> registerUserWithIdToken()async{
     final result = await dio.post(
-      '${ApiVersions.v1}/user/register'
-      // data: {
-      //   "perspective": "center"
-      // }
+      '${ApiVersions.v1}/user/register',
+      data: {
+        // "perspective": "center"
+      }
     );
     log(result.data.toString());
   }

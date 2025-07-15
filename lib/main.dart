@@ -67,8 +67,9 @@ void main() async {
 
   await diSetupToken();
   await diSetup();
-  runApp(ClarityWidget(app: MyApp(), clarityConfig: config));
+  runApp(ClarityWidget(app: const MyApp(), clarityConfig: config));
 }
+
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});

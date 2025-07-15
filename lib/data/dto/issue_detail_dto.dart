@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:could_be/data/dto/articles_dto.dart';
 import 'package:json_annotation/json_annotation.dart';
 
@@ -15,6 +17,7 @@ class IssueDetailDTO {
   final String summary;
   final String? commonSummary;
   final String? imageUrl;
+  final String? imageSource;
   final List<String> keywords;
   final String createdAt;
   final int view;
@@ -27,7 +30,10 @@ class IssueDetailDTO {
   final String? leftSummary;
   final String? centerSummary;
   final String? rightSummary;
-  final String? biasComparison;
+
+  final String? leftComparison;
+  final String? centerComparison;
+  final String? rightComparison;
   final List<String>? leftKeywords;
   final List<String>? centerKeywords;
   final List<String>? rightKeywords;
@@ -42,6 +48,7 @@ class IssueDetailDTO {
     required this.summary,
     this.commonSummary,
     this.imageUrl,
+    this.imageSource,
     required this.keywords,
     required this.createdAt,
     required this.view,
@@ -54,7 +61,9 @@ class IssueDetailDTO {
     required this.leftLikeCount,
     required this.centerLikeCount,
     required this.rightLikeCount,
-    this.biasComparison,
+    this.leftComparison,
+    this.centerComparison,
+    this.rightComparison,
     this.leftKeywords,
      this.centerKeywords,
      this.rightKeywords,
@@ -63,8 +72,10 @@ class IssueDetailDTO {
     required this.articles,
   });
 
-  factory IssueDetailDTO.fromJson(Map<String, dynamic> json) =>
-      _$IssueDetailDTOFromJson(json);
+  factory IssueDetailDTO.fromJson(Map<String, dynamic> json){
+    log('Creating IssueDetailDTO from JSON: $json');
+    return _$IssueDetailDTOFromJson(json);
+  }
 
   Map<String, dynamic> toJson() => _$IssueDetailDTOToJson(this);
 }
@@ -72,6 +83,7 @@ class IssueDetailDTO {
 extension IssueDetailDtx on IssueDetailDTO {
   // Converts the DTO to a domain entity
   IssueDetail toDomain() {
+    log('Converting IssueDetailDTO to IssueDetail ${leftComparison}');
     return IssueDetail(
       leftLikeCount: leftLikeCount,
       centerLikeCount: centerLikeCount,
@@ -82,6 +94,7 @@ extension IssueDetailDtx on IssueDetailDTO {
       summary: summary,
       commonSummary: commonSummary,
       imageUrl: imageUrl,
+      imageSource: imageSource,
       keywords: keywords,
       createdAt: DateTime.parse(createdAt),
       view: view,
@@ -90,7 +103,9 @@ extension IssueDetailDtx on IssueDetailDTO {
       leftSummary: leftSummary != null && leftSummary!.isEmpty ? null : leftSummary,
       centerSummary: centerSummary != null && centerSummary!.isEmpty ? null : centerSummary,
       rightSummary: rightSummary != null && rightSummary!.isEmpty ? null : rightSummary,
-      biasComparison: biasComparison != null && biasComparison!.isEmpty ? null : biasComparison,
+      leftComparison: leftComparison != null && leftComparison!.isEmpty ? null : leftComparison,
+      centerComparison: centerComparison != null && centerComparison!.isEmpty ? null : centerComparison,
+      rightComparison: rightComparison != null && rightComparison!.isEmpty ? null : rightComparison,
       leftKeywords: leftKeywords != null && leftKeywords!.isEmpty ? null : leftKeywords,
       centerKeywords: centerKeywords != null && centerKeywords!.isEmpty ? null : centerKeywords,
       rightKeywords: rightKeywords != null && rightKeywords!.isEmpty ? null : rightKeywords,

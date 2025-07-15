@@ -81,6 +81,7 @@ Future<void> diViewModelSetup() async {
   //my page
   getIt.registerFactory<MyPageViewModel>(
         () => MyPageViewModel(
+      manageUserProfileUseCase: getIt(),
       firebaseLoginUseCase: getIt(),
       fetchUserBiasUseCase: getIt(),
       manageUserStatusUseCase: getIt(),

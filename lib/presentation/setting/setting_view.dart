@@ -8,7 +8,6 @@ import 'package:could_be/core/routes/route_names.dart';
 import 'package:could_be/core/routes/router.dart';
 import 'package:could_be/core/themes/margins_paddings.dart';
 import 'package:could_be/presentation/log_in/login_dialog.dart';
-import 'package:could_be/presentation/log_in/login_view_model.dart';
 import 'package:could_be/presentation/my_page/main/my_page_view_model.dart';
 import 'package:could_be/ui/color.dart';
 import 'package:flutter/material.dart';
@@ -126,7 +125,7 @@ class SettingView extends StatelessWidget {
                               '로그아웃',
                               onPressed: () async {
                                 await viewModel.signOut();
-                                router.go(RouteNames.root);
+                                if(context.mounted) context.go(RouteNames.root);
                               },
                             ),
                             if(!state.isGuestLogin) SizedBox(height: MyPaddings.medium),

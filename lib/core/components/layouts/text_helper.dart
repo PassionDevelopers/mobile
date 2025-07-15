@@ -1,4 +1,5 @@
-import 'dart:math';
+import 'dart:developer';
+import 'dart:math' hide log;
 
 import 'package:flutter/material.dart';
 
@@ -21,6 +22,17 @@ class _AutoSizedTabBarViewState extends State<AutoSizedTabBarView> {
   final List<GlobalKey> _keys = [];
 
   @override
+  void didUpdateWidget(covariant oldWidget){
+    super.didUpdateWidget(oldWidget);
+    _maxHeight = null;
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _calculateMaxHeight();
+    });
+    log('this is AutoSizedTabBarView didUpdateWidget');
+
+  }
+
+  @override
   void initState() {
     super.initState();
     _keys.addAll(widget.children.map((e) => GlobalKey()));
@@ -28,6 +40,13 @@ class _AutoSizedTabBarViewState extends State<AutoSizedTabBarView> {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _calculateMaxHeight();
     });
+    log('this is AutoSizedTabBarView initState');
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    _keys.clear();
   }
 
   void _calculateMaxHeight() {

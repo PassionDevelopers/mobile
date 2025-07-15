@@ -5,7 +5,6 @@ class IssueDetailFeedState{
   final IssueDetail? issueDetail;
   final bool isLoading;
   final bool isEvaluating;
-  final int pageCount;
   final double fontSize;
 
 
@@ -13,8 +12,7 @@ class IssueDetailFeedState{
     this.isLoading = false,
     this.isEvaluating = false,
     this.issueDetail,
-    this.pageCount = 4,
-    this.fontSize = 16,
+    this.fontSize = 18,
   });
 
   IssueDetailFeedState copyWith({
@@ -28,7 +26,6 @@ class IssueDetailFeedState{
       issueDetail: issueDetail ?? this.issueDetail,
       isLoading: isLoading ?? this.isLoading,
       isEvaluating: isEvaluating ?? this.isEvaluating,
-      pageCount: pageCount ?? this.pageCount,
       fontSize: fontSize ?? this.fontSize,
     );
   }

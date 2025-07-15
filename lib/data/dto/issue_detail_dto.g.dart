@@ -14,6 +14,7 @@ IssueDetailDTO _$IssueDetailDTOFromJson(Map<String, dynamic> json) =>
       summary: json['summary'] as String,
       commonSummary: json['commonSummary'] as String?,
       imageUrl: json['imageUrl'] as String?,
+      imageSource: json['imageSource'] as String?,
       keywords:
           (json['keywords'] as List<dynamic>).map((e) => e as String).toList(),
       createdAt: json['createdAt'] as String,
@@ -29,7 +30,9 @@ IssueDetailDTO _$IssueDetailDTOFromJson(Map<String, dynamic> json) =>
       leftLikeCount: (json['leftLikeCount'] as num).toInt(),
       centerLikeCount: (json['centerLikeCount'] as num).toInt(),
       rightLikeCount: (json['rightLikeCount'] as num).toInt(),
-      biasComparison: json['biasComparison'] as String?,
+      leftComparison: json['leftComparison'] as String?,
+      centerComparison: json['centerComparison'] as String?,
+      rightComparison: json['rightComparison'] as String?,
       leftKeywords:
           (json['leftKeywords'] as List<dynamic>?)
               ?.map((e) => e as String)
@@ -58,6 +61,7 @@ Map<String, dynamic> _$IssueDetailDTOToJson(IssueDetailDTO instance) =>
       'summary': instance.summary,
       'commonSummary': instance.commonSummary,
       'imageUrl': instance.imageUrl,
+      'imageSource': instance.imageSource,
       'keywords': instance.keywords,
       'createdAt': instance.createdAt,
       'view': instance.view,
@@ -70,7 +74,9 @@ Map<String, dynamic> _$IssueDetailDTOToJson(IssueDetailDTO instance) =>
       'leftSummary': instance.leftSummary,
       'centerSummary': instance.centerSummary,
       'rightSummary': instance.rightSummary,
-      'biasComparison': instance.biasComparison,
+      'leftComparison': instance.leftComparison,
+      'centerComparison': instance.centerComparison,
+      'rightComparison': instance.rightComparison,
       'leftKeywords': instance.leftKeywords,
       'centerKeywords': instance.centerKeywords,
       'rightKeywords': instance.rightKeywords,

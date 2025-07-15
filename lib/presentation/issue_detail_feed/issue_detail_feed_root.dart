@@ -4,6 +4,7 @@ import 'package:could_be/core/di/di_setup.dart';
 import 'package:could_be/core/themes/margins_paddings.dart';
 import 'package:could_be/domain/entities/articles.dart';
 import 'package:could_be/presentation/issue_detail_feed/components/issue_detail_common_summary.dart';
+import 'package:could_be/presentation/issue_detail_feed/components/scroll_gage.dart';
 import 'package:could_be/presentation/issue_detail_feed/issue_detail_loading_view.dart';
 import 'package:flutter/material.dart';
 import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
@@ -41,12 +42,9 @@ class _IssueDetailFeedRootState extends State<IssueDetailFeedRoot> {
     if (controller.hasClients) {
       final maxScroll = controller.position.maxScrollExtent;
       final currentScroll = controller.position.pixels;
-      setState(() {
-        scrollProgress = maxScroll > 0 ? (currentScroll / maxScroll).clamp(0.0, 1.0) : 0.0;
-      });
+      scrollProgress = maxScroll > 0 ? (currentScroll / maxScroll).clamp(0.0, 1.0) : 0.0;
     }
   }
-
 
   @override
   void initState() {
@@ -98,24 +96,11 @@ class _IssueDetailFeedRootState extends State<IssueDetailFeedRoot> {
         color: Colors.white,
         child: Column(
           children: [
-            Container(
-              height: 4,
-              width: double.infinity,
-              decoration: BoxDecoration(
-                color: Colors.grey.shade200,
-              ),
-              child: Align(
-                alignment: Alignment.centerLeft,
-                child: Container(
-                  height: 4,
-                  width: MediaQuery.of(context).size.width * scrollProgress,
-                  decoration: BoxDecoration(
-                    color: AppColors.primary,
-                  ),
-                ),
-              ),
-            ),
-
+            ListenableBuilder(listenable: ValueNotifier(scrollProgress), builder: (context, _) {
+              return ScrollGage(
+                scrollProgress: scrollProgress,
+              );
+            }),
             Expanded(
               child: ListenableBuilder(
                 listenable: viewModel,
@@ -128,6 +113,7 @@ class _IssueDetailFeedRootState extends State<IssueDetailFeedRoot> {
                       return Center(child: Text('발견된 이슈가 없습니다.'));
                     } else {
                       final issue = state.issueDetail!;
+                      log('issue 공통점 분석 : ${issue.commonSummary}');
                       return Stack(
                         children: [
                           Row(
@@ -145,6 +131,7 @@ class _IssueDetailFeedRootState extends State<IssueDetailFeedRoot> {
                                           moveToNextPage(1);
                                         },
                                       ),
+                                      SizedBox(height: MyPaddings.large),
 
                                       if (issue.commonSummary != null)
                                         IssueDetailCommonSummary(
@@ -154,18 +141,14 @@ class _IssueDetailFeedRootState extends State<IssueDetailFeedRoot> {
                                             moveToNextPage(2);
                                           },
                                         ),
+                                      if (issue.leftComparison != null &&
+                                          issue.centerComparison != null &&
+                                          issue.rightComparison != null)
+                                        SizedBox(height: MyPaddings.large),
 
-                                      IssueDetailTabs(
-                                        fontSize: state.fontSize,
-                                        issue: issue,
-                                        moveToNextPage: () {
-                                          moveToNextPage(
-                                            issue.commonSummary != null ? 3 : 2,
-                                          );
-                                        },
-                                      ),
-
-                                      if (issue.biasComparison != null)
+                                      if (issue.leftComparison != null &&
+                                          issue.centerComparison != null &&
+                                          issue.rightComparison != null)
                                         ListenableBuilder(
                                           listenable: ValueNotifier(
                                             state.isEvaluating,
@@ -181,26 +164,43 @@ class _IssueDetailFeedRootState extends State<IssueDetailFeedRoot> {
                                                 );
                                               },
                                               existCenter:
-                                                  issue.centerSummary != null,
+                                              issue.centerSummary != null,
                                               existLeft:
-                                                  issue.leftSummary != null,
+                                              issue.leftSummary != null,
                                               existRight:
-                                                  issue.rightSummary != null,
+                                              issue.rightSummary != null,
                                               isEvaluating: state.isEvaluating,
                                               onBiasSelected:
-                                                  viewModel.manageIssueEvaluation,
-                                              leftLikeCount: issue.leftLikeCount,
+                                              viewModel
+                                                  .manageIssueEvaluation,
+                                              leftLikeCount:
+                                              issue.leftLikeCount,
                                               centerLikeCount:
-                                                  issue.centerLikeCount,
+                                              issue.centerLikeCount,
                                               rightLikeCount:
-                                                  issue.rightLikeCount,
+                                              issue.rightLikeCount,
                                               userEvaluation:
-                                                  issue.userEvaluation,
-                                              biasComparison:
-                                                  issue.biasComparison!,
+                                              issue.userEvaluation,
+                                              leftComparison: issue.leftComparison,
+                                              centerComparison:
+                                              issue.centerComparison,
+                                              rightComparison:
+                                              issue.rightComparison,
                                             );
                                           },
                                         ),
+
+                                      SizedBox(height: MyPaddings.large),
+                                      IssueDetailTabs(
+                                        fontSize: state.fontSize,
+                                        issue: issue,
+                                        moveToNextPage: () {
+                                          moveToNextPage(
+                                            issue.commonSummary != null ? 3 : 2,
+                                          );
+                                        },
+                                      ),
+
                                       SizedBox(height: MyPaddings.large),
 
                                       SourceListPage(
@@ -288,4 +288,3 @@ class _IssueDetailFeedRootState extends State<IssueDetailFeedRoot> {
     );
   }
 }
-

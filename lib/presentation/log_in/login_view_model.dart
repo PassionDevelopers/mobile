@@ -5,6 +5,7 @@ import 'package:could_be/core/routes/route_names.dart';
 import 'package:could_be/core/routes/router.dart';
 import 'package:could_be/domain/useCases/firebase_login_use_case.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
 import 'login_state.dart';
 
@@ -36,9 +37,9 @@ class LoginViewModel with ChangeNotifier {
       }){
         _state = _state.copyWith(isLoginInProgress: false);
         notifyListeners();
-        router.go(RouteNames.root);
+        if(context.mounted) context.go(RouteNames.root);
       }else{
-        showSnackBar(context, msg: '로그인 실패: 토큰을 받지 못했습니다.');
+        if(context.mounted) showSnackBar(context, msg: '로그인 실패: 토큰을 받지 못했습니다.');
         _state = _state.copyWith(isLoginInProgress: false);
         notifyListeners();
       }

@@ -131,11 +131,21 @@ class BiasCheckButton extends StatelessWidget {
     return ListenableBuilder(
       listenable: ValueNotifier(userEvaluation),
       builder: (context, listenable) {
-        return Column(
-          children: [
-            Padding(
-              padding: const EdgeInsets.only(top: MyPaddings.small),
-              child:
+        return Ink(
+          padding: EdgeInsets.symmetric(horizontal: MyPaddings.large, vertical: MyPaddings.medium),
+          decoration: BoxDecoration(
+            color: AppColors.white,
+            borderRadius: BorderRadius.circular(20),
+            boxShadow: [
+              BoxShadow(
+                color: AppColors.gray5,
+                blurRadius: 5,
+                offset: Offset(1, 1),
+              ),
+            ],
+          ),
+          child: Column(
+            children: [
               userEvaluation == null
                   ? MyText.h3('어떤 관점에 동의하시나요?')
                   : Row(
@@ -152,25 +162,25 @@ class BiasCheckButton extends StatelessWidget {
                   ),
                 ],
               ),
-            ),
-            SizedBox(height: MyPaddings.medium),
-            Row(
-              mainAxisSize: MainAxisSize.min,
-              mainAxisAlignment: MainAxisAlignment.center,
-              children:
-              userEvaluation == null
-                  ? [
-                if (existLeft) _buildBiasCircle(Bias.left),
-                if (existCenter) _buildBiasCircle(Bias.center),
-                if (existRight) _buildBiasCircle(Bias.right),
-              ]
-                  : [
-                if (existLeft) _buildBiasRect(Bias.left),
-                if (existCenter) _buildBiasRect(Bias.center),
-                if (existRight) _buildBiasRect(Bias.right),
-              ],
-            ),
-          ],
+              SizedBox(height: MyPaddings.medium),
+              Row(
+                mainAxisSize: MainAxisSize.min,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children:
+                userEvaluation == null
+                    ? [
+                  if (existLeft) _buildBiasCircle(Bias.left),
+                  if (existCenter) _buildBiasCircle(Bias.center),
+                  if (existRight) _buildBiasCircle(Bias.right),
+                ]
+                    : [
+                  if (existLeft) _buildBiasRect(Bias.left),
+                  if (existCenter) _buildBiasRect(Bias.center),
+                  if (existRight) _buildBiasRect(Bias.right),
+                ],
+              ),
+            ],
+          ),
         );
       },
     );

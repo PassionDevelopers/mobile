@@ -5,6 +5,7 @@ import 'package:could_be/core/amplitude/amplitude.dart';
 import 'package:could_be/core/components/alert/dialog.dart';
 import 'package:could_be/core/di/di_setup.dart';
 import 'package:could_be/core/routes/route_names.dart';
+import 'package:could_be/core/routes/router.dart';
 import 'package:could_be/presentation/log_in/login_view_model.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
@@ -119,6 +120,7 @@ class FirebaseLoginUseCase {
     if(await GoogleSignIn().isSignedIn()){
       await GoogleSignIn().signOut();
     }
+
   }
 
   SignInMethod checkSignInMethod() {
@@ -140,7 +142,6 @@ class FirebaseLoginUseCase {
 
   Future<void> deleteUserAccount(BuildContext context) async {
     getIt<Amplitude>().track(AmplitudeEvents.deleteUserAccount);
-    context.go(RouteNames.root);
     final user = _firebaseAuth.currentUser;
     if (user == null) {
       log("No user is currently signed in.");
@@ -197,10 +198,10 @@ class FirebaseLoginUseCase {
           await GoogleSignIn().disconnect();
         }
         if(!context.mounted) return;
-        context.go(RouteNames.root);
         showAlert(msg: '마지막 로그인 후 시간이 오래지났습니다. 계정을 삭제하시려면 다시 로그인한 뒤 재시도하시기 바랍니다.', context: context);
       }
     }
+    if(context.mounted) context.go(RouteNames.root);
   }
 
   // Future<UserCredential> signInWithEmailAndPassword(String email, String password) async {

@@ -40,7 +40,7 @@ class IssueDetailViewModel with ChangeNotifier {
     final result = await _fetchIssueDetailUseCase.fetchIssueDetailById(issueId);
 
     _state = state.copyWith(issueDetail: result, isLoading: false,
-        pageCount: result != null && result.biasComparison == null? 3 : 4
+        pageCount: result != null && (result.leftComparison == null && result.centerComparison == null && result.rightComparison == null)? 3 : 4
     );
     notifyListeners();
   }

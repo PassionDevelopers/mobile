@@ -3,6 +3,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:could_be/data/repositoryImpl/issue_query_params_repository_impl.dart';
 import 'package:could_be/data/repositoryImpl/manage_issue_evaluation_repository_impl.dart';
 import 'package:could_be/data/repositoryImpl/manage_topic_subscription_repository_impl.dart';
+import 'package:could_be/data/repositoryImpl/manage_user_profile_repository_impl.dart';
 import 'package:could_be/data/repositoryImpl/manage_user_status_repository_impl.dart';
 import 'package:could_be/data/repositoryImpl/media_repository_impl.dart';
 import 'package:could_be/data/repositoryImpl/source_detail_impl.dart';
@@ -14,6 +15,7 @@ import 'package:could_be/domain/repositoryInterfaces/manage_issue_evaluation_int
 import 'package:could_be/domain/repositoryInterfaces/manage_issue_subscription_interface.dart';
 import 'package:could_be/domain/repositoryInterfaces/manage_media_subscription_interface.dart';
 import 'package:could_be/domain/repositoryInterfaces/manage_topic_subscription_interface.dart';
+import 'package:could_be/domain/repositoryInterfaces/manage_user_profile_interface.dart';
 import 'package:could_be/domain/repositoryInterfaces/manage_user_status_interface.dart';
 import 'package:could_be/domain/repositoryInterfaces/source_detail_interface.dart';
 import 'package:could_be/domain/repositoryInterfaces/topic_detail_interface.dart';
@@ -64,6 +66,9 @@ Future<void> diRepoSetup()async {
   );
   getIt.registerSingleton<UserBiasRepository>(
     UserBiasRepositoryImpl(getIt<Dio>()),
+  );
+  getIt.registerSingleton<ManageUserProfileRepository>(
+    ManageUserProfileRepositoryImpl(getIt<Dio>()),
   );
 
   //source

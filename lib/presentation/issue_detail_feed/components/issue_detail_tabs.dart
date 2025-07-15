@@ -128,7 +128,7 @@ class _IssueDetailTabsState extends State<IssueDetailTabs>
                 ),
               ),
               SizedBox(height: MyPaddings.medium),
-              parseAiText(text, widget.fontSize),
+              parseAiText(text, widget.fontSize, getBiasColor(bias)),
               SizedBox(height: MyPaddings.medium),
             ],
           ),
@@ -158,7 +158,7 @@ class _IssueDetailTabsState extends State<IssueDetailTabs>
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        IssueDetailTitleCard(icon: Icon(Icons.balance), title: MyText.h1('언론 성향별 차이점'),),
+        IssueDetailTitleCard(icon: Icon(Icons.balance), title: MyText.h1('구체적인 보도 내용 차이점'),),
         Column(
           children: [
             Container(

@@ -36,12 +36,8 @@ class IssueDetailCommonSummary extends StatelessWidget {
             children: [
               TextCard(
                 color: AppColors.primary,
-                child: parseAiText(commonSummary, fontSize),
+                child: parseAiText(commonSummary, fontSize, AppColors.gray1),
               ),
-              // MoveToNextButton(
-              //   moveToNextPage: moveToNextPage,
-              //   buttonText: '언론의 원문 기사 보기',
-              // ),
             ],
           ),
         ),

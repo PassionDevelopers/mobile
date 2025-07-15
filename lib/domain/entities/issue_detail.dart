@@ -8,6 +8,7 @@ class IssueDetail {
   final String summary;
   final String? commonSummary;
   final String? imageUrl;
+  final String? imageSource;
   final List<String> keywords;
   final DateTime createdAt;
   final int view;
@@ -20,7 +21,9 @@ class IssueDetail {
   final int leftLikeCount;
   final int centerLikeCount;
   final int rightLikeCount;
-  final String? biasComparison;
+  final String? leftComparison;
+  final String? centerComparison;
+  final String? rightComparison;
   final List<String>? leftKeywords;
   final List<String>? centerKeywords;
   final List<String>? rightKeywords;
@@ -35,6 +38,7 @@ class IssueDetail {
     required this.summary,
     required this.commonSummary,
     required this.imageUrl,
+    required this.imageSource,
     required this.keywords,
     required this.createdAt,
     required this.view,
@@ -43,7 +47,9 @@ class IssueDetail {
     required this.leftSummary,
     required this.centerSummary,
     required this.rightSummary,
-    required this.biasComparison,
+    required this.leftComparison,
+    required this.centerComparison,
+    required this.rightComparison,
     required this.leftKeywords,
     required this.centerKeywords,
     required this.rightKeywords,
@@ -62,6 +68,8 @@ class IssueDetail {
     String? category,
     String? summary,
     String? imageUrl,
+    String? commonSummary,
+    String? imageSource,
     List<String>? keywords,
     DateTime? createdAt,
     int? view,
@@ -70,6 +78,9 @@ class IssueDetail {
     String? leftSummary,
     String? centerSummary,
     String? rightSummary,
+    String? leftComparison,
+    String? centerComparison,
+    String? rightComparison,
     String? biasComparison,
     List<String>? leftKeywords,
     List<String>? centerKeywords,
@@ -88,6 +99,7 @@ class IssueDetail {
       category: category ?? this.category,
       summary: summary ?? this.summary,
       commonSummary: commonSummary ?? this.commonSummary,
+      imageSource: imageSource ?? this.imageSource,
       imageUrl: imageUrl ?? this.imageUrl,
       keywords: keywords ?? this.keywords,
       createdAt: createdAt ?? this.createdAt,
@@ -97,7 +109,9 @@ class IssueDetail {
       leftSummary: leftSummary ?? this.leftSummary,
       centerSummary: centerSummary ?? this.centerSummary,
       rightSummary: rightSummary ?? this.rightSummary,
-      biasComparison: biasComparison ?? this.biasComparison,
+      leftComparison: leftComparison ?? this.leftComparison,
+      centerComparison: centerComparison ?? this.centerComparison,
+      rightComparison: rightComparison ?? this.rightComparison,
       leftKeywords: leftKeywords ?? this.leftKeywords,
       centerKeywords: centerKeywords ?? this.centerKeywords,
       rightKeywords: rightKeywords ?? this.rightKeywords,

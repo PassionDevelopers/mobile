@@ -12,6 +12,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:go_router/go_router.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 
 import '../../core/di/di_setup.dart';
@@ -77,25 +78,24 @@ class _RootState extends State<Root> {
     }
 
     usersStream.listen((snapshot){
-      log('update stream : ${snapshot.data()}');
       if (Platform.isAndroid) {
         if (snapshot.data()![CheckUpdateField.androidServerCheck]) {
-          router.go(RouteNames.serverCheck);
+          if(context.mounted) context.go(RouteNames.serverCheck);
         } else if (isNeedUpdate(snapshot.data()![CheckUpdateField.androidVersionForce], version)) {
-          router.go(RouteNames.needUpdate);
+          if(context.mounted) context.go(RouteNames.needUpdate);
         } else if (isHaveUpdate(snapshot.data()![CheckUpdateField.androidVersionLatest], version)) {
-          router.go(RouteNames.haveUpdate, extra: snapshot.data()![CheckUpdateField.androidVersionLatest]);
+          if(context.mounted) context.go(RouteNames.haveUpdate, extra: snapshot.data()![CheckUpdateField.androidVersionLatest]);
         }
       } else if (Platform.isIOS) {
         if (snapshot.data()![CheckUpdateField.iosServerCheck]) {
-          router.go(RouteNames.serverCheck);
+          if(context.mounted) context.go(RouteNames.serverCheck);
         } else if (isNeedUpdate(snapshot.data()![CheckUpdateField.iosVersionForce], version)) {
-          router.go(RouteNames.needUpdate);
+          if(context.mounted) context.go(RouteNames.needUpdate);
         } else if (isHaveUpdate(snapshot.data()![CheckUpdateField.iosVersionLatest], version)) {
-          router.go(RouteNames.haveUpdate, extra: snapshot.data()![CheckUpdateField.iosVersionLatest]);
+          if(context.mounted) context.go(RouteNames.haveUpdate, extra: snapshot.data()![CheckUpdateField.iosVersionLatest]);
         }
       } else {
-        router.go(RouteNames.unsupportedDevice);
+        if(context.mounted) context.go(RouteNames.unsupportedDevice);
       }
     });
   }
@@ -110,9 +110,9 @@ class _RootState extends State<Root> {
     var result = await manageUserStatusUseCase.checkUserRegisterStatus();
     if (!result.exists) {
       await manageUserStatusUseCase.registerIdToken(idToken);
-      router.go(RouteNames.home);
+      if(context.mounted) context.go(RouteNames.home);
     } else {
-      router.go(RouteNames.home);
+      if(context.mounted) context.go(RouteNames.home);
     }
   }
 

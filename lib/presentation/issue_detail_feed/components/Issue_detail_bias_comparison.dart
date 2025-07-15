@@ -17,7 +17,9 @@ import '../../../core/themes/margins_paddings.dart';
 class IssueDetailBiasComparison extends StatelessWidget {
   const IssueDetailBiasComparison({
     super.key,
-    required this.biasComparison,
+    required this.leftComparison,
+    required this.centerComparison,
+    required this.rightComparison,
     required this.userEvaluation,
     required this.onBiasSelected,
     required this.leftLikeCount,
@@ -31,7 +33,9 @@ class IssueDetailBiasComparison extends StatelessWidget {
     required this.fontSize,
   });
 
-  final String biasComparison;
+  final String? leftComparison;
+  final String? centerComparison;
+  final String? rightComparison;
   final String? userEvaluation;
   final int leftLikeCount;
   final int centerLikeCount;
@@ -51,7 +55,7 @@ class IssueDetailBiasComparison extends StatelessWidget {
         // Row(children: [BackButton(), BigTitle(title: '차이점 정리')]),
         IssueDetailTitleCard(
           icon: Icon(Icons.troubleshoot),
-          title: BigTitle(title: '차이점 정리'),
+          title: BigTitle(title: '보도 내용 차이점 정리'),
         ),
         SizedBox(height: MyPaddings.medium),
         Padding(
@@ -60,23 +64,27 @@ class IssueDetailBiasComparison extends StatelessWidget {
             children: [
               TextCard(
                 color: AppColors.primary,
-                child: parseAiText(biasComparison, fontSize),
+                child: Column(
+                  children: [
+                    if(leftComparison != null) parseAiText(leftComparison!, fontSize, getBiasColor(Bias.left)),
+                    if(leftComparison != null && centerComparison != null) Text('', style: TextStyle(fontSize: fontSize)),
+                    if(centerComparison != null) parseAiText(centerComparison!, fontSize, getBiasColor(Bias.center)),
+                    if(centerComparison != null && rightComparison != null) Text('', style: TextStyle(fontSize: fontSize)),
+                    if(rightComparison != null) parseAiText(rightComparison!, fontSize, getBiasColor(Bias.right)),
+                  ],
+                )
               ),
-              Padding(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: MyPaddings.large,
-                ),
-                child: BiasCheckButton(
-                  userEvaluation: userEvaluation,
-                  onBiasSelected: onBiasSelected,
-                  leftLikeCount: leftLikeCount,
-                  centerLikeCount: centerLikeCount,
-                  rightLikeCount: rightLikeCount,
-                  isEvaluating: isEvaluating,
-                  existLeft: existLeft,
-                  existCenter: existCenter,
-                  existRight: existRight,
-                ),
+              SizedBox(height: MyPaddings.medium),
+              BiasCheckButton(
+                userEvaluation: userEvaluation,
+                onBiasSelected: onBiasSelected,
+                leftLikeCount: leftLikeCount,
+                centerLikeCount: centerLikeCount,
+                rightLikeCount: rightLikeCount,
+                isEvaluating: isEvaluating,
+                existLeft: existLeft,
+                existCenter: existCenter,
+                existRight: existRight,
               ),
               // MoveToNextButton(
               //   moveToNextPage: moveToNextPage,
