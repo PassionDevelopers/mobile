@@ -7,12 +7,12 @@ part 'topics_dto.g.dart';
 class TopicsDto {
   final List<TopicDto> topics;
   final bool hasMore;
-  final String lastTopicId;
+  final String? lastTopicId;
 
   TopicsDto({
     required this.topics,
     required this.hasMore,
-    required this.lastTopicId,
+    this.lastTopicId,
   });
 
   factory TopicsDto.fromJson(Map<String, dynamic> json) =>

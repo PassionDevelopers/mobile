@@ -1,3 +1,4 @@
+import 'package:could_be/core/di/api_versions.dart';
 import 'package:dio/dio.dart';
 import '../../core/base_url.dart';
 import '../../domain/entities/media.dart';
@@ -11,7 +12,7 @@ class MediaRepositoryImpl implements MediaRepository {
   @override
   Future<Media> fetchSubscribedMedia() async {
     final response = await dio.get(
-      '/media',
+      '${ApiVersions.v1}/media',
       queryParameters: {'type': 'subscribed'},
     );
     final mediaDTO = MediaDTO.fromJson(response.data);

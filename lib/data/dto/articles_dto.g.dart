@@ -12,7 +12,7 @@ ArticlesDTO _$ArticlesDTOFromJson(Map<String, dynamic> json) => ArticlesDTO(
           .map((e) => ArticleDTO.fromJson(e as Map<String, dynamic>))
           .toList(),
   hasMore: json['hasMore'] as bool,
-  lastArticleId: json['lastArticleId'] as String,
+  lastArticleId: json['lastArticleId'] as String?,
 );
 
 Map<String, dynamic> _$ArticlesDTOToJson(ArticlesDTO instance) =>

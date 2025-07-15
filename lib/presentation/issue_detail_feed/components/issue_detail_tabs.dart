@@ -1,6 +1,11 @@
-import 'package:could_be/core/components/bias/bias_check_button.dart';
-import 'package:could_be/core/components/buttons/back_button.dart';
+
+import 'dart:developer';
+import 'dart:math' hide log;
+
+import 'package:autoscale_tabbarview/autoscale_tabbarview.dart';
+import 'package:could_be/core/components/cards/issue_detail_title_card.dart';
 import 'package:could_be/core/components/cards/text_card.dart';
+import 'package:could_be/core/components/layouts/text_helper.dart';
 import 'package:could_be/core/components/loading/not_found.dart';
 import 'package:could_be/core/components/title/big_title.dart';
 import 'package:could_be/presentation/issue_detail_feed/components/move_to_next_button.dart';
@@ -101,8 +106,7 @@ class _IssueDetailTabsState extends State<IssueDetailTabs>
       child: TextCard(
         color: getBiasColor(bias),
         child: text == null? Center(child: NotFound(notFoundType: NotFoundType.article,)) :
-          SingleChildScrollView(
-          child: Column(
+          Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               if(keywords != null) SizedBox(
@@ -124,35 +128,20 @@ class _IssueDetailTabsState extends State<IssueDetailTabs>
                 ),
               ),
               SizedBox(height: MyPaddings.medium),
-              Column(
-                children: [
-                  for(String para in parseAiText(text))
-                    ...[
-                    Text(
-                      '• $para',
-                      style: TextStyle(
-                        fontSize: widget.fontSize,
-                        color: AppColors.gray1,
-                      ),
-                    ),
-                  ]
-                ],
-              ),
+              parseAiText(text, widget.fontSize),
               SizedBox(height: MyPaddings.medium),
             ],
           ),
-        ),
       ),
     );
   }
-
+  
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
     _tabController.addListener(() {
       setState(() {
-
       });
     });
   }
@@ -169,62 +158,48 @@ class _IssueDetailTabsState extends State<IssueDetailTabs>
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Row(children: [
-          BackButton(),
-          Column(
-            children: [
-              SizedBox(height: MyPaddings.medium),
-              // MyText.h1('언론 성향별 요약'),
-              MyText.h1('언론 성향별 차이점'),
-              SizedBox(height: MyPaddings.medium),
-            ],
-          )
-        ],),
-        Expanded(
-          child: Column(
-            children: [
-              Container(
-                margin: EdgeInsets.symmetric(horizontal: MyPaddings.large),
-                decoration: BoxDecoration(
-                  color: AppColors.gray5,
-                  borderRadius: BorderRadius.circular(12),
-                ),
-                child: Row(
-                  children: List.generate(3, (index) {
-                    return _buildTab(index);
-                  }),
-                ),
+        IssueDetailTitleCard(icon: Icon(Icons.balance), title: MyText.h1('언론 성향별 차이점'),),
+        Column(
+          children: [
+            Container(
+              margin: EdgeInsets.symmetric(horizontal: MyPaddings.large),
+              decoration: BoxDecoration(
+                color: AppColors.gray5,
+                borderRadius: BorderRadius.circular(12),
               ),
-              SizedBox(height: MyPaddings.small),
-              Expanded(
-                child: TabBarView(
-                  controller: _tabController,
-                  children: [
-                    _buildTabViewPage(
-                      bias: Bias.left,
-                      text: issue.leftSummary,
-                      keywords: issue.leftKeywords,
-                    ),
-                    _buildTabViewPage(
-                      bias: Bias.center,
-                      text: issue.centerSummary,
-                      keywords: issue.centerKeywords,
-                    ),
-                    _buildTabViewPage(
-                      bias: Bias.right,
-                      text: issue.rightSummary,
-                      keywords: issue.rightKeywords,
-                    ),
-                  ],
-                ),
+              child: Row(
+                children: List.generate(3, (index) {
+                  return _buildTab(index);
+                }),
               ),
-              Padding(
-                padding: EdgeInsets.symmetric(
-                    horizontal: MyPaddings.large),
-                child: MoveToNextButton(moveToNextPage: widget.moveToNextPage, buttonText: '성향별 차이점 보기'),
-              )
-            ],
-          ),
+            ),
+            SizedBox(height: MyPaddings.large),
+            AutoSizedTabBarView(
+              tabController: _tabController,
+              children: [
+                _buildTabViewPage(
+                  bias: Bias.left,
+                  text: issue.leftSummary,
+                  keywords: issue.leftKeywords,
+                ),
+                _buildTabViewPage(
+                  bias: Bias.center,
+                  text: issue.centerSummary,
+                  keywords: issue.centerKeywords,
+                ),
+                _buildTabViewPage(
+                  bias: Bias.right,
+                  text: issue.rightSummary,
+                  keywords: issue.rightKeywords,
+                ),
+              ],
+            )
+            // Padding(
+            //   padding: EdgeInsets.symmetric(
+            //       horizontal: MyPaddings.large),
+            //   child: MoveToNextButton(moveToNextPage: widget.moveToNextPage, buttonText: '성향별 차이점 보기'),
+            // )
+          ],
         )
       ],
     );

@@ -192,7 +192,7 @@ class MediaProfile extends StatelessWidget {
                             child: MyText.h3(
                               source.name,
                               color: getBiasColor(
-                                getBiasFromString(source.perspective),
+                                source.bias,
                               ),
                             ),
                           ),

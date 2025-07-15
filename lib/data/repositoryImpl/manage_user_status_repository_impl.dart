@@ -1,4 +1,5 @@
 import 'dart:developer';
+import 'package:could_be/core/di/api_versions.dart';
 import 'package:could_be/core/di/di_setup.dart';
 import 'package:could_be/data/dto/user_register_status_dto.dart';
 import 'package:could_be/domain/entities/user_register_status.dart';
@@ -15,7 +16,7 @@ class ManageUserStatusRepositoryImpl extends ManageUserStatusRepository{
     final tokenStorageRepository = getIt<TokenStorageRepository>();
     final token = await tokenStorageRepository.getToken();
     log('last token check: $token');
-    final result = await dio.get('/user/is-exists');
+    final result = await dio.get('${ApiVersions.v1}/user/is-exists');
     final userRegisterStatusDto = UserRegiterStatusDto.fromJson(result.data);
     return userRegisterStatusDto.toDomain();
   }
@@ -23,7 +24,7 @@ class ManageUserStatusRepositoryImpl extends ManageUserStatusRepository{
   @override
   Future<void> registerUserWithIdToken()async{
     final result = await dio.post(
-      '/user/register'
+      '${ApiVersions.v1}/user/register'
       // data: {
       //   "perspective": "center"
       // }
@@ -34,7 +35,7 @@ class ManageUserStatusRepositoryImpl extends ManageUserStatusRepository{
   @override
   Future<void> deleteUserAccount()async{
     final result = await dio.delete(
-        '/user/delete-account'
+        '${ApiVersions.v1}/user/delete-account'
     );
     log(result.data.toString());
   }

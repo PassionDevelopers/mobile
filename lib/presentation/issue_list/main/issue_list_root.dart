@@ -1,3 +1,4 @@
+import 'package:could_be/core/components/app_bar/app_bar.dart';
 import 'package:could_be/core/components/loading/not_found.dart';
 import 'package:could_be/presentation/home/issue_query_params/issue_query_params_view.dart';
 import 'package:could_be/ui/color.dart';
@@ -46,10 +47,8 @@ class _IssueListRootState extends State<IssueListRoot> {
       param2: widget.topicId,
     );
     scrollController.addListener(() {
-      if (scrollController.position.pixels >=
-          scrollController.position.maxScrollExtent - 100) {
-        viewModel.fetchMoreIssues(topicId: widget.topicId,
-          lastIssueId: viewModel.state.lastIssueId);
+      if (scrollController.position.pixels >= scrollController.position.maxScrollExtent - 100) {
+        viewModel.fetchMoreIssues(topicId: widget.topicId);
       }
     });
   }
@@ -75,6 +74,7 @@ class _IssueListRootState extends State<IssueListRoot> {
         child: Column(
           children: [
             widget.appBar ?? SizedBox.shrink(),
+            if(widget.isFeedView) MainAppBar(onSearchSubmitted: viewModel.searchIssues),
             if(widget.isFeedView) IssueQueryParamsView(
               changeQueryParam: viewModel.changeQueryParam,
             ),

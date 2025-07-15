@@ -63,68 +63,34 @@ class _IssueDetailSummaryState extends State<IssueDetailSummary> {
                   borderRadius: BorderRadius.zero,
                 )
                 : SizedBox(height: MyPaddings.small),
-            Expanded(
-              child: Padding(
-                padding: EdgeInsets.symmetric(horizontal: MyPaddings.large),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    IssueDetailHeader(issue: widget.issue),
-                    SizedBox(height: MyPaddings.small),
-                    CardBiasBar(
-                      coverageSpectrum: widget.issue.coverageSpectrum,
-                      isDailyIssue: true,
-                    ),
-                    SizedBox(height: MyPaddings.small),
-                    Expanded(
-                      child: GestureDetector(
-                        onVerticalDragUpdate: (details) {
-                          if (details.delta.dy < 0) {
-                            if( !_atBottom) {
-                              // User is scrolling up
-                              _atBottom = false;
-                            }else{
-                              widget.moveToNextPage();
-                            }
-                          } else if (details.delta.dy > 0) {
-                            // User is scrolling down
-                            _atBottom = true;
-                          }
-
-                        },
-                        child: TextCard(
-                          color: AppColors.gray1,
-                          child: SingleChildScrollView(
-                            controller: scrollController,
-                            child: Column(
-                              children: [
-                                for (String para in parseAiText(widget.issue.summary))
-                                  Text(
-                                    para,
-                                    style: TextStyle(
-                                      fontSize: widget.fontSize.toDouble(),
-                                      color: AppColors.gray1,
-                                    ),
-                                    textAlign: TextAlign.justify,
-                                  ),
-                                // MyText.article(para, color: AppColors.gray1),
-                              ],
-                            ),
-                          ),
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ),
+            SizedBox(height: MyPaddings.medium),
             Padding(
               padding: EdgeInsets.symmetric(horizontal: MyPaddings.large),
-              child: MoveToNextButton(
-                moveToNextPage: widget.moveToNextPage,
-                buttonText: '성향별 보도 내용 보기',
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  IssueDetailHeader(issue: widget.issue),
+                  SizedBox(height: MyPaddings.large),
+                  CardBiasBar(
+                    coverageSpectrum: widget.issue.coverageSpectrum,
+                    isDailyIssue: true,
+                  ),
+                  SizedBox(height: MyPaddings.large),
+                  TextCard(
+                    color: AppColors.gray1,
+                    child: parseAiText(widget.issue.summary, widget.fontSize),
+                  ),
+                ],
               ),
             ),
+
+            // Padding(
+            //   padding: EdgeInsets.symmetric(horizontal: MyPaddings.large),
+            //   child: MoveToNextButton(
+            //     moveToNextPage: widget.moveToNextPage,
+            //     buttonText: '성향별 보도 내용 보기',
+            //   ),
+            // ),
           ],
         ),
         Align(alignment: Alignment.topLeft, child: MyBackButton()),

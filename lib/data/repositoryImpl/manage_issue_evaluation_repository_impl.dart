@@ -1,3 +1,4 @@
+import 'package:could_be/core/di/api_versions.dart';
 import 'package:could_be/domain/repositoryInterfaces/manage_issue_evaluation_interface.dart';
 import 'package:dio/dio.dart';
 
@@ -11,7 +12,7 @@ class ManageIssueEvaluationRepositoryImpl extends ManageIssueEvaluationRepositor
     required String perspective,
   }) async {
     final response = await dio.post(
-      '/user/evaluate/$issueId',
+      '${ApiVersions.v1}/user/evaluate/$issueId',
       data: {
         'perspective': perspective,
       },
@@ -23,7 +24,7 @@ class ManageIssueEvaluationRepositoryImpl extends ManageIssueEvaluationRepositor
     required String issueId,
   }) async {
     final response = await dio.delete(
-      '/user/evaluate/$issueId',
+      '${ApiVersions.v1}/user/evaluate/$issueId',
     );
   }
 
@@ -33,7 +34,7 @@ class ManageIssueEvaluationRepositoryImpl extends ManageIssueEvaluationRepositor
     required String perspective,
   }) async {
     final response = await dio.put(
-      '/user/evaluate/$issueId',
+      '${ApiVersions.v1}/user/evaluate/$issueId',
       data: {
         'perspective': perspective,
       },

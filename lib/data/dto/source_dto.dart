@@ -1,3 +1,4 @@
+import 'package:could_be/core/method/bias/bias_method.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 import '../../domain/entities/source.dart';
@@ -32,7 +33,7 @@ extension SourceDtx on SourceDTO {
     return Source(
       id: id,
       name: name,
-      perspective: perspective,
+      bias: getBiasFromString(perspective),
       logoUrl: logoUrl,
       isSubscribed: isSubscribed,
     );

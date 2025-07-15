@@ -1,5 +1,8 @@
+import 'dart:developer';
+
 import 'package:could_be/core/components/buttons/big_button.dart';
 import 'package:could_be/core/components/cards/text_card.dart';
+import 'package:could_be/core/components/layouts/text_helper.dart';
 import 'package:could_be/core/components/loading/not_found.dart';
 import 'package:could_be/core/components/title/big_title.dart';
 import 'package:could_be/core/method/bias/bias_method.dart';
@@ -7,23 +10,21 @@ import 'package:could_be/domain/entities/articles_group_by_bias.dart';
 import 'package:could_be/presentation/media/media_components.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:lottie/lottie.dart';
 import '../../../core/components/bias/bias_enum.dart';
+import '../../../core/components/cards/issue_detail_title_card.dart';
 import '../../../core/routes/route_names.dart';
 import '../../../core/themes/margins_paddings.dart';
-import '../../../domain/entities/article.dart';
 import '../../../ui/color.dart';
-import '../../../ui/fonts.dart';
 
 class SourceListPage extends StatefulWidget {
   const SourceListPage({
     super.key,
-    required this.articles,
+    required this.articlesGBBAS,
     required this.toNextIssue,
     required this.hasNextIssue,
   });
 
-  final ArticlesGroupByBias articles;
+  final ArticlesGroupByBiasAndSource articlesGBBAS;
   final VoidCallback toNextIssue;
   final bool hasNextIssue;
 
@@ -91,29 +92,29 @@ class _SourceListPageState extends State<SourceListPage>
     );
   }
 
-  _buildTabViewPage({required Bias bias, required List<Article> biasArticles}) {
+  _buildTabViewPage({required Bias bias, required List<OneSourceArticles> oneSourceArticles}) {
     return Padding(
       padding: EdgeInsets.symmetric(
           horizontal: MyPaddings.large),
       child: TextCard(
         color: getBiasColor(bias),
         child:
-            biasArticles.isEmpty
+        oneSourceArticles.isEmpty
                 ? NotFound(notFoundType: NotFoundType.article)
                 : SingleChildScrollView(
                   child: Column(
                     children: [
-                      for (final article in biasArticles)
+                      for (final oneSourceArticle in oneSourceArticles)
                         MediaChatBubble(
-                          article: article,
-                          toWebView: () {
+                          articles: oneSourceArticle.articles,
+                          toWebView: (String aritcleId) {
                             context.push(
                               RouteNames.webView,
                               extra: {
                                 'articleInfo': (
-                                  widget.articles.allArticles,
-                                  article.id,
-                                  article.source.id,
+                                  widget.articlesGBBAS.allArticles,
+                                  aritcleId,
+                                  oneSourceArticle.source.id,
                                 ),
                               },
                             );
@@ -126,12 +127,12 @@ class _SourceListPageState extends State<SourceListPage>
     );
   }
 
-  late final List<Article> leftArticles =
-      widget.articles.articlesByBias[Bias.left]!;
-  late final List<Article> centerArticles =
-      widget.articles.articlesByBias[Bias.center]!;
-  late final List<Article> rightArticles =
-      widget.articles.articlesByBias[Bias.right]!;
+  late final List<OneSourceArticles>? leftArticles =
+      widget.articlesGBBAS.oneSourceArticlesByBias[Bias.left];
+  late final List<OneSourceArticles>? centerArticles =
+      widget.articlesGBBAS.oneSourceArticlesByBias[Bias.center];
+  late final List<OneSourceArticles>? rightArticles =
+      widget.articlesGBBAS.oneSourceArticlesByBias[Bias.right];
 
   @override
   void initState() {
@@ -140,63 +141,68 @@ class _SourceListPageState extends State<SourceListPage>
     _tabController.addListener(() {
       setState(() {});
     });
+    log('SourceListPage initState');
+    log('Left Articles: ${widget.articlesGBBAS.allArticles.length}');
+    log('Left Articles: ${leftArticles?.length}');
+    log('Center Articles: ${centerArticles?.length}');
+    log('Right Articles: ${rightArticles?.length}');
   }
 
   @override
   Widget build(BuildContext context) {
     return Column(
       children: [
-        Row(
-          children: [
-            BackButton(),
-            BigTitle(title: '원문 기사 보기'),
-          ],
+        // Row(
+        //   children: [
+        //     BackButton(),
+        //     BigTitle(title: '원문 기사 보기'),
+        //   ],
+        // ),
+        IssueDetailTitleCard(
+          icon: Icon(Icons.newspaper),
+          title: BigTitle(title: '원문 기사 보기'),
         ),
+
         SizedBox(height: MyPaddings.medium),
-        Expanded(
-          child: Column(
-            children: [
-              Container(
-                margin: EdgeInsets.symmetric(horizontal: MyPaddings.large),
-                decoration: BoxDecoration(
-                  color: AppColors.gray5,
-                  borderRadius: BorderRadius.circular(12),
-                ),
-                child: Row(
-                  children: List.generate(3, (index) {
-                    return _buildTab(index);
-                  }),
-                ),
+        Column(
+          children: [
+            Container(
+              margin: EdgeInsets.symmetric(horizontal: MyPaddings.large),
+              decoration: BoxDecoration(
+                color: AppColors.gray5,
+                borderRadius: BorderRadius.circular(12),
               ),
-              SizedBox(height: MyPaddings.small),
-              Expanded(
-                child: TabBarView(
-                  controller: _tabController,
-                  children: [
-                    _buildTabViewPage(bias: Bias.left, biasArticles: leftArticles),
-                    _buildTabViewPage(
-                      bias: Bias.center,
-                      biasArticles: centerArticles,
-                    ),
-                    _buildTabViewPage(bias: Bias.right, biasArticles: rightArticles),
-                  ],
-                ),
+              child: Row(
+                children: List.generate(3, (index) {
+                  return _buildTab(index);
+                }),
               ),
-              SizedBox(height: MyPaddings.medium),
-              Padding(
-                padding: EdgeInsets.symmetric(
-                    horizontal: MyPaddings.large),
-                child: BigButton(
-                  widget.hasNextIssue? '다음 이슈 보기' : '홈으로 돌아가기',
-                  backgroundColor: AppColors.primary,
-                  textColor: AppColors.primaryLight,
-                  onPressed: widget.hasNextIssue? widget.toNextIssue : (){
-                    context.pop();
-                  },
+            ),
+            SizedBox(height: MyPaddings.large),
+            AutoSizedTabBarView( tabController: _tabController,
+              children: [
+                _buildTabViewPage(bias: Bias.left, oneSourceArticles: leftArticles ?? []),
+                _buildTabViewPage(
+                  bias: Bias.center,
+                  oneSourceArticles: centerArticles ?? [],
                 ),
+                _buildTabViewPage(bias: Bias.right, oneSourceArticles: rightArticles ?? []),
+              ],),
+
+            SizedBox(height: MyPaddings.medium),
+            Padding(
+              padding: EdgeInsets.symmetric(
+                  horizontal: MyPaddings.large),
+              child: BigButton(
+                widget.hasNextIssue? '다음 이슈 보기' : '홈으로 돌아가기',
+                backgroundColor: AppColors.primary,
+                textColor: AppColors.primaryLight,
+                onPressed: widget.hasNextIssue? widget.toNextIssue : (){
+                  context.pop();
+                },
               ),
-            ],
-          ),
+            ),
+          ],
         ),
         SizedBox(height: MyPaddings.medium),
       ],

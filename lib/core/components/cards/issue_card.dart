@@ -80,7 +80,6 @@ class _IssueCardState extends State<IssueCard> with TickerProviderStateMixin {
           AnimatedBuilder(
             animation: _scaleAnimation,
             builder: (context, child) {
-              log(widget.issue.tags.toString());
               return Transform.scale(
                 scale: _scaleAnimation.value,
                 child: GestureDetector(
@@ -208,22 +207,20 @@ class _IssueCardState extends State<IssueCard> with TickerProviderStateMixin {
                           ),
 
                           if (widget.issue.tags.isNotEmpty)
-                            Padding(
-                              padding: EdgeInsets.all(MyPaddings.medium),
-                              child: Align(
-                                  alignment: Alignment.topLeft,
-                                  child: SizedBox(
-                                    height: 25,
-                                    child: ListView.builder(
-                                    scrollDirection: Axis.horizontal,
-                                    shrinkWrap: true,
-                                    itemCount: widget.issue.tags.length,
-                                    itemBuilder: (_, index) {
-                                      return BlindChip(
-                                        tag: widget.issue.tags[index],
-                                      );
-                                    },
-                                  ),
+                            Align(
+                                alignment: Alignment.topLeft,
+                                child: SizedBox(
+                                  height: 32,
+                                  child: ListView.builder(
+                                  scrollDirection: Axis.horizontal,
+                                  shrinkWrap: true,
+                                  itemCount: widget.issue.tags.length,
+                                  itemBuilder: (_, index) {
+                                    return BlindChip(
+                                      isFirst: index == 0,
+                                      tag: widget.issue.tags[index],
+                                    );
+                                  },
                                 ),
                               ),
                             ),

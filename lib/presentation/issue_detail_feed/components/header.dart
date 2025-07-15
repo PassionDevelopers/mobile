@@ -16,7 +16,7 @@ class IssueDetailHeader extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Padding(
-          padding: EdgeInsets.symmetric(vertical: MyPaddings.small),
+          padding: EdgeInsets.symmetric(vertical: MyPaddings.medium),
           child: MyText.h0(issue.title, maxLines: 3),
         ),
         IssueInfoTitle(

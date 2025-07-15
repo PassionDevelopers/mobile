@@ -1,3 +1,4 @@
+import 'package:could_be/core/di/api_versions.dart';
 import 'package:dio/dio.dart';
 import '../../domain/entities/user_bias.dart';
 import '../../domain/repositoryInterfaces/user_bias_interface.dart';
@@ -10,7 +11,7 @@ class UserBiasRepositoryImpl implements UserBiasRepository {
   @override
   Future<UserBias> fetchUserBias() async {
     final response = await dio.get(
-      '/user/political-preference',
+      '${ApiVersions.v1}/user/political-preference',
     );
     final userBiasDTO = UserBiasDTO.fromJson(response.data);
     return userBiasDTO.toDomain();

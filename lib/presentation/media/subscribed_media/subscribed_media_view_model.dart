@@ -54,7 +54,8 @@ class SubscribedMediaViewModel with ChangeNotifier {
     }
   }
 
-  void fetchMoreIssues({required String lastArticleId}) async {
+  void fetchMoreIssues({required String? lastArticleId}) async {
+    if(lastArticleId == null) return;
     if(_state.isLoadingMore || !_state.articles!.hasMore || _state.articles!.articles.length >=50) return;
 
     _state = state.copyWith(isLoadingMore: true, selectedSourceId: state.selectedSourceId);

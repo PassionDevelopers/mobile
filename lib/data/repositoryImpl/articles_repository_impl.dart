@@ -1,3 +1,4 @@
+import 'package:could_be/core/di/api_versions.dart';
 import 'package:dio/dio.dart';
 
 import '../../domain/entities/articles.dart';
@@ -14,7 +15,7 @@ class ArticlesRepositoryImpl implements ArticlesRepository {
     String issueId, {
     String? lastArticleId,
   }) async {
-    final response = await dio.get('/issues/$issueId/articles');
+    final response = await dio.get('${ApiVersions.v1}/issues/$issueId/articles');
     final articlesDTO = ArticlesDTO.fromJson(response.data);
     return articlesDTO.toDomain();
   }
@@ -25,7 +26,7 @@ class ArticlesRepositoryImpl implements ArticlesRepository {
     String? lastArticleId,
   }) async {
     final response = await dio.get(
-      '/media/$sourceId/articles',
+      '${ApiVersions.v1}/media/$sourceId/articles',
       queryParameters: {'lastArticleId': lastArticleId},
     );
     final articlesDTO = ArticlesDTO.fromJson(response.data);
@@ -35,7 +36,7 @@ class ArticlesRepositoryImpl implements ArticlesRepository {
   @override
   Future<Articles> fetchArticlesSubscribed({String? lastArticleId}) async {
     final response = await dio.get(
-      '/media/subscribed/articles',
+      '${ApiVersions.v1}/media/subscribed/articles',
       queryParameters: {'lastArticleId': lastArticleId},
     );
     final articlesDTO = ArticlesDTO.fromJson(response.data);

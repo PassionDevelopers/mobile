@@ -1,3 +1,4 @@
+import 'package:could_be/core/di/api_versions.dart';
 import 'package:dio/dio.dart';
 
 import '../../core/base_url.dart';
@@ -12,7 +13,7 @@ class ManageMediaSubscriptionRepositoryImpl
   @override
   Future<void> subscribeSourceBySourceId(String sourceId)async{
     final response = await dio.post(
-      '/media/$sourceId/subscribe',
+      '${ApiVersions.v1}/media/$sourceId/subscribe',
     );
     final statusCode = response.statusCode;
     if (statusCode != 200) {
@@ -23,7 +24,7 @@ class ManageMediaSubscriptionRepositoryImpl
   @override
   Future<void> unsubscribeSourceBySourceId(String sourceId) async {
     final response = await dio.delete(
-      '/media/$sourceId/subscribe',
+      '${ApiVersions.v1}/media/$sourceId/subscribe',
     );
     final statusCode = response.statusCode;
     if (statusCode != 200) {

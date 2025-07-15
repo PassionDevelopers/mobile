@@ -15,7 +15,7 @@ class MyChip extends StatelessWidget {
         border: borderColor== null? null : Border.all(color: borderColor!),
         borderRadius: BorderRadius.circular(15),
       ),
-      child: content
+      child: Center(child: content)
     );
   }
 }

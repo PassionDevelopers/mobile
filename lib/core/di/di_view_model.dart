@@ -22,7 +22,7 @@ Future<void> diViewModelSetup() async {
       fetchIssuesUseCase: getIt(),
       manageIssueEvaluationUseCase: getIt(),
       issueType: issueType,
-      topicId: topicId,
+      topicId: topicId, searchIssuesUseCase: getIt(),
     ),
   );
   getIt.registerFactoryParam<IssueDetailViewModel, String, void>(

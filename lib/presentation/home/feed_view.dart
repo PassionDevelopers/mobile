@@ -13,7 +13,6 @@ class FeedView extends StatelessWidget {
       issueType: IssueType.daily,
       isFeedView: true,
       isTopicView: false,
-      appBar: MainAppBar(),
       upperWidget: SizedBox(height: MyPaddings.medium),
       // upperWidget: Padding(
       //   padding: EdgeInsets.symmetric(horizontal: MyPaddings.largeMedium,

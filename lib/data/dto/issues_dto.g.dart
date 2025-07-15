@@ -12,7 +12,7 @@ IssuesDTO _$IssuesDTOFromJson(Map<String, dynamic> json) => IssuesDTO(
           .map((e) => IssueDTO.fromJson(e as Map<String, dynamic>))
           .toList(),
   hasMore: json['hasMore'] as bool,
-  lastIssueId: json['lastIssueId'] as String,
+  lastIssueId: json['lastIssueId'] as String?,
 );
 
 Map<String, dynamic> _$IssuesDTOToJson(IssuesDTO instance) => <String, dynamic>{

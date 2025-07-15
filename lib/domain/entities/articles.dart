@@ -1,6 +1,5 @@
 
 
-import 'package:could_be/core/method/bias/bias_method.dart';
 import 'package:could_be/domain/entities/articles_group_by_bias.dart';
 import 'package:could_be/domain/entities/source.dart';
 
@@ -11,7 +10,7 @@ import 'articles_group_by_source.dart';
 class Articles{
   final List<Article> articles;
   final bool hasMore;
-  final String lastArticleId;
+  final String? lastArticleId;
 
   Articles({
     required this.articles,
@@ -39,20 +38,41 @@ extension ArticlesExtension on Articles {
     );
   }
 
-  ArticlesGroupByBias toGroupByBias() {
-    final Map<Bias, List<Article>> articlesByBias = {
-      Bias.left: [],
-      Bias.center: [],
-      Bias.right: [],
-    };
-
-    for (final article in articles) {
-      Bias bias = getBiasFromString(article.source.perspective);
-      if (bias == Bias.leftCenter) bias = Bias.left;
-      if (bias == Bias.rightCenter) bias = Bias.right;
-      articlesByBias[bias]!.add(article);
+  ArticlesGroupByBiasAndSource toGroupByBiasAndSource() {
+    Map<String, List<Article>> articlesGroupBySources = {};
+    for( final article in articles) {
+      if(!articlesGroupBySources.containsKey(article.source.id)) {
+        articlesGroupBySources[article.source.id] = [article];
+      }else{
+        articlesGroupBySources[article.source.id]!.add(article);
+      }
     }
-    return ArticlesGroupByBias(articlesByBias: articlesByBias,
+
+    List<OneSourceArticles> oneSourceArticles = [];
+    for( final articlesGroupBySource in articlesGroupBySources.values) {
+      final source = articlesGroupBySource.first.source;
+      oneSourceArticles.add(OneSourceArticles(
+        source: source,
+        articles: articlesGroupBySource,
+      ));
+    }
+
+    final Map<Bias, List<OneSourceArticles>> oneSourceArticlesByBias = {};
+    for (final oneSourceArticle in oneSourceArticles) {
+      Bias bias = oneSourceArticle.source.bias;
+      if(bias == Bias.leftCenter) {
+        bias = Bias.left;
+      } else if(bias == Bias.rightCenter) {
+        bias = Bias.right;
+      }
+      if(!oneSourceArticlesByBias.containsKey(bias)){
+        oneSourceArticlesByBias[bias] = [oneSourceArticle];
+      }else{
+        oneSourceArticlesByBias[bias]!.add(oneSourceArticle);
+      }
+    }
+    return ArticlesGroupByBiasAndSource(
+      oneSourceArticlesByBias: oneSourceArticlesByBias,
       allArticles: articles,
     );
   }

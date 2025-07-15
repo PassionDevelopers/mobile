@@ -16,4 +16,6 @@ abstract class IssuesRepository{
   Future<Issues> fetchSubscribedTopicIssues({String? lastIssueId});
 
   Future<Issues> fetchIssuesEvaluated({String? lastIssueId});
+
+  Future<Issues> searchIssues(String query);
 }

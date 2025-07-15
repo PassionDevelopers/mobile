@@ -3,6 +3,7 @@ import 'package:could_be/domain/useCases/fetch_source_detail_use_case.dart';
 import 'package:could_be/domain/useCases/fetch_topic_detail_use_case.dart';
 import 'package:could_be/domain/useCases/manage_issue_evaluation_use_case.dart';
 import 'package:could_be/domain/useCases/manage_user_status_use_case.dart';
+import 'package:could_be/domain/useCases/search_issues_use_case.dart';
 
 import '../../domain/useCases/fetch_articles_use_case.dart';
 import '../../domain/useCases/fetch_issues_use_case.dart';
@@ -21,6 +22,7 @@ Future<void> diUseCaseSetup() async {
   getIt.registerSingleton(FetchIssueDetailUseCase(getIt()));
   getIt.registerSingleton(ManageIssueSubscriptionUseCase(getIt()));
   getIt.registerSingleton(FetchIssueQueryParamsUseCase(getIt()));
+  getIt.registerSingleton(SearchIssuesUseCase(getIt()));
 
   //user
   getIt.registerSingleton(FetchUserBiasUseCase(getIt()));

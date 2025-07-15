@@ -1,5 +1,6 @@
 
 import 'package:could_be/core/base_url.dart';
+import 'package:could_be/core/di/api_versions.dart';
 import 'package:could_be/domain/entities/sources.dart';
 import 'package:dio/dio.dart';
 
@@ -14,7 +15,7 @@ class SourcesRepositoryImpl extends SourcesRepository {
   @override
   Future<Sources> fetchSubscribedSources() async {
     final response = await dio.get(
-        '/media/subscribed',
+        '${ApiVersions.v1}/media/subscribed',
     );
     final sourcesDTO = SourcesDTO.fromJson(response.data);
     return sourcesDTO.toDomain();
@@ -23,7 +24,7 @@ class SourcesRepositoryImpl extends SourcesRepository {
   @override
   Future<Sources> fetchAllSources() async {
     final response = await dio.get(
-        '/media',
+        '${ApiVersions.v1}/media',
     );
     final sourcesDTO = SourcesDTO.fromJson(response.data);
     return sourcesDTO.toDomain();

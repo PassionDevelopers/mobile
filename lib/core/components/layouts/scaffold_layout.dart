@@ -50,7 +50,7 @@ class RegScaffold extends StatelessWidget {
 
   Widget _buildMobileLayout(BuildContext context) {
     return Container(
-      color: backgroundColor ?? AppColors.background,
+      color: backgroundColor ?? AppColors.primaryLight,
       child: SafeArea(
         child: Scaffold(
           appBar: appBar ?? (appBarTitle != null
@@ -140,7 +140,7 @@ class HomeScaffold extends StatelessWidget {
 
   Widget _buildMobileLayout(BuildContext context) {
     return Container(
-      color: backgroundColor ?? AppColors.background,
+      color: backgroundColor ?? AppColors.primaryLight,
       child: SafeArea(
         child: Scaffold(
           appBar: appBar ?? (appBarTitle != null

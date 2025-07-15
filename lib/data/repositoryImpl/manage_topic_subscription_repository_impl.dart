@@ -1,3 +1,4 @@
+import 'package:could_be/core/di/api_versions.dart';
 import 'package:dio/dio.dart';
 
 import '../../core/base_url.dart';
@@ -12,7 +13,7 @@ class ManageTopicSubscriptionRepositoryImpl
   @override
   Future<void> subscribeTopicByTopicId(String topicId) async {
     final response = await dio.post(
-        '/topics/subscribe/$topicId',
+        '${ApiVersions.v1}/topics/subscribe/$topicId',
     );
     final statusCode = response.statusCode;
     if (statusCode != 200) {
@@ -23,7 +24,7 @@ class ManageTopicSubscriptionRepositoryImpl
   @override
   Future<void> unsubscribeTopicByTopicId(String topicId) async {
     final response = await dio.delete(
-        '/topics/subscribe/$topicId',
+        '${ApiVersions.v1}/topics/subscribe/$topicId',
 
     );
     final statusCode = response.statusCode;

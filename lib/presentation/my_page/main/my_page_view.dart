@@ -4,20 +4,14 @@ import 'package:could_be/core/components/title/big_title.dart';
 import 'package:could_be/core/di/di_setup.dart';
 import 'package:could_be/core/method/bias/bias_method.dart';
 import 'package:could_be/core/routes/route_names.dart';
-import 'package:could_be/core/routes/router.dart';
-import 'package:could_be/presentation/log_in/login_dialog.dart';
 import 'package:could_be/presentation/log_in/login_view.dart';
 import 'package:could_be/presentation/my_page/main/my_page_view_model.dart';
 import 'package:could_be/ui/color.dart';
 import 'package:could_be/ui/fonts.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:in_app_review/in_app_review.dart';
-import 'package:package_info_plus/package_info_plus.dart';
-import 'package:url_launcher/url_launcher.dart';
 import '../../../core/components/loading/skeleton.dart';
 import '../../../core/themes/margins_paddings.dart';
-import '../../../core/responsive/responsive_layout.dart';
 
 class MyPageView extends StatelessWidget {
   const MyPageView({
@@ -64,62 +58,68 @@ class MyPageView extends StatelessWidget {
                       ),
                       child: Column(
                         children: [
-                          // Align(
-                          //   alignment: Alignment.centerLeft,
-                          //   child: ListenableBuilder(
-                          //     listenable: viewModel,
-                          //     builder: (context, _) {
-                          //       final state = viewModel.state;
-                          //       if (state.isBiasLoading) {
-                          //         return BigButtonSkeleton();
-                          //       } else if (state.userBias == null) {
-                          //         return BigButtonSkeleton();
-                          //       } else {
-                          //         return Row(
-                          //           children: [
-                          //             MyText.h2(
-                          //               state.userBias!.nickname,
-                          //               color: AppColors.primary,
-                          //             ),
-                          //             Container(
-                          //               margin: EdgeInsets.only(left: MyPaddings.small),
-                          //               decoration: BoxDecoration(
-                          //                 color: AppColors.primary.withValues(alpha: 0.1),
-                          //                 borderRadius: BorderRadius.circular(8),
-                          //                 shape: BoxShape.circle,
-                          //               ),
-                          //               child: MyText.h3(
-                          //                 state.userBias!.bias.name,
-                          //                 color: AppColors.primary,
-                          //               ),
-                          //             )
-                          //           ],
-                          //         );
-                          //       }
-                          //     },
-                          //   ),
-                          // ),
+                          Align(
+                            alignment: Alignment.centerLeft,
+                            child: ListenableBuilder(
+                              listenable: viewModel,
+                              builder: (context, _) {
+                                final state = viewModel.state;
+                                if (state.isBiasLoading) {
+                                  return BigButtonSkeleton();
+                                } else if (state.userBias == null) {
+                                  return BigButtonSkeleton();
+                                } else {
+                                  return Column(
+                                    children: [
+                                      Icon(Icons.account_circle_rounded, size: 100, color: AppColors.gray3,),
+                                      Row(
+                                        children: [
+                                          MyText.h2(
+                                            state.userBias!.nickname,
+                                            color: AppColors.primary,
+                                          ),
+                                          IconButton(onPressed: (){
+
+                                          }, icon: Icon(Icons.edit))
+                                        ],
+                                      ),
+
+                                      // Container(
+                                      //   margin: EdgeInsets.only(left: MyPaddings.small),
+                                      //   height: 100,
+                                      //   decoration: BoxDecoration(
+                                      //     color: AppColors.primary.withValues(alpha: 0.1),
+                                      //     shape: BoxShape.circle,
+                                      //   ),
+                                      //   child: Icon(Icons.person)
+                                      // )
+                                    ],
+                                  );
+                                }
+                              },
+                            ),
+                          ),
+                          SizedBox(height: MyPaddings.large),
+                          BigTitle(title: '나의 성향'),
+                          SizedBox(height: MyPaddings.large),
+                          ListenableBuilder(
+                            listenable: viewModel,
+                            builder: (context, _) {
+                              final state = viewModel.state;
+                              if (state.isBiasLoading) {
+                                return BigButtonSkeleton();
+                              } else if (state.userBias == null) {
+                                return BigButtonSkeleton();
+                              } else {
+                                return BigButton(
+                                  '나의 성향 : ${getBiasName(state.userBias!.bias)}',
+                                  onPressed: toUserBiasStatus,
+                                );
+                              }
+                            },
+                          ),
           
-                          // BigTitle(title: '나의 성향'),
-                          // SizedBox(height: MyPaddings.large),
-                          // ListenableBuilder(
-                          //   listenable: viewModel,
-                          //   builder: (context, _) {
-                          //     final state = viewModel.state;
-                          //     if (state.isBiasLoading) {
-                          //       return BigButtonSkeleton();
-                          //     } else if (state.userBias == null) {
-                          //       return BigButtonSkeleton();
-                          //     } else {
-                          //       return BigButton(
-                          //         '나의 성향 : ${getBiasName(state.userBias!.bias)}',
-                          //         onPressed: toUserBiasStatus,
-                          //       );
-                          //     }
-                          //   },
-                          // ),
-          
-                          // SizedBox(height: MyPaddings.large),
+                          SizedBox(height: MyPaddings.large),
                           BigTitle(title: '나의 관심 항목'),
                           SizedBox(height: MyPaddings.large),
           

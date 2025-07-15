@@ -12,6 +12,7 @@ IssueDetailDTO _$IssueDetailDTOFromJson(Map<String, dynamic> json) =>
       title: json['title'] as String,
       category: json['category'] as String,
       summary: json['summary'] as String,
+      commonSummary: json['commonSummary'] as String?,
       imageUrl: json['imageUrl'] as String?,
       keywords:
           (json['keywords'] as List<dynamic>).map((e) => e as String).toList(),
@@ -55,6 +56,7 @@ Map<String, dynamic> _$IssueDetailDTOToJson(IssueDetailDTO instance) =>
       'title': instance.title,
       'category': instance.category,
       'summary': instance.summary,
+      'commonSummary': instance.commonSummary,
       'imageUrl': instance.imageUrl,
       'keywords': instance.keywords,
       'createdAt': instance.createdAt,

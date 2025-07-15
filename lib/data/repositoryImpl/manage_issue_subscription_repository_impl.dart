@@ -1,3 +1,4 @@
+import 'package:could_be/core/di/api_versions.dart';
 import 'package:dio/dio.dart';
 
 import '../../core/base_url.dart';
@@ -12,14 +13,14 @@ class ManageIssueSubscriptionRepositoryImpl
   @override
   Future<void> subscribeIssueByIssueId(String issueId) async {
     await dio.post(
-      '/issues/$issueId/subscribe',
+      '${ApiVersions.v1}/issues/$issueId/subscribe',
     );
   }
 
   @override
   Future<void> unsubscribeIssueByIssueId(String issueId) async {
     await dio.delete(
-      '/issues/$issueId/subscribe',
+      '${ApiVersions.v1}/issues/$issueId/subscribe',
     );
   }
 }

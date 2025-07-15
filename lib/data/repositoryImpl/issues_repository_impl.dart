@@ -1,3 +1,6 @@
+import 'dart:developer';
+
+import 'package:could_be/core/di/api_versions.dart';
 import 'package:could_be/domain/entities/issue_query_params.dart';
 import '../../domain/entities/issues.dart';
 import '../../domain/repositoryInterfaces/issues_interface.dart';
@@ -9,9 +12,21 @@ class IssuesRepositoryImpl implements IssuesRepository {
   IssuesRepositoryImpl(this.dio);
 
   @override
+  Future<Issues> searchIssues(String query) async {
+    log('Search Issues Query: $query');
+    final response = await dio.get(
+      '${ApiVersions.v1}/issues/search',
+      queryParameters: {'q': query},
+    );
+    log('Search Issues Response: ${response.data}');
+    final issuesDTO = IssuesDTO.fromJson(response.data);
+    return issuesDTO.toDomain();
+  }
+
+  @override
   Future<Issues> fetchQueryParamIssues(IssueQueryParam issueQueryParam, {String? lastIssueId}) async {
     final response = await dio.get(
-      '/issues',
+      '${ApiVersions.v1}/issues',
       queryParameters: {'type': issueQueryParam.queryParam, 'lastIssueId': lastIssueId},
     );
     final issuesDTO = IssuesDTO.fromJson(response.data);
@@ -21,7 +36,7 @@ class IssuesRepositoryImpl implements IssuesRepository {
   @override
   Future<Issues> fetchDailyIssues({String? lastIssueId}) async {
     final response = await dio.get(
-      '/issues',
+      '${ApiVersions.v1}/issues',
       queryParameters: {'type': 'daily', 'lastIssueId': lastIssueId},
     );
     final issuesDTO = IssuesDTO.fromJson(response.data);
@@ -31,7 +46,7 @@ class IssuesRepositoryImpl implements IssuesRepository {
   @override
   Future<Issues> fetchHotIssues({String? lastIssueId}) async {
     final response = await dio.get(
-      '/issues',
+      '${ApiVersions.v1}/issues',
 
       queryParameters: {'type': 'hot', 'lastIssueId': lastIssueId},
     );
@@ -42,7 +57,7 @@ class IssuesRepositoryImpl implements IssuesRepository {
   @override
   Future<Issues> fetchBlindSpotLeftIssues({String? lastIssueId}) async {
     final response = await dio.get(
-      '/issues',
+      '${ApiVersions.v1}/issues',
 
       queryParameters: {'type': 'blind-spot-left', 'lastIssueId': lastIssueId},
     );
@@ -53,7 +68,7 @@ class IssuesRepositoryImpl implements IssuesRepository {
   @override
   Future<Issues> fetchBlindSpotRightIssues({String? lastIssueId}) async {
     final response = await dio.get(
-      '/issues',
+      '${ApiVersions.v1}/issues',
 
       queryParameters: {'type': 'blind-spot-right', 'lastIssueId': lastIssueId},
     );

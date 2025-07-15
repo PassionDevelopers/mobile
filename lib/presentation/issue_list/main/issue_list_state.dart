@@ -11,6 +11,7 @@ class IssueListState{
   final String lastIssueId;
   final IssueQueryParam? issueQueryParam;
   final String? topicId;
+  final String? query;
   final bool isLoading;
   final bool isLoadingMore;
   final bool isEvaluating;
@@ -18,6 +19,7 @@ class IssueListState{
   IssueListState({
     this.issueQueryParam,
     this.topicId,
+    this.query,
     this.issueList = const [],
     this.isLoading = false,
     this.isLoadingMore = false,
@@ -30,6 +32,7 @@ class IssueListState{
     List<Issue>? issueList,
     bool? hasMore,
     String? lastIssueId,
+    String? query,
     bool? isLoading,
     bool? isLoadingMore,
     IssueQueryParam? issueQueryParam,
@@ -44,6 +47,7 @@ class IssueListState{
       isLoading: isLoading ?? this.isLoading,
       isLoadingMore: isLoadingMore ?? this.isLoadingMore,
       topicId: topicId ?? this.topicId,
+      query: query,
       isEvaluating: isEvaluating ?? this.isEvaluating,
     );
   }

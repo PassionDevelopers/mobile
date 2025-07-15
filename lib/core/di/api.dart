@@ -42,6 +42,16 @@ class AuthInterceptor extends Interceptor {
   }
 
   @override
+  void onResponse(
+    Response response,
+    ResponseInterceptorHandler handler,
+  ) {
+    log('Response Status Code: ${response.statusCode}');
+    log('Response Data: ${response.data}');
+    handler.next(response);
+  }
+
+  @override
   void onError(DioException err, ErrorInterceptorHandler handler) async {
     log('Dio Error: ${err.message}');
     if (err.response?.statusCode == 401) {
@@ -78,7 +88,7 @@ class AuthInterceptor extends Interceptor {
 Dio createDio(TokenStorageRepository tokenStorageRepository) {
   final dio = Dio(
     BaseOptions(
-      baseUrl: prod,
+      baseUrl: dev,
       connectTimeout: const Duration(seconds: 10),
       receiveTimeout: const Duration(seconds: 10),
       sendTimeout: const Duration(seconds: 10),

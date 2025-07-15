@@ -1,6 +1,7 @@
 import 'dart:developer';
 
 import 'package:could_be/core/components/bias/bias_check_button.dart';
+import 'package:could_be/core/components/cards/issue_detail_title_card.dart';
 import 'package:could_be/core/components/cards/text_card.dart';
 import 'package:could_be/core/components/title/big_title.dart';
 import 'package:could_be/core/method/text_parsing.dart';
@@ -27,7 +28,7 @@ class IssueDetailBiasComparison extends StatelessWidget {
     required this.existCenter,
     required this.existRight,
     required this.moveToNextPage,
-    required this.fontSize
+    required this.fontSize,
   });
 
   final String biasComparison;
@@ -43,152 +44,45 @@ class IssueDetailBiasComparison extends StatelessWidget {
   final void Function(Bias bias) onBiasSelected;
   final VoidCallback moveToNextPage;
 
-  _buildBiasCircle(Bias bias) {
-    return Padding(
-      padding: EdgeInsets.symmetric(
-        horizontal: MyPaddings.small,
-        vertical: MyPaddings.small,
-      ),
-      child: InkWell(
-        borderRadius: BorderRadius.circular(25),
-        onTap: () {
-          if (!isEvaluating) onBiasSelected(bias);
-        },
-        child: Ink(
-          height: 50,
-          width: 50,
-          decoration: BoxDecoration(
-            shape: BoxShape.circle,
-            border: Border.all(color: getBiasColor(bias)),
-          ),
-          child: Center(child: Icon(Icons.check, color: getBiasColor(bias))),
-        ),
-      ),
-    );
-  }
-
-  _buildBiasRect(Bias bias) {
-    int total = leftLikeCount + centerLikeCount + rightLikeCount;
-    bool isSelected = userEvaluation == bias.toPerspective();
-    return Padding(
-      padding: EdgeInsets.symmetric(
-        horizontal: MyPaddings.small,
-        vertical: MyPaddings.small,
-      ),
-      child: InkWell(
-        borderRadius: BorderRadius.circular(25),
-        onTap: () {
-          if (!isEvaluating) onBiasSelected(bias);
-        },
-        child: Ink(
-          height: 50,
-          width: 80,
-          decoration: BoxDecoration(
-            gradient: LinearGradient(
-              stops: [
-                0,
-                switch (bias) {
-                  Bias.left => leftLikeCount / total,
-                  Bias.center => centerLikeCount / total,
-                  _ => rightLikeCount / total,
-                },
-                switch (bias) {
-                  Bias.left => leftLikeCount / total,
-                  Bias.center => centerLikeCount / total,
-                  _ => rightLikeCount / total,
-                },
-                1.0,
-              ],
-              colors: [
-                getBiasColor(bias).withOpacity(0.2),
-                getBiasColor(bias).withOpacity(0.2),
-                AppColors.primaryLight,
-                AppColors.primaryLight,
-              ],
-              begin: Alignment.centerLeft,
-              end: Alignment.centerRight,
-            ),
-            borderRadius: BorderRadius.circular(25),
-            border: Border.all(
-              color: isSelected ? getBiasColor(bias) : AppColors.gray3,
-            ),
-          ),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Icon(
-                Icons.check,
-                color: isSelected ? getBiasColor(bias) : AppColors.gray3,
-              ),
-              SizedBox(width: MyPaddings.small),
-              MyText.reg(switch (bias) {
-                Bias.left => leftLikeCount.toString(),
-                Bias.right => rightLikeCount.toString(),
-                _ => centerLikeCount.toString(),
-              }, color: isSelected ? getBiasColor(bias) : AppColors.gray3),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
     return Column(
       children: [
-        Row(children: [BackButton(), BigTitle(title: '차이점 정리')]),
+        // Row(children: [BackButton(), BigTitle(title: '차이점 정리')]),
+        IssueDetailTitleCard(
+          icon: Icon(Icons.troubleshoot),
+          title: BigTitle(title: '차이점 정리'),
+        ),
         SizedBox(height: MyPaddings.medium),
-        Expanded(
-          child: Padding(
-            padding: EdgeInsets.symmetric(horizontal: MyPaddings.large),
-            child: Column(
-              children: [
-                Expanded(
-                  child: TextCard(
-                    color: AppColors.primary,
-                    child: SingleChildScrollView(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          for (String para in parseAiText(biasComparison)) ...[
-                            Text(
-                              para,
-                              style: TextStyle(
-                                fontSize: fontSize.toDouble(),
-                                color: AppColors.gray1,
-                              ),
-                              textAlign: TextAlign.justify,
-                            ),
-                            // MyText.article('• $para\n', color: AppColors.gray1),
-                          ],
-                        ],
-                      ),
-                    ),
-                  ),
+        Padding(
+          padding: EdgeInsets.symmetric(horizontal: MyPaddings.large),
+          child: Column(
+            children: [
+              TextCard(
+                color: AppColors.primary,
+                child: parseAiText(biasComparison, fontSize),
+              ),
+              Padding(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: MyPaddings.large,
                 ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: MyPaddings.large,
-                  ),
-                  child: BiasCheckButton(
-                    userEvaluation: userEvaluation,
-                    onBiasSelected: onBiasSelected,
-                    leftLikeCount: leftLikeCount,
-                    centerLikeCount: centerLikeCount,
-                    rightLikeCount: rightLikeCount,
-                    isEvaluating: isEvaluating,
-                    existLeft: existLeft,
-                    existCenter: existCenter,
-                    existRight: existRight,
-                  ),
+                child: BiasCheckButton(
+                  userEvaluation: userEvaluation,
+                  onBiasSelected: onBiasSelected,
+                  leftLikeCount: leftLikeCount,
+                  centerLikeCount: centerLikeCount,
+                  rightLikeCount: rightLikeCount,
+                  isEvaluating: isEvaluating,
+                  existLeft: existLeft,
+                  existCenter: existCenter,
+                  existRight: existRight,
                 ),
-                MoveToNextButton(
-                  moveToNextPage: moveToNextPage,
-                  buttonText: '언론의 원문 기사 보기',
-                ),
-              ],
-            ),
+              ),
+              // MoveToNextButton(
+              //   moveToNextPage: moveToNextPage,
+              //   buttonText: '언론의 원문 기사 보기',
+              // ),
+            ],
           ),
         ),
       ],

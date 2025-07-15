@@ -9,18 +9,18 @@ class TextCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       width: double.infinity,
-      decoration: BoxDecoration(
-
-        borderRadius: BorderRadius.circular(16),
-        border: Border.all(
-          color: color,
-          width: 1,
-        ),
-      ),
-      padding: const EdgeInsets.symmetric(
-        horizontal: MyPaddings.medium,
-        vertical: MyPaddings.medium,
-      ),
+      // decoration: BoxDecoration(
+      //
+      //   borderRadius: BorderRadius.circular(16),
+      //   border: Border.all(
+      //     color: color,
+      //     width: 1,
+      //   ),
+      // ),
+      // padding: const EdgeInsets.symmetric(
+      //   horizontal: MyPaddings.medium,
+      //   vertical: MyPaddings.medium,
+      // ),
       child: child,
     );
   }

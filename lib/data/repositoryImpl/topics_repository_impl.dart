@@ -1,5 +1,6 @@
 import 'dart:developer';
 
+import 'package:could_be/core/di/api_versions.dart';
 import 'package:could_be/data/dto/topics_dto.dart';
 import 'package:could_be/domain/entities/topics.dart';
 import 'package:dio/dio.dart';
@@ -13,7 +14,7 @@ class TopicsRepositoryImpl implements TopicsRepository {
   @override
   Future<Topics> fetchSubscribedTopics() async {
     final response = await dio.get(
-      '/topics/subscribed',
+      '${ApiVersions.v1}/topics/subscribed',
     );
     final TopicsDto topicsDto = TopicsDto.fromJson(response.data);
     return topicsDto.toDomain();
@@ -23,7 +24,7 @@ class TopicsRepositoryImpl implements TopicsRepository {
   Future<Topics> fetchSepecificCategoryTopics(String category) async {
     log('Fetching topics for category: $category');
     final response = await dio.get(
-      '/topics',
+      '${ApiVersions.v1}/topics',
       queryParameters: {'category': category},
     );
     final TopicsDto topicsDto = TopicsDto.fromJson(response.data);

@@ -1,3 +1,4 @@
+import 'package:could_be/core/di/api_versions.dart';
 import 'package:could_be/domain/entities/issue_detail.dart';
 import 'package:dio/dio.dart';
 import '../../core/base_url.dart';
@@ -12,7 +13,7 @@ class IssueDetailRepositoryImpl implements IssueDetailRepository {
   @override
   Future<IssueDetail?> fetchIssueDetailById(String id)async{
     final response = await dio.get(
-      '/issues/$id',
+      '${ApiVersions.v1}/issues/$id',
 
     );
     final issueDetailDTO = IssueDetailDTO.fromJson(response.data);

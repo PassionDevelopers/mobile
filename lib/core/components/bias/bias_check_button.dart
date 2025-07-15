@@ -29,26 +29,34 @@ class BiasCheckButton extends StatelessWidget {
   final void Function(Bias bias) onBiasSelected;
 
   _buildBiasCircle(Bias bias) {
-    return Padding(
-      padding: EdgeInsets.symmetric(
-        horizontal: MyPaddings.small,
-        vertical: MyPaddings.small,
-      ),
-      child: InkWell(
-        borderRadius: BorderRadius.circular(25),
-        onTap: () {
-          if (!isEvaluating) onBiasSelected(bias);
-        },
-        child: Ink(
-          height: 50,
-          width: 50,
-          decoration: BoxDecoration(
-            shape: BoxShape.circle,
-            border: Border.all(color: getBiasColor(bias)),
-          ),
-          child: Center(child: Icon(Icons.check, color: getBiasColor(bias))),
+    return Column(
+      children: [
+        MyText.reg(
+          getBiasName(bias),
+          color: getBiasColor(bias),
         ),
-      ),
+        Padding(
+          padding: EdgeInsets.symmetric(
+            horizontal: MyPaddings.small,
+            // vertical: MyPaddings.small,
+          ),
+          child: InkWell(
+            borderRadius: BorderRadius.circular(25),
+            onTap: () {
+              if (!isEvaluating) onBiasSelected(bias);
+            },
+            child: Ink(
+              height: 50,
+              width: 80,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(25),
+                border: Border.all(color: getBiasColor(bias)),
+              ),
+              child: Center(child: Icon(Icons.check, color: getBiasColor(bias))),
+            ),
+          ),
+        ),
+      ],
     );
   }
 
@@ -145,6 +153,7 @@ class BiasCheckButton extends StatelessWidget {
                 ],
               ),
             ),
+            SizedBox(height: MyPaddings.medium),
             Row(
               mainAxisSize: MainAxisSize.min,
               mainAxisAlignment: MainAxisAlignment.center,

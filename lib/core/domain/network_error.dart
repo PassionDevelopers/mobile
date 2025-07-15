@@ -5,6 +5,7 @@ enum NetworkError implements MyError{
   requestTimeout,
   noInternetConnection,
   serverError,
+  // diskIO,
   // format,
   // unauthorized,
   // forbidden,
