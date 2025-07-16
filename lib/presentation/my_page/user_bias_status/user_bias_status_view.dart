@@ -53,18 +53,6 @@ class UserBiasStatusView extends StatelessWidget {
       padding: EdgeInsets.all(MyPaddings.extraLarge),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(24),
-        gradient: LinearGradient(
-          begin: Alignment.topLeft,
-          end: Alignment.bottomRight,
-          colors: [AppColors.gradientStart, AppColors.gradientEnd],
-        ),
-        boxShadow: [
-          BoxShadow(
-            color: AppColors.gradientStart.withOpacity(0.3),
-            blurRadius: 20,
-            offset: Offset(0, 10),
-          ),
-        ],
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,

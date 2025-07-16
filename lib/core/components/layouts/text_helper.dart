@@ -6,11 +6,13 @@ import 'package:flutter/material.dart';
 class AutoSizedTabBarView extends StatefulWidget {
   final List<Widget> children;
   final TabController tabController;
+  final VoidCallback? onHeightChanged;
 
   const AutoSizedTabBarView({
     super.key,
     required this.children,
     required this.tabController,
+    this.onHeightChanged,
   });
 
   @override
@@ -24,12 +26,11 @@ class _AutoSizedTabBarViewState extends State<AutoSizedTabBarView> {
   @override
   void didUpdateWidget(covariant oldWidget){
     super.didUpdateWidget(oldWidget);
-    _maxHeight = null;
+
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _calculateMaxHeight();
     });
     log('this is AutoSizedTabBarView didUpdateWidget');
-
   }
 
   @override
@@ -49,6 +50,15 @@ class _AutoSizedTabBarViewState extends State<AutoSizedTabBarView> {
     _keys.clear();
   }
 
+  void forceRebuild() {
+    setState(() {
+      _maxHeight = null; // Reset max height to trigger rebuild
+    });
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _calculateMaxHeight();
+    });
+  }
+
   void _calculateMaxHeight() {
     double maxHeight = 0;
 
@@ -60,14 +70,23 @@ class _AutoSizedTabBarViewState extends State<AutoSizedTabBarView> {
       }
     }
 
-    if (maxHeight > 400) {
-      setState(() {
-        _maxHeight = maxHeight;
-      });
+    log('Calculated max height: $maxHeight');
+    if(_maxHeight != null){
+      if(maxHeight > 400 && _maxHeight != maxHeight){
+        setState(() {
+          _maxHeight = maxHeight;
+        });
+      }
     }else{
-      setState(() {
-        _maxHeight = 400; // 최소 높이 설정
-      });
+      if (maxHeight > 400) {
+        setState(() {
+          _maxHeight = maxHeight;
+        });
+      }else{
+        setState(() {
+          _maxHeight = 400; // 최소 높이 설정
+        });
+      }
     }
   }
 
@@ -88,7 +107,6 @@ class _AutoSizedTabBarViewState extends State<AutoSizedTabBarView> {
               }).toList(),
             ),
           ),
-          const Center(child: CircularProgressIndicator()),
         ],
       );
     }

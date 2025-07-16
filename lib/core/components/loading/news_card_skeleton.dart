@@ -9,7 +9,7 @@ class NewsCardSkeleton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.symmetric(horizontal: MyPaddings.largeMedium, vertical: MyPaddings.small),
+      margin: EdgeInsets.symmetric(vertical: MyPaddings.small),
       decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(16),
           color: AppColors.primaryLight,

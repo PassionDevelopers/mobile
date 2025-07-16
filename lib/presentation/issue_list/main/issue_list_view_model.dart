@@ -117,7 +117,7 @@ class IssueListViewModel with ChangeNotifier {
     notifyListeners();
   }
 
-  void fetchMoreIssues({String? topicId}) async {
+  void fetchMoreIssues() async {
     if(_state.isLoadingMore || !_state.hasMore || _state.issueList.length >=50) return;
 
     _state = state.copyWith(isLoadingMore: true);
@@ -125,7 +125,7 @@ class IssueListViewModel with ChangeNotifier {
 
     final Issues result = await _fetchIssuesByType(
         lastIssueId: state.lastIssueId,
-        topicId: topicId, issueQueryParam: state.issueQueryParam);
+        topicId: state.topicId, issueQueryParam: state.issueQueryParam);
     List<Issue> newIssueList = state.issueList + result.issues;
     if(newIssueList.length > 50) {
       newIssueList = newIssueList.sublist(newIssueList.length-50);

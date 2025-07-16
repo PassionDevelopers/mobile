@@ -32,6 +32,28 @@ class MyPageViewModel extends ChangeNotifier {
     checkIsGuestLogin();
   }
 
+  void updateUserNickname() async {
+    final name = _state.nicknameController.text.trim();
+    if(name.isEmpty) {
+      log('닉네임이 비어있습니다.');
+      return;
+    }
+    _state = state.copyWith(isBiasLoading: true);
+    notifyListeners();
+    await _manageUserProfileUseCase.updateUserNickname(name);
+    _fetchUserBias();
+  }
+
+  void setEditMode(){
+    if(state.isEditMode) {
+      _state.nicknameController.clear();
+    } else {
+      _state.nicknameController.text = state.userBias?.nickname ?? '';
+    }
+    _state = state.copyWith(isEditMode: !state.isEditMode);
+    notifyListeners();
+  }
+
   void setIsGuestLogin(){
     _state = state.copyWith(isGuestLogin: false);
     log('set isGuestLogin: ${_state.isGuestLogin}');

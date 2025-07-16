@@ -48,7 +48,7 @@ class _IssueListRootState extends State<IssueListRoot> {
     );
     scrollController.addListener(() {
       if (scrollController.position.pixels >= scrollController.position.maxScrollExtent - 100) {
-        viewModel.fetchMoreIssues(topicId: widget.topicId);
+        viewModel.fetchMoreIssues();
       }
     });
   }

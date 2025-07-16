@@ -1,6 +1,23 @@
 import 'dart:ui';
+import 'package:flutter/material.dart';
+
 import '../../../ui/color.dart';
 import '../../components/bias/bias_enum.dart';
+
+Icon getBiasIcon(Bias bias, {double size = 24.0}) {
+  switch (bias) {
+    case Bias.left:
+      return Icon(Icons.trending_up, color: AppColors.left, size: size);
+    case Bias.leftCenter:
+      return Icon(Icons.trending_up, color: AppColors.leftCenter, size: size);
+    case Bias.right:
+      return Icon(Icons.account_balance, color: AppColors.right, size: size);
+    case Bias.rightCenter:
+      return Icon(Icons.account_balance, color: AppColors.rightCenter, size: size);
+    default:
+      return Icon(Icons.balance, color: AppColors.center, size: size);
+  }
+}
 
  Color getBiasColor(Bias bias){
   switch (bias) {

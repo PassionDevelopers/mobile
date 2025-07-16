@@ -29,7 +29,7 @@ class IssueDetailViewModel with ChangeNotifier {
   }
 
   void setFontSize() {
-    _state = state.copyWith(fontSize: state.fontSize == 17 ? 20 : 17);
+    _state = state.copyWith(fontSize: state.fontSize == 18 ? 20 : 18);
     notifyListeners();
   }
 

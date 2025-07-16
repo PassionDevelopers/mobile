@@ -1,3 +1,4 @@
+import 'package:could_be/core/components/image/image_container.dart';
 import 'package:could_be/core/themes/margins_paddings.dart';
 import 'package:could_be/domain/entities/source.dart';
 import 'package:flutter/material.dart';
@@ -6,41 +7,6 @@ import '../../ui/fonts.dart';
 import '../../core/components/bias/bias_enum.dart';
 import '../../core/method/bias/bias_method.dart';
 import 'media_components.dart';
-
-class ProfileCircle extends StatelessWidget {
-  const ProfileCircle({super.key, required this.bias, required this.name});
-
-  final Bias bias;
-  final String name;
-
-  @override
-  Widget build(BuildContext context) {
-    return LayoutBuilder(
-      builder: (context, constraints) {
-        double smaller =
-            constraints.biggest.height < constraints.biggest.width
-                ? constraints.biggest.height
-                : constraints.biggest.width;
-        return Container(
-          decoration: BoxDecoration(
-            shape: BoxShape.circle,
-            border: Border.all(color: getBiasColor(bias)),
-          ),
-          child: CircleAvatar(
-            radius: smaller / 2,
-            child: ClipOval(
-              child: Image(
-                image: AssetImage('assets/images/news_logo/$name.jpeg'),
-                fit: BoxFit.cover,
-                height: smaller * 0.9,
-              ),
-            ),
-          ),
-        );
-      },
-    );
-  }
-}
 
 class MediaProfileDetail extends StatelessWidget {
   const MediaProfileDetail({super.key, required this.logoUrl});
@@ -127,119 +93,119 @@ class MediaProfile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
+    return AnimatedContainer(
+      duration: Duration(milliseconds: 300),
       padding: EdgeInsets.fromLTRB(
-        isFirst ? MyPaddings.largeMedium : 2,
-        2,
-        2,
-        2,
+        isFirst ? MyPaddings.large : MyPaddings.extraSmall,
+        MyPaddings.extraSmall,
+        MyPaddings.extraSmall,
+        MyPaddings.extraSmall,
       ),
       child: InkWell(
         borderRadius: BorderRadius.circular(10),
         onTap: () {
           if (onSubscribe != null) {
             onSubscribe!();
-          } else if (onShowArticles != null){
+          } else if (onShowArticles != null) {
             onShowArticles!();
           }
         },
-        child: Stack(
-          children: [
-            Padding(
-              padding: const EdgeInsets.all(2.0),
-              child: Ink(
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(10),
-                ),
-                child: Stack(
-                  children: [
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      mainAxisSize: MainAxisSize.min,
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Center(
-                          child: SizedBox(
-                            height: 70,
-                            width: 70,
-                            child: Card(
-                              // shape: RoundedRectangleBorder(
-                              //   borderRadius: BorderRadius.circular(10),
-                              // ),
-                              child: ClipRRect(
-                                borderRadius: BorderRadius.circular(10),
-                                child: Image(
-                                  width: 70,
-                                  height: 70,
-                                  fit: BoxFit.fill,
-                                  image: NetworkImage(source.logoUrl),
-                                ),
-                              ),
-                            ),
-                          ),
-                        ),
-                        SizedBox(height: 2),
-                        Container(
-                          height: 20,
-                          width: 70,
-                          // padding: EdgeInsets.symmetric(horizontal: 4),
-                          // decoration: BoxDecoration(
-                          //   color: getBiasColor(bias).withAlpha(70),
-                          //   borderRadius: BorderRadius.circular(10),
-                          //   border: Border.all(color: getBiasColor(bias)),
-                          // ),
-                          child: Center(
-                            child: MyText.h3(
-                              source.name,
-                              color: getBiasColor(
-                                source.bias,
-                              ),
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                    if (onSubscribe != null)
-                      GestureDetector(
-                        onTap: onSubscribe,
-                        child: Align(
-                          alignment: Alignment.topRight,
-                          child: Container(
-                            height: 25,
-                            width: 25,
-                            decoration: BoxDecoration(
-                              color:
-                                  source.isSubscribed
-                                      ? AppColors.check
-                                      : AppColors.gray3,
-                              shape: BoxShape.circle,
-                            ),
-                            child: FittedBox(
-                              fit: BoxFit.fill,
-                              child: Icon(
-                                source.isSubscribed
-                                    ? Icons.check_circle_outlined
-                                    : Icons.add_circle_outline,
-                                color: AppColors.primaryLight,
-                              ),
-                            ),
+        child: Container(
+          padding: EdgeInsets.all(4),
+          decoration: BoxDecoration(
+            color:
+                isShowingArticles
+                    ? getBiasColor(source.bias).withOpacity(0.1)
+                    : AppColors.background,
+            borderRadius: BorderRadius.circular(10),
+            border: Border.all(
+              color:
+                  isShowingArticles
+                      ? getBiasColor(source.bias)
+                      : AppColors.gray4,
+              width: isShowingArticles ? 2 : 1,
+            ),
+            // boxShadow: [
+            //   BoxShadow(
+            //     color:
+            //         isShowingArticles
+            //             ? getBiasColor(source.bias).withOpacity(0.2)
+            //             : AppColors.gray3.withOpacity(0.1),
+            //     blurRadius: isShowingArticles ? 12 : 8,
+            //     offset: Offset(0, isShowingArticles ? 6 : 4),
+            //   ),
+            // ],
+          ),
+          child: Stack(
+            children: [
+              Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  // 로고
+                  Expanded(
+                    child: Center(
+                      child: SizedBox(
+                        height: 60,
+                        child: AspectRatio(
+                          aspectRatio: 1,
+                          child: ImageContainer(
+                            height: 60,
+                            imageUrl: source.logoUrl,
+                            borderRadius: BorderRadius.circular(10),
                           ),
                         ),
                       ),
-                  ],
-                ),
+                    ),
+                  ),
+                  SizedBox(height: MyPaddings.extraSmall),
+                  // 언론사 이름
+                  MyText.small(source.name, color: AppColors.primary,),
+                  // 성향 표시
+                  SizedBox(height: 4),
+                  Container(
+                    padding: EdgeInsets.symmetric(
+                      horizontal: MyPaddings.small,
+                      vertical: 1,
+                    ),
+                    decoration: BoxDecoration(
+                      color: getBiasColor(source.bias).withOpacity(0.1),
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                    child: Text(
+                      getBiasName(source.bias),
+                      style: TextStyle(
+                        color: getBiasColor(source.bias),
+                        fontSize: 9,
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                  ),
+                ],
               ),
-            ),
-            if (isShowingArticles)
-              Container(
-                width: 74,
-                height: 106,
-                decoration: BoxDecoration(
-                  color: AppColors.black.withAlpha(50),
-                  borderRadius: BorderRadius.circular(10),
-                ),
-              ),
-          ],
+              // // 구독 상태 표시
+              // if (onSubscribe != null)
+              //   Align(
+              //     alignment: Alignment.topRight,
+              //     child: Container(
+              //       height: 25,
+              //       width: 25,
+              //       decoration: BoxDecoration(
+              //         color:
+              //         source.isSubscribed
+              //             ? AppColors.check
+              //             : AppColors.gray4,
+              //         shape: BoxShape.circle,
+              //       ),
+              //       child: Icon(
+              //         source.isSubscribed ? Icons.check : Icons.add,
+              //         color: AppColors.white,
+              //         size: 12,
+              //       ),
+              //     ),
+              //   ),
+            ],
+          ),
         ),
       ),
     );

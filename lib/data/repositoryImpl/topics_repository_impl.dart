@@ -12,6 +12,17 @@ class TopicsRepositoryImpl implements TopicsRepository {
   TopicsRepositoryImpl(this.dio);
 
   @override
+  Future<Topics> searchTopics(String query) async {
+    log('Searching topics with query: $query');
+    final response = await dio.get(
+      '${ApiVersions.v1}/topics/search',
+      queryParameters: {'q': query},
+    );
+    final TopicsDto topicsDto = TopicsDto.fromJson(response.data);
+    return topicsDto.toDomain();
+  }
+
+  @override
   Future<Topics> fetchSubscribedTopics() async {
     final response = await dio.get(
       '${ApiVersions.v1}/topics/subscribed',

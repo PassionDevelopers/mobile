@@ -191,8 +191,8 @@ abstract class MyText {
     return Text(text, style: MyFontStyle.articleSmall.copyWith(color: color));
   }
 
-  static AutoSizeText reg(String text, {Color? color, AutoSizeGroup? group, int? maxLines}){
-    return AutoSizeText(text, style: MyFontStyle.reg.copyWith(color: color, ), group: group, maxLines: maxLines ?? 1, minFontSize: 1,
+  static AutoSizeText reg(String text, {Color? color, AutoSizeGroup? group, int? maxLines, FontWeight? fontWeight}){
+    return AutoSizeText(text, style: MyFontStyle.reg.copyWith(color: color, fontWeight: fontWeight), group: group, maxLines: maxLines ?? 1, minFontSize: 1,
         overflow: TextOverflow.ellipsis);
   }
 
@@ -200,8 +200,8 @@ abstract class MyText {
     return Text(text, style: MyFontStyle.reg.copyWith(color: color, ), maxLines: maxLines ?? 1, overflow: TextOverflow.ellipsis);
   }
 
-  static AutoSizeText small(String text, {Color? color, AutoSizeGroup? group, int? maxLines}){
-    return AutoSizeText(text, style: MyFontStyle.small.copyWith(color: color),group: group, maxLines: maxLines ?? 1, minFontSize: 1, overflow: TextOverflow.ellipsis);
+  static AutoSizeText small(String text, {Color? color, AutoSizeGroup? group, int? maxLines, FontWeight? fontWeight}){
+    return AutoSizeText(text, style: MyFontStyle.small.copyWith(color: color, fontWeight: fontWeight),group: group, maxLines: maxLines ?? 1, minFontSize: 1, overflow: TextOverflow.ellipsis);
   }
 
   static AutoSizeText accent(String text, {Color? color, AutoSizeGroup? group, int? maxLines}){

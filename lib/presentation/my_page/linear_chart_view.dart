@@ -114,7 +114,7 @@ class _DailyUserDataChartState extends State<DailyUserDataChart> {
         List<String> weekDays = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
         List<String> weeks = ['3w ago', '2w ago', 'last week', 'this week'];
         List<String> months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
-        Color textColor = AbpColor.n4;
+        Color textColor = AppColors.white;
         if(dateRange == 0 && toWeekDay == groupNum + 1){
           textColor = AppColors.left;
         }else if(dateRange == 1 && groupNum == 3){
@@ -152,7 +152,7 @@ class _DailyUserDataChartState extends State<DailyUserDataChart> {
                           horizontalInterval: getHorizontalInterval(),
                           getDrawingHorizontalLine: (double value) {
                             return FlLine(
-                              color: AbpColor.n8.withOpacity(0.5),
+                              color: AppColors.white.withOpacity(0.5),
                               strokeWidth: 1,
                               dashArray: [1,0],
                             );
@@ -184,7 +184,7 @@ class _DailyUserDataChartState extends State<DailyUserDataChart> {
                                 return Container(
                                     width: bottomWidth/(dailyClearData.length),
                                     padding: const EdgeInsets.all(1.0),
-                                    child: Center(child: autoSizeText(value>0 ? value.round().toString() : '', color: AbpColor.n4))
+                                    child: Center(child: autoSizeText(value>0 ? value.round().toString() : '', color: AppColors.white))
                                 );
                               },
                               showTitles: true,
@@ -240,10 +240,10 @@ class _DailyUserDataChartState extends State<DailyUserDataChart> {
   FlBorderData get borderData => FlBorderData(
     show: true,
     border: Border(
-      bottom: BorderSide(color:AbpColor.n8.withOpacity(0.5)),
+      bottom: BorderSide(color:AppColors.white.withOpacity(0.5)),
       left: const BorderSide(color: Colors.transparent),
       right: const BorderSide(color: Colors.transparent),
-      top: BorderSide(color: AbpColor.n8.withOpacity(0.5)),
+      top: BorderSide(color: AppColors.white.withOpacity(0.5)),
     ),
   );
 
@@ -261,7 +261,7 @@ class _DailyUserDataChartState extends State<DailyUserDataChart> {
         dotData: const FlDotData(show: true),
         belowBarData: BarAreaData(
           show: true,
-          color: isRhythm? AbpColor.d5.withOpacity(0.2) : isAbsolute? AppColors.left.withOpacity(0.2) : AppColors.right.withOpacity(0.2),
+          color: isRhythm? AppColors.center.withOpacity(0.2) : isAbsolute? AppColors.left.withOpacity(0.2) : AppColors.right.withOpacity(0.2),
         ),
         spots: spots
     );

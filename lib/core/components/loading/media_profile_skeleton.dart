@@ -24,8 +24,8 @@ class MediaProfileSkeleton extends StatelessWidget {
                 children: [
                   Center(
                     child: Container(
-                      height: 70,
-                      width: 70,
+                      height: 60,
+                      width: 60,
                       decoration: BoxDecoration(
                         color: AppColors.primaryLight,
                         borderRadius: BorderRadius.circular(8),
@@ -34,8 +34,8 @@ class MediaProfileSkeleton extends StatelessWidget {
                   ),
                   SizedBox(height: 2),
                   Container(
-                    height: 20,
-                    width: 70,
+                    height: 30,
+                    width: 60,
                     decoration: BoxDecoration(
                       color: AppColors.primaryLight,
                       borderRadius: BorderRadius.circular(8),

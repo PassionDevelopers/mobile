@@ -9,7 +9,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'core/behavior/scroll_behavior.dart';
 import 'core/themes/app_bar_theme.dart';
-import 'core/themes/bottom_navigation_bar_theme.dart';
 import 'firebase_options.dart';
 
 @pragma('vm:entry-point')
@@ -100,7 +99,6 @@ class MyApp extends StatelessWidget {
           unselectedLabelColor: Colors.grey,
           labelStyle: TextStyle(fontWeight: FontWeight.bold),
         ),
-        bottomNavigationBarTheme: MyBottomNavigationBarTheme(),
         elevatedButtonTheme: ElevatedButtonThemeData(
           style: ElevatedButton.styleFrom(
             elevation: 0,

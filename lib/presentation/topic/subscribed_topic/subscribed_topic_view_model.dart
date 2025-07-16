@@ -7,7 +7,6 @@ import '../../../domain/useCases/fetch_topics_use_case.dart';
 
 class SubscribedTopicViewModel with ChangeNotifier {
   final FetchTopicsUseCase _fetchTopicsUseCase;
-  final FetchIssuesUseCase _fetchIssuesUseCase;
 
   // 상태
   SubscribedTopicState _state = SubscribedTopicState();
@@ -20,21 +19,18 @@ class SubscribedTopicViewModel with ChangeNotifier {
   SubscribedTopicViewModel({
     required FetchTopicsUseCase fetchTopicsUseCase,
     required FetchIssuesUseCase fetchIssuesUseCase,
-  }) : _fetchTopicsUseCase = fetchTopicsUseCase,
-       _fetchIssuesUseCase = fetchIssuesUseCase {
+  }) : _fetchTopicsUseCase = fetchTopicsUseCase{
     _fetchSubscribedTopics();
-    _fetchSubscribedTopicIssuesWhole();
     _setupSubscriptionListeners();
   }
 
   void setSelectedTopicId(String topicId) {
     if (topicId == _state.selectedTopicId) {
       _state = state.copyWith(selectedTopicId: null);
-      _fetchSubscribedTopicIssuesWhole();
     } else {
       _state = state.copyWith(selectedTopicId: topicId);
-      _fetchSpecificTopicIssues(topicId);
     }
+    notifyListeners();
   }
 
   void _fetchSubscribedTopics() async {
@@ -53,48 +49,17 @@ class SubscribedTopicViewModel with ChangeNotifier {
     notifyListeners();
   }
 
-  void _fetchSubscribedTopicIssuesWhole() async {
-    _state = state.copyWith(
-      isIssuesLoading: true,
-      selectedTopicId: state.selectedTopicId,
-    );
-    notifyListeners();
-
-    final result = await _fetchIssuesUseCase.fetchSubscribedTopicIssuesWhole();
-    _state = state.copyWith(
-      issues: result,
-      isIssuesLoading: false,
-      selectedTopicId: state.selectedTopicId,
-    );
-    notifyListeners();
-  }
-
-  void _fetchSpecificTopicIssues(String topicId) async {
-    _state = state.copyWith(isIssuesLoading: true, selectedTopicId: topicId);
-    notifyListeners();
-
-    final result = await _fetchIssuesUseCase.fetchIssuesByTopicId(topicId);
-    _state = state.copyWith(
-      issues: result,
-      isIssuesLoading: false,
-      selectedTopicId: topicId
-    );
-    notifyListeners();
-  }
-
   void _setupSubscriptionListeners() {
     _subscriptionStreamSubscription = TopicSubscriptionEvents
         .subscriptionStream
         .listen((topicId) {
           _fetchSubscribedTopics();
-          _fetchSubscribedTopicIssuesWhole();
         });
 
     _unsubscriptionStreamSubscription = TopicSubscriptionEvents
         .unsubscriptionStream
         .listen((topicId) {
           _fetchSubscribedTopics();
-          _fetchSubscribedTopicIssuesWhole();
         });
   }
 

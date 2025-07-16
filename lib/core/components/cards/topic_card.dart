@@ -1,3 +1,4 @@
+import 'package:could_be/core/components/image/image_container.dart';
 import 'package:could_be/domain/entities/topic.dart';
 import 'package:flutter/material.dart';
 import '../../../ui/color.dart';
@@ -5,78 +6,81 @@ import '../../../ui/fonts.dart';
 import '../../themes/margins_paddings.dart';
 import '../../responsive/responsive_utils.dart';
 
+
 class TopicCard extends StatelessWidget {
-  const TopicCard({super.key, required this.topic, required this.onTap, required this.onTapSubscribe});
+  const TopicCard({super.key,
+    required this.topic,
+    required this.isSelected,
+    required this.onTap,
+  });
+
   final Topic topic;
+  final bool isSelected;
   final VoidCallback onTap;
-  final VoidCallback onTapSubscribe;
 
   @override
   Widget build(BuildContext context) {
-    final responsivePadding = ResponsiveUtils.isMobile(context) 
-        ? MyPaddings.small.toDouble() 
-        : MyPaddings.medium.toDouble();
 
-    return Padding(
-      padding: EdgeInsets.only(right: responsivePadding),
-      child: AnimatedContainer(
-        duration: Duration(milliseconds: 200),
-        curve: Curves.easeInOut,
-        child: InkWell(
-          borderRadius: BorderRadius.circular(10),
-          onTap: onTapSubscribe,
-          child: Ink(
-            padding: EdgeInsets.symmetric(
-              horizontal: ResponsiveUtils.isMobile(context) ? MyPaddings.medium.toDouble() : MyPaddings.large.toDouble(),
-              vertical: ResponsiveUtils.isMobile(context) ? MyPaddings.extraSmall.toDouble() : MyPaddings.small.toDouble(),
-            ),
-            decoration: BoxDecoration(
-              color: AppColors.primaryLight,
-              borderRadius: BorderRadius.circular(10),
-              // border: Border.all(
-              //   color: AppColors.border,
-              //   width: 1,
-              // ),
-            ),
-            child: Row(
-              children: [
-                Padding(
-                  padding: EdgeInsets.only(right: MyPaddings.medium),
-                  child: Ink(
-                    height: double.infinity,
-                    width: 25,
-                    child: Center(
-                      child: Container(
-                        height: 25,
-                        width: 25,
-                        decoration: BoxDecoration(
-                          color: topic.isSubscribed? AppColors.check : AppColors.gray3,
-                          shape: BoxShape.circle,
-                        ),
-                        child: FittedBox(
-                          fit: BoxFit.fill,
-                          child: Icon(
-                            topic.isSubscribed? Icons.check_circle_outlined : Icons.add_circle_outline,
-                            color: AppColors.primaryLight,
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
-                Expanded(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      MyText.h3(topic.name, color: AppColors.textPrimary,),
-                      MyText.reg('이슈' + topic.issuesCount.toString(), color: AppColors.textSecondary,),
-                    ],
-                  ),
-                ),
-              ],
-            ),
+    return InkWell(
+      borderRadius: BorderRadius.circular(16),
+      onTap: onTap,
+      child: Container(
+        padding: EdgeInsets.symmetric(
+          horizontal: MyPaddings.small,
+        ),
+        decoration: BoxDecoration(
+          color: isSelected
+              ? AppColors.primary.withOpacity(0.1)
+              : AppColors.white,
+          borderRadius: BorderRadius.circular(16),
+          border: Border.all(
+            color: isSelected
+                ? AppColors.primary
+                : AppColors.gray4,
+            width: isSelected ? 2 : 1,
           ),
+        ),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            // 토픽 이름
+            Expanded(
+              flex: 2,
+              child: MyText.reg(
+                topic.name,
+                color: isSelected
+                    ? AppColors.primary
+                    : AppColors.gray1,
+                fontWeight: isSelected
+                    ? FontWeight.w600
+                    : FontWeight.w500,
+              ),
+            ),
+            SizedBox(width: MyPaddings.extraSmall),
+            // 이슈 수
+            Expanded(
+              flex: 1,
+              child: Container(
+                margin: EdgeInsets.symmetric(vertical: MyPaddings.extraSmall),
+                padding: EdgeInsets.all(MyPaddings.extraSmall),
+                decoration: BoxDecoration(
+                    color: isSelected
+                        ? AppColors.primary.withOpacity(0.2)
+                        : AppColors.gray5,
+                    shape: BoxShape.circle
+                ),
+                child: Center(
+                  child: MyText.reg(
+                    '${topic.issuesCount}',
+                    color: isSelected
+                        ? AppColors.primary
+                        : AppColors.gray2,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+              ),
+            ),
+          ],
         ),
       ),
     );

@@ -30,7 +30,7 @@ class _IssueDetailFeedRootState extends State<IssueDetailFeedRoot> {
   late final IssueDetailViewModel viewModel;
 
   late final ScrollController controller;
-  double scrollProgress = 0.0;
+  late final ValueNotifier<double> scrollProgressNotifier;
 
   late final mediaQuery = MediaQuery.of(context);
   late final safeAreaHeight =
@@ -42,7 +42,7 @@ class _IssueDetailFeedRootState extends State<IssueDetailFeedRoot> {
     if (controller.hasClients) {
       final maxScroll = controller.position.maxScrollExtent;
       final currentScroll = controller.position.pixels;
-      scrollProgress = maxScroll > 0 ? (currentScroll / maxScroll).clamp(0.0, 1.0) : 0.0;
+      scrollProgressNotifier.value = maxScroll > 0 ? (currentScroll / maxScroll).clamp(0.0, 1.0) : 0.0;
     }
   }
 
@@ -52,6 +52,7 @@ class _IssueDetailFeedRootState extends State<IssueDetailFeedRoot> {
     viewModel = getIt<IssueDetailViewModel>(param1: widget.issueId);
     controller = ScrollController();
     controller.addListener(_onScroll);
+    scrollProgressNotifier = ValueNotifier<double>(0.0);
   }
 
   Widget floatingButton({
@@ -85,6 +86,7 @@ class _IssueDetailFeedRootState extends State<IssueDetailFeedRoot> {
   dispose() {
     controller.removeListener(_onScroll);
     controller.dispose();
+    scrollProgressNotifier.dispose();
     super.dispose();
   }
 
@@ -96,9 +98,11 @@ class _IssueDetailFeedRootState extends State<IssueDetailFeedRoot> {
         color: Colors.white,
         child: Column(
           children: [
-            ListenableBuilder(listenable: ValueNotifier(scrollProgress), builder: (context, _) {
-              return ScrollGage(
-                scrollProgress: scrollProgress,
+            ValueListenableBuilder(
+                valueListenable: scrollProgressNotifier,
+                builder: (context, scrollProgress, _) {
+                  return ScrollGage(
+                  scrollProgress: scrollProgress,
               );
             }),
             Expanded(
@@ -163,10 +167,8 @@ class _IssueDetailFeedRootState extends State<IssueDetailFeedRoot> {
                                                       : 3,
                                                 );
                                               },
-                                              existCenter:
-                                              issue.centerSummary != null,
-                                              existLeft:
-                                              issue.leftSummary != null,
+                                              existCenter: issue.centerSummary != null,
+                                              existLeft: issue.leftSummary != null,
                                               existRight:
                                               issue.rightSummary != null,
                                               isEvaluating: state.isEvaluating,
@@ -254,17 +256,17 @@ class _IssueDetailFeedRootState extends State<IssueDetailFeedRoot> {
                           Align(
                             alignment: Alignment.bottomCenter,
                             child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              mainAxisAlignment: MainAxisAlignment.end,
                               children: [
-                                floatingButton(
-                                  onPressed: () {
-                                    viewModel.setFontSize();
-                                  },
-                                  icon:
-                                      viewModel.state.fontSize == 16
-                                          ? Icons.format_size_outlined
-                                          : Icons.format_size,
-                                ),
+                                // floatingButton(
+                                //   onPressed: () {
+                                //     viewModel.setFontSize();
+                                //   },
+                                //   icon:
+                                //       viewModel.state.fontSize == 18
+                                //           ? Icons.format_size_outlined
+                                //           : Icons.format_size,
+                                // ),
                                 floatingButton(
                                   onPressed: viewModel.manageIssueSubscription,
                                   icon:

@@ -7,21 +7,21 @@ class WholeMediaLoadingView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GridView.builder(
+    return SliverPadding(
       padding: EdgeInsets.symmetric(
         horizontal: MyPaddings.largeMedium,
         vertical: MyPaddings.medium,
       ),
-      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-        crossAxisCount: 4,
-        childAspectRatio: 0.7,
-        crossAxisSpacing: 0,
-        mainAxisSpacing: 0,
-      ),
-      itemCount: 15,
-      itemBuilder: (context, index) {
-        return MediaProfileSkeleton(isFirst: false);
-      },
+      sliver: SliverGrid(
+        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+          crossAxisCount: 3,
+          childAspectRatio: 0.75,
+          crossAxisSpacing: 0,
+          mainAxisSpacing: 0,
+        ),
+        delegate: SliverChildBuilderDelegate((context, index){
+          return MediaProfileSkeleton(isFirst: false);
+        })),
     );
   }
 }

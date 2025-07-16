@@ -121,7 +121,8 @@ class _NewsCardState extends State<NewsCard> with TickerProviderStateMixin {
                         child: ClipRRect(
                           borderRadius: BorderRadius.circular(16),
                           child: ImageContainer(
-                            height: null,
+                            borderRadius: BorderRadius.circular(16),
+                            height: ResponsiveUtils.isMobile(context) ? 100 : 120,
                             imageUrl: widget.article.imageUrl,
                           ),
                         ),

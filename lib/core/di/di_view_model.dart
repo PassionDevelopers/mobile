@@ -47,6 +47,7 @@ Future<void> diViewModelSetup() async {
   getIt.registerFactoryParam<WholeTopicViewModel, String, void>(
         (category, _) => WholeTopicViewModel(
       fetchTopicsUseCase: getIt(),
+      searchTopicsUseCase: getIt(),
       manageTopicSubscriptionUseCase: getIt(),
       category: category,
     ),
@@ -92,7 +93,6 @@ Future<void> diViewModelSetup() async {
   getIt.registerFactory<FeedbackViewModel>(
         () => FeedbackViewModel(getIt()),
   );
-
   //web View
   getIt.registerFactoryParam<
       WebViewViewModel,
