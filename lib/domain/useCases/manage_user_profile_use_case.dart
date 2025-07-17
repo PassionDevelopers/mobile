@@ -8,5 +8,4 @@ class ManageUserProfileUseCase {
   Future<void> updateUserNickname(String name) async {
     await manageUserProfileRepository.updateUserNickname(name);
   }
-
 }

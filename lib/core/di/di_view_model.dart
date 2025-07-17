@@ -1,4 +1,4 @@
-import 'package:could_be/core/components/bias/bias_enum.dart';
+import 'package:could_be/core/method/bias/bias_enum.dart';
 import 'package:could_be/domain/entities/article.dart';
 import 'package:could_be/presentation/home/issue_query_params/issue_query_params_view_model.dart';
 import 'package:could_be/presentation/media/subscribed_media/subscribed_media_view_model.dart';
@@ -27,6 +27,7 @@ Future<void> diViewModelSetup() async {
   );
   getIt.registerFactoryParam<IssueDetailViewModel, String, void>(
         (issueId, _) => IssueDetailViewModel(
+      trackUserActivityUseCase: getIt(),
       fetchIssueDetailUseCase: getIt(),
       manageIssueEvaluationUseCase: getIt(),
       manageIssueSubscriptionUseCase: getIt(),
@@ -82,7 +83,9 @@ Future<void> diViewModelSetup() async {
   //my page
   getIt.registerFactory<MyPageViewModel>(
         () => MyPageViewModel(
+      trackUserActivityUseCase: getIt(),
       manageUserProfileUseCase: getIt(),
+      fetchWholeBiasUseCase: getIt(),
       firebaseLoginUseCase: getIt(),
       fetchUserBiasUseCase: getIt(),
       manageUserStatusUseCase: getIt(),
@@ -106,6 +109,7 @@ Future<void> diViewModelSetup() async {
       articles: articleInfo?.$1,
       selectedArticleId: articleInfo?.$2,
       selectedSourceId: articleInfo?.$3,
+      trackUserActivityUseCase: getIt(),
     ),
   );
 }

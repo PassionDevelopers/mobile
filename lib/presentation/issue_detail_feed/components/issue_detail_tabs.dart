@@ -11,7 +11,7 @@ import 'package:could_be/core/components/title/big_title.dart';
 import 'package:could_be/presentation/issue_detail_feed/components/move_to_next_button.dart';
 import 'package:flutter/material.dart';
 
-import '../../../core/components/bias/bias_enum.dart';
+import '../../../core/method/bias/bias_enum.dart';
 import '../../../core/components/chips/key_word_chip_component.dart';
 import '../../../core/method/bias/bias_method.dart';
 import '../../../core/method/text_parsing.dart';
@@ -24,11 +24,14 @@ class IssueDetailTabs extends StatefulWidget {
   const IssueDetailTabs({super.key,
     required this.fontSize,
     required this.issue,
-    required this.moveToNextPage});
+    required this.moveToNextPage,
+    required this.postDasiScore,
+  });
 
   final IssueDetail issue;
   final VoidCallback moveToNextPage;
   final double fontSize;
+  final VoidCallback postDasiScore;
 
   @override
   State<IssueDetailTabs> createState() => _IssueDetailTabsState();
@@ -44,6 +47,9 @@ class _IssueDetailTabsState extends State<IssueDetailTabs>
     // const Color(0xFF38A169), // 중도 - 초록
     // const Color(0xFF3182CE), // 보수 - 파랑
   ];
+
+  bool isPosted = false;
+  late List<bool> isWatchedBias;
 
   final List<String> _biasLabels = ['진보', '중도', '보수'];
 
@@ -140,9 +146,26 @@ class _IssueDetailTabsState extends State<IssueDetailTabs>
   void initState() {
     // TODO: implement initState
     super.initState();
+    isWatchedBias = [
+      issue.leftSummary == null,
+      true,
+      issue.rightSummary == null,
+    ];
     _tabController.addListener(() {
       setState(() {
       });
+      // 탭이 변경될 때마다 isWatchedBias 업데이트
+      if(!isPosted) {
+        isWatchedBias = [
+          _tabController.index == 0 ? true : isWatchedBias[0],
+          true,
+          _tabController.index == 2 ? true : isWatchedBias[2],
+        ];
+        if(!isWatchedBias.contains(false)){
+          widget.postDasiScore();
+          isPosted = true;
+        }
+      }
     });
   }
 

@@ -7,15 +7,14 @@ import 'package:could_be/presentation/issue_detail_feed/components/issue_detail_
 import 'package:could_be/presentation/issue_detail_feed/components/scroll_gage.dart';
 import 'package:could_be/presentation/issue_detail_feed/issue_detail_loading_view.dart';
 import 'package:flutter/material.dart';
-import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 import '../../core/components/layouts/scaffold_layout.dart';
+import '../../core/responsive/responsive_utils.dart';
 import '../../ui/color.dart';
 import 'components/Issue_detail_bias_comparison.dart';
 import 'components/issue_detail_summary.dart';
 import 'components/issue_detail_tabs.dart';
 import 'components/source_list_page.dart';
 import 'issue_detail_view_model.dart';
-import '../../core/responsive/responsive_utils.dart';
 
 class IssueDetailFeedRoot extends StatefulWidget {
   final String issueId;
@@ -201,6 +200,7 @@ class _IssueDetailFeedRootState extends State<IssueDetailFeedRoot> {
                                             issue.commonSummary != null ? 3 : 2,
                                           );
                                         },
+                                        postDasiScore: viewModel.postDasiScore,
                                       ),
 
                                       SizedBox(height: MyPaddings.large),

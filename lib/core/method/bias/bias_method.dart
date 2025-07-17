@@ -2,7 +2,7 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 
 import '../../../ui/color.dart';
-import '../../components/bias/bias_enum.dart';
+import 'bias_enum.dart';
 
 Icon getBiasIcon(Bias bias, {double size = 24.0}) {
   switch (bias) {

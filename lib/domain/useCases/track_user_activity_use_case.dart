@@ -3,13 +3,19 @@ import 'package:could_be/domain/repositoryInterfaces/track_user_activity_interfa
 class TrackUserActivityUseCase {
   // final UserActivityRepository _repository;
 
-  final TrackUserActivityRepository _repository;
-  TrackUserActivityUseCase({
-    required TrackUserActivityRepository repository,
-  }) : _repository = repository;
+  final TrackUserActivityRepository repository;
+  TrackUserActivityUseCase(this.repository);
 
-  Future<void> reportUserWatchedArticles({required List<String> articleIds}){
-    return _repository.postUserWatchedArticles(articleIds: articleIds);
+  Future<void> postDasiScore({required String issueId, required double score}) {
+    return repository.postDasiScore(issueId: issueId, score: score);
+  }
+
+  Future<void> postUserWatchedArticles(){
+    return repository.postUserWatchedArticles();
+  }
+
+  Future<void> saveUserWatchedArticle({required String articleId,}) {
+    return repository.saveUserWatchedArticle(articleId: articleId);
   }
 
 }

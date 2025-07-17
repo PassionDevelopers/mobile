@@ -3,7 +3,7 @@
 import 'package:could_be/domain/entities/articles_group_by_bias.dart';
 import 'package:could_be/domain/entities/source.dart';
 
-import '../../core/components/bias/bias_enum.dart';
+import '../../core/method/bias/bias_enum.dart';
 import 'article.dart';
 import 'articles_group_by_source.dart';
 

@@ -1,5 +1,5 @@
 import 'package:auto_size_text/auto_size_text.dart';
-import 'package:could_be/core/components/bias/bias_enum.dart';
+import 'package:could_be/core/method/bias/bias_enum.dart';
 import 'package:could_be/core/method/bias/bias_method.dart';
 import 'package:flutter/material.dart';
 

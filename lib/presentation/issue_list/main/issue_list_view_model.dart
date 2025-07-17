@@ -1,6 +1,6 @@
 import 'dart:developer';
 
-import 'package:could_be/core/components/bias/bias_enum.dart';
+import 'package:could_be/core/method/bias/bias_enum.dart';
 import 'package:could_be/domain/entities/issue.dart';
 import 'package:could_be/domain/entities/issue_query_params.dart';
 import 'package:could_be/domain/entities/issues.dart';

@@ -6,7 +6,7 @@ import 'package:could_be/presentation/media/media_profile_component.dart';
 import 'package:could_be/ui/fonts.dart';
 import 'package:flutter/material.dart';
 
-import '../../../core/components/bias/bias_enum.dart';
+import '../../../core/method/bias/bias_enum.dart';
 import '../../../core/components/cards/news_card.dart';
 import '../../../core/themes/margins_paddings.dart';
 import '../../../core/responsive/responsive_layout.dart';

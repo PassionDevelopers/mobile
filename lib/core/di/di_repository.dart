@@ -8,6 +8,8 @@ import 'package:could_be/data/repositoryImpl/manage_user_status_repository_impl.
 import 'package:could_be/data/repositoryImpl/media_repository_impl.dart';
 import 'package:could_be/data/repositoryImpl/source_detail_impl.dart';
 import 'package:could_be/data/repositoryImpl/topic_detail_repository_impl.dart';
+import 'package:could_be/data/repositoryImpl/track_user_activity_repository_impl.dart';
+import 'package:could_be/data/repositoryImpl/whole_bias_score_repository_impl.dart';
 import 'package:could_be/domain/repositoryInterfaces/articles_interface.dart';
 import 'package:could_be/domain/repositoryInterfaces/issue_query_params_interface.dart';
 import 'package:could_be/domain/repositoryInterfaces/issues_interface.dart';
@@ -20,7 +22,9 @@ import 'package:could_be/domain/repositoryInterfaces/manage_user_status_interfac
 import 'package:could_be/domain/repositoryInterfaces/source_detail_interface.dart';
 import 'package:could_be/domain/repositoryInterfaces/topic_detail_interface.dart';
 import 'package:could_be/domain/repositoryInterfaces/topics_interface.dart';
+import 'package:could_be/domain/repositoryInterfaces/track_user_activity_interface.dart';
 import 'package:could_be/domain/repositoryInterfaces/user_bias_interface.dart';
+import 'package:could_be/domain/repositoryInterfaces/whole_bias_score_interface.dart';
 import 'package:dio/dio.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
@@ -69,6 +73,12 @@ Future<void> diRepoSetup()async {
   );
   getIt.registerSingleton<ManageUserProfileRepository>(
     ManageUserProfileRepositoryImpl(getIt<Dio>()),
+  );
+  getIt.registerSingleton<WholeBiasScoreRepository>(
+    WholeBiasScoreRepositoryImpl(getIt<Dio>()),
+  );
+  getIt.registerSingleton<TrackUserActivityRepository>(
+    TrackUserActivityRepositoryImpl(getIt<Dio>()),
   );
 
   //source

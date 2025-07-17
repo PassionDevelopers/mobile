@@ -4,7 +4,7 @@ import 'package:could_be/domain/entities/source.dart';
 import 'package:flutter/material.dart';
 import '../../ui/color.dart';
 import '../../ui/fonts.dart';
-import '../../core/components/bias/bias_enum.dart';
+import '../../core/method/bias/bias_enum.dart';
 import '../../core/method/bias/bias_method.dart';
 import 'media_components.dart';
 

@@ -1,9 +1,10 @@
 import 'dart:developer';
 import 'package:could_be/domain/useCases/manage_issue_evaluation_use_case.dart';
 import 'package:could_be/domain/useCases/manage_issue_subscription_use_case.dart';
+import 'package:could_be/domain/useCases/track_user_activity_use_case.dart';
 import 'package:flutter/cupertino.dart';
 import '../../core/components/alert/toast.dart';
-import '../../core/components/bias/bias_enum.dart';
+import '../../core/method/bias/bias_enum.dart';
 import '../../domain/useCases/fetch_whole_issue_use_case.dart';
 import 'issue_detail_feed_state.dart';
 
@@ -11,6 +12,7 @@ class IssueDetailViewModel with ChangeNotifier {
   final FetchIssueDetailUseCase _fetchIssueDetailUseCase;
   final ManageIssueSubscriptionUseCase manageIssueSubscriptionUseCase;
   final ManageIssueEvaluationUseCase manageIssueEvaluationUseCase;
+  final TrackUserActivityUseCase trackUserActivityUseCase;
 
   //상태
   IssueDetailFeedState _state = IssueDetailFeedState();
@@ -22,10 +24,18 @@ class IssueDetailViewModel with ChangeNotifier {
   IssueDetailViewModel({
     required this.issueId,
     required FetchIssueDetailUseCase fetchIssueDetailUseCase,
+    required this.trackUserActivityUseCase,
     required this.manageIssueEvaluationUseCase,
     required this.manageIssueSubscriptionUseCase,
   }) : _fetchIssueDetailUseCase = fetchIssueDetailUseCase {
     fetchIssueDetailById(issueId);
+  }
+
+  void postDasiScore() async {
+    await trackUserActivityUseCase.postDasiScore(
+      issueId: issueId,
+      score: 1.0,
+    );
   }
 
   void setFontSize() {

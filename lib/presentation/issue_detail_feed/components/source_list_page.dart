@@ -10,7 +10,7 @@ import 'package:could_be/domain/entities/articles_group_by_bias.dart';
 import 'package:could_be/presentation/media/media_components.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import '../../../core/components/bias/bias_enum.dart';
+import '../../../core/method/bias/bias_enum.dart';
 import '../../../core/components/cards/issue_detail_title_card.dart';
 import '../../../core/routes/route_names.dart';
 import '../../../core/themes/margins_paddings.dart';

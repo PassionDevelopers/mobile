@@ -2,7 +2,7 @@ import 'dart:developer';
 
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:could_be/core/components/bias/bias_check_button.dart';
-import 'package:could_be/core/components/bias/bias_enum.dart';
+import 'package:could_be/core/method/bias/bias_enum.dart';
 import 'package:could_be/core/components/image/image_container.dart';
 import 'package:could_be/core/components/title/issue_info_title.dart';
 import 'package:could_be/core/method/bias/bias_method.dart';
@@ -233,20 +233,23 @@ class _IssueCardState extends State<IssueCard> with TickerProviderStateMixin {
             },
           ),
           if (widget.onBiasSelected != null && widget.isEvaluatedView)
-            BiasCheckButton(
-              userEvaluation: widget.issue.userEvaluatedPerspective,
-              onBiasSelected: widget.onBiasSelected!,
-              leftLikeCount: widget.issue.leftLikeCount,
-              centerLikeCount: widget.issue.centerLikeCount,
-              rightLikeCount: widget.issue.rightLikeCount,
-              isEvaluating: widget.isEvaluating ?? false,
-              existLeft:
-                  widget.issue.coverageSpectrum.left > 0 ||
-                  widget.issue.coverageSpectrum.centerLeft > 0,
-              existCenter: widget.issue.coverageSpectrum.center > 0,
-              existRight:
-                  widget.issue.coverageSpectrum.right > 0 ||
-                  widget.issue.coverageSpectrum.centerRight > 0,
+            Padding(
+              padding: const EdgeInsets.only(top: MyPaddings.medium),
+              child: BiasCheckButton(
+                userEvaluation: widget.issue.userEvaluatedPerspective,
+                onBiasSelected: widget.onBiasSelected!,
+                leftLikeCount: widget.issue.leftLikeCount,
+                centerLikeCount: widget.issue.centerLikeCount,
+                rightLikeCount: widget.issue.rightLikeCount,
+                isEvaluating: widget.isEvaluating ?? false,
+                existLeft:
+                    widget.issue.coverageSpectrum.left > 0 ||
+                    widget.issue.coverageSpectrum.centerLeft > 0,
+                existCenter: widget.issue.coverageSpectrum.center > 0,
+                existRight:
+                    widget.issue.coverageSpectrum.right > 0 ||
+                    widget.issue.coverageSpectrum.centerRight > 0,
+              ),
             ),
         ],
       ),

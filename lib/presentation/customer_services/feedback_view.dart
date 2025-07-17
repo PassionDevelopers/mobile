@@ -1,5 +1,6 @@
 import 'package:could_be/core/components/app_bar/app_bar.dart';
 import 'package:could_be/core/components/buttons/big_button.dart';
+import 'package:could_be/core/components/text_form_field.dart';
 import 'package:could_be/core/components/title/big_title.dart';
 import 'package:could_be/core/di/di_setup.dart';
 import 'package:could_be/core/themes/margins_paddings.dart';
@@ -234,43 +235,13 @@ class _FeedbackViewState extends State<FeedbackView> {
           ),
         ],
       ),
-      child: TextFormField(
+      child: MyTextFormField(
         controller: controller,
+        hintText: hintText,
         keyboardType: keyboardType,
         maxLines: maxLines,
         validator: validator,
-        style: TextStyles.normalTextRegular,
-        decoration: InputDecoration(
-          hintText: hintText,
-          hintStyle: TextStyles.normalTextRegular.copyWith(
-            color: AppColors.textTertiary,
-          ),
-          filled: true,
-          fillColor: AppColors.white,
-          border: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(8),
-            borderSide: BorderSide(color: AppColors.border),
-          ),
-          enabledBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(8),
-            borderSide: BorderSide(color: AppColors.border),
-          ),
-          focusedBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(8),
-            borderSide: BorderSide(color: AppColors.primary, width: 2),
-          ),
-          errorBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(8),
-            borderSide: BorderSide(color: AppColors.warning, width: 2),
-          ),
-          focusedErrorBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(8),
-            borderSide: BorderSide(color: AppColors.warning, width: 2),
-          ),
-          contentPadding: EdgeInsets.all(MyPaddings.medium),
-        ),
-      ),
-    );
+      ),);
   }
 
   Future<void> _submitFeedback() async {

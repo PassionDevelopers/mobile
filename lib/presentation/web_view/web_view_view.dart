@@ -8,7 +8,7 @@ import 'package:could_be/ui/color.dart';
 import 'package:flutter/material.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
 import 'package:webview_flutter/webview_flutter.dart';
-import '../../core/components/bias/bias_enum.dart';
+import '../../core/method/bias/bias_enum.dart';
 import '../../domain/entities/article.dart';
 import '../../core/responsive/responsive_layout.dart';
 import '../../core/responsive/responsive_utils.dart';
@@ -33,6 +33,7 @@ class WebViewView extends StatelessWidget {
   Widget build(BuildContext context) {
     final viewModel = WebViewViewModel(
       fetchArticlesUseCase: getIt(),
+      trackUserActivityUseCase: getIt(),
       issueId: issueId, // widget.issueId,
       bias: bias,
       articles: articles,

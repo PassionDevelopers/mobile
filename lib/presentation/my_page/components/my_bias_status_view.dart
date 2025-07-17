@@ -1,52 +1,50 @@
 import 'package:auto_size_text/auto_size_text.dart';
-import 'package:could_be/core/components/bias/bias_enum.dart';
+import 'package:could_be/core/method/bias/bias_enum.dart';
 import 'package:could_be/core/method/bias/bias_method.dart';
-import 'package:could_be/ui/fonts.dart';
+import 'package:could_be/core/themes/margins_paddings.dart';
+import 'package:could_be/domain/entities/whole_bias_score.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
-import '../../../core/many_use.dart';
 import '../../../ui/color.dart';
-import '../linear_chart_view.dart';
 
-class MyBiasStatusView extends StatelessWidget {
-  const MyBiasStatusView({super.key});
+class BiasSwitchButtons extends StatelessWidget {
+  const BiasSwitchButtons({super.key, required this.biasNow, required this.onBiasChanged});
+  final Bias biasNow;
+  final void Function(Bias bias) onBiasChanged;
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        const SizedBox(height: 10,),
-        autoSizeText('나의 편향성 분석', fontSize: 24, fontWeight: FontWeight.bold,),
-        const SizedBox(height: 20,),
-        autoSizeText('나의 관심 이슈', fontSize: 24, ),
-        const SizedBox(height: 10,),
-
-        const SizedBox(height: 20,),
-        autoSizeText('주간 성향 기록', fontSize: 24, ),
-        const SizedBox(height: 10,),
-        Center(
-          child: Container(height: 250,width: double.infinity,
-            decoration: BoxDecoration(borderRadius: BorderRadius.circular(10), color: Colors.white),
-            child: DailyUserDataChart(),
-          ),
-        ),
-      ],
+    AutoSizeGroup group = AutoSizeGroup();
+    return Container(
+      height: 35,
+      padding: EdgeInsets.all(3),
+      decoration: BoxDecoration(
+        color: AppColors.gray5,
+        borderRadius: BorderRadius.circular(20),
+      ),
+      child: Row(children: [
+        SwitchButton(bias: Bias.left, onTap: onBiasChanged, isSelected: biasNow == Bias.left, pitchSize: group),
+        SwitchButton(bias: Bias.center, onTap: onBiasChanged, isSelected: biasNow == Bias.center, pitchSize: group),
+        SwitchButton(bias: Bias.right, onTap: onBiasChanged, isSelected: biasNow == Bias.right, pitchSize: group),
+      ],),
     );
   }
 }
 
+
 class SwitchButton extends StatelessWidget {
   const SwitchButton({super.key, required this.bias, required this.onTap, required this.isSelected, required this.pitchSize, });
   final Bias bias;
-  final VoidCallback onTap;
   final bool isSelected;
+  final void Function(Bias bias) onTap;
   final AutoSizeGroup pitchSize;
   @override
   Widget build(BuildContext context) {
     return Expanded(
       child: GestureDetector(
-        onTap: onTap,
+        onTap: (){
+          onTap(bias);
+        },
         child: AnimatedContainer(
           duration: const Duration(milliseconds: 300),
           margin: const EdgeInsets.symmetric(horizontal: 2),
@@ -93,43 +91,60 @@ class SwitchButton extends StatelessWidget {
   }
 }
 
-
-
-class UserExpRadar extends StatefulWidget {
-  const UserExpRadar({super.key});
+class BiasHexagon extends StatefulWidget {
+  const BiasHexagon({super.key, required this.wholeBiasScore, required this.biasNow, required this.onBiasChanged, });
+  final WholeBiasScore wholeBiasScore;
+  final Bias biasNow;
+  final void Function(Bias bias) onBiasChanged;
 
   @override
-  State<UserExpRadar> createState() => _UserExpRadarState();
+  State<BiasHexagon> createState() => _BiasHexagonState();
 }
 
-class _UserExpRadarState extends State<UserExpRadar> {
-  int selectedDataSetIndex = -1;
-  double angleValue = 0;
+class _BiasHexagonState extends State<BiasHexagon> {
 
   AutoSizeGroup textGroup = AutoSizeGroup();
 
+  late final List<double> leftBiasScores;
+  late final List<double> centerBiasScores;
+  late final List<double> rightBiasScores;
+
+  @override
+  void initState() {
+    super.initState();
+    leftBiasScores = [
+      widget.wholeBiasScore.politics.left,
+      widget.wholeBiasScore.economy.left,
+      widget.wholeBiasScore.society.left,
+      widget.wholeBiasScore.culture.left,
+      widget.wholeBiasScore.international.left,
+      widget.wholeBiasScore.technology.left,
+    ];
+    centerBiasScores = [
+      widget.wholeBiasScore.politics.center,
+      widget.wholeBiasScore.economy.center,
+      widget.wholeBiasScore.society.center,
+      widget.wholeBiasScore.culture.center,
+      widget.wholeBiasScore.international.center,
+      widget.wholeBiasScore.technology.center,
+    ];
+    rightBiasScores = [
+      widget.wholeBiasScore.politics.right,
+      widget.wholeBiasScore.economy.right,
+      widget.wholeBiasScore.society.right,
+      widget.wholeBiasScore.culture.right,
+      widget.wholeBiasScore.international.right,
+      widget.wholeBiasScore.technology.right,
+    ];
+  }
+
   @override
   Widget build(BuildContext context) {
-    int abIndex = 0;
-    int reIndex = 1;
-    AutoSizeGroup group = AutoSizeGroup();
 
     return Column(
       children: [
-        Container(
-          height: 35,
-          padding: EdgeInsets.all(3),
-          decoration: BoxDecoration(
-            color: AppColors.gray5,
-            borderRadius: BorderRadius.circular(20),
-          ),
-          child: Row(children: [
-              SwitchButton(bias: Bias.left, onTap: (){}, isSelected: true, pitchSize: group),
-              SwitchButton(bias: Bias.center, onTap: (){}, isSelected: false, pitchSize: group),
-              SwitchButton(bias: Bias.right, onTap: (){}, isSelected: false, pitchSize: group),
-          ],),
-        ),
-        SizedBox(height: 10),
+        BiasSwitchButtons(biasNow: widget.biasNow, onBiasChanged: widget.onBiasChanged),
+        SizedBox(height: MyPaddings.medium),
         Expanded(
           child: RadarChart(
             RadarChartData(
@@ -151,9 +166,9 @@ class _UserExpRadarState extends State<UserExpRadar> {
               dataSets: [
                 gridDataSet([0,0,0,0,0,0]),
                 gridDataSet(List<double>.generate(6, (int i)=> 100.0)),
-                dataSet(abIndex, AppColors.left, '', [100, 20, 30, 40, 50, 60]),
-                dataSet(abIndex, AppColors.right, '', [20, 40, 60, 80, 100, 90]),
-                // dataSet(reIndex, AbpColor.nb1, GaWords.relative2[store5.language], (widget.friendsData ?? store1.exps).getRelativeExps()),
+                dataSet(Bias.left, leftBiasScores),
+                dataSet(Bias.center, rightBiasScores),
+                dataSet(Bias.right, centerBiasScores),
               ],
               radarBackgroundColor: Colors.transparent,
               radarShape: RadarShape.polygon,
@@ -166,36 +181,48 @@ class _UserExpRadarState extends State<UserExpRadar> {
                 fontWeight: FontWeight.w600,
               ),
               getTitle: (index, angle) {
-                final usedAngle = angle + angleValue;
+                final usedAngle = angle;
+                final double ppOffset = 0.07;
                 switch (index) {
                   case 0:
                     return RadarChartTitle(
                       text: '정치',
-                      angle: usedAngle,);
+                      angle: usedAngle,
+                      positionPercentageOffset: ppOffset,
+                    );
                   case 1:
                     return RadarChartTitle(
                       text: '경제',
-                      angle: usedAngle,);
+                      angle: usedAngle,
+                      positionPercentageOffset: ppOffset,
+                    );
                   case 2:
                     return RadarChartTitle(
                       text: '사회',
-                      angle: usedAngle+180,);
+                      angle: usedAngle+180,
+                      positionPercentageOffset: ppOffset,
+                    );
                   case 3:
                     return RadarChartTitle(
                       text: '문화',
-                      angle: usedAngle+180,);
+                      angle: usedAngle+180,
+                      positionPercentageOffset: ppOffset,
+                    );
                   case 4:
                     return RadarChartTitle(
                       text: '세계',
-                      angle: usedAngle + 180,);
+                      angle: usedAngle + 180,
+                      positionPercentageOffset: ppOffset,
+                    );
                   default:
                     return RadarChartTitle(
-                      text: '기타',
-                      angle: usedAngle,);
-
+                      text: '기술',
+                      angle: usedAngle,
+                      positionPercentageOffset: ppOffset,
+                    );
                 }
               },
-              tickCount: 5,
+              tickCount: 4,
               ticksTextStyle: const TextStyle(color: Colors.transparent, fontSize: 0),
               tickBorderData: BorderSide(color: AppColors.gray4, width: 0.5),
               gridBorderData: BorderSide(color: AppColors.gray4, width: 0.5),
@@ -207,9 +234,9 @@ class _UserExpRadarState extends State<UserExpRadar> {
     );
   }
 
-  RadarDataSet dataSet(int index, Color color, String title,
-      List<int> values) {
-    final isSelected = index == selectedDataSetIndex ? true : false;
+  RadarDataSet dataSet(Bias bias, List<double> values) {
+    final isSelected = bias == widget.biasNow;
+    final color = getBiasColor(bias);
     return RadarDataSet(
       fillColor: isSelected ? color.withOpacity(0.25) : color.withOpacity(0.15),
       borderColor: isSelected ? color : color.withOpacity(0.8),

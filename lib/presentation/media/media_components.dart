@@ -7,7 +7,7 @@ import 'package:could_be/ui/color.dart';
 import 'package:could_be/ui/fonts.dart';
 import 'package:flutter/material.dart';
 
-import '../../core/components/bias/bias_enum.dart';
+import '../../core/method/bias/bias_enum.dart';
 import 'media_profile_component.dart';
 
 class MediaChatBubble extends StatefulWidget {

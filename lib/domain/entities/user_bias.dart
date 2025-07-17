@@ -1,4 +1,4 @@
-import '../../core/components/bias/bias_enum.dart';
+import '../../core/method/bias/bias_enum.dart';
 
 class UserBias{
   final Bias bias;

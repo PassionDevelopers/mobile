@@ -1,4 +1,4 @@
-import 'package:could_be/core/components/bias/bias_enum.dart';
+import 'package:could_be/core/method/bias/bias_enum.dart';
 import 'package:flutter/material.dart';
 import '../../../core/components/cards/issue_card.dart';
 import '../../../domain/entities/issue.dart';

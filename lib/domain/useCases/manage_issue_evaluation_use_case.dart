@@ -1,6 +1,6 @@
 import 'package:amplitude_flutter/amplitude.dart';
 import 'package:could_be/core/amplitude/amplitude.dart';
-import 'package:could_be/core/components/bias/bias_enum.dart';
+import 'package:could_be/core/method/bias/bias_enum.dart';
 import 'package:could_be/core/di/di_setup.dart';
 import 'package:could_be/domain/repositoryInterfaces/manage_issue_evaluation_interface.dart';
 

@@ -31,7 +31,6 @@ abstract class RouteNames{
   myPage = '/myPage',
   watchHistory = '$myPage/watchHistory',
   subscribedIssue = '$myPage/subscribedIssue',
-  userBiasStatus = '$myPage/userBiasStatus',
   manageIssueEvalution = '$myPage/manageIssueEvalution',
   settings = '$myPage/settings',
 

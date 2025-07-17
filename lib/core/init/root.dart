@@ -6,6 +6,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:could_be/core/components/layouts/scaffold_layout.dart';
 import 'package:could_be/core/routes/route_names.dart';
 import 'package:could_be/core/routes/router.dart';
+import 'package:could_be/domain/repositoryInterfaces/track_user_activity_interface.dart';
 import 'package:could_be/domain/useCases/manage_user_status_use_case.dart';
 import 'package:could_be/presentation/log_in/login_view_model.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -102,7 +103,9 @@ class _RootState extends State<Root> {
 
   Future<void> userLogined(String idToken) async {
     final tokenRepo = getIt<TokenStorageRepository>();
+    final trackUserActivityRepo = getIt<TrackUserActivityRepository>();
     await tokenRepo.saveToken(idToken);
+    trackUserActivityRepo.postUserWatchedArticles();
 
     startListenUpdateStatus();
 

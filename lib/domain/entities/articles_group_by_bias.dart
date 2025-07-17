@@ -1,6 +1,6 @@
 import 'package:could_be/domain/entities/source.dart';
 
-import '../../core/components/bias/bias_enum.dart';
+import '../../core/method/bias/bias_enum.dart';
 import 'article.dart';
 
 class ArticlesGroupByBiasAndSource {

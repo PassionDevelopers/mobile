@@ -1,4 +1,4 @@
-import 'package:could_be/core/components/bias/bias_enum.dart';
+import 'package:could_be/core/method/bias/bias_enum.dart';
 import 'package:could_be/core/components/layouts/scaffold_layout.dart';
 import 'package:could_be/core/di/di_setup.dart';
 import 'package:could_be/core/method/bias/bias_method.dart';
