@@ -26,7 +26,7 @@ class MyPageHeader extends StatelessWidget {
             ),
             SizedBox(width: MyPaddings.small),
             Text(
-              '${score?.score.round() ?? '??'}',
+              '${score == null || viewModel.state.isDasiScoreLoading? '??' : score.score.round() }',
               style: MyFontStyle.h3.copyWith(
                 color: AppColors.primary,
                 fontWeight: FontWeight.w700,
@@ -36,6 +36,10 @@ class MyPageHeader extends StatelessWidget {
               '/$maxScore',
               style: MyFontStyle.small.copyWith(color: AppColors.gray2),
             ),
+            SizedBox(width: MyPaddings.small),
+            GestureDetector(
+              onTap: viewModel.fetchDasiScore,
+              child: Icon(Icons.refresh, size: 15, color: AppColors.gray2)),
           ],
         ),
         SizedBox(height: MyPaddings.small),
