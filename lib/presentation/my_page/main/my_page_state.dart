@@ -17,6 +17,8 @@ class MyPageState{
   final bool isBiasScoreHistoryLoading;
   final bool isWholeBiasScoreLoading;
 
+  final bool isHexagonAbsolute;
+
   final bool isGuestLogin;
   final bool isEditMode;
   final WholeBiasScore? wholeBiasScore;
@@ -40,12 +42,13 @@ class MyPageState{
     this.isUserStatusLoading = false,
     this.isDasiScoreLoading = false,
     this.maxBiasScore = 100.0,
+    this.isHexagonAbsolute = true,
 
     required this.isGuestLogin,
     this.wholeBiasScore,
     this.isEditMode = false,
     this.biasNow = Bias.center,
-    this.biasScorePeriod = BiasScorePeriod.monthly,
+    this.biasScorePeriod = BiasScorePeriod.weekly,
     this.biasScoreHistory,
     this.biasScoreHistoryLeftScores,
     this.biasScoreHistoryRightScores,
@@ -72,11 +75,13 @@ class MyPageState{
     List<double>? biasScoreHistoryCenterScores,
     List<double>? biasScoreHistoryRightScores,
     double? maxBiasScore,
+    bool? isHexagonAbsolute,
   }) {
     return MyPageState(
       userBias: userBias ?? this.userBias,
       dasiScore: dasiScore ?? this.dasiScore,
       isBiasLoading: isBiasLoading ?? this.isBiasLoading,
+      isHexagonAbsolute: isHexagonAbsolute ?? this.isHexagonAbsolute,
       isDasiScoreLoading: isDasiScoreLoading ?? this.isDasiScoreLoading,
       isBiasScoreHistoryLoading: isBiasScoreHistoryLoading ?? this.isBiasScoreHistoryLoading,
       isWholeBiasScoreLoading: isWholeBiasScoreLoading ?? this.isWholeBiasScoreLoading,

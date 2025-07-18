@@ -39,8 +39,8 @@ class WholeBiasScoreRepositoryImpl extends WholeBiasScoreRepository {
       '${ApiVersions.v1}/user/political-score-history',
       queryParameters: {
         'year': year,
-        'month': month,
-        'week': week,
+        if (month != null) 'month': month,
+        if (week != null) 'week': week,
       },
     );
     final biasScoreHistoryDto = BiasScoreHistoryDto.fromJson(response.data);

@@ -1,4 +1,6 @@
 
+import 'package:could_be/core/components/alert/dialog.dart';
+import 'package:could_be/core/components/alert/toast.dart';
 import 'package:could_be/ui/color.dart';
 import 'package:flutter/material.dart';
 
@@ -42,7 +44,13 @@ class _SearchAppBarState extends State<SearchAppBar> {
   }
 
   void _handleSearchSubmitted(String query) {
-    if (query.trim().isNotEmpty) widget.onSearchSubmitted(query);
+    if(query.trim().isEmpty){
+      showMyToast(msg: '검색어를 입력하세요',);
+    }else if(query.trim().length >20){
+      showMyToast(msg: '검색어는 20자 이내로 입력해주세요');
+    }else{
+      widget.onSearchSubmitted(query);
+    }
   }
 
   Widget _buildSearchField() {

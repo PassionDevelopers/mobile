@@ -1,5 +1,6 @@
 import 'package:could_be/core/components/app_bar/app_bar.dart';
 import 'package:could_be/core/di/di_setup.dart';
+import 'package:could_be/core/method/bias/bias_enum.dart';
 import 'package:could_be/core/routes/route_names.dart';
 import 'package:could_be/presentation/log_in/login_view.dart';
 import 'package:could_be/presentation/my_page/components/my_page_header.dart';
@@ -12,7 +13,6 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../core/themes/margins_paddings.dart';
-import '../linear_chart_view.dart';
 
 class MyPageView extends StatefulWidget {
   const MyPageView({
@@ -144,80 +144,74 @@ class _MyPageViewState extends State<MyPageView> {
   Widget build(BuildContext context) {
     final viewModel = getIt<MyPageViewModel>();
 
-    return Column(
+    return Stack(
       children: [
-        RegAppBar(
-          title: '마이페이지',
-          iconData: Icons.account_circle_rounded,
-          actions: [
-            IconButton(
-              icon: Icon(Icons.settings, size: 30),
-              onPressed: () {
-                context.push(RouteNames.settings);
-              },
-            ),
-          ],
-        ),
-        Expanded(
-          child: Stack(
+        SingleChildScrollView(
+          child: Column(
             children: [
-              SingleChildScrollView(
+              RegAppBar(
+                title: '마이페이지',
+                iconData: Icons.account_circle_rounded,
+                actions: [
+                  IconButton(
+                    icon: Icon(Icons.settings, size: 30),
+                    onPressed: () {
+                      context.push(RouteNames.settings);
+                    },
+                  ),
+                ],
+              ),
+              SizedBox(height: MyPaddings.extraLarge),
+              MyPageHeader(viewModel: viewModel),
+              SizedBox(height: MyPaddings.extraLarge),
+              Padding(
+                padding: EdgeInsets.symmetric(
+                  horizontal: MyPaddings.large,
+                ),
                 child: Column(
                   children: [
+                    // Bias Card
+                    MyPageHexagon(viewModel: viewModel),
+
                     SizedBox(height: MyPaddings.extraLarge),
-                    MyPageHeader(viewModel: viewModel),
+
+                    // Quick Actions Grid
+                    _buildQuickActionsGrid(),
+
                     SizedBox(height: MyPaddings.extraLarge),
-                    Padding(
-                      padding: EdgeInsets.symmetric(
-                        horizontal: MyPaddings.large,
-                      ),
-                      child: Column(
-                        children: [
-                          // Bias Card
-                          MyPageHexagon(viewModel: viewModel),
 
-                          SizedBox(height: MyPaddings.extraLarge),
+                    // Trend Section
+                    MyPageTrendChart(viewModel: viewModel),
 
-                          // Quick Actions Grid
-                          _buildQuickActionsGrid(),
-
-                          SizedBox(height: MyPaddings.extraLarge),
-
-                          // Trend Section
-                          MyPageTrendChart(viewModel: viewModel),
-
-                          SizedBox(height: MyPaddings.extraLarge),
-                        ],
-                      ),
-                    ),
+                    SizedBox(height: MyPaddings.extraLarge),
                   ],
                 ),
               ),
-              ListenableBuilder(
-                listenable: viewModel,
-                builder: (context, _) {
-                  if (viewModel.state.isGuestLogin) {
-                    return Center(
-                      child: Container(
-                        width: double.infinity,
-                        height: double.infinity,
-                        decoration: BoxDecoration(
-                          color: AppColors.black.withAlpha(180),
-                        ),
-                        child: LoginView(
-                          onLoginSuccess: () {
-                            viewModel.checkIsGuestLogin();
-                          },
-                        ),
-                      ),
-                    );
-                  } else {
-                    return const SizedBox.shrink();
-                  }
-                },
-              ),
             ],
           ),
+        ),
+        ListenableBuilder(
+          listenable: viewModel,
+          builder: (context, _) {
+            if (viewModel.state.isGuestLogin) {
+              return Center(
+                child: Container(
+                  width: double.infinity,
+                  height: double.infinity,
+                  decoration: BoxDecoration(
+                    color: AppColors.black.withAlpha(180),
+                  ),
+                  child: LoginView(
+                    onLoginSuccess: () {
+                      viewModel.checkIsGuestLogin();
+                    },
+                  ),
+                ),
+              );
+            } else {
+              return const SizedBox.shrink();
+            }
+          },
         ),
       ],
     );

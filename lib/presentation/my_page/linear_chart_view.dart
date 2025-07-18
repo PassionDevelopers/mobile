@@ -1,4 +1,6 @@
-import 'dart:math';
+
+
+import 'dart:developer';
 
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:could_be/core/method/bias/bias_method.dart';
@@ -30,7 +32,8 @@ class _DailyUserDataChartState extends State<DailyUserDataChart> {
       final dailyClearData = widget.viewModel.state.biasScoreHistoryLeftScores ?? [1,1,1,1,1,1,1];
 
       double getHorizontalInterval(){
-        return maxTotal == 0? 5: ((maxTotal/3).ceil()) * 1.0;
+        // return widget.viewModel.state.maxBiasScore == 0? 5: ((maxTotal/3).ceil()) * 1.0;
+        return 50;
       }
       LineTouchData lineTouchData()=>LineTouchData(
         handleBuiltInTouches: true,
@@ -44,7 +47,7 @@ class _DailyUserDataChartState extends State<DailyUserDataChart> {
       );
 
       Widget title(int groupNum){
-        List<String> weekDays = ['월', '화', '수', '목', '금', '토', '일'];
+        List<String> weekDays = ['일', '월', '화', '수', '목', '금', '토'];
         List<String> weeks = ['1주차', '2주차', '3주차', '4주차', '5주차', '6주차', '7주차'];
         List<String> months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
         Color textColor = AppColors.primary;
@@ -127,7 +130,7 @@ class _DailyUserDataChartState extends State<DailyUserDataChart> {
                           chartBarData(Bias.center),
                           chartBarData(Bias.right),
                         ],
-                        minX: 0, maxX: (dailyClearData.length-1)*1.0, maxY: maxTotal*1.0, minY: 0,
+                        minX: 0, maxX: (dailyClearData.length-1)*1.0, maxY: widget.viewModel.state.maxBiasScore*1.0, minY: 300,
                       ),
                       duration: const Duration(milliseconds: 250),
                     )
@@ -165,16 +168,18 @@ class _DailyUserDataChartState extends State<DailyUserDataChart> {
     List<FlSpot> spots = [];
     Color color = getBiasColor(bias);
     for(int i = 0; i<dailyClearData.length; i++){
+      if(dailyClearData[i] == 0) continue;
       spots.add(FlSpot(i*1.0, dailyClearData[i]));
     }
+    final bool isSelected = widget.viewModel.state.biasNow == bias;
     return LineChartBarData(
-        color: color,
+        color: color.withOpacity(isSelected? 0.8 : 0.2),
         barWidth: 3,
         isStrokeCapRound: true,
         dotData: const FlDotData(show: true),
         belowBarData: BarAreaData(
-          show: true,
-          color: color.withOpacity(0.2),
+          show: isSelected,
+          color: color.withOpacity(isSelected? 0.2 : 0.1),
         ),
         spots: spots
     );

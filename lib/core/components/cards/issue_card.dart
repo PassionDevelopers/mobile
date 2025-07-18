@@ -114,14 +114,28 @@ class _IssueCardState extends State<IssueCard> with TickerProviderStateMixin {
                           Column(
                             mainAxisSize: MainAxisSize.min,
                             children: [
-                              if (widget.issue.imageUrl != null)
-                                SizedBox(
+                              SizedBox(
                                   height: ResponsiveUtils.isMobile(context) ? 220 : 250,
                                   child: Stack(
                                     children: [
-                                      ImageContainer(
-                                        height: ResponsiveUtils.isMobile(context) ? 220 : 250,
+                                      widget.issue.imageUrl != null? ImageContainer(
+                                        height: 220,
                                         imageUrl: widget.issue.imageUrl!,
+                                      ) : Ink(
+                                        height: 220,
+                                        decoration: BoxDecoration(
+                                          color: AppColors.gray4,
+                                          borderRadius: BorderRadius.vertical(
+                                            top: Radius.circular(16),
+                                          )
+                                        ),
+                                        child: Center(
+                                          child: Icon(
+                                            Icons.image_not_supported,
+                                            color: AppColors.gray2,
+                                            size: 40,
+                                          ),
+                                        ),
                                       ),
                                       Align(
                                         alignment: Alignment.bottomCenter,

@@ -47,6 +47,11 @@ class MyPageViewModel extends ChangeNotifier {
     fetchDasiScore();
   }
 
+  void changeHexagonZoom(bool isAbsolute) {
+    _state = state.copyWith(isHexagonAbsolute: isAbsolute);
+    notifyListeners();
+  }
+
   void fetchDasiScore() async {
     _state = state.copyWith(isDasiScoreLoading: true);
     notifyListeners();
@@ -71,16 +76,36 @@ class MyPageViewModel extends ChangeNotifier {
   void fetchBiasScoreHistory() async {
     _state = state.copyWith(isBiasScoreHistoryLoading: true);
     notifyListeners();
+
+    double findMax(List<double> a, List<double> b, List<double> c) {
+      double maxValue = double.negativeInfinity;
+
+      for (var list in [a, b, c]) {
+        for (var value in list) {
+          if (value > maxValue) maxValue = value;
+        }
+      }
+      return maxValue;
+    }
     _trackUserActivityUseCase.postUserWatchedArticles();
     final result = await _fetchWholeBiasScoreUseCase.fetchBiasScoreHistory(
         period: state.biasScorePeriod,
     );
+    final List<double> leftBiasScores = result.leftBiasScores;
+    final List<double> centerBiasScores = result.centerBiasScores;
+    final List<double> rightBiasScores = result.rightBiasScores;
+    final double maxBiasScore = findMax(
+      leftBiasScores,
+      centerBiasScores,
+      rightBiasScores
+    );
     _state = state.copyWith(
       biasScoreHistory: result,
       isBiasScoreHistoryLoading: false,
-      biasScoreHistoryLeftScores: result.leftBiasScores,
-      biasScoreHistoryRightScores: result.rightBiasScores,
-      biasScoreHistoryCenterScores: result.centerBiasScores,
+      biasScoreHistoryLeftScores: leftBiasScores,
+      biasScoreHistoryRightScores: rightBiasScores,
+      biasScoreHistoryCenterScores: centerBiasScores,
+      maxBiasScore: maxBiasScore,
     );
     notifyListeners();
   }

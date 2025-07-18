@@ -13,7 +13,7 @@ class ImageContainer extends StatelessWidget {
   Widget build(BuildContext context) {
     return Stack(
       children: [
-        Container(
+        Ink(
           height: height,
           width: double.infinity,
           decoration: BoxDecoration(

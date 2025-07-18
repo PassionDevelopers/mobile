@@ -1,8 +1,6 @@
 import 'package:could_be/core/components/text_form_field.dart';
-import 'package:could_be/core/method/bias/bias_method.dart';
 import 'package:could_be/core/themes/margins_paddings.dart';
 import 'package:could_be/domain/entities/dasi_score.dart';
-import 'package:could_be/presentation/my_page/main/my_page_view.dart';
 import 'package:could_be/presentation/my_page/main/my_page_view_model.dart';
 import 'package:could_be/ui/color.dart';
 import 'package:could_be/ui/fonts.dart';
@@ -141,7 +139,8 @@ class MyPageHeader extends StatelessWidget {
                           children: [
                             if (!state.isEditMode)
                               MyText.h1(
-                                state.userBias!.nickname,
+                                state.isGuestLogin? '게스트 사용자' :
+                                state.userBias == null? '   ' : state.userBias!.nickname,
                                 color: AppColors.primary,
                               )
                             else

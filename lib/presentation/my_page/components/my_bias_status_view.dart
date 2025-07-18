@@ -92,9 +92,10 @@ class SwitchButton extends StatelessWidget {
 }
 
 class BiasHexagon extends StatefulWidget {
-  const BiasHexagon({super.key, required this.wholeBiasScore, required this.biasNow, required this.onBiasChanged, });
+  const BiasHexagon({super.key, required this.isZoomed, required this.wholeBiasScore, required this.biasNow, required this.onBiasChanged, });
   final WholeBiasScore wholeBiasScore;
   final Bias biasNow;
+  final bool isZoomed;
   final void Function(Bias bias) onBiasChanged;
 
   @override
@@ -164,8 +165,8 @@ class _BiasHexagonState extends State<BiasHexagon> {
               //   },
               // ),
               dataSets: [
-                gridDataSet([0,0,0,0,0,0]),
-                gridDataSet(List<double>.generate(6, (int i)=> 100.0)),
+                if(widget.isZoomed) gridDataSet([0,0,0,0,0,0]),
+                if(widget.isZoomed) gridDataSet(List<double>.generate(6, (int i)=> 100.0)),
                 dataSet(Bias.left, leftBiasScores),
                 dataSet(Bias.center, rightBiasScores),
                 dataSet(Bias.right, centerBiasScores),
@@ -227,7 +228,7 @@ class _BiasHexagonState extends State<BiasHexagon> {
               tickBorderData: BorderSide(color: AppColors.gray4, width: 0.5),
               gridBorderData: BorderSide(color: AppColors.gray4, width: 0.5),
             ),
-            swapAnimationDuration: const Duration(milliseconds: 400),
+            swapAnimationDuration: const Duration(milliseconds: 500),
           ),
         ),
       ],
@@ -238,7 +239,7 @@ class _BiasHexagonState extends State<BiasHexagon> {
     final isSelected = bias == widget.biasNow;
     final color = getBiasColor(bias);
     return RadarDataSet(
-      fillColor: isSelected ? color.withOpacity(0.25) : color.withOpacity(0.15),
+      fillColor: color.withOpacity(isSelected ? 0.25 : 0.15),
       borderColor: isSelected ? color : color.withOpacity(0.8),
       entryRadius: isSelected ? 4 : 3,
       dataEntries: values.map((e) => RadarEntry(value: e*1.0)).toList(),

@@ -2,6 +2,7 @@ import 'dart:developer';
 import 'dart:io';
 import 'package:could_be/core/components/buttons/login_button.dart';
 import 'package:could_be/core/di/di_setup.dart';
+import 'package:could_be/core/themes/margins_paddings.dart';
 import 'package:could_be/presentation/log_in/login_view_model.dart';
 import 'package:could_be/presentation/my_page/main/my_page_view_model.dart';
 import 'package:could_be/ui/fonts.dart';
@@ -39,6 +40,13 @@ class LoginView extends StatelessWidget {
             )
                 : Column(
               children: [
+                MyText.h2(
+                  '정식 사용자로 로그인하고', color: AppColors.primaryLight,
+                ),
+                MyText.h2(
+                  '나의 성향을 확인해보세요', color: AppColors.primaryLight,
+                ),
+                SizedBox(height: MyPaddings.medium),
                 LoginButton(
                   buttonType: ButtonType.googleDark,
                   onPressed: () async {

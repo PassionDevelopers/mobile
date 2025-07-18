@@ -4,22 +4,74 @@ import 'package:could_be/ui/color.dart';
 import 'package:could_be/ui/fonts.dart';
 import 'package:flutter/material.dart';
 
+import '../../../core/method/bias/bias_enum.dart';
 import '../linear_chart_view.dart';
 
 class MyPageTrendChart extends StatelessWidget {
   const MyPageTrendChart({super.key, required this.viewModel});
+
   final MyPageViewModel viewModel;
+
+  Widget changePeriodButton({
+    required BiasScorePeriod period,
+  }) {
+    final bool isSelected = viewModel.state.biasScorePeriod == period;
+    return Expanded(
+      child: GestureDetector(
+        onTap: () {
+          viewModel.changePeriod(period);
+        },
+        child: AnimatedContainer(
+          duration: const Duration(milliseconds: 300),
+          margin: const EdgeInsets.symmetric(horizontal: 2),
+          decoration: BoxDecoration(
+            color: isSelected ? AppColors.primary : Colors.transparent,
+            borderRadius: BorderRadius.circular(17),
+          ),
+          padding: const EdgeInsets.symmetric(
+            vertical: 6, horizontal: 12,),
+          child: Row(
+            mainAxisSize: MainAxisSize.min,
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              if (isSelected) Center(
+                child: AnimatedContainer(
+                  width: 8,
+                  height: 8,
+                  duration: const Duration(milliseconds: 400),
+                  curve: Curves.easeInToLinear,
+                  margin: EdgeInsets.only(right: 6),
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    shape: BoxShape.circle,
+                  ),
+                ),
+              ),
+              Center(
+                child: AnimatedDefaultTextStyle(
+                  duration: const Duration(milliseconds: 300),
+                  curve: Curves.easeInToLinear,
+                  style: TextStyle(
+                    color: isSelected ? Colors.white : AppColors.primary,
+                    fontSize: 12,
+                    fontWeight: isSelected ? FontWeight.w600 : FontWeight.w500,
+                  ),
+                  child: Text(period.displayName,),
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return ListenableBuilder(
       listenable: viewModel,
       builder: (context, _) {
         final state = viewModel.state;
-        if(state.isBiasScoreHistoryLoading) {
-          return Center(
-            child: CircularProgressIndicator(),
-          );
-        }
         return Container(
           padding: EdgeInsets.all(MyPaddings.extraLarge),
           decoration: BoxDecoration(
@@ -44,7 +96,19 @@ class MyPageTrendChart extends StatelessWidget {
                     children: [
                       MyText.small('성향 변화 추이', color: AppColors.gray2),
                       SizedBox(height: MyPaddings.small),
-                      MyText.h1('최근 ${state.biasScorePeriod.displayName}', color: AppColors.primary),
+                      Row(
+                        children: [
+                          MyText.h1(
+                            '최근 ${state.biasScorePeriod.displayName}',
+                            color: AppColors.primary,
+                          ),
+                          if(state.biasScoreHistory != null) GestureDetector(
+                              onTap: () {
+                                viewModel.fetchBiasScoreHistory();
+                              },
+                              child: Icon(Icons.refresh, size: 25, color: AppColors.gray2)),
+                        ],
+                      ),
                     ],
                   ),
                   Container(
@@ -65,8 +129,24 @@ class MyPageTrendChart extends StatelessWidget {
               // Chart
               SizedBox(
                 height: 300,
-                child: DailyUserDataChart(
-                  viewModel: viewModel,
+                child:
+                    state.isBiasScoreHistoryLoading
+                        ? Center(child: CircularProgressIndicator())
+                        : DailyUserDataChart(viewModel: viewModel),
+              ),
+              Container(
+                height: 35,
+                padding: EdgeInsets.all(3),
+                decoration: BoxDecoration(
+                  color: AppColors.gray5,
+                  borderRadius: BorderRadius.circular(20),
+                ),
+                child: Row(
+                  children: [
+                    changePeriodButton(period: BiasScorePeriod.weekly),
+                    changePeriodButton(period: BiasScorePeriod.monthly),
+                    changePeriodButton(period: BiasScorePeriod.yearly),
+                  ],
                 ),
               ),
               // // Summary
@@ -113,7 +193,7 @@ class MyPageTrendChart extends StatelessWidget {
             ],
           ),
         );
-      }
+      },
     );
   }
 }
