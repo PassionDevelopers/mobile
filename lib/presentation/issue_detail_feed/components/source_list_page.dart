@@ -1,17 +1,12 @@
 import 'dart:developer';
 
-import 'package:could_be/core/components/buttons/big_button.dart';
-import 'package:could_be/core/components/cards/text_card.dart';
 import 'package:could_be/core/components/layouts/text_helper.dart';
-import 'package:could_be/core/components/loading/not_found.dart';
-import 'package:could_be/core/components/title/big_title.dart';
-import 'package:could_be/core/method/bias/bias_method.dart';
 import 'package:could_be/domain/entities/articles_group_by_bias.dart';
 import 'package:could_be/presentation/media/media_components.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+
 import '../../../core/method/bias/bias_enum.dart';
-import '../../../core/components/cards/issue_detail_title_card.dart';
 import '../../../core/routes/route_names.dart';
 import '../../../core/themes/margins_paddings.dart';
 import '../../../ui/color.dart';
@@ -62,29 +57,19 @@ class _SourceListPageState extends State<SourceListPage>
         },
         child: AnimatedContainer(
           duration: const Duration(milliseconds: 200),
-          margin: const EdgeInsets.all(3),
-          padding: const EdgeInsets.symmetric(vertical: 10),
+          margin: const EdgeInsets.all(2),
+          padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 4),
           decoration: BoxDecoration(
             color: isSelected ? _biasColors[index] : Colors.transparent,
-            borderRadius: BorderRadius.circular(9),
-            boxShadow:
-                isSelected
-                    ? [
-                      BoxShadow(
-                        color: _biasColors[index].withOpacity(0.3),
-                        blurRadius: 6,
-                        offset: const Offset(0, 2),
-                      ),
-                    ]
-                    : null,
+            borderRadius: BorderRadius.circular(8),
           ),
           child: Text(
             '${_biasLabels[index]} 언론',
             textAlign: TextAlign.center,
             style: TextStyle(
-              color: isSelected ? Colors.white : Colors.grey[600],
-              fontWeight: isSelected ? FontWeight.bold : FontWeight.w500,
-              fontSize: 13,
+              color: isSelected ? Colors.white : AppColors.gray2,
+              fontWeight: isSelected ? FontWeight.w600 : FontWeight.w400,
+              fontSize: 14,
             ),
           ),
         ),
@@ -92,39 +77,53 @@ class _SourceListPageState extends State<SourceListPage>
     );
   }
 
-  _buildTabViewPage({required Bias bias, required List<OneSourceArticles> oneSourceArticles}) {
-    return Padding(
-      padding: EdgeInsets.symmetric(
-          horizontal: MyPaddings.large),
-      child: TextCard(
-        color: getBiasColor(bias),
-        child:
-        oneSourceArticles.isEmpty
-                ? NotFound(notFoundType: NotFoundType.article)
-                : SingleChildScrollView(
-                  child: Column(
-                    children: [
-                      for (final oneSourceArticle in oneSourceArticles)
-                        MediaChatBubble(
-                          articles: oneSourceArticle.articles,
-                          toWebView: (String aritcleId) {
-                            context.push(
-                              RouteNames.webView,
-                              extra: {
-                                'articleInfo': (
-                                  widget.articlesGBBAS.allArticles,
-                                  aritcleId,
-                                  oneSourceArticle.source.id,
-                                ),
-                              },
-                            );
-                          },
-                        ),
-                    ],
-                  ),
+  _buildTabViewPage({
+    required Bias bias,
+    required List<OneSourceArticles> oneSourceArticles,
+  }) {
+    return oneSourceArticles.isEmpty
+        ? Container(
+          height: 200,
+          child: Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Icon(
+                  Icons.article_outlined,
+                  size: 48,
+                  color: AppColors.gray3,
                 ),
-      ),
-    );
+                SizedBox(height: MyPaddings.medium),
+                Text(
+                  '기사가 없습니다',
+                  style: TextStyle(color: AppColors.gray2, fontSize: 16),
+                ),
+              ],
+            ),
+          ),
+        )
+        : SingleChildScrollView(
+          child: Column(
+            children: [
+              for (final oneSourceArticle in oneSourceArticles)
+                MediaChatBubble(
+                  articles: oneSourceArticle.articles,
+                  toWebView: (String aritcleId) {
+                    context.push(
+                      RouteNames.webView,
+                      extra: {
+                        'articleInfo': (
+                          widget.articlesGBBAS.allArticles,
+                          aritcleId,
+                          oneSourceArticle.source.id,
+                        ),
+                      },
+                    );
+                  },
+                ),
+            ],
+          ),
+        );
   }
 
   late final List<OneSourceArticles>? leftArticles =
@@ -150,62 +149,110 @@ class _SourceListPageState extends State<SourceListPage>
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        // Row(
-        //   children: [
-        //     BackButton(),
-        //     BigTitle(title: '원문 기사 보기'),
-        //   ],
-        // ),
-        IssueDetailTitleCard(
-          icon: Icon(Icons.newspaper),
-          title: BigTitle(title: '원문 기사 보기'),
-        ),
-
-        SizedBox(height: MyPaddings.medium),
-        Column(
-          children: [
-            Container(
-              margin: EdgeInsets.symmetric(horizontal: MyPaddings.large),
-              decoration: BoxDecoration(
-                color: AppColors.gray5,
-                borderRadius: BorderRadius.circular(12),
-              ),
-              child: Row(
-                children: List.generate(3, (index) {
-                  return _buildTab(index);
-                }),
+    return Container(
+      decoration: BoxDecoration(
+        color: AppColors.white,
+        borderRadius: BorderRadius.circular(16),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.05),
+            blurRadius: 10,
+            offset: Offset(0, 2),
+          ),
+        ],
+      ),
+      child: Column(
+        children: [
+          Container(
+            padding: EdgeInsets.all(MyPaddings.large),
+            decoration: BoxDecoration(
+              border: Border(
+                bottom: BorderSide(color: AppColors.gray5, width: 1),
               ),
             ),
-            SizedBox(height: MyPaddings.large),
-            AutoSizedTabBarView( tabController: _tabController,
+            child: Row(
               children: [
-                _buildTabViewPage(bias: Bias.left, oneSourceArticles: leftArticles ?? []),
-                _buildTabViewPage(
-                  bias: Bias.center,
-                  oneSourceArticles: centerArticles ?? [],
+                Icon(Icons.newspaper, color: AppColors.primary, size: 24),
+                SizedBox(width: MyPaddings.medium),
+                Text(
+                  '원문 기사 보기',
+                  style: TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.w600,
+                    color: AppColors.primary,
+                  ),
                 ),
-                _buildTabViewPage(bias: Bias.right, oneSourceArticles: rightArticles ?? []),
-              ],),
-
-            SizedBox(height: MyPaddings.medium),
-            Padding(
-              padding: EdgeInsets.symmetric(
-                  horizontal: MyPaddings.large),
-              child: BigButton(
-                widget.hasNextIssue? '다음 이슈 보기' : '홈으로 돌아가기',
-                backgroundColor: AppColors.primary,
-                textColor: AppColors.primaryLight,
-                onPressed: widget.hasNextIssue? widget.toNextIssue : (){
-                  context.pop();
-                },
-              ),
+              ],
             ),
-          ],
-        ),
-        SizedBox(height: MyPaddings.medium),
-      ],
+          ),
+          Padding(
+            padding: EdgeInsets.all(MyPaddings.large),
+            child: Column(
+              children: [
+                Container(
+                  padding: EdgeInsets.all(4),
+                  decoration: BoxDecoration(
+                    color: AppColors.gray5,
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                  child: Row(
+                    children: List.generate(3, (index) {
+                      return _buildTab(index);
+                    }),
+                  ),
+                ),
+                SizedBox(height: MyPaddings.large),
+                AutoSizedTabBarView(
+                  tabController: _tabController,
+                  children: [
+                    _buildTabViewPage(
+                      bias: Bias.left,
+                      oneSourceArticles: leftArticles ?? [],
+                    ),
+                    _buildTabViewPage(
+                      bias: Bias.center,
+                      oneSourceArticles: centerArticles ?? [],
+                    ),
+                    _buildTabViewPage(
+                      bias: Bias.right,
+                      oneSourceArticles: rightArticles ?? [],
+                    ),
+                  ],
+                ),
+
+                SizedBox(height: MyPaddings.large),
+                Container(
+                  width: double.infinity,
+                  height: 48,
+                  child: ElevatedButton(
+                    onPressed:
+                        widget.hasNextIssue
+                            ? widget.toNextIssue
+                            : () {
+                              context.pop();
+                            },
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: AppColors.primary,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                      elevation: 0,
+                    ),
+                    child: Text(
+                      widget.hasNextIssue ? '다음 이슈 보기' : '홈으로 돌아가기',
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 16,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
     );
   }
 }

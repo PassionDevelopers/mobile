@@ -115,68 +115,94 @@ class _IssueCardState extends State<IssueCard> with TickerProviderStateMixin {
                             mainAxisSize: MainAxisSize.min,
                             children: [
                               SizedBox(
-                                  height: ResponsiveUtils.isMobile(context) ? 220 : 250,
-                                  child: Stack(
-                                    children: [
-                                      widget.issue.imageUrl != null? ImageContainer(
-                                        height: 220,
-                                        imageUrl: widget.issue.imageUrl!,
-                                      ) : Ink(
-                                        height: 220,
-                                        decoration: BoxDecoration(
-                                          color: AppColors.gray4,
-                                          borderRadius: BorderRadius.vertical(
-                                            top: Radius.circular(16),
-                                          )
-                                        ),
-                                        child: Center(
-                                          child: Icon(
-                                            Icons.image_not_supported,
-                                            color: AppColors.gray2,
-                                            size: 40,
-                                          ),
-                                        ),
-                                      ),
-                                      Align(
-                                        alignment: Alignment.bottomCenter,
-                                        child: Container(
-                                          width: double.infinity,
-                                          padding: EdgeInsets.fromLTRB(
-                                            MyPaddings.large,
-                                            MyPaddings.small,
-                                            MyPaddings.large,
-                                            MyPaddings.small,
-                                          ),
+                                height:
+                                    ResponsiveUtils.isMobile(context)
+                                        ? 220
+                                        : 250,
+                                child: Stack(
+                                  children: [
+                                    widget.issue.imageUrl != null
+                                        ? ImageContainer(
+                                          height: 220,
+                                          imageUrl: widget.issue.imageUrl!,
+                                        )
+                                        : Ink(
+                                          height: 220,
                                           decoration: BoxDecoration(
-                                            // borderRadius: BorderRadius.circular(16),
-                                            color: Colors.white.withOpacity(
-                                              0.60,
+                                            color: AppColors.gray4,
+                                            borderRadius: BorderRadius.vertical(
+                                              top: Radius.circular(16),
                                             ),
                                           ),
-                                          child: Column(
-                                            mainAxisSize: MainAxisSize.min,
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
-                                            children: [
-                                              MyText.h2(
-                                                widget.issue.title,
-                                                maxLines: 2,
-                                              ),
-                                              SizedBox(
-                                                height: MyPaddings.small,
-                                              ),
-                                              MyText.regSummary(
-                                                widget.issue.summary,
-                                                // color: AppColors.gray2,
-                                                maxLines: 2,
-                                              ),
-                                            ],
+                                          child: Center(
+                                            child: Icon(
+                                              Icons.image_not_supported,
+                                              color: AppColors.gray2,
+                                              size: 40,
+                                            ),
                                           ),
                                         ),
+                                    Container(
+                                      height: 260,
+                                      decoration: BoxDecoration(
+                                        gradient: LinearGradient(
+                                          begin: Alignment.topCenter,
+                                          end: Alignment.bottomCenter,
+                                          colors: [
+                                            Colors.transparent,
+                                            AppColors.black.withOpacity(0.7),
+                                          ],
+                                          stops: [0.5, 1.0],
+                                        ),
                                       ),
-                                    ],
-                                  ),
+                                    ),
+                                    Align(
+                                      alignment: Alignment.bottomCenter,
+                                      child: Container(
+                                        width: double.infinity,
+                                        padding: EdgeInsets.fromLTRB(
+                                          MyPaddings.large,
+                                          MyPaddings.small,
+                                          MyPaddings.large,
+                                          MyPaddings.small,
+                                        ),
+                                        // decoration: BoxDecoration(
+                                        //   // borderRadius: BorderRadius.circular(16),
+                                        //   color: Colors.white.withOpacity(
+                                        //     0.60,
+                                        //   ),
+                                        // ),
+                                        child: Column(
+                                          mainAxisSize: MainAxisSize.min,
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            MyText.h2(
+                                              widget.issue.title,
+                                              maxLines: 2,
+                                              color: AppColors.white,
+                                              shadows: [
+                                                Shadow(
+                                                  offset: Offset(0, 1),
+                                                  blurRadius: 3,
+                                                  color: Colors.black
+                                                      .withOpacity(0.5),
+                                                ),
+                                              ],
+                                            ),
+                                            SizedBox(height: MyPaddings.small),
+                                            MyText.regSummary(
+                                              widget.issue.summary,
+                                              color: AppColors.gray5,
+                                              maxLines: 2,
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    ),
+                                  ],
                                 ),
+                              ),
                               Padding(
                                 padding: EdgeInsets.fromLTRB(
                                   MyPaddings.large,
@@ -210,9 +236,12 @@ class _IssueCardState extends State<IssueCard> with TickerProviderStateMixin {
                                     ),
                                     SizedBox(height: MyPaddings.medium),
                                     IssueInfoTitle(
-                                      mediaTotal: widget.issue.coverageSpectrum.total,
+                                      mediaTotal:
+                                          widget.issue.coverageSpectrum.total,
                                       viewCount: widget.issue.view,
-                                      time: widget.issue.updatedAt ?? widget.issue.createdAt,
+                                      time:
+                                          widget.issue.updatedAt ??
+                                          widget.issue.createdAt,
                                     ),
                                   ],
                                 ),
@@ -222,10 +251,10 @@ class _IssueCardState extends State<IssueCard> with TickerProviderStateMixin {
 
                           if (widget.issue.tags.isNotEmpty)
                             Align(
-                                alignment: Alignment.topLeft,
-                                child: SizedBox(
-                                  height: 32,
-                                  child: ListView.builder(
+                              alignment: Alignment.topLeft,
+                              child: SizedBox(
+                                height: 32,
+                                child: ListView.builder(
                                   scrollDirection: Axis.horizontal,
                                   shrinkWrap: true,
                                   itemCount: widget.issue.tags.length,

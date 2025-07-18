@@ -178,78 +178,56 @@ class _BiasCheckButtonState extends State<BiasCheckButton>
     return ListenableBuilder(
       listenable: ValueNotifier(widget.userEvaluation),
       builder: (context, listenable) {
-        return AnimatedBuilder(
-          animation: _scaleAnimation,
-          builder: (context, child) {
-            return Transform.scale(
-              scale:
-                  widget.userEvaluation == null ? _scaleAnimation.value : 1.0,
-              child: AnimatedSize(
-                duration: Duration(milliseconds: 100),
-                curve: Curves.easeInOut,
-                child: Ink(
-                  padding: EdgeInsets.symmetric(
-                    horizontal: MyPaddings.large,
-                    vertical: MyPaddings.medium,
-                  ),
-                  decoration: BoxDecoration(
-                    color: AppColors.white,
-                    borderRadius: BorderRadius.circular(20),
-                    boxShadow: [
-                      BoxShadow(
-                        color: AppColors.gray2,
-                        blurRadius: 2,
-                        offset: Offset(1, 1),
-                      ),
-                    ],
-                  ),
-                  child: Column(
-                    children: [
-                      widget.userEvaluation == null
-                          ? MyText.h3('어떤 관점에 동의하시나요?')
-                          : Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              MyText.h3('내가 동의한 관점 : '),
-                              MyText.h3(
-                                getBiasName(
-                                  getBiasFromString(widget.userEvaluation!),
-                                ),
-                                color: getBiasColor(
-                                  getBiasFromString(widget.userEvaluation!),
-                                ),
-                              ),
-                            ],
+        return Material(
+          color: AppColors.primaryLight,
+          child: Padding(
+            padding: EdgeInsets.symmetric(
+              vertical: MyPaddings.medium,
+            ),
+            child: Column(
+              children: [
+                widget.userEvaluation == null
+                    ? MyText.h3('어떤 관점에 동의하시나요?')
+                    : Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        MyText.h3('내가 동의한 관점 : '),
+                        MyText.h3(
+                          getBiasName(
+                            getBiasFromString(widget.userEvaluation!),
                           ),
-                      SizedBox(height: MyPaddings.medium),
-                      Row(
-                        mainAxisSize: MainAxisSize.min,
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children:
-                            widget.userEvaluation == null
-                                ? [
-                                  if (widget.existLeft)
-                                    _buildBiasCircle(Bias.left),
-                                  if (widget.existCenter)
-                                    _buildBiasCircle(Bias.center),
-                                  if (widget.existRight)
-                                    _buildBiasCircle(Bias.right),
-                                ]
-                                : [
-                                  if (widget.existLeft)
-                                    _buildBiasRect(Bias.left),
-                                  if (widget.existCenter)
-                                    _buildBiasRect(Bias.center),
-                                  if (widget.existRight)
-                                    _buildBiasRect(Bias.right),
-                                ],
-                      ),
-                    ],
-                  ),
+                          color: getBiasColor(
+                            getBiasFromString(widget.userEvaluation!),
+                          ),
+                        ),
+                      ],
+                    ),
+                SizedBox(height: MyPaddings.medium),
+                Row(
+                  mainAxisSize: MainAxisSize.min,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children:
+                      widget.userEvaluation == null
+                          ? [
+                            if (widget.existLeft)
+                              _buildBiasCircle(Bias.left),
+                            if (widget.existCenter)
+                              _buildBiasCircle(Bias.center),
+                            if (widget.existRight)
+                              _buildBiasCircle(Bias.right),
+                          ]
+                          : [
+                            if (widget.existLeft)
+                              _buildBiasRect(Bias.left),
+                            if (widget.existCenter)
+                              _buildBiasRect(Bias.center),
+                            if (widget.existRight)
+                              _buildBiasRect(Bias.right),
+                          ],
                 ),
-              ),
-            );
-          },
+              ],
+            ),
+          ),
         );
       },
     );

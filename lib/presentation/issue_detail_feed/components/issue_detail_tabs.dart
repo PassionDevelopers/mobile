@@ -71,29 +71,19 @@ class _IssueDetailTabsState extends State<IssueDetailTabs>
         },
         child: AnimatedContainer(
           duration: const Duration(milliseconds: 200),
-          margin: const EdgeInsets.all(3),
-          padding: const EdgeInsets.symmetric(vertical: 10),
+          margin: const EdgeInsets.all(2),
+          padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 4),
           decoration: BoxDecoration(
             color: isSelected ? _biasColors[index] : Colors.transparent,
-            borderRadius: BorderRadius.circular(9),
-            boxShadow:
-                isSelected
-                    ? [
-                      BoxShadow(
-                        color: _biasColors[index].withOpacity(0.3),
-                        blurRadius: 6,
-                        offset: const Offset(0, 2),
-                      ),
-                    ]
-                    : null,
+            borderRadius: BorderRadius.circular(8),
           ),
           child: Text(
             '${_biasLabels[index]} 언론',
             textAlign: TextAlign.center,
             style: TextStyle(
-              color: isSelected ? Colors.white : Colors.grey[600],
-              fontWeight: isSelected ? FontWeight.bold : FontWeight.w500,
-              fontSize: 13,
+              color: isSelected ? Colors.white : AppColors.gray2,
+              fontWeight: isSelected ? FontWeight.w600 : FontWeight.w400,
+              fontSize: 14,
             ),
           ),
         ),
@@ -106,40 +96,53 @@ class _IssueDetailTabsState extends State<IssueDetailTabs>
     required String? text,
     required List<String>? keywords,
   }) {
-    return Padding(
-      padding: EdgeInsets.symmetric(
-          horizontal: MyPaddings.large),
-      child: TextCard(
-        color: getBiasColor(bias),
-        child: text == null? Center(child: NotFound(notFoundType: NotFoundType.article,)) :
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
+    return text == null? Center(child: NotFound(notFoundType: NotFoundType.article,)) :
+      Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          if(keywords != null && keywords.isNotEmpty) Column(
             children: [
-              if(keywords != null) SizedBox(
-                height: 26,
-                child: Align(
-                  alignment: Alignment.centerLeft,
-                  child: ListView.builder(
-                    scrollDirection: Axis.horizontal,
-                    itemBuilder: (_, index) {
-                      return KeyWordChip(
-                        title: keywords[index],
-                        color: Colors.transparent,
-                        borderColor: getBiasColor(bias),
-                      );
-                    },
-                    itemCount: keywords.length,
-                    shrinkWrap: true,
-                  ),
+              Container(
+                height: 32,
+                child: ListView.builder(
+                  scrollDirection: Axis.horizontal,
+                  itemBuilder: (_, index) {
+                    return Padding(
+                      padding: EdgeInsets.only(right: MyPaddings.small),
+                      child: Container(
+                        padding: EdgeInsets.symmetric(
+                          horizontal: MyPaddings.medium,
+                          vertical: 4,
+                        ),
+                        decoration: BoxDecoration(
+                          color: getBiasColor(bias).withOpacity(0.1),
+                          borderRadius: BorderRadius.circular(16),
+                          border: Border.all(
+                            color: getBiasColor(bias).withOpacity(0.3),
+                            width: 1,
+                          ),
+                        ),
+                        child: Text(
+                          keywords[index],
+                          style: TextStyle(
+                            color: getBiasColor(bias),
+                            fontSize: 12,
+                            fontWeight: FontWeight.w500,
+                          ),
+                        ),
+                      ),
+                    );
+                  },
+                  itemCount: keywords.length,
+                  shrinkWrap: true,
                 ),
               ),
-              SizedBox(height: MyPaddings.medium),
-              parseAiText(text, widget.fontSize, getBiasColor(bias)),
-              SizedBox(height: MyPaddings.medium),
+              SizedBox(height: MyPaddings.large),
             ],
           ),
-      ),
-    );
+          parseAiText(text, widget.fontSize, AppColors.gray1),
+        ],
+      );
   }
   
   @override
@@ -179,53 +182,90 @@ class _IssueDetailTabsState extends State<IssueDetailTabs>
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        IssueDetailTitleCard(icon: Icon(Icons.balance), title: MyText.h1('구체적인 보도 내용 차이점'),),
-        Column(
-          children: [
-            Container(
-              margin: EdgeInsets.symmetric(horizontal: MyPaddings.large),
-              decoration: BoxDecoration(
-                color: AppColors.gray5,
-                borderRadius: BorderRadius.circular(12),
-              ),
-              child: Row(
-                children: List.generate(3, (index) {
-                  return _buildTab(index);
-                }),
+    return Container(
+      decoration: BoxDecoration(
+        color: AppColors.white,
+        borderRadius: BorderRadius.circular(16),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.05),
+            blurRadius: 10,
+            offset: Offset(0, 2),
+          ),
+        ],
+      ),
+      child: Column(
+        children: [
+          Container(
+            padding: EdgeInsets.all(MyPaddings.large),
+            decoration: BoxDecoration(
+              border: Border(
+                bottom: BorderSide(
+                  color: AppColors.gray5,
+                  width: 1,
+                ),
               ),
             ),
-            SizedBox(height: MyPaddings.large),
-            AutoSizedTabBarView(
-              tabController: _tabController,
+            child: Row(
               children: [
-                _buildTabViewPage(
-                  bias: Bias.left,
-                  text: issue.leftSummary,
-                  keywords: issue.leftKeywords,
+                Icon(
+                  Icons.balance,
+                  color: AppColors.primary,
+                  size: 24,
                 ),
-                _buildTabViewPage(
-                  bias: Bias.center,
-                  text: issue.centerSummary,
-                  keywords: issue.centerKeywords,
-                ),
-                _buildTabViewPage(
-                  bias: Bias.right,
-                  text: issue.rightSummary,
-                  keywords: issue.rightKeywords,
+                SizedBox(width: MyPaddings.medium),
+                Text(
+                  '구체적인 보도 내용 차이점',
+                  style: MyFontStyle.h2.copyWith(
+                    color: AppColors.primary,
+                    fontWeight: FontWeight.w600,
+                  ),
                 ),
               ],
-            )
-            // Padding(
-            //   padding: EdgeInsets.symmetric(
-            //       horizontal: MyPaddings.large),
-            //   child: MoveToNextButton(moveToNextPage: widget.moveToNextPage, buttonText: '성향별 차이점 보기'),
-            // )
-          ],
-        )
-      ],
+            ),
+          ),
+          Padding(
+            padding: EdgeInsets.all(MyPaddings.large),
+            child: Column(
+              children: [
+                Container(
+                  padding: EdgeInsets.all(4),
+                  decoration: BoxDecoration(
+                    color: AppColors.gray5,
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                  child: Row(
+                    children: List.generate(3, (index) {
+                      return _buildTab(index);
+                    }),
+                  ),
+                ),
+                SizedBox(height: MyPaddings.large),
+                AutoSizedTabBarView(
+                  tabController: _tabController,
+                  children: [
+                    _buildTabViewPage(
+                      bias: Bias.left,
+                      text: issue.leftSummary,
+                      keywords: issue.leftKeywords,
+                    ),
+                    _buildTabViewPage(
+                      bias: Bias.center,
+                      text: issue.centerSummary,
+                      keywords: issue.centerKeywords,
+                    ),
+                    _buildTabViewPage(
+                      bias: Bias.right,
+                      text: issue.rightSummary,
+                      keywords: issue.rightKeywords,
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
     );
   }
 }

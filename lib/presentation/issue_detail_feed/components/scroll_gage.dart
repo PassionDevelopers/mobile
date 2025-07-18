@@ -6,18 +6,35 @@ class ScrollGage extends StatelessWidget {
   final double scrollProgress;
   @override
   Widget build(BuildContext context) {
-    return Container(
-      height: 4,
-      width: double.infinity,
-      decoration: BoxDecoration(color: Colors.grey.shade200),
-      child: Align(
-        alignment: Alignment.centerLeft,
-        child: Container(
-          height: 4,
-          width: MediaQuery.of(context).size.width * scrollProgress,
-          decoration: BoxDecoration(color: AppColors.primary),
+    return Stack(
+      children: [
+        Container(
+          height: 3,
+          width: double.infinity,
+          decoration: BoxDecoration(
+            color: AppColors.gray5,
+          ),
         ),
-      ),
+        AnimatedContainer(
+          duration: Duration(milliseconds: 150),
+          height: 3,
+          width: MediaQuery.of(context).size.width * scrollProgress,
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              colors: [
+                AppColors.left.withOpacity(0.8),
+                AppColors.center.withOpacity(0.8),
+                AppColors.right.withOpacity(0.8),
+              ],
+              stops: [0.0, 0.5, 1.0],
+            ),
+            borderRadius: BorderRadius.only(
+              topRight: Radius.circular(3),
+              bottomRight: Radius.circular(3),
+            ),
+          ),
+        ),
+      ],
     );
   }
 }

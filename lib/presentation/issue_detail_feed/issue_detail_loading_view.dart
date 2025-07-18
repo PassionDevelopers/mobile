@@ -80,11 +80,11 @@ class _IssueDetailLoadingViewState extends State<IssueDetailLoadingView> {
                 ),
               ),
             ),
-
-            MoveToNextButton(
-              moveToNextPage: () {},
-              buttonText: '성향별 보도 내용 보기',
-            ),
+            SizedBox(height: MyPaddings.large),
+            // MoveToNextButton(
+            //   moveToNextPage: () {},
+            //   buttonText: '성향별 보도 내용 보기',
+            // ),
           ],
         ));
   }

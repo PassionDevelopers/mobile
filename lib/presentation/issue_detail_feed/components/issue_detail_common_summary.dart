@@ -23,25 +23,55 @@ class IssueDetailCommonSummary extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        IssueDetailTitleCard(
-          icon: Icon(Icons.join_inner),
-          title: BigTitle(title: '공통 보도 내용'),
-        ),
-        SizedBox(height: MyPaddings.medium),
-        Padding(
-          padding: EdgeInsets.symmetric(horizontal: MyPaddings.large),
-          child: Column(
-            children: [
-              TextCard(
-                color: AppColors.primary,
-                child: parseAiText(commonSummary, fontSize, AppColors.gray1),
-              ),
-            ],
+    return Container(
+      decoration: BoxDecoration(
+        color: AppColors.white,
+        borderRadius: BorderRadius.circular(16),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.05),
+            blurRadius: 10,
+            offset: Offset(0, 2),
           ),
-        ),
-      ],
+        ],
+      ),
+      child: Column(
+        children: [
+          Container(
+            padding: EdgeInsets.all(MyPaddings.large),
+            decoration: BoxDecoration(
+              border: Border(
+                bottom: BorderSide(
+                  color: AppColors.gray5,
+                  width: 1,
+                ),
+              ),
+            ),
+            child: Row(
+              children: [
+                Icon(
+                  Icons.join_inner,
+                  color: AppColors.primary,
+                  size: 24,
+                ),
+                SizedBox(width: MyPaddings.medium),
+                Text(
+                  '공통 보도 내용',
+                  style: TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.w600,
+                    color: AppColors.primary,
+                  ),
+                ),
+              ],
+            ),
+          ),
+          Padding(
+            padding: EdgeInsets.all(MyPaddings.large),
+            child: parseAiText(commonSummary, fontSize, AppColors.gray1),
+          ),
+        ],
+      ),
     );
   }
 }

@@ -126,6 +126,7 @@ class MyPageHeader extends StatelessWidget {
                                     width: 2,
                                   ),
                                 ),
+
                                 child: Icon(
                                   Icons.camera_alt,
                                   size: 14,

@@ -141,7 +141,8 @@ abstract class MyFontStyle{
   static TextStyle h2 = GoogleFonts.notoSansKr(textStyle: TextStyle(
     fontSize: MyFontSizes.large,
     fontWeight: FontWeight.w600,
-    color: AppColors.textPrimary
+    color: AppColors.textPrimary,
+    shadows: []
   ));
 
   static TextStyle h2w = GoogleFonts.notoSansKr(textStyle: TextStyle(
@@ -173,8 +174,9 @@ abstract class MyText {
     return AutoSizeText(text, style: MyFontStyle.h1.copyWith(color: color), group: group, maxLines: maxLines ?? 1, minFontSize: 1, overflow: TextOverflow.ellipsis);
   }
 
-  static AutoSizeText h2(String text, {Color? color, AutoSizeGroup? group, int? maxLines, double? fontSize}){
-    return AutoSizeText(text, style: MyFontStyle.h2.copyWith(color: color, fontSize: fontSize), group: group, maxLines: maxLines ?? 1, minFontSize: 1, overflow: TextOverflow.ellipsis);
+  static AutoSizeText h2(String text, {Color? color, AutoSizeGroup? group, int? maxLines, double? fontSize, List<Shadow>? shadows}){
+    return AutoSizeText(text, style: MyFontStyle.h2.copyWith(color: color, fontSize: fontSize, shadows: shadows ) ,group: group,
+        maxLines: maxLines ?? 1, minFontSize: 1, overflow: TextOverflow.ellipsis);
   }
   static AutoSizeText h2w(String text, {Color? color, AutoSizeGroup? group, int? maxLines}){
     return AutoSizeText(text, style: MyFontStyle.h2w.copyWith(color: color),group: group, maxLines: maxLines ?? 1, minFontSize: 1, overflow: TextOverflow.ellipsis);

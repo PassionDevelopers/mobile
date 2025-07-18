@@ -64,11 +64,29 @@ class _IssueDetailFeedRootState extends State<IssueDetailFeedRoot> {
             ? MyPaddings.large.toDouble()
             : MyPaddings.extraLarge.toDouble(),
       ),
-      child: FloatingActionButton(
-        onPressed: onPressed,
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
-        backgroundColor: AppColors.primaryLight,
-        child: Icon(size: 30, icon),
+      child: Container(
+        decoration: BoxDecoration(
+          boxShadow: [
+            BoxShadow(
+              color: AppColors.primary.withOpacity(0.1),
+              blurRadius: 10,
+              offset: Offset(0, 4),
+            ),
+          ],
+        ),
+        child: FloatingActionButton(
+          onPressed: onPressed,
+          elevation: 0,
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+          backgroundColor: AppColors.white,
+          child: Icon(
+            icon,
+            size: 28,
+            color: viewModel.state.issueDetail!.isSubscribed
+                ? AppColors.primary
+                : AppColors.gray2,
+          ),
+        ),
       ),
     );
   }
@@ -92,17 +110,21 @@ class _IssueDetailFeedRootState extends State<IssueDetailFeedRoot> {
   @override
   Widget build(BuildContext context) {
     return RegScaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: AppColors.background,
       body: Ink(
-        color: Colors.white,
+        color: AppColors.background,
         child: Column(
           children: [
             ValueListenableBuilder(
                 valueListenable: scrollProgressNotifier,
                 builder: (context, scrollProgress, _) {
-                  return ScrollGage(
-                  scrollProgress: scrollProgress,
-              );
+                  return AnimatedContainer(
+                    duration: Duration(milliseconds: 300),
+                    height: scrollProgress > 0 ? 3 : 0,
+                    child: ScrollGage(
+                      scrollProgress: scrollProgress,
+                    ),
+                  );
             }),
             Expanded(
               child: ListenableBuilder(
@@ -134,7 +156,7 @@ class _IssueDetailFeedRootState extends State<IssueDetailFeedRoot> {
                                           moveToNextPage(1);
                                         },
                                       ),
-                                      SizedBox(height: MyPaddings.large),
+                                      SizedBox(height: MyPaddings.extraLarge),
 
                                       if (issue.commonSummary != null)
                                         IssueDetailCommonSummary(
@@ -147,7 +169,7 @@ class _IssueDetailFeedRootState extends State<IssueDetailFeedRoot> {
                                       if (issue.leftComparison != null &&
                                           issue.centerComparison != null &&
                                           issue.rightComparison != null)
-                                        SizedBox(height: MyPaddings.large),
+                                        SizedBox(height: MyPaddings.extraLarge),
 
                                       if (issue.leftComparison != null &&
                                           issue.centerComparison != null &&
@@ -191,7 +213,7 @@ class _IssueDetailFeedRootState extends State<IssueDetailFeedRoot> {
                                           },
                                         ),
 
-                                      SizedBox(height: MyPaddings.large),
+                                      SizedBox(height: MyPaddings.extraLarge),
                                       IssueDetailTabs(
                                         fontSize: state.fontSize,
                                         issue: issue,
@@ -203,7 +225,7 @@ class _IssueDetailFeedRootState extends State<IssueDetailFeedRoot> {
                                         postDasiScore: viewModel.postDasiScore,
                                       ),
 
-                                      SizedBox(height: MyPaddings.large),
+                                      SizedBox(height: MyPaddings.extraLarge * 2),
 
                                       SourceListPage(
                                         articlesGBBAS:
@@ -253,28 +275,33 @@ class _IssueDetailFeedRootState extends State<IssueDetailFeedRoot> {
                               //   ),
                             ],
                           ),
-                          Align(
-                            alignment: Alignment.bottomCenter,
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.end,
-                              children: [
-                                // floatingButton(
-                                //   onPressed: () {
-                                //     viewModel.setFontSize();
-                                //   },
-                                //   icon:
-                                //       viewModel.state.fontSize == 18
-                                //           ? Icons.format_size_outlined
-                                //           : Icons.format_size,
-                                // ),
-                                floatingButton(
-                                  onPressed: viewModel.manageIssueSubscription,
-                                  icon:
-                                      viewModel.state.issueDetail!.isSubscribed
-                                          ? Icons.bookmark
-                                          : Icons.bookmark_add_outlined,
-                                ),
-                              ],
+                          Positioned(
+                            bottom: 32,
+                            right: 0,
+                            child: AnimatedScale(
+                              duration: Duration(milliseconds: 200),
+                              scale: 1.0,
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.end,
+                                children: [
+                                  // floatingButton(
+                                  //   onPressed: () {
+                                  //     viewModel.setFontSize();
+                                  //   },
+                                  //   icon:
+                                  //       viewModel.state.fontSize == 18
+                                  //           ? Icons.format_size_outlined
+                                  //           : Icons.format_size,
+                                  // ),
+                                  floatingButton(
+                                    onPressed: viewModel.manageIssueSubscription,
+                                    icon:
+                                        viewModel.state.issueDetail!.isSubscribed
+                                            ? Icons.bookmark
+                                            : Icons.bookmark_add_outlined,
+                                  ),
+                                ],
+                              ),
                             ),
                           ),
                         ],

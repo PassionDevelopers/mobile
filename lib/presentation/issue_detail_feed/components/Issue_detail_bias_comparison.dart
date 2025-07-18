@@ -50,31 +50,85 @@ class IssueDetailBiasComparison extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        // Row(children: [BackButton(), BigTitle(title: '차이점 정리')]),
-        IssueDetailTitleCard(
-          icon: Icon(Icons.troubleshoot),
-          title: BigTitle(title: '보도 내용 차이점 정리'),
-        ),
-        SizedBox(height: MyPaddings.medium),
-        Padding(
-          padding: EdgeInsets.symmetric(horizontal: MyPaddings.large),
-          child: Column(
-            children: [
-              TextCard(
-                color: AppColors.primary,
-                child: Column(
-                  children: [
-                    if(leftComparison != null) parseAiText(leftComparison!, fontSize, getBiasColor(Bias.left)),
-                    if(leftComparison != null && centerComparison != null) Text('', style: TextStyle(fontSize: fontSize)),
-                    if(centerComparison != null) parseAiText(centerComparison!, fontSize, getBiasColor(Bias.center)),
-                    if(centerComparison != null && rightComparison != null) Text('', style: TextStyle(fontSize: fontSize)),
-                    if(rightComparison != null) parseAiText(rightComparison!, fontSize, getBiasColor(Bias.right)),
-                  ],
-                )
+    return Container(
+      decoration: BoxDecoration(
+        color: AppColors.white,
+        borderRadius: BorderRadius.circular(16),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.05),
+            blurRadius: 10,
+            offset: Offset(0, 2),
+          ),
+        ],
+      ),
+      child: Column(
+        children: [
+          Ink(
+            padding: EdgeInsets.all(MyPaddings.large),
+            decoration: BoxDecoration(
+              border: Border(
+                bottom: BorderSide(
+                  color: AppColors.gray5,
+                  width: 1,
+                ),
               ),
-              SizedBox(height: MyPaddings.medium),
+            ),
+            child: Row(
+              children: [
+                Icon(
+                  Icons.troubleshoot,
+                  color: AppColors.primary,
+                  size: 24,
+                ),
+                SizedBox(width: MyPaddings.medium),
+                Text(
+                  '보도 내용 차이점 정리',
+                  style: MyFontStyle.h2.copyWith(
+                    color: AppColors.primary,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+              ],
+            ),
+          ),
+          Column(
+            children: [
+              if(leftComparison != null || centerComparison != null || rightComparison != null)
+                Padding(
+                  padding: const EdgeInsets.all(MyPaddings.large),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      if(leftComparison != null) _buildComparisonItem(
+                        comparison: leftComparison!,
+                        bias: Bias.left,
+                        fontSize: fontSize,
+                      ),
+                      if(leftComparison != null && (centerComparison != null || rightComparison != null))
+                        Padding(
+                          padding: EdgeInsets.symmetric(vertical: MyPaddings.medium),
+                          child: Divider(color: AppColors.gray4, height: 1),
+                        ),
+                      if(centerComparison != null) _buildComparisonItem(
+                        comparison: centerComparison!,
+                        bias: Bias.center,
+                        fontSize: fontSize,
+                      ),
+                      if(centerComparison != null && rightComparison != null)
+                        Padding(
+                          padding: EdgeInsets.symmetric(vertical: MyPaddings.medium),
+                          child: Divider(color: AppColors.gray4, height: 1),
+                        ),
+                      if(rightComparison != null) _buildComparisonItem(
+                        comparison: rightComparison!,
+                        bias: Bias.right,
+                        fontSize: fontSize,
+                      ),
+                    ],
+                  ),
+                ),
+              SizedBox(height: MyPaddings.large),
               BiasCheckButton(
                 userEvaluation: userEvaluation,
                 onBiasSelected: onBiasSelected,
@@ -86,14 +140,60 @@ class IssueDetailBiasComparison extends StatelessWidget {
                 existCenter: existCenter,
                 existRight: existRight,
               ),
-              // MoveToNextButton(
-              //   moveToNextPage: moveToNextPage,
-              //   buttonText: '언론의 원문 기사 보기',
-              // ),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildComparisonItem({
+    required String comparison,
+    required Bias bias,
+    required double fontSize,
+  }) {
+    return Row(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Container(
+          width: 4,
+          height: 20,
+          margin: EdgeInsets.only(right: MyPaddings.medium, top: 2),
+          decoration: BoxDecoration(
+            color: getBiasColor(bias),
+            borderRadius: BorderRadius.circular(2),
+          ),
+        ),
+        Expanded(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                getBiasTitle(bias),
+                style: MyFontStyle.h1.copyWith(
+                  color: getBiasColor(bias),
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
+              SizedBox(height: MyPaddings.small),
+              parseAiText(comparison, fontSize, AppColors.gray1),
             ],
           ),
         ),
       ],
     );
+  }
+
+  String getBiasTitle(Bias bias) {
+    switch (bias) {
+      case Bias.left:
+        return '진보 성향';
+      case Bias.center:
+        return '중도 성향';
+      case Bias.right:
+        return '보수 성향';
+      default:
+        return '';
+    }
   }
 }
