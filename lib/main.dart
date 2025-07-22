@@ -55,8 +55,6 @@ void main() async {
   //     print('Message also contained a notification: ${message.notification}');
   //   }
   // });
-  //의존성 주입
-  // diSetup()
 
   await UserPreferences.init();
   final config = ClarityConfig(

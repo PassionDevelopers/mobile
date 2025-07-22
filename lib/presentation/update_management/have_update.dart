@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:could_be/core/components/alert/dialog.dart';
 import 'package:could_be/core/components/layouts/scaffold_layout.dart';
 import 'package:could_be/core/routes/route_names.dart';
 import 'package:could_be/data/data_source/local/user_preferences.dart';
@@ -8,8 +9,6 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:language_code/language_code.dart';
 import 'package:upgrader/upgrader.dart';
-
-import '../components/alert/dialog.dart';
 
 class HaveUpdate extends StatelessWidget {
   const HaveUpdate({super.key, required this.latestVersionNow});

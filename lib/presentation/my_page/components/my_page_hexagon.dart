@@ -130,10 +130,10 @@ class MyPageHexagon extends StatelessWidget {
                               color: AppColors.primary,
                             ),
                             if(bias != null) GestureDetector(
-                                onTap: () {
-                                  viewModel.fetchWholeBiasScore();
-                                },
-                                child: Icon(Icons.refresh, size: 25, color: AppColors.gray2)),
+                              onTap: () {
+                                viewModel.fetchWholeBiasScore();
+                              },
+                              child: Icon(Icons.refresh, size: 25, color: AppColors.gray2)),
                           ],
                         ),
                       ],
@@ -158,18 +158,18 @@ class MyPageHexagon extends StatelessWidget {
               SizedBox(
                 height: 300,
                 child:
-                    wholeBiasScore == null || state.isWholeBiasScoreLoading
-                        ? Center(
-                          child: CircularProgressIndicator(
-                            color: AppColors.primary,
-                          ),
-                        )
-                        : BiasHexagon(
-                          isZoomed: viewModel.state.isHexagonAbsolute,
-                          wholeBiasScore: wholeBiasScore,
-                          onBiasChanged: viewModel.changeBiasNow,
-                          biasNow: state.biasNow,
+                  wholeBiasScore == null || state.isWholeBiasScoreLoading
+                      ? Center(
+                        child: CircularProgressIndicator(
+                          color: AppColors.primary,
                         ),
+                      )
+                      : BiasHexagon(
+                        isZoomed: viewModel.state.isHexagonAbsolute,
+                        wholeBiasScore: wholeBiasScore,
+                        onBiasChanged: viewModel.changeBiasNow,
+                        biasNow: state.biasNow,
+                      ),
               ),
 
               SizedBox(height: MyPaddings.large),

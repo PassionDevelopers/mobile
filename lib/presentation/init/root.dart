@@ -9,17 +9,18 @@ import 'package:could_be/core/routes/router.dart';
 import 'package:could_be/domain/repositoryInterfaces/track_user_activity_interface.dart';
 import 'package:could_be/domain/useCases/manage_user_status_use_case.dart';
 import 'package:could_be/presentation/log_in/login_view_model.dart';
+import 'package:could_be/presentation/update_management/check_update_field.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:go_router/go_router.dart';
 import 'package:package_info_plus/package_info_plus.dart';
-
 import '../../core/di/di_setup.dart';
-import '../../core/update_management/check_update_field.dart';
 import '../../data/data_source/local/user_preferences.dart';
 import '../../domain/repositoryInterfaces/token_storage_interface.dart';
+
+StreamSubscription? fireSubscription;
 
 class Root extends StatefulWidget {
   const Root({super.key});
@@ -29,8 +30,8 @@ class Root extends StatefulWidget {
 }
 
 class _RootState extends State<Root> {
-  late StreamSubscription fireSubscription;
   final _flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
+  bool isRoutedToUpdate = false;
 
   Future startListenUpdateStatus() async {
     PackageInfo packageInfo = await PackageInfo.fromPlatform();
@@ -79,29 +80,39 @@ class _RootState extends State<Root> {
     }
 
     usersStream.listen((snapshot){
+      log('check update status ${snapshot.data()}');
       if (Platform.isAndroid) {
         if (snapshot.data()![CheckUpdateField.androidServerCheck]) {
-          if(context.mounted) context.go(RouteNames.serverCheck);
+          log('서버 점검으로 가자');
+          isRoutedToUpdate = true;
+          router.go(RouteNames.serverCheck);
         } else if (isNeedUpdate(snapshot.data()![CheckUpdateField.androidVersionForce], version)) {
-          if(context.mounted) context.go(RouteNames.needUpdate);
+          isRoutedToUpdate = true;
+          router.go(RouteNames.needUpdate);
         } else if (isHaveUpdate(snapshot.data()![CheckUpdateField.androidVersionLatest], version)) {
-          if(context.mounted) context.go(RouteNames.haveUpdate, extra: snapshot.data()![CheckUpdateField.androidVersionLatest]);
+          isRoutedToUpdate = true;
+          router.go(RouteNames.haveUpdate, extra: snapshot.data()![CheckUpdateField.androidVersionLatest]);
         }
       } else if (Platform.isIOS) {
         if (snapshot.data()![CheckUpdateField.iosServerCheck]) {
-          if(context.mounted) context.go(RouteNames.serverCheck);
+          isRoutedToUpdate = true;
+          router.go(RouteNames.serverCheck);
         } else if (isNeedUpdate(snapshot.data()![CheckUpdateField.iosVersionForce], version)) {
-          if(context.mounted) context.go(RouteNames.needUpdate);
+          isRoutedToUpdate = true;
+          router.go(RouteNames.needUpdate);
         } else if (isHaveUpdate(snapshot.data()![CheckUpdateField.iosVersionLatest], version)) {
-          if(context.mounted) context.go(RouteNames.haveUpdate, extra: snapshot.data()![CheckUpdateField.iosVersionLatest]);
+          isRoutedToUpdate = true;
+          router.go(RouteNames.haveUpdate, extra: snapshot.data()![CheckUpdateField.iosVersionLatest]);
         }
       } else {
-        if(context.mounted) context.go(RouteNames.unsupportedDevice);
+        isRoutedToUpdate = true;
+        router.go(RouteNames.unsupportedDevice);
       }
     });
   }
 
   Future<void> userLogined(String idToken) async {
+    log('몇번 실행되는거냐');
     final tokenRepo = getIt<TokenStorageRepository>();
     final trackUserActivityRepo = getIt<TrackUserActivityRepository>();
     await tokenRepo.saveToken(idToken);
@@ -113,9 +124,11 @@ class _RootState extends State<Root> {
     var result = await manageUserStatusUseCase.checkUserRegisterStatus();
     if (!result.exists) {
       await manageUserStatusUseCase.registerIdToken(idToken);
-      if(context.mounted) context.go(RouteNames.home);
+      log('if mounted: ${mounted}');
+      if(mounted && !isRoutedToUpdate) context.go(RouteNames.home);
     } else {
-      if(context.mounted) context.go(RouteNames.home);
+      log('if mounted2: ${mounted}');
+      if(mounted && !isRoutedToUpdate) context.go(RouteNames.home);
     }
   }
 
@@ -212,12 +225,6 @@ class _RootState extends State<Root> {
         }
       }
     });
-  }
-
-  @override
-  void dispose(){
-    fireSubscription.cancel();
-    super.dispose();
   }
 
   @override

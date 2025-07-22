@@ -1,13 +1,12 @@
 import 'dart:io';
+import 'package:could_be/core/components/alert/dialog.dart';
 import 'package:could_be/core/components/layouts/scaffold_layout.dart';
-import 'package:flutter/cupertino.dart';
+import 'package:could_be/core/components/navigation/pop_scope.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:language_code/language_code.dart';
 import 'package:upgrader/upgrader.dart';
 import '../../ui/color.dart';
-import '../components/alert/dialog.dart';
-import '../components/navigation/pop_scope.dart';
 
 class NeedUpdate extends StatelessWidget {
   const NeedUpdate({super.key, required this.isUpdate});
