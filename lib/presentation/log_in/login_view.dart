@@ -1,16 +1,12 @@
-import 'dart:developer';
 import 'dart:io';
 import 'package:could_be/core/components/buttons/login_button.dart';
 import 'package:could_be/core/di/di_setup.dart';
 import 'package:could_be/core/themes/margins_paddings.dart';
 import 'package:could_be/presentation/log_in/login_view_model.dart';
-import 'package:could_be/presentation/my_page/main/my_page_view_model.dart';
 import 'package:could_be/ui/fonts.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:sign_button/constants.dart';
-import '../../core/components/layouts/scaffold_layout.dart';
 import '../../ui/color.dart';
 
 class LoginView extends StatelessWidget {
