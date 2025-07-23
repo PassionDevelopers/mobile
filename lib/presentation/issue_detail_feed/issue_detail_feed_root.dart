@@ -156,7 +156,7 @@ class _IssueDetailFeedRootState extends State<IssueDetailFeedRoot> {
                                           moveToNextPage(1);
                                         },
                                       ),
-                                      SizedBox(height: MyPaddings.extraLarge),
+                                      if (issue.commonSummary != null) SizedBox(height: MyPaddings.extraLarge),
 
                                       if (issue.commonSummary != null)
                                         IssueDetailCommonSummary(
@@ -169,7 +169,7 @@ class _IssueDetailFeedRootState extends State<IssueDetailFeedRoot> {
                                       if (issue.leftComparison != null &&
                                           issue.centerComparison != null &&
                                           issue.rightComparison != null)
-                                        SizedBox(height: MyPaddings.extraLarge),
+                                        SizedBox(height: MyPaddings.large),
 
                                       if (issue.leftComparison != null &&
                                           issue.centerComparison != null &&
@@ -225,7 +225,7 @@ class _IssueDetailFeedRootState extends State<IssueDetailFeedRoot> {
                                         postDasiScore: viewModel.postDasiScore,
                                       ),
 
-                                      SizedBox(height: MyPaddings.extraLarge * 2),
+                                      SizedBox(height: MyPaddings.extraLarge),
 
                                       SourceListPage(
                                         articlesGBBAS:
@@ -239,8 +239,7 @@ class _IssueDetailFeedRootState extends State<IssueDetailFeedRoot> {
                                           );
                                         },
                                       ),
-                                      SizedBox(height: MyPaddings.large),
-
+                                      SizedBox(height: MyPaddings.extraLarge),
                                       // Padding(
                                       //   padding: EdgeInsets.symmetric(horizontal: MyPaddings.large),
                                       //   child: CustomReportPage(),

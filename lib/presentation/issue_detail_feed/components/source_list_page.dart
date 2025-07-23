@@ -1,6 +1,7 @@
 import 'dart:developer';
 
 import 'package:could_be/core/components/layouts/text_helper.dart';
+import 'package:could_be/core/components/loading/not_found.dart';
 import 'package:could_be/domain/entities/articles_group_by_bias.dart';
 import 'package:could_be/presentation/media/media_components.dart';
 import 'package:flutter/material.dart';
@@ -82,26 +83,7 @@ class _SourceListPageState extends State<SourceListPage>
     required List<OneSourceArticles> oneSourceArticles,
   }) {
     return oneSourceArticles.isEmpty
-        ? Container(
-          height: 200,
-          child: Center(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Icon(
-                  Icons.article_outlined,
-                  size: 48,
-                  color: AppColors.gray3,
-                ),
-                SizedBox(height: MyPaddings.medium),
-                Text(
-                  '기사가 없습니다',
-                  style: TextStyle(color: AppColors.gray2, fontSize: 16),
-                ),
-              ],
-            ),
-          ),
-        )
+        ? NotFound(notFoundType: NotFoundType.article)
         : SingleChildScrollView(
           child: Column(
             children: [

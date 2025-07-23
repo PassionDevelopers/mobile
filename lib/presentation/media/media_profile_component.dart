@@ -116,13 +116,10 @@ class MediaProfile extends StatelessWidget {
             color:
                 isShowingArticles
                     ? getBiasColor(source.bias).withOpacity(0.1)
-                    : AppColors.background,
+                    : Colors.transparent,
             borderRadius: BorderRadius.circular(10),
             border: Border.all(
-              color:
-                  isShowingArticles
-                      ? getBiasColor(source.bias)
-                      : AppColors.gray4,
+              color: isShowingArticles? getBiasColor(source.bias) : Colors.transparent,
               width: isShowingArticles ? 2 : 1,
             ),
             // boxShadow: [
