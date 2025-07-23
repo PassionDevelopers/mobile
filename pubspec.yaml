@@ -149,6 +149,17 @@ flutter_native_splash:
 
 flutter:
   uses-material-design: true
+
+  fonts:
+    - family: HakgyoansimTuhoR
+      fonts:
+        - asset: assets/fonts/HakgyoansimTuhoR.ttf
+    - family: SonkeechungT
+      fonts:
+        - asset: assets/fonts/KCC-Sonkeechung.otf
+    - family: SonkeechungO
+      fonts:
+        - asset: assets/fonts/KCC-Sonkeechung.ttf
   assets:
     - assets/images/login/
     - assets/images/logo/

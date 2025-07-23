@@ -231,48 +231,41 @@ class _SubscribedMediaRootState extends State<SubscribedMediaRoot> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         // // 기사 헤더
-                        // if (state.selectedSourceId != null)
-                        //   Container(
-                        //     padding: EdgeInsets.symmetric(
-                        //       horizontal: MyPaddings.extraLarge,
-                        //       vertical: MyPaddings.medium,
-                        //     ),
-                        //     child: Row(
-                        //       mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        //       children: [
-                        //         Text(
-                        //           '최신 기사',
-                        //           style: MyFontStyle.h1.copyWith(
-                        //             color: AppColors.primary,
-                        //           ),
-                        //         ),
-                        //         if (state.selectedSourceId != null)
-                        //           InkWell(
-                        //             onTap: () {
-                        //               context.push(
-                        //                 RouteNames.mediaDetail,
-                        //                 extra: state.selectedSourceId,
-                        //               );
-                        //             },
-                        //             child: Row(
-                        //               children: [
-                        //                 Text(
-                        //                   '언론사 상세보기',
-                        //                   style: MyFontStyle.reg.copyWith(
-                        //                     color: AppColors.gray2,
-                        //                   ),
-                        //                 ),
-                        //                 Icon(
-                        //                   Icons.arrow_forward_ios,
-                        //                   size: 14,
-                        //                   color: AppColors.gray2,
-                        //                 ),
-                        //               ],
-                        //             ),
-                        //           ),
-                        //       ],
-                        //     ),
-                        //   ),
+                        if (state.selectedSourceId != null)
+                          Container(
+                            padding: EdgeInsets.symmetric(
+                              horizontal: MyPaddings.large,
+                              vertical: MyPaddings.medium,
+                            ),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                MyText.h2('최신 기사'),
+                                if (state.selectedSourceId != null)
+                                  InkWell(
+                                    onTap: () {
+                                      context.push(
+                                        RouteNames.mediaDetail,
+                                        extra: state.selectedSourceId,
+                                      );
+                                    },
+                                    child: Row(
+                                      children: [
+                                        MyText.reg(
+                                          '언론사 상세보기',
+                                          color: AppColors.gray2,
+                                        ),
+                                        Icon(
+                                          Icons.arrow_forward_ios,
+                                          size: 14,
+                                          color: AppColors.gray2,
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                              ],
+                            ),
+                          ),
                         // 기사 리스트
                         state.isArticlesLoading
                             ? Container(

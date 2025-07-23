@@ -1,6 +1,7 @@
 import 'package:could_be/core/routes/route_names.dart';
 import 'package:could_be/presentation/customer_services/feedback_root.dart';
 import 'package:could_be/presentation/home/feed_view.dart';
+import 'package:could_be/presentation/hot_issue/hot_issue_view.dart';
 import 'package:could_be/presentation/init/root.dart';
 import 'package:could_be/presentation/issue_detail_feed/issue_detail_feed_root.dart';
 import 'package:could_be/presentation/my_page/manage_issue_evaluation_view.dart';
@@ -70,6 +71,10 @@ final router = GoRouter(
         return IssueDetailFeedRoot(issueId: issueId);
       },
     ),
+    // GoRoute(
+    //   path: RouteNames.hotIssueFeed,
+    //   builder: (context, state) => HotIssueView(issue: issue)
+    // ),
 
     //article
     GoRoute(

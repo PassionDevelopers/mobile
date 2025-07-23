@@ -1,4 +1,7 @@
+import 'dart:developer';
+
 import 'package:could_be/core/components/app_bar/app_bar.dart';
+import 'package:could_be/core/components/cards/hot_issue_card.dart';
 import 'package:could_be/core/components/loading/not_found.dart';
 import 'package:could_be/presentation/home/issue_query_params/issue_query_params_view.dart';
 import 'package:could_be/ui/color.dart';
@@ -86,14 +89,19 @@ class _IssueListRootState extends State<IssueListRoot> {
               listenable: viewModel,
               builder: (context, _) {
                 final state = viewModel.state;
+                log('IssueQueryParam: ${state.issueQueryParam?.queryParam}');
                 if (state.isLoading) {
                   return IssueListLoadingView();
                 } else {
                   if (state.issueList.isEmpty) {
                     return NotFound(notFoundType: NotFoundType.issue);
                   } else {
+                    bool isDailyQueryParam = state.issueQueryParam != null && state.issueQueryParam!.queryParam == IssueType.daily.name;
+                    bool isDailyIssueType = state.issueQueryParam == null && widget.issueType == IssueType.daily;
+                    log('isDailyQueryParam: $isDailyQueryParam, isDailyIssueType: $isDailyIssueType');
                     return Column(
                       children: [
+                        if(widget.isFeedView && (isDailyQueryParam || isDailyIssueType) ) HotIssueCard(),
                         IssueListView(issueList: state.issueList,
                           onBiasSelected: viewModel.manageIssueEvaluation,
                           isEvaluating: state.isEvaluating,

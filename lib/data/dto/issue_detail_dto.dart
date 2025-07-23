@@ -1,6 +1,7 @@
 import 'dart:developer';
 
 import 'package:could_be/data/dto/articles_dto.dart';
+import 'package:could_be/data/dto/issue_tag_dto.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 import '../../domain/entities/issue_detail.dart';
@@ -15,6 +16,7 @@ class IssueDetailDTO {
   final String title;
   final String category;
   final String summary;
+  final List<IssueTagDto> tags;
   final String? commonSummary;
   final String? imageUrl;
   final String? imageSource;
@@ -42,6 +44,7 @@ class IssueDetailDTO {
   final ArticlesDTO articles;
 
   IssueDetailDTO({
+    required this.tags,
     required this.id,
     required this.title,
     required this.category,
@@ -85,6 +88,7 @@ extension IssueDetailDtx on IssueDetailDTO {
   IssueDetail toDomain() {
     log('Converting IssueDetailDTO to IssueDetail ${leftComparison}');
     return IssueDetail(
+      tags: tags.map((tag) => tag.toDomain()).toList(),
       leftLikeCount: leftLikeCount,
       centerLikeCount: centerLikeCount,
       rightLikeCount: rightLikeCount,

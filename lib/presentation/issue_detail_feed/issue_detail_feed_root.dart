@@ -152,9 +152,6 @@ class _IssueDetailFeedRootState extends State<IssueDetailFeedRoot> {
                                       IssueDetailSummary(
                                         issue: issue,
                                         fontSize: state.fontSize,
-                                        moveToNextPage: () {
-                                          moveToNextPage(1);
-                                        },
                                       ),
                                       if (issue.commonSummary != null) SizedBox(height: MyPaddings.extraLarge),
 
@@ -162,17 +159,14 @@ class _IssueDetailFeedRootState extends State<IssueDetailFeedRoot> {
                                         IssueDetailCommonSummary(
                                           commonSummary: issue.commonSummary!,
                                           fontSize: state.fontSize,
-                                          moveToNextPage: () {
-                                            moveToNextPage(2);
-                                          },
                                         ),
-                                      if (issue.leftComparison != null &&
-                                          issue.centerComparison != null &&
+                                      if (issue.leftComparison != null ||
+                                          issue.centerComparison != null ||
                                           issue.rightComparison != null)
                                         SizedBox(height: MyPaddings.large),
 
-                                      if (issue.leftComparison != null &&
-                                          issue.centerComparison != null &&
+                                      if (issue.leftComparison != null ||
+                                          issue.centerComparison != null ||
                                           issue.rightComparison != null)
                                         ListenableBuilder(
                                           listenable: ValueNotifier(

@@ -14,6 +14,8 @@ class IssueDTO{
 
   final List<IssueTagDto> tags;
 
+  final bool? isRead;
+
   final DateTime createdAt;
   final DateTime? updatedAt;
 
@@ -33,6 +35,7 @@ class IssueDTO{
     required this.id,
     required this.tags,
     required this.summary,
+    this.isRead,
     required this.title,
     required this.createdAt,
     this.updatedAt,
@@ -41,6 +44,7 @@ class IssueDTO{
     required this.isSubscribed,
     this.imageUrl,
     required this.view,
+
     required this.coverageSpectrum,
     required this.leftLikeCount,
     required this.centerLikeCount,
@@ -62,6 +66,7 @@ extension IssueDtoX on IssueDTO {
       centerLikeCount: centerLikeCount,
       rightLikeCount: rightLikeCount,
       id: id,
+      isRead: isRead ?? false,
       title: title,
       category: category,
       summary: summary,

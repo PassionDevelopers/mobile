@@ -109,7 +109,8 @@ class _BlindSpotRootState extends State<BlindSpotRoot> with SingleTickerProvider
   // 탭바와 설명 카드를 포함하는 상단 섹션
   Widget _buildUpperSection(int index) {
     return Container(
-      margin: EdgeInsets.symmetric(horizontal: MyPaddings.large, vertical: MyPaddings.large),
+      // margin: EdgeInsets.symmetric(horizontal: MyPaddings.large, vertical: MyPaddings.large),
+      margin: EdgeInsets.only(bottom: MyPaddings.large),
       padding: EdgeInsets.all(MyPaddings.large),
       decoration: BoxDecoration(
         gradient: LinearGradient(
@@ -119,7 +120,7 @@ class _BlindSpotRootState extends State<BlindSpotRoot> with SingleTickerProvider
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
         ),
-        borderRadius: BorderRadius.circular(20),
+        // borderRadius: BorderRadius.circular(20),
         border: Border.all(
           color: index == 0
               ? AppColors.left.withOpacity(0.3)

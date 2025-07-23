@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'package:could_be/core/components/buttons/back_button.dart';
 import 'package:could_be/core/components/cards/issue_detail_title_card.dart';
 import 'package:could_be/core/components/cards/text_card.dart';
+import 'package:could_be/core/components/chips/blind_chip.dart';
 import 'package:could_be/core/components/image/image_container.dart';
 import 'package:could_be/core/components/layouts/nested_page_view.dart';
 import 'package:could_be/core/components/title/big_title.dart';
@@ -21,37 +22,17 @@ class IssueDetailSummary extends StatefulWidget {
     super.key,
     required this.issue,
     required this.fontSize,
-    required this.moveToNextPage,
   });
 
   final IssueDetail issue;
   final double fontSize;
-  final VoidCallback moveToNextPage;
 
   @override
   State<IssueDetailSummary> createState() => _IssueDetailSummaryState();
 }
 
 class _IssueDetailSummaryState extends State<IssueDetailSummary> {
-  final ScrollController scrollController = ScrollController();
-  bool _atBottom = false;
 
-  @override
-  void initState() {
-    // TODO: implement initState
-    super.initState();
-    scrollController.addListener(() {
-      if (scrollController.position.atEdge) {
-        log('Reached the end of the summary');
-        // widget.moveToNextPage();
-        if(_atBottom){
-          widget.moveToNextPage();
-        }else{
-          _atBottom = true;
-        }
-      }
-    });
-  }
   @override
   Widget build(BuildContext context) {
 
@@ -111,7 +92,7 @@ class _IssueDetailSummaryState extends State<IssueDetailSummary> {
                                     maxLines: 3,
                                     overflow: TextOverflow.ellipsis,
                                   ),
-                                  if(widget.issue.imageSource != null) 
+                                  if(widget.issue.imageSource != null && widget.issue.imageSource!.isNotEmpty)
                                     Padding(
                                       padding: EdgeInsets.only(top: MyPaddings.small),
                                       child: Text(
@@ -164,6 +145,25 @@ class _IssueDetailSummaryState extends State<IssueDetailSummary> {
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
+                if (widget.issue.tags.isNotEmpty)
+                  Padding(
+                    padding: EdgeInsets.only(top: MyPaddings.large, left: MyPaddings.small),
+                    child: SizedBox(
+                      height: 24,
+                      child: ListView.builder(
+                        scrollDirection: Axis.horizontal,
+                        shrinkWrap: true,
+                        itemCount: widget.issue.tags.length,
+                        itemBuilder: (_, index) {
+                          return BlindChip(
+                            topPadding: 0,
+                            isFirst: index == 0,
+                            tag: widget.issue.tags[index],
+                          );
+                        },
+                      ),
+                    ),
+                  ),
                 Padding(
                   padding: EdgeInsets.symmetric(horizontal: MyPaddings.large),
                   child: IssueDetailHeader(issue: widget.issue),
@@ -217,6 +217,7 @@ class _IssueDetailSummaryState extends State<IssueDetailSummary> {
                               style: MyFontStyle.h2.copyWith(
                                 color: AppColors.primary,
                                 fontWeight: FontWeight.w600,
+                                fontFamily: 'Sonkeechung',
                               ),
                             ),
                           ],
@@ -235,14 +236,6 @@ class _IssueDetailSummaryState extends State<IssueDetailSummary> {
                 ),
               ],
             ),
-
-            // Padding(
-            //   padding: EdgeInsets.symmetric(horizontal: MyPaddings.large),
-            //   child: MoveToNextButton(
-            //     moveToNextPage: widget.moveToNextPage,
-            //     buttonText: '성향별 보도 내용 보기',
-            //   ),
-            // ),
           ],
         ),
         Positioned(
