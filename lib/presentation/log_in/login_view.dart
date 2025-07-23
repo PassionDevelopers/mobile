@@ -57,6 +57,13 @@ class LoginView extends StatelessWidget {
                     onLoginSuccess();
                   },
                 ),
+                LoginButton(
+                  buttonType: ButtonType.amazon,
+                  onPressed: () async {
+                    await viewModel.signIn(context, signInMethod: SignInMethod.kakao);
+                    onLoginSuccess();
+                  },
+                ),
                 // LoginButton(
                 //   buttonType: ButtonType.mail,
                 //   onPressed: () async {

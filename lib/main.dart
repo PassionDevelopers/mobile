@@ -7,6 +7,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:kakao_flutter_sdk/kakao_flutter_sdk_auth.dart';
 import 'core/behavior/scroll_behavior.dart';
 import 'core/themes/app_bar_theme.dart';
 import 'firebase_options.dart';
@@ -57,6 +58,10 @@ void main() async {
   // });
 
   await UserPreferences.init();
+  KakaoSdk.init(
+    nativeAppKey: '3af3ede3773c2db3782152f2e673395f',
+    // javaScriptAppKey: '${YOUR_JAVASCRIPT_APP_KEY}',
+  );
   final config = ClarityConfig(
     projectId: "sbiwi1dz8s",
     logLevel: LogLevel.None, // Note: Use "LogLevel.Verbose" value while testing to debug initialization issues.

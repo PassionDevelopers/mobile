@@ -75,6 +75,7 @@ Future<void> diViewModelSetup() async {
   );
   getIt.registerFactoryParam<MediaDetailViewModel, String, void>(
         (sourceId, _) => MediaDetailViewModel(
+      manageMediaSubscriptionUseCase: getIt(),
       fetchSourceDetailUseCase: getIt(),
       sourceId: sourceId,
     ),

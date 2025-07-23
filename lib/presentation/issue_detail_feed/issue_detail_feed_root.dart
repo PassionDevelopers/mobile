@@ -182,10 +182,9 @@ class _IssueDetailFeedRootState extends State<IssueDetailFeedRoot> {
                                                       : 3,
                                                 );
                                               },
-                                              existCenter: issue.centerSummary != null,
-                                              existLeft: issue.leftSummary != null,
-                                              existRight:
-                                              issue.rightSummary != null,
+                                              existCenter: issue.centerComparison != null,
+                                              existLeft: issue.leftComparison != null,
+                                              existRight: issue.rightComparison != null,
                                               isEvaluating: state.isEvaluating,
                                               onBiasSelected:
                                               viewModel

@@ -13,6 +13,7 @@ enum SignInMethod {
   google,
   apple,
   anonymous,
+  kakao,
 }
 
 class LoginViewModel with ChangeNotifier {
@@ -34,6 +35,7 @@ class LoginViewModel with ChangeNotifier {
         SignInMethod.google => await _firebaseLoginUseCase.signInWithGoogle(),
         SignInMethod.apple => await _firebaseLoginUseCase.signInWithApple(),
         SignInMethod.anonymous => await _firebaseLoginUseCase.signInAnon(),
+        SignInMethod.kakao => await _firebaseLoginUseCase.signInWithKakao(),
       }){
         _state = _state.copyWith(isLoginInProgress: false);
         notifyListeners();
