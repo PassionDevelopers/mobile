@@ -5,7 +5,8 @@ import 'package:could_be/ui/color.dart';
 import 'package:flutter/material.dart';
 
 class SearchAppBar extends StatefulWidget {
-  const SearchAppBar({super.key, this.backButtonVisible = false, required this.appBar, required this.onSearchSubmitted, });
+  const SearchAppBar({super.key, this.backButtonVisible = false, required this.appBar,
+    required this.onSearchSubmitted});
 
   final void Function(String query) onSearchSubmitted;
   final Widget appBar;

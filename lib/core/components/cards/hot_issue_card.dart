@@ -1,13 +1,14 @@
-import 'package:could_be/core/components/image/image_container.dart';
-import 'package:could_be/core/responsive/responsive_utils.dart';
+import 'package:could_be/core/routes/route_names.dart';
 import 'package:could_be/core/themes/margins_paddings.dart';
 import 'package:could_be/ui/color.dart';
 import 'package:could_be/ui/fonts.dart';
 import 'package:flutter/material.dart';
-import 'dart:ui';
+import 'package:go_router/go_router.dart';
 
 class HotIssueCard extends StatefulWidget {
-  const HotIssueCard({super.key});
+  const HotIssueCard({super.key, required this.updateTime});
+
+  final DateTime updateTime;
 
   @override
   State<HotIssueCard> createState() => _HotIssueCardState();
@@ -25,6 +26,7 @@ class _HotIssueCardState extends State<HotIssueCard>
   ).animate(
     CurvedAnimation(parent: _animationController, curve: Curves.easeInOut),
   );
+  late final String _formattedDate = '${widget.updateTime.month}월 ${widget.updateTime.day}일 ${widget.updateTime.hour}:${widget.updateTime.minute}';
 
   @override
   void dispose() {
@@ -34,19 +36,19 @@ class _HotIssueCardState extends State<HotIssueCard>
 
   @override
   Widget build(BuildContext context) {
-    final responsivePadding = ResponsiveUtils.getResponsivePadding(
-      context,
-      mobile: MyPaddings.largeMedium.toDouble(),
-      tablet: MyPaddings.large.toDouble(),
-      desktop: MyPaddings.medium.toDouble(),
-    );
+    // final responsivePadding = ResponsiveUtils.getResponsivePadding(
+    //   context,
+    //   mobile: MyPaddings.medium.toDouble(),
+    //   tablet: MyPaddings.large.toDouble(),
+    //   desktop: MyPaddings.medium.toDouble(),
+    // );
 
     return Padding(
       padding: EdgeInsets.fromLTRB(
-        responsivePadding.left,
+        MyPaddings.largeMedium.toDouble(),
         0,
-        responsivePadding.right,
-        responsivePadding.bottom,
+        MyPaddings.largeMedium.toDouble(),
+        MyPaddings.medium.toDouble(),
       ),
       child: AnimatedBuilder(
         animation: _scaleAnimation,
@@ -62,55 +64,47 @@ class _HotIssueCardState extends State<HotIssueCard>
               child: InkWell(
                 borderRadius: BorderRadius.circular(20),
                 onTap: () {
-                  // Navigation logic here
+                  context.push(RouteNames.hotIssueFeed);
                 },
-                child: Stack(
-                  children: [
-                    // 배경 그라데이션
-                    Container(
-                      width: double.infinity,
-                      height: 140,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(20),
-                        gradient: LinearGradient(
-                          begin: Alignment.topLeft,
-                          end: Alignment.bottomRight,
-                          colors: [
-                            AppColors.primary.withValues(alpha: 0.9),
-                            AppColors.primary.withValues(alpha: 0.8),
-                          ],
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(20),
+                  child: Stack(
+                    children: [
+                      // 배경 그라데이션
+                      Container(
+                        width: double.infinity,
+                        height: 140,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(20),
+                          gradient: LinearGradient(
+                            begin: Alignment.topLeft,
+                            end: Alignment.bottomRight,
+                            colors: [
+                              AppColors.primary.withValues(alpha: 0.9),
+                              AppColors.primary.withValues(alpha: 0.8),
+                            ],
+                          ),
                         ),
                       ),
-                    ),
-                    // 글래스모피즘 효과
-                    Container(
-                      width: double.infinity,
-                      height: 140,
-                      // decoration: BoxDecoration(
-                      //   borderRadius: BorderRadius.circular(20),
-                      //   gradient: LinearGradient(
-                      //     begin: Alignment.topCenter,
-                      //     end: Alignment.bottomCenter,
-                      //     colors: [
-                      //       Colors.white.withValues(alpha: 0.1),
-                      //       Colors.white.withValues(alpha: 0.05),
-                      //     ],
-                      //   ),
-                      //   border: Border.all(
-                      //     color: Colors.white.withValues(alpha: 0.2),
-                      //     width: 1.5,
-                      //   ),
-                      //   boxShadow: [
-                      //     BoxShadow(
-                      //       color: AppColors.primary.withValues(alpha: 0.15),
-                      //       blurRadius: 20,
-                      //       spreadRadius: 0,
-                      //       offset: Offset(0, 10),
-                      //     ),
-                      //   ],
-                      // ),
-                      child: ClipRRect(
-                        borderRadius: BorderRadius.circular(20),
+                      // 글래스모피즘 효과
+                      Container(
+                        width: double.infinity,
+                        height: 140,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(20),
+                          gradient: LinearGradient(
+                            begin: Alignment.topCenter,
+                            end: Alignment.bottomCenter,
+                            colors: [
+                              Colors.white.withValues(alpha: 0.1),
+                              Colors.white.withValues(alpha: 0.05),
+                            ],
+                          ),
+                          border: Border.all(
+                            color: Colors.white.withValues(alpha: 0.2),
+                            width: 1.5,
+                          ),
+                        ),
                         child: Container(
                           padding: EdgeInsets.all(MyPaddings.large),
                           child: Column(
@@ -119,74 +113,9 @@ class _HotIssueCardState extends State<HotIssueCard>
                               // 상단 헤더
                               Row(
                                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  // HOT 뱃지와 타이틀
-                                  Expanded(
-                                    child: Column(
-                                      crossAxisAlignment: CrossAxisAlignment.start,
-                                      children: [
-                                        Row(
-                                          children: [
-                                            // 애니메이션 HOT 뱃지
-                                            Container(
-                                              padding: EdgeInsets.symmetric(
-                                                horizontal: MyPaddings.small,
-                                                vertical: 4,
-                                              ),
-                                              decoration: BoxDecoration(
-                                                color: Colors.white,
-                                                borderRadius: BorderRadius.circular(12),
-                                                boxShadow: [
-                                                  BoxShadow(
-                                                    color: Colors.white.withValues(alpha: 0.3),
-                                                    blurRadius: 8,
-                                                    spreadRadius: 0,
-                                                  ),
-                                                ],
-                                              ),
-                                              child: Row(
-                                                mainAxisSize: MainAxisSize.min,
-                                                children: [
-                                                  Icon(
-                                                    Icons.whatshot,
-                                                    size: 14,
-                                                    color: AppColors.right,
-                                                  ),
-                                                  const SizedBox(width: 4),
-                                                  MyText.small(
-                                                    'HOT',
-                                                    color: AppColors.primary,
-                                                    fontWeight: FontWeight.w800,
-                                                  ),
-                                                ],
-                                              ),
-                                            ),
-                                            const SizedBox(width: MyPaddings.small),
-                                            MyText.h2(
-                                              '오늘의 이슈 TOP 5',
-                                              color: Colors.white,
-                                            ),
-                                          ],
-                                        ),
-                                        const SizedBox(height: MyPaddings.extraSmall),
-
-                                        Row(
-                                          children: [
-                                            Icon(
-                                              Icons.access_time,
-                                              size: 14,
-                                              color: Colors.white.withValues(alpha: 0.7),
-                                            ),
-                                            const SizedBox(width: 4),
-                                            MyText.small(
-                                              '실시간 업데이트',
-                                              color: Colors.white.withValues(alpha: 0.7),
-                                            ),
-                                          ],
-                                        ),
-                                      ],
-                                    ),
-                                  ),
+                                  MyText.reg('${widget.updateTime.month}월 ${widget.updateTime.day}일 ${widget.updateTime.hour}:${widget.updateTime.minute} 업데이트', color: AppColors.gray4),
                                   // 화살표 버튼
                                   Container(
                                     width: 42,
@@ -211,25 +140,26 @@ class _HotIssueCardState extends State<HotIssueCard>
                               const Spacer(),
 
                               // 하단 텍스트
+
                               Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  MyText.reg(
-                                    '지금 가장 핫한',
-                                    color: Colors.white.withValues(alpha: 0.8),
-                                  ),
-                                  MyText.h1(
-                                    '실시간 이슈 모음',
-                                    color: Colors.white,
-                                  ),
+                                  MyText.h2('바쁘신가요?', color: AppColors.primaryLight),
+                                  MyText.h1('이것만 보세요.', color: AppColors.primaryLight),
                                 ],
                               ),
                             ],
                           ),
                         ),
                       ),
-                    ),
-                  ],
+                      Positioned(
+                        right: -17,
+                        bottom: -17,
+                        child: Transform.rotate(
+                          angle: -0.2,
+                            child: Icon(Icons.alarm, color: AppColors.primaryLight, size: 100,)))
+                    ],
+                  ),
                 ),
               ),
             ),

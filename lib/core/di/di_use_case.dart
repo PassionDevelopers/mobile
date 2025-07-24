@@ -1,3 +1,4 @@
+import 'package:could_be/domain/useCases/fetch_hot_issues_use_case.dart';
 import 'package:could_be/domain/useCases/fetch_issue_query_params_use_case.dart';
 import 'package:could_be/domain/useCases/fetch_source_detail_use_case.dart';
 import 'package:could_be/domain/useCases/fetch_topic_detail_use_case.dart';
@@ -27,6 +28,7 @@ Future<void> diUseCaseSetup() async {
   getIt.registerSingleton(ManageIssueSubscriptionUseCase(getIt()));
   getIt.registerSingleton(FetchIssueQueryParamsUseCase(getIt()));
   getIt.registerSingleton(SearchIssuesUseCase(getIt()));
+  getIt.registerSingleton(FetchHotIssuesUseCase(getIt()));
 
   //user
   getIt.registerSingleton(FetchUserBiasUseCase(getIt()));
