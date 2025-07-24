@@ -73,6 +73,7 @@ dependencies:
   lottie: ^3.3.1
   scrollable_positioned_list: ^0.2.3
   autoscale_tabbarview: ^1.0.2
+  auto_size_text: ^3.0.0
 
   #signin
   sign_button: ^2.0.6
@@ -88,16 +89,6 @@ dependencies:
   clarity_flutter: 1.0.0
   in_app_review: ^2.0.10
 
-  # The following adds the Cupertino Icons font to your application.
-  # Use with the CupertinoIcons class for iOS style icons.
-  cupertino_icons: ^1.0.8
-  intl: ^0.20.1
-  table_calendar: ^3.0.9
-  flutter_svg: ^2.0.9
-  carousel_slider: ^5.0.0
-  auto_size_text: ^3.0.0
-  flutter_sliding_up_panel: ^2.1.1
-
   rename_app: ^1.6.3
 
   #repository:
@@ -105,7 +96,15 @@ dependencies:
 
   #data_source
   shared_preferences: ^2.5.3
+  encrypt_shared_preferences: ^0.9.9
 
+  #not used
+  cupertino_icons: ^1.0.8
+  intl: ^0.20.1
+  table_calendar: ^3.0.9
+  flutter_svg: ^2.0.9
+  carousel_slider: ^5.0.0
+  flutter_sliding_up_panel: ^2.1.1
 
 dev_dependencies:
   flutter_test:

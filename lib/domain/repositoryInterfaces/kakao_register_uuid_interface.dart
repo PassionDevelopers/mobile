@@ -1,5 +1,6 @@
-class KakaoRegisterUuidRepository{
-  Future<void> registerKakaoUuid(String uuid) async {
-  }
+abstract class KakaoRegisterUuidRepository{
+
+
+  Future<String> registerKakaoUuid(String uuid);
 
 }

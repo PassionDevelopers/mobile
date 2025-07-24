@@ -213,6 +213,7 @@ class _RootState extends State<Root> {
             //게스트 로그인 사용자가 아니라면 로그인 페이지로 이동
             if(user.refreshToken == null){
               viewModel.resignIn(context);
+
             }else{
               //리프레쉬 토큰이 남아있으면 id token 재발급
               user.getIdToken(true);

@@ -83,14 +83,19 @@ class FirebaseLoginUseCase {
     return user.isAnonymous;
   }
 
-  Future<bool> saveToken(String token) async {
-    return await _tokenStorageRepository.saveToken(token);
+  Future<bool> saveIdToken(UserCredential userCredential) async {
+    String? idToken = await userCredential.user?.getIdToken();
+    if (idToken == null) {
+      log("idToken is null");
+      return false;
+    } else {
+      log(idToken);
+      return await _tokenStorageRepository.saveToken(idToken);
+    }
   }
 
   Future<bool> signInWithKakao() async {
     try {
-      log("signInWithKakao called");
-      log((await isKakaoTalkInstalled()).toString());
       if (await isKakaoTalkInstalled()) {
         try {
           await UserApi.instance.loginWithKakaoTalk();
@@ -98,15 +103,31 @@ class FirebaseLoginUseCase {
           await UserApi.instance.loginWithKakaoAccount();
         }
       } else {
-        log("KakaoTalk is installed, trying to login with KakaoTalk");
         await UserApi.instance.loginWithKakaoAccount();
       }
+
       try {
         final User user = await UserApi.instance.me();
-        if(user.uuid != null) _kakaoRegisterUuidRepository.registerKakaoUuid(user.uuid!);
-        // OAuthToken token = user.uuid;
-        // return user;
-        return true;
+        final firebaseToken = await _kakaoRegisterUuidRepository.registerKakaoUuid(user.id.toString());
+        log("firebaseToken: $firebaseToken");
+        try {
+          final userCredential = await FirebaseAuth.instance.signInWithCustomToken(firebaseToken);
+          log("Sign-in successful.");
+
+          return saveIdToken(userCredential);
+        } on FirebaseAuthException catch (e) {
+          switch (e.code) {
+            case "invalid-custom-token":
+              log("The supplied token is not a Firebase custom auth token.");
+              break;
+            case "custom-token-mismatch":
+              log("The supplied token is for a different Firebase project.");
+              break;
+            default:
+              log("Unknown error.");
+          }
+        }
+        return false;
       } catch (error) {
         return false;
       }
@@ -120,14 +141,7 @@ class FirebaseLoginUseCase {
     try {
       UserCredential userCredential =
           await FirebaseAuth.instance.signInAnonymously();
-      String? idToken = await userCredential.user?.getIdToken();
-      if (idToken == null) {
-        log("idToken is null");
-        return false;
-      } else {
-        log(idToken);
-        return await saveToken(idToken);
-      }
+      return saveIdToken(userCredential);
     } catch (e) {
       log(e.toString());
       return false;
@@ -152,13 +166,7 @@ class FirebaseLoginUseCase {
       // not match the nonce in `appleCredential.identityToken`, sign in will fail.
       UserCredential userCredential = await FirebaseAuth.instance
           .signInWithCredential(oauthCredential);
-      String? idToken = await userCredential.user?.getIdToken();
-      if (idToken == null) {
-        log("idToken is null");
-        return false;
-      } else {
-        return await saveToken(idToken);
-      }
+      return saveIdToken(userCredential);
     } catch (e) {
       log(e.toString());
       return false;
@@ -184,16 +192,9 @@ class FirebaseLoginUseCase {
 
     UserCredential userCredential = await FirebaseAuth.instance
         .signInWithCredential(credential);
-    String? idToken = await userCredential.user?.getIdToken();
     // Log the event to Amplitude
     getIt<Amplitude>().track(AmplitudeEvents.googleLogin);
-
-    if (idToken == null) {
-      log("idToken is null");
-      return false;
-    } else {
-      return await saveToken(idToken);
-    }
+    return saveIdToken(userCredential);
   }
 
   Future<void> signOut() async {
@@ -201,6 +202,10 @@ class FirebaseLoginUseCase {
     await FirebaseAuth.instance.signOut();
     if (await GoogleSignIn().isSignedIn()) {
       await GoogleSignIn().signOut();
+    }
+    if(await isKakaoSignedIn()){
+      await UserApi.instance.logout();
+      // await UserApi.instance.unlink();
     }
   }
 
@@ -220,6 +225,8 @@ class FirebaseLoginUseCase {
       return SignInMethod.google;
     } else if (providerId == 'apple.com') {
       return SignInMethod.apple;
+    } else{
+      log("Unsupported provider: $providerId");
     }
     return SignInMethod
         .anonymous; // Default to anonymous if no provider matches
@@ -244,8 +251,6 @@ class FirebaseLoginUseCase {
       await _deleteUserApple(context);
     } else if (providerId == null) {
       await _deleteUserAnon(context);
-    } else {
-      log("Unsupported provider: $providerId");
     }
   }
 
@@ -271,6 +276,18 @@ class FirebaseLoginUseCase {
 
   Future<void> _deleteUserAnon(BuildContext context) async {
     _deleteUserFromFirebase(context);
+  }
+
+  Future<bool> isKakaoSignedIn()async{
+    log("Checking if Kakao user is signed in...");
+    User? user;
+    try {
+      user = await UserApi.instance.me();
+    } catch (error) {
+      log("Kakao user not signed in or error occurred: $error");
+    }
+    log((user != null).toString());
+    return user != null;
   }
 
   Future<void> _deleteUserFromFirebase(BuildContext context) async {
@@ -301,6 +318,7 @@ class FirebaseLoginUseCase {
   //   return await FirebaseAuth.instance.signInWithEmailAndPassword(email: email, password: password);
   // }
   //
+
   Future<UserCredential?> reauthWithApple({bool? isReauth}) async {
     final appleCredential = await SignInWithApple.getAppleIDCredential(
       scopes: [

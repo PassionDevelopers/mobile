@@ -138,7 +138,6 @@ class _IssueDetailFeedRootState extends State<IssueDetailFeedRoot> {
                       return Center(child: Text('발견된 이슈가 없습니다.'));
                     } else {
                       final issue = state.issueDetail!;
-                      log('issue 공통점 분석 : ${issue.commonSummary}');
                       return Stack(
                         children: [
                           Row(

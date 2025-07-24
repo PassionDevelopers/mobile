@@ -98,7 +98,6 @@ class _IssueListRootState extends State<IssueListRoot> {
                   } else {
                     bool isDailyQueryParam = state.issueQueryParam != null && state.issueQueryParam!.queryParam == IssueType.daily.name;
                     bool isDailyIssueType = state.issueQueryParam == null && widget.issueType == IssueType.daily;
-                    log('isDailyQueryParam: $isDailyQueryParam, isDailyIssueType: $isDailyIssueType');
                     return Column(
                       children: [
                         if(widget.isFeedView && (isDailyQueryParam || isDailyIssueType) ) HotIssueCard(),

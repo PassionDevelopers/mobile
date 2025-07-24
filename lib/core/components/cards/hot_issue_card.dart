@@ -4,6 +4,7 @@ import 'package:could_be/core/themes/margins_paddings.dart';
 import 'package:could_be/ui/color.dart';
 import 'package:could_be/ui/fonts.dart';
 import 'package:flutter/material.dart';
+import 'dart:ui';
 
 class HotIssueCard extends StatefulWidget {
   const HotIssueCard({super.key});
@@ -27,7 +28,6 @@ class _HotIssueCardState extends State<HotIssueCard>
 
   @override
   void dispose() {
-    // TODO: implement dispose
     _animationController.dispose();
     super.dispose();
   }
@@ -60,101 +60,176 @@ class _HotIssueCardState extends State<HotIssueCard>
               },
               onTapCancel: () => _animationController.reverse(),
               child: InkWell(
-                borderRadius: BorderRadius.circular(16),
+                borderRadius: BorderRadius.circular(20),
                 onTap: () {
-                  // context.push(
-                  //   RouteNames.issueDetailFeed,
-                  //   extra: widget.issue.id,
-                  // );
+                  // Navigation logic here
                 },
-                child: Ink(
-                  width: double.infinity,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(16),
-                    color: AppColors.primaryLight,
-                    boxShadow: [
-                      BoxShadow(
-                        color: AppColors.gray4,
-                        spreadRadius: 1,
-                        blurRadius: 1,
-                        offset: Offset(0, 1), // changes position of shadow
-                      ),
-                    ],
-                  ),
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      const SizedBox(height: MyPaddings.large),
-                      Padding(
-                        padding: EdgeInsets.symmetric(
-                          horizontal: MyPaddings.large,
-                        ),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Column(
-                              children: [
-                                Row(
-                                  children: [
-                                    MyText.h2('오늘의 이슈 Top 5'),
-                                    const SizedBox(width: MyPaddings.small),
-                                    Icon(Icons.info_outline, size: 18),
-                                  ],
-                                ),
-                                const SizedBox(height: MyPaddings.extraSmall),
-                                MyText.reg(
-                                  '2025년 7월 22일 19:53 기준',
-                                  color: AppColors.gray3,
-                                ),
-                              ],
-                            ),
-                            Icon(Icons.arrow_forward_ios, size: 20,)
+                child: Stack(
+                  children: [
+                    // 배경 그라데이션
+                    Container(
+                      width: double.infinity,
+                      height: 140,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(20),
+                        gradient: LinearGradient(
+                          begin: Alignment.topLeft,
+                          end: Alignment.bottomRight,
+                          colors: [
+                            AppColors.primary.withValues(alpha: 0.9),
+                            AppColors.primary.withValues(alpha: 0.8),
                           ],
                         ),
                       ),
-                      // const SizedBox(height: MyPaddings.small),
-                      // MyText.h3('오늘 가장 많은 언론이 보도한 이슈 몰아보기', maxLines: 3),
+                    ),
+                    // 글래스모피즘 효과
+                    Container(
+                      width: double.infinity,
+                      height: 140,
+                      // decoration: BoxDecoration(
+                      //   borderRadius: BorderRadius.circular(20),
+                      //   gradient: LinearGradient(
+                      //     begin: Alignment.topCenter,
+                      //     end: Alignment.bottomCenter,
+                      //     colors: [
+                      //       Colors.white.withValues(alpha: 0.1),
+                      //       Colors.white.withValues(alpha: 0.05),
+                      //     ],
+                      //   ),
+                      //   border: Border.all(
+                      //     color: Colors.white.withValues(alpha: 0.2),
+                      //     width: 1.5,
+                      //   ),
+                      //   boxShadow: [
+                      //     BoxShadow(
+                      //       color: AppColors.primary.withValues(alpha: 0.15),
+                      //       blurRadius: 20,
+                      //       spreadRadius: 0,
+                      //       offset: Offset(0, 10),
+                      //     ),
+                      //   ],
+                      // ),
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(20),
+                        child: Container(
+                          padding: EdgeInsets.all(MyPaddings.large),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              // 상단 헤더
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                children: [
+                                  // HOT 뱃지와 타이틀
+                                  Expanded(
+                                    child: Column(
+                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      children: [
+                                        Row(
+                                          children: [
+                                            // 애니메이션 HOT 뱃지
+                                            Container(
+                                              padding: EdgeInsets.symmetric(
+                                                horizontal: MyPaddings.small,
+                                                vertical: 4,
+                                              ),
+                                              decoration: BoxDecoration(
+                                                color: Colors.white,
+                                                borderRadius: BorderRadius.circular(12),
+                                                boxShadow: [
+                                                  BoxShadow(
+                                                    color: Colors.white.withValues(alpha: 0.3),
+                                                    blurRadius: 8,
+                                                    spreadRadius: 0,
+                                                  ),
+                                                ],
+                                              ),
+                                              child: Row(
+                                                mainAxisSize: MainAxisSize.min,
+                                                children: [
+                                                  Icon(
+                                                    Icons.whatshot,
+                                                    size: 14,
+                                                    color: AppColors.right,
+                                                  ),
+                                                  const SizedBox(width: 4),
+                                                  MyText.small(
+                                                    'HOT',
+                                                    color: AppColors.primary,
+                                                    fontWeight: FontWeight.w800,
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
+                                            const SizedBox(width: MyPaddings.small),
+                                            MyText.h2(
+                                              '오늘의 이슈 TOP 5',
+                                              color: Colors.white,
+                                            ),
+                                          ],
+                                        ),
+                                        const SizedBox(height: MyPaddings.extraSmall),
 
-                      const SizedBox(height: MyPaddings.small),
-                      SizedBox(
-                        height: 80,
-                        child: ListView.builder(
-                          scrollDirection: Axis.horizontal,
-                          padding: EdgeInsets.symmetric(
-                            horizontal: MyPaddings.large,
-                          ),
-                          itemBuilder: (context, index) {
-                            return Padding(
-                              padding: const EdgeInsets.only(right: 8.0),
-                              child: Material(
-                                borderRadius: BorderRadius.all(
-                                  Radius.circular(16),
-                                ),
-                                color: AppColors.white,
-                                child: SizedBox(
-                                  width: 80,
-                                  child: ImageContainer(
-                                    height: 80,
-                                    borderRadius: BorderRadius.all(
-                                      Radius.circular(16),
+                                        Row(
+                                          children: [
+                                            Icon(
+                                              Icons.access_time,
+                                              size: 14,
+                                              color: Colors.white.withValues(alpha: 0.7),
+                                            ),
+                                            const SizedBox(width: 4),
+                                            MyText.small(
+                                              '실시간 업데이트',
+                                              color: Colors.white.withValues(alpha: 0.7),
+                                            ),
+                                          ],
+                                        ),
+                                      ],
                                     ),
-                                    imageUrl:
-                                        'https://dasi-news-images.s3.ap-northeast-2.amazonaws.com/issues/2025/07/23/20716_639501d2.png',
                                   ),
-                                ),
+                                  // 화살표 버튼
+                                  Container(
+                                    width: 42,
+                                    height: 42,
+                                    decoration: BoxDecoration(
+                                      color: Colors.white.withValues(alpha: 0.2),
+                                      borderRadius: BorderRadius.circular(14),
+                                      border: Border.all(
+                                        color: Colors.white.withValues(alpha: 0.3),
+                                        width: 1,
+                                      ),
+                                    ),
+                                    child: Icon(
+                                      Icons.arrow_forward_rounded,
+                                      size: 20,
+                                      color: Colors.white,
+                                    ),
+                                  ),
+                                ],
                               ),
-                            );
-                          },
-                          itemCount: 5,
-                          shrinkWrap: true,
-                          physics: const BouncingScrollPhysics(),
+
+                              const Spacer(),
+
+                              // 하단 텍스트
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  MyText.reg(
+                                    '지금 가장 핫한',
+                                    color: Colors.white.withValues(alpha: 0.8),
+                                  ),
+                                  MyText.h1(
+                                    '실시간 이슈 모음',
+                                    color: Colors.white,
+                                  ),
+                                ],
+                              ),
+                            ],
+                          ),
                         ),
                       ),
-
-                      const SizedBox(height: MyPaddings.large),
-                    ],
-                  ),
+                    ),
+                  ],
                 ),
               ),
             ),
