@@ -1,14 +1,18 @@
+import 'dart:developer';
+
 import 'package:could_be/core/routes/route_names.dart';
 import 'package:could_be/core/themes/margins_paddings.dart';
+import 'package:could_be/domain/entities/hot_issues.dart';
 import 'package:could_be/ui/color.dart';
 import 'package:could_be/ui/fonts.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
 class HotIssueCard extends StatefulWidget {
-  const HotIssueCard({super.key, required this.updateTime});
+  const HotIssueCard({super.key, required this.updateTime, required this.hotIssues});
 
   final DateTime updateTime;
+  final HotIssues hotIssues;
 
   @override
   State<HotIssueCard> createState() => _HotIssueCardState();
@@ -42,6 +46,8 @@ class _HotIssueCardState extends State<HotIssueCard>
     //   tablet: MyPaddings.large.toDouble(),
     //   desktop: MyPaddings.medium.toDouble(),
     // );
+    log('HotIssueCard build: ${widget.updateTime.toIso8601String()}');
+    log('HotIssueCard build: $_formattedDate');
 
     return Padding(
       padding: EdgeInsets.fromLTRB(
@@ -64,7 +70,7 @@ class _HotIssueCardState extends State<HotIssueCard>
               child: InkWell(
                 borderRadius: BorderRadius.circular(20),
                 onTap: () {
-                  context.push(RouteNames.hotIssueFeed);
+                  context.push(RouteNames.hotIssueFeed, extra: widget.hotIssues);
                 },
                 child: ClipRRect(
                   borderRadius: BorderRadius.circular(20),

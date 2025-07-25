@@ -14,7 +14,7 @@ class WholeMediaLoadingView extends StatelessWidget {
       ),
       sliver: SliverGrid(
         gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-          crossAxisCount: 3,
+          crossAxisCount: 4,
           childAspectRatio: 0.75,
           crossAxisSpacing: 0,
           mainAxisSpacing: 0,

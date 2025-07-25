@@ -8,13 +8,13 @@ part 'hot_issues_dto.g.dart';
 class HotIssuesDto {
   final List<IssueDTO> issues;
   final bool hasMore;
-  final String lastIssueId;
+  final String? lastIssueId;
   final DateTime hotTime;
 
   HotIssuesDto({
     required this.issues,
     required this.hasMore,
-    required this.lastIssueId,
+    this.lastIssueId,
     required this.hotTime,
   });
 

@@ -12,7 +12,7 @@ HotIssuesDto _$HotIssuesDtoFromJson(Map<String, dynamic> json) => HotIssuesDto(
           .map((e) => IssueDTO.fromJson(e as Map<String, dynamic>))
           .toList(),
   hasMore: json['hasMore'] as bool,
-  lastIssueId: json['lastIssueId'] as String,
+  lastIssueId: json['lastIssueId'] as String?,
   hotTime: DateTime.parse(json['hotTime'] as String),
 );
 

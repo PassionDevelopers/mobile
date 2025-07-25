@@ -110,6 +110,7 @@ class _IssueListRootState extends State<IssueListRoot> {
                         if(widget.isFeedView && (isDailyQueryParam || isDailyIssueType) && !isSearching)
                           hotIssuesViewModel.state.hotIssues == null? CircularProgressIndicator() : HotIssueCard(
                             updateTime: hotIssuesViewModel.state.hotIssues!.hotTime,
+                            hotIssues: hotIssuesViewModel.state.hotIssues!,
                           ),
                         IssueListView(issueList: state.issueList,
                           onBiasSelected: viewModel.manageIssueEvaluation,

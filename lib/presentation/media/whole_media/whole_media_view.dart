@@ -157,9 +157,9 @@ class _WholeMediaViewState extends State<WholeMediaView> {
                 padding: EdgeInsets.all(MyPaddings.small),
                 sliver: SliverGrid(
                   gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 3,
+                    crossAxisCount: 4,
                     childAspectRatio: 0.75,
-                    crossAxisSpacing: MyPaddings.small,
+                    crossAxisSpacing: 2,
                     mainAxisSpacing: MyPaddings.small,
                   ),
                   delegate: SliverChildBuilderDelegate(

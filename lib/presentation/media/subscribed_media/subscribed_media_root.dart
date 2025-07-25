@@ -276,7 +276,7 @@ class _SubscribedMediaRootState extends State<SubscribedMediaRoot> {
                             )
                             : state.articles == null ||
                                 state.articles!.articles.isEmpty
-                            ? NotFound(notFoundType: NotFoundType.article)
+                            ? Center(child: NotFound(notFoundType: NotFoundType.article))
                             : ResponsiveBuilder(
                               builder: (context, deviceType) {
                                 return Column(
