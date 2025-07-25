@@ -13,6 +13,7 @@ IssueDTO _$IssueDTOFromJson(Map<String, dynamic> json) => IssueDTO(
           .map((e) => IssueTagDto.fromJson(e as Map<String, dynamic>))
           .toList(),
   summary: json['summary'] as String,
+  isRead: json['isRead'] as bool?,
   title: json['title'] as String,
   createdAt: DateTime.parse(json['createdAt'] as String),
   updatedAt:
@@ -40,6 +41,7 @@ Map<String, dynamic> _$IssueDTOToJson(IssueDTO instance) => <String, dynamic>{
   'category': instance.category,
   'summary': instance.summary,
   'tags': instance.tags,
+  'isRead': instance.isRead,
   'createdAt': instance.createdAt.toIso8601String(),
   'updatedAt': instance.updatedAt?.toIso8601String(),
   'leftLikeCount': instance.leftLikeCount,

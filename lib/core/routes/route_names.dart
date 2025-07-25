@@ -38,7 +38,8 @@ abstract class RouteNames{
   feedback = '/feedback',
 
   issueDetailFeed = '/issueDetailFeed',
-  shortsPlayer = '/shortsPlayer/:issueId'
+  hotIssueFeed = '/hotIssueFeed'
+
   ;
 }
 

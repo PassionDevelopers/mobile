@@ -1,3 +1,6 @@
+import 'dart:async';
+
+import 'package:could_be/core/components/alert/dialog.dart';
 import 'package:could_be/core/components/app_bar/app_bar.dart';
 import 'package:could_be/core/di/di_setup.dart';
 import 'package:could_be/core/method/bias/bias_enum.dart';
@@ -35,6 +38,8 @@ class MyPageView extends StatefulWidget {
 }
 
 class _MyPageViewState extends State<MyPageView> {
+  late final MyPageViewModel viewModel;
+
   Widget _buildQuickActionsGrid() {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -140,9 +145,27 @@ class _MyPageViewState extends State<MyPageView> {
     );
   }
 
+  StreamSubscription? eventSubscription;
+  @override
+  void initState() {
+    super.initState();
+    viewModel = getIt<MyPageViewModel>();
+    eventSubscription = viewModel.eventStream.listen((event) {
+      if (mounted) {
+        showAlert(context: context, msg: event.toString());
+      }
+    });
+  }
+
+  @override
+  void dispose() {
+    eventSubscription?.cancel();
+    viewModel.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
-    final viewModel = getIt<MyPageViewModel>();
 
     return Stack(
       children: [

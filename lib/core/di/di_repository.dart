@@ -1,5 +1,6 @@
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:could_be/data/repositoryImpl/hot_issues_repository_impl.dart';
 import 'package:could_be/data/repositoryImpl/issue_query_params_repository_impl.dart';
 import 'package:could_be/data/repositoryImpl/manage_issue_evaluation_repository_impl.dart';
 import 'package:could_be/data/repositoryImpl/manage_topic_subscription_repository_impl.dart';
@@ -11,6 +12,7 @@ import 'package:could_be/data/repositoryImpl/topic_detail_repository_impl.dart';
 import 'package:could_be/data/repositoryImpl/track_user_activity_repository_impl.dart';
 import 'package:could_be/data/repositoryImpl/whole_bias_score_repository_impl.dart';
 import 'package:could_be/domain/repositoryInterfaces/articles_interface.dart';
+import 'package:could_be/domain/repositoryInterfaces/hot_issues_interface.dart';
 import 'package:could_be/domain/repositoryInterfaces/issue_query_params_interface.dart';
 import 'package:could_be/domain/repositoryInterfaces/issues_interface.dart';
 import 'package:could_be/domain/repositoryInterfaces/manage_issue_evaluation_interface.dart';
@@ -25,6 +27,7 @@ import 'package:could_be/domain/repositoryInterfaces/topics_interface.dart';
 import 'package:could_be/domain/repositoryInterfaces/track_user_activity_interface.dart';
 import 'package:could_be/domain/repositoryInterfaces/user_bias_interface.dart';
 import 'package:could_be/domain/repositoryInterfaces/whole_bias_score_interface.dart';
+import 'package:could_be/domain/useCases/fetch_hot_issues_use_case.dart';
 import 'package:dio/dio.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
@@ -59,6 +62,9 @@ Future<void> diRepoSetup()async {
   getIt.registerSingleton<IssuesRepository>(IssuesRepositoryImpl(getIt<Dio>()));
   getIt.registerSingleton<ManageIssueSubscriptionRepository>(
     ManageIssueSubscriptionRepositoryImpl(getIt<Dio>()),
+  );
+  getIt.registerSingleton<HotIssuesRepository>(
+    HotIssuesRepositoryImpl(getIt<Dio>()),
   );
 
   //user

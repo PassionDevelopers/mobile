@@ -1,3 +1,4 @@
+import 'package:could_be/core/components/chips/blind_chip.dart';
 import 'package:flutter/cupertino.dart';
 
 import '../../../core/components/title/issue_info_title.dart';

@@ -14,12 +14,10 @@ class IssueDetailCommonSummary extends StatelessWidget {
     super.key,
     required this.commonSummary,
     required this.fontSize,
-    required this.moveToNextPage,
   });
 
   final String commonSummary;
   final double fontSize;
-  final VoidCallback moveToNextPage;
 
   @override
   Widget build(BuildContext context) {

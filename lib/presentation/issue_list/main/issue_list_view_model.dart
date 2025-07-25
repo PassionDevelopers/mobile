@@ -106,6 +106,7 @@ class IssueListViewModel with ChangeNotifier {
 
   void fetchInitalIssues({String? topicId}) async {
     _state = state.copyWith(isLoading: true);
+    _state = state.copyWith(query: null);
     notifyListeners();
     final Issues result = await _fetchIssuesByType(topicId: topicId);
     _state = state.copyWith(
@@ -159,10 +160,13 @@ class IssueListViewModel with ChangeNotifier {
     if(state.query != null && state.query!.trim().isNotEmpty){
       return await _searchIssuesUseCase.searchIssues(state.query!);
     }else if(issueQueryParam != null) {
+      _state = state.copyWith(query: null);
       return await _fetchIssuesUseCase.fetchQueryParamIssues(issueQueryParam, lastIssueId: lastIssueId);
     }else if(topicId != null){
+      _state = state.copyWith(query: null);
       return await _fetchIssuesUseCase.fetchIssuesByTopicId(topicId, lastIssueId: lastIssueId);
     }else{
+      _state = state.copyWith(query: null);
       switch (_issueType) {
         case IssueType.daily:
           return await _fetchIssuesUseCase.fetchDailyIssues(lastIssueId: lastIssueId);

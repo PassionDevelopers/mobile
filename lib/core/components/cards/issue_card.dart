@@ -6,6 +6,7 @@ import 'package:could_be/core/method/bias/bias_enum.dart';
 import 'package:could_be/core/components/image/image_container.dart';
 import 'package:could_be/core/components/title/issue_info_title.dart';
 import 'package:could_be/core/method/bias/bias_method.dart';
+import 'package:could_be/core/method/text_parsing.dart';
 import 'package:could_be/core/routes/route_names.dart';
 import 'package:could_be/ui/fonts.dart';
 import 'package:flutter/material.dart';
@@ -145,14 +146,18 @@ class _IssueCardState extends State<IssueCard> with TickerProviderStateMixin {
                                     Container(
                                       height: 260,
                                       decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.vertical(
+                                          top: Radius.circular(16),
+                                        ),
                                         gradient: LinearGradient(
                                           begin: Alignment.topCenter,
                                           end: Alignment.bottomCenter,
                                           colors: [
                                             Colors.transparent,
-                                            AppColors.black.withOpacity(0.7),
+                                            AppColors.black.withOpacity(0.3),
+                                            AppColors.black.withOpacity(0.8),
                                           ],
-                                          stops: [0.5, 1.0],
+                                          stops: [0, 0.5, 1.0],
                                         ),
                                       ),
                                     ),
@@ -166,12 +171,6 @@ class _IssueCardState extends State<IssueCard> with TickerProviderStateMixin {
                                           MyPaddings.large,
                                           MyPaddings.small,
                                         ),
-                                        // decoration: BoxDecoration(
-                                        //   // borderRadius: BorderRadius.circular(16),
-                                        //   color: Colors.white.withOpacity(
-                                        //     0.60,
-                                        //   ),
-                                        // ),
                                         child: Column(
                                           mainAxisSize: MainAxisSize.min,
                                           crossAxisAlignment:
@@ -191,10 +190,10 @@ class _IssueCardState extends State<IssueCard> with TickerProviderStateMixin {
                                               ],
                                             ),
                                             SizedBox(height: MyPaddings.small),
-                                            MyText.regSummary(
+                                            parseAiTextSummary(
                                               widget.issue.summary,
-                                              color: AppColors.gray5,
-                                              maxLines: 2,
+                                              12,
+                                              AppColors.gray5,
                                             ),
                                           ],
                                         ),
@@ -242,6 +241,7 @@ class _IssueCardState extends State<IssueCard> with TickerProviderStateMixin {
                                       time:
                                           widget.issue.updatedAt ??
                                           widget.issue.createdAt,
+                                      isRead: widget.issue.isRead,
                                     ),
                                   ],
                                 ),

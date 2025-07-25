@@ -138,7 +138,6 @@ class _IssueDetailFeedRootState extends State<IssueDetailFeedRoot> {
                       return Center(child: Text('발견된 이슈가 없습니다.'));
                     } else {
                       final issue = state.issueDetail!;
-                      log('issue 공통점 분석 : ${issue.commonSummary}');
                       return Stack(
                         children: [
                           Row(
@@ -152,27 +151,21 @@ class _IssueDetailFeedRootState extends State<IssueDetailFeedRoot> {
                                       IssueDetailSummary(
                                         issue: issue,
                                         fontSize: state.fontSize,
-                                        moveToNextPage: () {
-                                          moveToNextPage(1);
-                                        },
                                       ),
-                                      SizedBox(height: MyPaddings.extraLarge),
+                                      if (issue.commonSummary != null) SizedBox(height: MyPaddings.extraLarge),
 
                                       if (issue.commonSummary != null)
                                         IssueDetailCommonSummary(
                                           commonSummary: issue.commonSummary!,
                                           fontSize: state.fontSize,
-                                          moveToNextPage: () {
-                                            moveToNextPage(2);
-                                          },
                                         ),
-                                      if (issue.leftComparison != null &&
-                                          issue.centerComparison != null &&
+                                      if (issue.leftComparison != null ||
+                                          issue.centerComparison != null ||
                                           issue.rightComparison != null)
-                                        SizedBox(height: MyPaddings.extraLarge),
+                                        SizedBox(height: MyPaddings.large),
 
-                                      if (issue.leftComparison != null &&
-                                          issue.centerComparison != null &&
+                                      if (issue.leftComparison != null ||
+                                          issue.centerComparison != null ||
                                           issue.rightComparison != null)
                                         ListenableBuilder(
                                           listenable: ValueNotifier(
@@ -188,10 +181,9 @@ class _IssueDetailFeedRootState extends State<IssueDetailFeedRoot> {
                                                       : 3,
                                                 );
                                               },
-                                              existCenter: issue.centerSummary != null,
-                                              existLeft: issue.leftSummary != null,
-                                              existRight:
-                                              issue.rightSummary != null,
+                                              existCenter: issue.centerComparison != null,
+                                              existLeft: issue.leftComparison != null,
+                                              existRight: issue.rightComparison != null,
                                               isEvaluating: state.isEvaluating,
                                               onBiasSelected:
                                               viewModel
@@ -225,7 +217,7 @@ class _IssueDetailFeedRootState extends State<IssueDetailFeedRoot> {
                                         postDasiScore: viewModel.postDasiScore,
                                       ),
 
-                                      SizedBox(height: MyPaddings.extraLarge * 2),
+                                      SizedBox(height: MyPaddings.extraLarge),
 
                                       SourceListPage(
                                         articlesGBBAS:
@@ -239,8 +231,7 @@ class _IssueDetailFeedRootState extends State<IssueDetailFeedRoot> {
                                           );
                                         },
                                       ),
-                                      SizedBox(height: MyPaddings.large),
-
+                                      SizedBox(height: MyPaddings.extraLarge),
                                       // Padding(
                                       //   padding: EdgeInsets.symmetric(horizontal: MyPaddings.large),
                                       //   child: CustomReportPage(),
