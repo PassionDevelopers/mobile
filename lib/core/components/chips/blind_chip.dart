@@ -5,9 +5,11 @@ import '../../../ui/color.dart';
 import '../../many_use.dart';
 
 class BlindChip extends StatelessWidget {
-  const BlindChip({super.key, required this.tag, required this.isFirst});
+  const BlindChip({super.key, required this.tag, required this.isFirst, this.topPadding, this.insetPadding});
   final IssueTag tag;
   final bool isFirst;
+  final double? topPadding;
+  final EdgeInsetsGeometry? insetPadding;
 
   @override
   Widget build(BuildContext context) {
@@ -15,9 +17,9 @@ class BlindChip extends StatelessWidget {
     // Color secondary = primary.withAlpha(80);
     return Container(
       margin: EdgeInsets.only(
-        top: MyPaddings.small,
+        top: topPadding ?? MyPaddings.small,
           left: isFirst ? MyPaddings.small : MyPaddings.extraSmall),
-      padding: EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+      padding: insetPadding ?? EdgeInsets.symmetric(horizontal: 8, vertical: 4),
       decoration: BoxDecoration(
         color: primary,
         borderRadius: BorderRadius.circular(12),

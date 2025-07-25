@@ -102,35 +102,16 @@ class _IssueDetailTabsState extends State<IssueDetailTabs>
         children: [
           if(keywords != null && keywords.isNotEmpty) Column(
             children: [
-              Container(
+              SizedBox(
                 height: 32,
                 child: ListView.builder(
                   scrollDirection: Axis.horizontal,
                   itemBuilder: (_, index) {
-                    return Padding(
-                      padding: EdgeInsets.only(right: MyPaddings.small),
-                      child: Container(
-                        padding: EdgeInsets.symmetric(
-                          horizontal: MyPaddings.medium,
-                          vertical: 4,
-                        ),
-                        decoration: BoxDecoration(
-                          color: getBiasColor(bias).withOpacity(0.1),
-                          borderRadius: BorderRadius.circular(16),
-                          border: Border.all(
-                            color: getBiasColor(bias).withOpacity(0.3),
-                            width: 1,
-                          ),
-                        ),
-                        child: Text(
-                          keywords[index],
-                          style: TextStyle(
-                            color: getBiasColor(bias),
-                            fontSize: 12,
-                            fontWeight: FontWeight.w500,
-                          ),
-                        ),
-                      ),
+                    return KeyWordChip(
+                      title: keywords[index],
+                      textColor: AppColors.white,
+                      color: getBiasColor(bias),
+                      borderColor: getBiasColor(bias),
                     );
                   },
                   itemCount: keywords.length,

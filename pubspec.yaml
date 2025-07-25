@@ -54,6 +54,7 @@ dependencies:
   webview_flutter: ^4.13.0
   webview_flutter_android: ^4.7.0
   webview_flutter_wkwebview: ^3.22.0
+  flutter_html: ^3.0.0
 
   #router
   go_router: ^16.0.0
@@ -61,18 +62,12 @@ dependencies:
   # ui
   chat_bubbles: ^1.7.0
   shimmer: ^3.0.0
-  glass_kit: ^4.0.1
-  card_swiper: ^3.0.1
-  flutter_flip_card: ^0.0.6
-  flutter_card_swiper: ^7.0.2
   fl_chart: ^1.0.0
-  google_fonts: ^6.2.1
   fluttertoast: ^8.2.12
   sliding_up_panel: ^2.0.0+1
-  smooth_page_indicator: ^1.2.1
   lottie: ^3.3.1
-  scrollable_positioned_list: ^0.2.3
   autoscale_tabbarview: ^1.0.2
+  auto_size_text: ^3.0.0
 
   #signin
   sign_button: ^2.0.6
@@ -88,16 +83,6 @@ dependencies:
   clarity_flutter: 1.0.0
   in_app_review: ^2.0.10
 
-  # The following adds the Cupertino Icons font to your application.
-  # Use with the CupertinoIcons class for iOS style icons.
-  cupertino_icons: ^1.0.8
-  intl: ^0.20.1
-  table_calendar: ^3.0.9
-  flutter_svg: ^2.0.9
-  carousel_slider: ^5.0.0
-  auto_size_text: ^3.0.0
-  flutter_sliding_up_panel: ^2.1.1
-
   rename_app: ^1.6.3
 
   #repository:
@@ -105,7 +90,23 @@ dependencies:
 
   #data_source
   shared_preferences: ^2.5.3
+  encrypt_shared_preferences: ^0.9.9
 
+  #not used
+  cupertino_icons: ^1.0.8
+  intl: ^0.20.1
+  table_calendar: ^3.0.9
+  flutter_svg: ^2.0.9
+  carousel_slider: ^5.0.0
+  flutter_sliding_up_panel: ^2.1.1
+  glass_kit: ^4.0.1
+  card_swiper: ^3.0.1
+  flutter_flip_card: ^0.0.6
+  flutter_card_swiper: ^7.0.2
+  scrollable_positioned_list: ^0.2.3
+  animated_text_kit: ^4.2.3
+  smooth_page_indicator: ^1.2.1
+  google_fonts: ^6.2.1
 
 dev_dependencies:
   flutter_test:
@@ -149,6 +150,17 @@ flutter_native_splash:
 
 flutter:
   uses-material-design: true
+
+  fonts:
+    - family: HakgyoansimTuhoR
+      fonts:
+        - asset: assets/fonts/HakgyoansimTuhoR.ttf
+    - family: SonkeechungT
+      fonts:
+        - asset: assets/fonts/KCC-Sonkeechung.otf
+    - family: SonkeechungO
+      fonts:
+        - asset: assets/fonts/KCC-Sonkeechung.ttf
   assets:
     - assets/images/login/
     - assets/images/logo/

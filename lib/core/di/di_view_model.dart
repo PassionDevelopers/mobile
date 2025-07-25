@@ -1,6 +1,8 @@
 import 'package:could_be/core/method/bias/bias_enum.dart';
 import 'package:could_be/domain/entities/article.dart';
+import 'package:could_be/presentation/home/home_view_model.dart';
 import 'package:could_be/presentation/home/issue_query_params/issue_query_params_view_model.dart';
+import 'package:could_be/presentation/hot_issue/hot_issues_view_model.dart';
 import 'package:could_be/presentation/media/subscribed_media/subscribed_media_view_model.dart';
 import 'package:could_be/presentation/topic/topic_detail_view/topic_detail_view_model.dart';
 import 'package:could_be/presentation/topic/whole_topics/whole_topic_view_model.dart';
@@ -16,6 +18,12 @@ import '../../presentation/topic/subscribed_topic/subscribed_topic_view_model.da
 import 'di_setup.dart';
 
 Future<void> diViewModelSetup() async {
+
+  //home
+  getIt.registerFactory<HomeViewModel>(
+        () =>  HomeViewModel()
+  );
+
   //issue
   getIt.registerFactoryParam<IssueListViewModel, IssueType, String?>(
         (issueType, topicId) => IssueListViewModel(
@@ -36,6 +44,11 @@ Future<void> diViewModelSetup() async {
   );
   getIt.registerFactory<IssueQueryParamsViewModel>(
         () => IssueQueryParamsViewModel(fetchIssueQueryParamsUseCase: getIt()),
+  );
+  getIt.registerFactory<HotIssuesViewModel>(
+        () => HotIssuesViewModel(
+      fetchHotIssuesUseCase: getIt(),
+    ),
   );
 
   //topic
@@ -75,6 +88,7 @@ Future<void> diViewModelSetup() async {
   );
   getIt.registerFactoryParam<MediaDetailViewModel, String, void>(
         (sourceId, _) => MediaDetailViewModel(
+      manageMediaSubscriptionUseCase: getIt(),
       fetchSourceDetailUseCase: getIt(),
       sourceId: sourceId,
     ),

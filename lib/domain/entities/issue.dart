@@ -8,6 +8,7 @@ class Issue{
   final String title;
   final String category;
   final String summary;
+  final bool isRead;
 
   final DateTime createdAt;
   final DateTime? updatedAt;
@@ -31,6 +32,7 @@ class Issue{
     required this.summary,
     required this.tags,
     required this.title,
+    required this.isRead,
     required this.createdAt,
     required this.updatedAt,
     required this.category,
@@ -48,6 +50,7 @@ class Issue{
   Issue copyWith({
         String? id,
         String? title,
+        bool? isRead,
         String? category,
         String? summary,
         DateTime? createdAt,
@@ -65,6 +68,7 @@ class Issue{
     }){
     return Issue(
       id: id ?? this.id,
+      isRead: isRead ?? this.isRead,
       title: title ?? this.title,
       category: category ?? this.category,
       summary: summary ?? this.summary,
