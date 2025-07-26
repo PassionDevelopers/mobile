@@ -19,7 +19,7 @@ SourceDetailDto _$SourceDetailDtoFromJson(Map<String, dynamic> json) =>
       json['userEvaluatedPerspective'] as String?,
       json['aiEvaluatedPerspective'] as String,
       json['expertEvaluatedPerspective'] as String?,
-      (json['publicEvaluatedPerspective'] as num?)?.toInt(),
+      json['publicEvaluatedPerspective'] as String?,
       (json['followersCount'] as num).toInt(),
       json['notificationEnabled'] as bool,
     );

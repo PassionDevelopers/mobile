@@ -101,17 +101,24 @@ class _IssueListRootState extends State<IssueListRoot> {
                   if (state.issueList.isEmpty) {
                     return NotFound(notFoundType: NotFoundType.issue);
                   } else {
-                    bool isDailyQueryParam = state.issueQueryParam != null && state.issueQueryParam!.queryParam == IssueType.daily.name;
-                    bool isDailyIssueType = state.issueQueryParam == null && widget.issueType == IssueType.daily;
-                    bool isSearching = state.query != null;
-                    log('isDailyQueryParam: $isDailyQueryParam, isDailyIssueType: $isDailyIssueType, isSearching: $isSearching');
                     return Column(
                       children: [
-                        if(widget.isFeedView && (isDailyQueryParam || isDailyIssueType) && !isSearching)
-                          hotIssuesViewModel.state.hotIssues == null? CircularProgressIndicator() : HotIssueCard(
-                            updateTime: hotIssuesViewModel.state.hotIssues!.hotTime,
-                            hotIssues: hotIssuesViewModel.state.hotIssues!,
-                          ),
+                        ListenableBuilder(
+                          listenable: hotIssuesViewModel,
+                          builder: (context, _){
+                            bool isDailyQueryParam = state.issueQueryParam != null && state.issueQueryParam!.queryParam == IssueType.daily.name;
+                            bool isDailyIssueType = state.issueQueryParam == null && widget.issueType == IssueType.daily;
+                            bool isSearching = state.query != null;
+                            log('isDailyQueryParam: $isDailyQueryParam, isDailyIssueType: $isDailyIssueType, isSearching: $isSearching');
+                            if(widget.isFeedView && (isDailyQueryParam || isDailyIssueType) && !isSearching && hotIssuesViewModel.state.hotIssues != null){
+                              return HotIssueCard(
+                                updateTime: hotIssuesViewModel.state.hotIssues!.hotTime,
+                                hotIssues: hotIssuesViewModel.state.hotIssues!,
+                              );
+                            }
+                            return SizedBox.shrink();
+                          }
+                        ),
                         IssueListView(issueList: state.issueList,
                           onBiasSelected: viewModel.manageIssueEvaluation,
                           isEvaluating: state.isEvaluating,

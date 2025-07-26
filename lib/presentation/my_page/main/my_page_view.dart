@@ -25,6 +25,7 @@ class MyPageView extends StatefulWidget {
     required this.toManageMediaSubscription,
     required this.toManageIssueEvaluation,
     required this.toManageTopicSubscription,
+    required this.toManageSourceEvaluation,
   });
 
   final VoidCallback toWatchHistory;
@@ -32,6 +33,7 @@ class MyPageView extends StatefulWidget {
   final VoidCallback toManageMediaSubscription;
   final VoidCallback toManageTopicSubscription;
   final VoidCallback toManageIssueEvaluation;
+  final VoidCallback toManageSourceEvaluation;
 
   @override
   State<MyPageView> createState() => _MyPageViewState();
@@ -89,7 +91,7 @@ class _MyPageViewState extends State<MyPageView> {
               isActive: false,
               title: '평가한 언론',
               count: '',
-              onTap: () {},
+              onTap: widget.toManageSourceEvaluation,
             ),
           ],
         ),

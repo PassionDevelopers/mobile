@@ -19,6 +19,7 @@ class Issue{
 
   final List<String> keywords;
   final String? imageUrl;
+  final String? imageSource;
   final int view;
   final CoverageSpectrum coverageSpectrum;
   final bool isSubscribed;
@@ -38,6 +39,7 @@ class Issue{
     required this.category,
     required this.keywords,
     required this.imageUrl,
+    required this.imageSource,
     required this.view,
     required this.coverageSpectrum,
     required this.isSubscribed,
@@ -60,6 +62,7 @@ class Issue{
         int? rightLikeCount,
         List<String>? keywords,
         String? imageUrl,
+        String? imageSource,
         int? view,
         CoverageSpectrum? coverageSpectrum,
         bool? isSubscribed,
@@ -79,6 +82,7 @@ class Issue{
       rightLikeCount: rightLikeCount ?? this.rightLikeCount,
       keywords: keywords ?? this.keywords,
       imageUrl: imageUrl ?? this.imageUrl,
+      imageSource: imageSource ?? this.imageSource,
       view: view ?? this.view,
       coverageSpectrum: coverageSpectrum ?? this.coverageSpectrum,
       isSubscribed: isSubscribed ?? this.isSubscribed,

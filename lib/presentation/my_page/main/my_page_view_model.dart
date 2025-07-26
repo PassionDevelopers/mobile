@@ -1,15 +1,9 @@
 
 import 'dart:async';
 import 'dart:developer';
-
-import 'package:could_be/core/components/alert/dialog.dart';
 import 'package:could_be/core/domain/nick_name_error.dart';
 import 'package:could_be/core/domain/result.dart';
 import 'package:could_be/core/method/bias/bias_enum.dart';
-import 'package:could_be/core/method/bias/bias_method.dart';
-import 'package:could_be/domain/entities/bias_score_element.dart';
-import 'package:could_be/domain/entities/bias_score_history.dart';
-import 'package:could_be/domain/entities/whole_bias_score.dart';
 import 'package:could_be/domain/useCases/fetch_user_bias_user_case.dart';
 import 'package:could_be/domain/useCases/fetch_whole_bias_score_use_case.dart';
 import 'package:could_be/domain/useCases/firebase_login_use_case.dart';

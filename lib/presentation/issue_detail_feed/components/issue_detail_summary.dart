@@ -143,7 +143,7 @@ class _IssueDetailSummaryState extends State<IssueDetailSummary> {
               children: [
                 if (widget.issue.tags.isNotEmpty)
                   Padding(
-                    padding: EdgeInsets.only(top: MyPaddings.large, left: MyPaddings.small),
+                    padding: EdgeInsets.only(top: MyPaddings.medium, left: MyPaddings.small),
                     child: SizedBox(
                       height: 24,
                       child: ListView.builder(
@@ -161,10 +161,13 @@ class _IssueDetailSummaryState extends State<IssueDetailSummary> {
                     ),
                   ),
                 Padding(
-                  padding: EdgeInsets.symmetric(horizontal: MyPaddings.large),
-                  child: IssueDetailHeader(issue: widget.issue),
+                  padding: EdgeInsets.symmetric(horizontal: MyPaddings.medium, vertical: MyPaddings.medium),
+                  child: IssueDetailHeader(
+                    mediaTotal: widget.issue.coverageSpectrum.total,
+                    viewCount: widget.issue.view,
+                    time: widget.issue.createdAt,
+                  ),
                 ),
-                SizedBox(height: MyPaddings.large),
                 Padding(
                   padding: EdgeInsets.symmetric(horizontal: MyPaddings.large),
                   child: CardBiasBar(

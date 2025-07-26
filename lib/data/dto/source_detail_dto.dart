@@ -19,7 +19,7 @@ class SourceDetailDto {
   final String? userEvaluatedPerspective;
   final String aiEvaluatedPerspective;
   final String? expertEvaluatedPerspective;
-  final int? publicEvaluatedPerspective;
+  final String? publicEvaluatedPerspective;
   final int followersCount;
   final bool notificationEnabled;
 

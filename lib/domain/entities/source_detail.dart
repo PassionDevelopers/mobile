@@ -12,7 +12,7 @@ class SourceDetail {
   final String? userEvaluatedPerspective;
   final String aiEvaluatedPerspective;
   final String? expertEvaluatedPerspective;
-  final int? publicEvaluatedPerspective;
+  final String? publicEvaluatedPerspective;
   final int totalIssuesCount;
   final bool notificationEnabled;
 
@@ -45,7 +45,7 @@ class SourceDetail {
     String? userEvaluatedPerspective,
     String? aiEvaluatedPerspective,
     String? expertEvaluatedPerspective,
-    int? publicEvaluatedPerspective,
+    String? publicEvaluatedPerspective,
     int? totalIssuesCount,
     bool? notificationEnabled,
   }) {

@@ -25,6 +25,7 @@ class IssueDTO{
 
   final List<String> keywords;
   final String? imageUrl;
+  final String? imageSource;
   final int view;
   final bool isSubscribed;
   final CoverageSpectrumDTO coverageSpectrum;
@@ -43,6 +44,7 @@ class IssueDTO{
     required this.keywords,
     required this.isSubscribed,
     this.imageUrl,
+    this.imageSource,
     required this.view,
 
     required this.coverageSpectrum,
@@ -74,6 +76,7 @@ extension IssueDtoX on IssueDTO {
       updatedAt: updatedAt ?? createdAt,
       keywords: keywords,
       imageUrl: imageUrl,
+      imageSource: imageSource,
       view: view,
       coverageSpectrum: coverageSpectrum.toDomain(),
       isSubscribed: isSubscribed,

@@ -32,6 +32,7 @@ abstract class RouteNames{
   watchHistory = '$myPage/watchHistory',
   subscribedIssue = '$myPage/subscribedIssue',
   manageIssueEvalution = '$myPage/manageIssueEvalution',
+  manageSourceEvaluation = '$myPage/manageSourceEvaluation',
   settings = '$myPage/settings',
 
   //customer services

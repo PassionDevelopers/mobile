@@ -149,8 +149,8 @@ class _BlindSpotRootState extends State<BlindSpotRoot> with SingleTickerProvider
               children: [
                 Text(
                   index == 0
-                      ? '진보 언론이 놓치는 이슈'
-                      : '보수 언론이 놓치는 이슈',
+                      ? '진보 언론이 잘 안다루는 이슈'
+                      : '보수 언론이 잘 안다루는 이슈',
                   style: MyFontStyle.h2.copyWith(
                     color: index == 0 ? AppColors.left : AppColors.right,
                     fontWeight: FontWeight.w600,

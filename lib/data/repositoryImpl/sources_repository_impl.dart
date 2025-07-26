@@ -13,6 +13,15 @@ class SourcesRepositoryImpl extends SourcesRepository {
   SourcesRepositoryImpl(this.dio);
 
   @override
+  Future<Sources> fetchEvaluatedSources() async {
+    final response = await dio.get(
+        '${ApiVersions.v1}/media/evaluated',
+    );
+    final sourcesDTO = SourcesDTO.fromJson(response.data);
+    return sourcesDTO.toDomain();
+  }
+
+  @override
   Future<Sources> fetchSubscribedSources() async {
     final response = await dio.get(
         '${ApiVersions.v1}/media/subscribed',

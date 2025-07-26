@@ -39,10 +39,10 @@ class IssueListViewModel with ChangeNotifier {
     _state = state.copyWith(isEvaluating: true);
     notifyListeners();
     final Issue issue = state.issueList[index];
+    await _manageIssueEvaluationUseCase.evaluateIssue(issueId: issue.id, bias: bias);
     if (issue.userEvaluatedPerspective != null) {
       if(issue.userEvaluatedPerspective == bias.toPerspective()) {
-        log('Bias is already ${issue.userEvaluatedPerspective}, deleting evaluation');
-        await _manageIssueEvaluationUseCase.deleteIssueEvaluation(issueId: issue.id);
+        // await _manageIssueEvaluationUseCase.deleteIssueEvaluation(issueId: issue.id);
         _state = state.copyWith(
           issueList: List.from(state.issueList)..[index] = issue.copyWith(
             userEvaluatedPerspective: null,
@@ -52,8 +52,7 @@ class IssueListViewModel with ChangeNotifier {
           ),
         );
       }else{
-        log('Bias changed from ${issue.userEvaluatedPerspective} to $bias');
-        await _manageIssueEvaluationUseCase.updateIssueEvaluation(issueId: issue.id, bias: bias);
+        // await _manageIssueEvaluationUseCase.updateIssueEvaluation(issueId: issue.id, bias: bias);
         _state = state.copyWith(
           issueList: List.from(state.issueList)..[index] = issue.copyWith(
             userEvaluatedPerspective: bias.toPerspective(),
@@ -65,7 +64,6 @@ class IssueListViewModel with ChangeNotifier {
       }
     } else {
       log('Bias selected: $bias, evaluating issue');
-      await _manageIssueEvaluationUseCase.evaluateIssue(issueId: issue.id, bias: bias);
       _state = state.copyWith(
         issueList: List.from(state.issueList)..[index] = issue.copyWith(
           userEvaluatedPerspective: bias.toPerspective(),

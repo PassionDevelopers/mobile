@@ -12,6 +12,7 @@ class SourceDTO {
   final String perspective;
   final String logoUrl;
   final bool isSubscribed;
+  final String? userEvaluatedPerspective;
 
   SourceDTO({
     required this.id,
@@ -19,6 +20,7 @@ class SourceDTO {
     required this.perspective,
     required this.logoUrl,
     required this.isSubscribed,
+    this.userEvaluatedPerspective,
   });
 
   factory SourceDTO.fromJson(Map<String, dynamic> json) =>
@@ -36,6 +38,9 @@ extension SourceDtx on SourceDTO {
       bias: getBiasFromString(perspective),
       logoUrl: logoUrl,
       isSubscribed: isSubscribed,
+      userEvaluatedPerspective: userEvaluatedPerspective != null
+          ? getBiasFromString(userEvaluatedPerspective!)
+          : null,
     );
   }
 }

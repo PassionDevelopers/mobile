@@ -10,11 +10,11 @@ enum Bias{
       case Bias.left:
         return 'left';
       case Bias.leftCenter:
-        return 'center-left';
+        return 'center_left';
       case Bias.right:
         return 'right';
       case Bias.rightCenter:
-        return 'center-right';
+        return 'center_right';
       default:
         return 'center';
     }

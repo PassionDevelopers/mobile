@@ -223,6 +223,8 @@ final router = GoRouter(
                       () => context.push(RouteNames.wholeTopics),
                   toManageIssueEvaluation:
                       () => context.push(RouteNames.manageIssueEvalution),
+                  toManageSourceEvaluation:
+                      () => context.push(RouteNames.manageSourceEvaluation),
                 ),
             ),
           ],

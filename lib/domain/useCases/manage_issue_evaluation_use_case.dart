@@ -16,17 +16,17 @@ class ManageIssueEvaluationUseCase {
     );
   }
 
-  Future<void> updateIssueEvaluation({required String issueId, required Bias bias})async{
-    getIt<Amplitude>().track(AmplitudeEvents.updateIssueEvaluation);
-    await _manageIssueEvaluationRepository.updateIssueEvaluation(
-      issueId: issueId,
-      perspective: bias.toPerspective()
-    );
-  }
-
-  Future<void> deleteIssueEvaluation({required String issueId})async{
-    getIt<Amplitude>().track(AmplitudeEvents.deleteIssueEvaluation);
-    await _manageIssueEvaluationRepository.deleteIssueEvaluation(issueId: issueId);
-  }
+  // Future<void> updateIssueEvaluation({required String issueId, required Bias bias})async{
+  //   getIt<Amplitude>().track(AmplitudeEvents.updateIssueEvaluation);
+  //   await _manageIssueEvaluationRepository.updateIssueEvaluation(
+  //     issueId: issueId,
+  //     perspective: bias.toPerspective()
+  //   );
+  // }
+  //
+  // Future<void> deleteIssueEvaluation({required String issueId})async{
+  //   getIt<Amplitude>().track(AmplitudeEvents.deleteIssueEvaluation);
+  //   await _manageIssueEvaluationRepository.deleteIssueEvaluation(issueId: issueId);
+  // }
 
 }

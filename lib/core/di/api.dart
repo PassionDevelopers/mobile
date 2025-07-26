@@ -51,6 +51,7 @@ class AuthInterceptor extends Interceptor {
     log('Response Data: ${response.data}');
     // log('Response Data: ${response.data['issues']['isSubscribed']}');
     log('Response Headers: ${response.headers}');
+    log('Response Error: ${response.statusMessage}');
     handler.next(response);
   }
 

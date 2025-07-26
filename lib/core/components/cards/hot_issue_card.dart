@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:could_be/core/routes/route_names.dart';
 import 'package:could_be/core/themes/margins_paddings.dart';
 import 'package:could_be/domain/entities/hot_issues.dart';
@@ -46,8 +44,6 @@ class _HotIssueCardState extends State<HotIssueCard>
     //   tablet: MyPaddings.large.toDouble(),
     //   desktop: MyPaddings.medium.toDouble(),
     // );
-    log('HotIssueCard build: ${widget.updateTime.toIso8601String()}');
-    log('HotIssueCard build: $_formattedDate');
 
     return Padding(
       padding: EdgeInsets.fromLTRB(
@@ -90,6 +86,14 @@ class _HotIssueCardState extends State<HotIssueCard>
                               AppColors.primary.withValues(alpha: 0.8),
                             ],
                           ),
+                          // boxShadow: [
+                          //   BoxShadow(
+                          //     color: AppColors.gray4,
+                          //     spreadRadius: 10,
+                          //     blurRadius: 30,
+                          //     offset: Offset(0, 10), // changes position of shadow
+                          //   ),
+                          // ],
                         ),
                       ),
                       // 글래스모피즘 효과
@@ -121,7 +125,7 @@ class _HotIssueCardState extends State<HotIssueCard>
                                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  MyText.reg('${widget.updateTime.month}월 ${widget.updateTime.day}일 ${widget.updateTime.hour}:${widget.updateTime.minute} 업데이트', color: AppColors.gray4),
+                                  MyText.reg('$_formattedDate 업데이트', color: AppColors.gray4),
                                   // 화살표 버튼
                                   Container(
                                     width: 42,

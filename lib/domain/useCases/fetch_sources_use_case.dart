@@ -20,4 +20,8 @@ class FetchSourcesUseCase {
     getIt<Amplitude>().track(AmplitudeEvents.fetchAllSources);
     return await _sourcesRepository.fetchAllSources();
   }
+
+  Future<Sources> fetchEvaluatedSources()async{
+    return await _sourcesRepository.fetchEvaluatedSources();
+  }
 }
