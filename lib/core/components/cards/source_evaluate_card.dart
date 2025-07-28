@@ -1,21 +1,69 @@
+import 'dart:developer';
+
 import 'package:could_be/core/method/bias/bias_enum.dart';
 import 'package:could_be/core/method/bias/bias_method.dart';
+import 'package:could_be/core/themes/margins_paddings.dart';
+import 'package:could_be/domain/entities/source.dart';
+import 'package:could_be/presentation/media/media_profile_component.dart';
 import 'package:could_be/ui/color.dart';
 import 'package:could_be/ui/fonts.dart';
 import 'package:flutter/material.dart';
 
 class SourceEvaluateCard extends StatelessWidget {
   const SourceEvaluateCard({super.key,
+    this.source,
     required this.userEvaluatedPerspective,
     required this.onBiasSelected,
   });
+
+  final Source? source;
+  final String? userEvaluatedPerspective;
+  final Function(String perspective) onBiasSelected;
+
+  @override
+  Widget build(BuildContext context) {
+
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: MyPaddings.largeMedium, vertical: MyPaddings.small),
+      child: Ink(
+        padding: EdgeInsets.all(MyPaddings.medium),
+        decoration: BoxDecoration(
+          color: AppColors.white,
+          borderRadius: BorderRadius.circular(16),
+          boxShadow: myShadow
+        ),
+        height: 150,
+        child: Column(
+          children: [
+            if(source != null) Row(
+              children: [
+                MediaProfileWebView(source: source!, isShowingArticles: false),
+                MyText.h3(source!.name)
+              ],
+            ),
+            Expanded(
+              child: SourceEvaluationRow(
+                userEvaluatedPerspective: userEvaluatedPerspective,
+                onBiasSelected: onBiasSelected,
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class SourceEvaluationRow extends StatelessWidget {
+  const SourceEvaluationRow({super.key, required this.userEvaluatedPerspective,
+    required this.onBiasSelected, });
 
   final String? userEvaluatedPerspective;
   final Function(String perspective) onBiasSelected;
 
   Widget _buildBiasOption(Bias bias) {
-    final isSelected = userEvaluatedPerspective ==
-        bias.toPerspective();
+    final isSelected = userEvaluatedPerspective == bias.toPerspective();
+    log('userEvaluated : ${userEvaluatedPerspective.toString()},isSelected: $isSelected');
 
     return Expanded(
       child: Padding(
@@ -63,7 +111,6 @@ class SourceEvaluateCard extends StatelessWidget {
       ),
     );
   }
-
   @override
   Widget build(BuildContext context) {
     final biasOptions = [
@@ -73,7 +120,6 @@ class SourceEvaluateCard extends StatelessWidget {
       Bias.rightCenter,
       Bias.right,
     ];
-
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: biasOptions.map((bias) =>
@@ -82,3 +128,4 @@ class SourceEvaluateCard extends StatelessWidget {
     );
   }
 }
+

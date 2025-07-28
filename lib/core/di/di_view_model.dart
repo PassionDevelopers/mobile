@@ -4,6 +4,7 @@ import 'package:could_be/presentation/home/home_view_model.dart';
 import 'package:could_be/presentation/home/issue_query_params/issue_query_params_view_model.dart';
 import 'package:could_be/presentation/hot_issue/hot_issues_view_model.dart';
 import 'package:could_be/presentation/media/subscribed_media/subscribed_media_view_model.dart';
+import 'package:could_be/presentation/my_page/manage_source_evaluation/manage_source_evaluation_view_model.dart';
 import 'package:could_be/presentation/topic/topic_detail_view/topic_detail_view_model.dart';
 import 'package:could_be/presentation/topic/whole_topics/whole_topic_view_model.dart';
 import 'package:could_be/presentation/web_view/web_view_view_model.dart';
@@ -104,6 +105,12 @@ Future<void> diViewModelSetup() async {
       firebaseLoginUseCase: getIt(),
       fetchUserBiasUseCase: getIt(),
       manageUserStatusUseCase: getIt(),
+    ),
+  );
+  getIt.registerFactory<ManageSourceEvaluationViewModel>(
+        () => ManageSourceEvaluationViewModel(
+      manageSourceEvaluationUseCase: getIt(),
+      fetchSourcesUseCase: getIt(),
     ),
   );
 

@@ -177,7 +177,7 @@ class IssueDetailBiasComparison extends StatelessWidget {
                 ),
               ),
               SizedBox(height: MyPaddings.small),
-              parseAiText(comparison, fontSize, AppColors.gray1),
+              parseAiText(comparison, fontSize, AppColors.gray1, getBiasColor(bias)),
             ],
           ),
         ),

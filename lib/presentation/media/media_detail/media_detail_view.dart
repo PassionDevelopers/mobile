@@ -192,7 +192,7 @@ class _MediaDetailViewState extends State<MediaDetailView> {
                                     ),
                                   ),
                                   const SizedBox(height: MyPaddings.large),
-                                  SourceEvaluateCard(
+                                  SourceEvaluationRow(
                                     userEvaluatedPerspective: state.sourceDetail!.userEvaluatedPerspective,
                                     onBiasSelected: (bias) {
                                       viewModel.manageSourceEvaluation(bias);

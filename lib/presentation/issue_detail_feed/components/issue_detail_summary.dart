@@ -228,6 +228,7 @@ class _IssueDetailSummaryState extends State<IssueDetailSummary> {
                           widget.issue.summary,
                           widget.fontSize,
                           AppColors.gray1,
+                          Colors.amberAccent
                         ),
                       ),
                     ],

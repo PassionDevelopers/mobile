@@ -31,7 +31,7 @@ class Source {
       bias: bias ?? this.bias,
       logoUrl: logoUrl ?? this.logoUrl,
       isSubscribed: isSubscribed ?? this.isSubscribed,
-      userEvaluatedPerspective: userEvaluatedPerspective ?? this.userEvaluatedPerspective,
+      userEvaluatedPerspective: userEvaluatedPerspective
     );
   }
 } 

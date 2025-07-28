@@ -7,18 +7,21 @@ enum NotFoundType {
   issue,
   article,
   topic,
+  source,
   user;
 
   String get name {
     switch (this) {
       case NotFoundType.issue:
-        return '이슈가';
+        return '발견된 이슈가';
       case NotFoundType.article:
-        return '기사가';
+        return '발견된 기사가';
       case NotFoundType.topic:
-        return '토픽이';
+        return '발견된 토픽이';
+      case NotFoundType.source:
+        return '평가한 언론이';
       case NotFoundType.user:
-        return '사용자가';
+        return '발견된 사용자가';
     }
   }
 }
@@ -36,7 +39,7 @@ class NotFound extends StatelessWidget {
             width: 200, height: 200,
             child: Lottie.asset('assets/lottie/not_found_black.json',)),
         MyText.reg(
-          '발견된 ${notFoundType.name} 없습니다.',
+          '${notFoundType.name} 없습니다.',
         ),
       ],
     );

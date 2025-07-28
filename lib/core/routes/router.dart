@@ -6,6 +6,7 @@ import 'package:could_be/presentation/hot_issue/hot_issue_view.dart';
 import 'package:could_be/presentation/init/root.dart';
 import 'package:could_be/presentation/issue_detail_feed/issue_detail_feed_root.dart';
 import 'package:could_be/presentation/my_page/manage_issue_evaluation_view.dart';
+import 'package:could_be/presentation/my_page/manage_source_evaluation/manage_source_evaluation_view.dart';
 import 'package:could_be/presentation/setting/setting_view.dart';
 import 'package:could_be/presentation/topic/whole_topics/whole_topic_view.dart';
 import 'package:could_be/presentation/update_management/have_update.dart';
@@ -146,6 +147,10 @@ final router = GoRouter(
     GoRoute(
       path: RouteNames.settings,
       builder: (context, state) => SettingView()
+    ),
+    GoRoute(
+      path: RouteNames.manageSourceEvaluation,
+      builder: (context, state) => ManageSourceEvaluationView(),
     ),
 
     //customer services

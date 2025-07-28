@@ -66,7 +66,7 @@ class IssueDetailCommonSummary extends StatelessWidget {
           ),
           Padding(
             padding: EdgeInsets.all(MyPaddings.large),
-            child: parseAiText(commonSummary, fontSize, AppColors.gray1),
+            child: parseAiText(commonSummary, fontSize, AppColors.gray1, Colors.amberAccent),
           ),
         ],
       ),

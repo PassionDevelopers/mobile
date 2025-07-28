@@ -123,6 +123,7 @@ class HotIssuePageCard extends StatelessWidget {
                         issue.summary,
                         15,
                         AppColors.gray1,
+                        Colors.amberAccent
                       ),
                     ),
                   ),

@@ -88,7 +88,6 @@ class _MyPageViewState extends State<MyPageView> {
             ),
             _buildActionTile(
               icon: Icons.analytics_outlined,
-              isActive: false,
               title: '평가한 언론',
               count: '',
               onTap: widget.toManageSourceEvaluation,

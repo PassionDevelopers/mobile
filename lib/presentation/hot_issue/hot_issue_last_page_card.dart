@@ -149,7 +149,7 @@ class _HotIssueLastPageCardState extends State<HotIssueLastPageCard>
                         ),
                       ),
                       child: Text(
-                        '상식 충전 완료!',
+                        '시사 충전 완료!',
                         style: MyFontStyle.reg.copyWith(
                           color: Colors.white,
                           fontWeight: FontWeight.w800,

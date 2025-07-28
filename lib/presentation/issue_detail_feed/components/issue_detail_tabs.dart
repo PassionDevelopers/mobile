@@ -121,7 +121,7 @@ class _IssueDetailTabsState extends State<IssueDetailTabs>
               SizedBox(height: MyPaddings.large),
             ],
           ),
-          parseAiText(text, widget.fontSize, AppColors.gray1),
+          parseAiText(text, widget.fontSize, AppColors.gray1, getBiasColor(bias)),
         ],
       );
   }
