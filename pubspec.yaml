@@ -42,6 +42,7 @@ dependencies:
   cloud_firestore: ^5.0.1
   firebase_auth: ^5.6.0
   firebase_core: ^3.14.0
+  firebase_analytics: ^11.6.0
 
   #network
   url_launcher: ^6.1.0
@@ -163,7 +164,6 @@ flutter:
   assets:
     - assets/images/login/
     - assets/images/logo/
-    - assets/images/news_logo/
     - assets/lottie/
     - shorebird.yaml
   # fonts:

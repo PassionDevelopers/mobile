@@ -10,8 +10,9 @@ import '../../responsive/responsive_utils.dart';
 import '../../responsive/responsive_layout.dart';
 
 class MainAppBar extends StatelessWidget {
-  const MainAppBar({super.key, required this.onSearchSubmitted});
+  const MainAppBar({super.key, required this.onSearchSubmitted, required this.onNoticePressed});
   final void Function(String query) onSearchSubmitted;
+  final void Function() onNoticePressed;
 
   Widget _buildLogo() {
     final toolbarHeight = AppBar().preferredSize.height;
@@ -36,6 +37,7 @@ class MainAppBar extends StatelessWidget {
     return SearchAppBar(
       appBar: _buildLogo(),
       onSearchSubmitted: onSearchSubmitted,
+      onNoticePressed: onNoticePressed,
     );
   }
 }

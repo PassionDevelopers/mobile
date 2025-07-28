@@ -6,9 +6,10 @@ import 'package:flutter/material.dart';
 
 class SearchAppBar extends StatefulWidget {
   const SearchAppBar({super.key, this.backButtonVisible = false, required this.appBar,
-    required this.onSearchSubmitted});
+    required this.onSearchSubmitted, this.onNoticePressed});
 
   final void Function(String query) onSearchSubmitted;
+  final void Function()? onNoticePressed;
   final Widget appBar;
   final bool backButtonVisible;
 
@@ -113,6 +114,10 @@ class _SearchAppBarState extends State<SearchAppBar> {
           IconButton(
             icon: Icon(_isSearchActive ? Icons.close : Icons.search_rounded),
             onPressed: _toggleSearch,
+          ),
+          if(widget.onNoticePressed != null && _isSearchActive) GestureDetector(
+            onTap: widget.onNoticePressed,
+            child: Icon(Icons.notifications_none_rounded),
           ),
         ],
       ),

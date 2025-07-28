@@ -82,7 +82,10 @@ class _IssueListRootState extends State<IssueListRoot> {
         child: Column(
           children: [
             widget.appBar ?? SizedBox.shrink(),
-            if(widget.isFeedView) MainAppBar(onSearchSubmitted: viewModel.searchIssues),
+            if(widget.isFeedView) MainAppBar(
+                onSearchSubmitted: viewModel.searchIssues,
+                onNoticePressed: viewModel.showNoticeDialog,
+            ),
             if(widget.isFeedView) IssueQueryParamsView(
               changeQueryParam: viewModel.changeQueryParam,
             ),
