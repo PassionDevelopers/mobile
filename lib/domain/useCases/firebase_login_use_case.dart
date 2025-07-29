@@ -10,56 +10,13 @@ import 'package:could_be/domain/repositoryInterfaces/kakao_register_uuid_interfa
 import 'package:could_be/presentation/log_in/login_view_model.dart';
 import 'package:firebase_auth/firebase_auth.dart' hide User;
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/services.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:sign_in_with_apple/sign_in_with_apple.dart';
 
 import '../repositoryInterfaces/token_storage_interface.dart';
 import 'package:kakao_flutter_sdk_user/kakao_flutter_sdk_user.dart';
-
-class KakaoAuthDataSourceImpl {
-  KakaoAuthDataSourceImpl();
-
-  User? _currentUser;
-
-  User? get currentUser => _currentUser;
-
-  @override
-  Future<void> signOut() async {
-    try {
-      await UserApi.instance.logout();
-      _currentUser = null;
-    } catch (error) {
-      return;
-    }
-  }
-
-  @override
-  Future<void> unlink() async {
-    try {
-      await UserApi.instance.unlink();
-      _currentUser = null;
-    } catch (error) {
-      // 연결끊기 실패 시에도 로컬 상태는 초기화
-      _currentUser = null;
-      rethrow;
-    }
-  }
-
-  @override
-  bool get isSignedIn {
-    return _currentUser != null;
-  }
-
-  Future<User?> _getUserInfo() async {
-    try {
-      _currentUser = await UserApi.instance.me();
-      return _currentUser;
-    } catch (error) {
-      return null;
-    }
-  }
-}
 
 class FirebaseLoginUseCase {
   final TokenStorageRepository _tokenStorageRepository;
@@ -96,14 +53,36 @@ class FirebaseLoginUseCase {
 
   Future<bool> signInWithKakao() async {
     try {
+      log('fuckkkkkkkkkckkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk');
+
       if (await isKakaoTalkInstalled()) {
         try {
           await UserApi.instance.loginWithKakaoTalk();
+          log('카카오톡으로 로그인 성공');
         } catch (error) {
-          await UserApi.instance.loginWithKakaoAccount();
+          log('카카오톡으로 로그인 실패 $error');
+          // 사용자가 카카오톡 설치 후 디바이스 권한 요청 화면에서 로그인을 취소한 경우,
+          // 의도적인 로그인 취소로 보고 카카오계정으로 로그인 시도 없이 로그인 취소로 처리 (예: 뒤로 가기)
+          if (error is PlatformException && error.code == 'CANCELED') {
+            return false;
+          }
+          // 카카오톡에 연결된 카카오계정이 없는 경우, 카카오계정으로 로그인
+          try {
+            await UserApi.instance.loginWithKakaoAccount();
+            log('카카오계정으로 로그인 성공');
+          } catch (error) {
+            log('카카오계정으로 로그인 실패 $error');
+            return false;
+          }
         }
       } else {
-        await UserApi.instance.loginWithKakaoAccount();
+        try {
+          await UserApi.instance.loginWithKakaoAccount();
+          log('카카오계정으로 로그인 성공');
+        } catch (error) {
+          log('카카오계정으로 로그인 실패 $error');
+          return false;
+        }
       }
 
       try {
@@ -111,9 +90,8 @@ class FirebaseLoginUseCase {
         final firebaseToken = await _kakaoRegisterUuidRepository.registerKakaoUuid(user.id.toString());
         log("firebaseToken: $firebaseToken");
         try {
-          final userCredential = await FirebaseAuth.instance.signInWithCustomToken(firebaseToken);
+          final UserCredential userCredential = await FirebaseAuth.instance.signInWithCustomToken(firebaseToken);
           log("Sign-in successful.");
-
           return saveIdToken(userCredential);
         } on FirebaseAuthException catch (e) {
           switch (e.code) {
@@ -137,7 +115,6 @@ class FirebaseLoginUseCase {
   }
 
   Future<bool> signInAnon() async {
-    getIt<Amplitude>().track(AmplitudeEvents.guestLogin);
     try {
       UserCredential userCredential =
           await FirebaseAuth.instance.signInAnonymously();
@@ -203,9 +180,9 @@ class FirebaseLoginUseCase {
     if (await GoogleSignIn().isSignedIn()) {
       await GoogleSignIn().signOut();
     }
+    log("Firebase user signed out. ${await isKakaoSignedIn()}");
     if(await isKakaoSignedIn()){
-      await UserApi.instance.logout();
-      // await UserApi.instance.unlink();
+      await UserApi.instance.unlink();
     }
   }
 
@@ -296,6 +273,9 @@ class FirebaseLoginUseCase {
       if (await GoogleSignIn().isSignedIn()) {
         await GoogleSignIn().disconnect();
       }
+      if( await isKakaoSignedIn()) {
+        await UserApi.instance.unlink();
+      }
       if (!context.mounted) return;
       showAlert(msg: '계정이 삭제되었습니다. 그동안 함께해주셔서 감사합니다.', context: context);
     } on FirebaseAuthException catch (e) {
@@ -304,6 +284,10 @@ class FirebaseLoginUseCase {
         if (await GoogleSignIn().isSignedIn()) {
           await GoogleSignIn().disconnect();
         }
+        if( await isKakaoSignedIn()) {
+          await UserApi.instance.unlink();
+        }
+
         if (!context.mounted) return;
         showAlert(
           msg: '마지막 로그인 후 시간이 오래지났습니다. 계정을 삭제하시려면 다시 로그인한 뒤 재시도하시기 바랍니다.',

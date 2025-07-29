@@ -96,7 +96,25 @@ class _IssueDetailTabsState extends State<IssueDetailTabs>
     required String? text,
     required List<String>? keywords,
   }) {
-    return text == null? Center(child: NotFound(notFoundType: NotFoundType.article,)) :
+    return text == null? bias == Bias.center?
+        Row(
+          children: [
+            IconButton(
+              icon: Icon(Icons.keyboard_arrow_left_outlined, color: AppColors.gray2),
+              onPressed: (){
+                _tabController.animateTo(0);
+              }
+            ),
+            NotFound(notFoundType: NotFoundType.article,),
+            IconButton(
+                icon: Icon(Icons.keyboard_arrow_right_outlined, color: AppColors.gray2),
+                onPressed: (){
+                  _tabController.animateTo(2);
+                }
+            ),
+          ],
+        ):
+    Center(child: NotFound(notFoundType: NotFoundType.article,)) :
       Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [

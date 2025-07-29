@@ -5,6 +5,8 @@ import '../../../ui/color.dart';
 import '../../../ui/fonts.dart';
 import '../../themes/margins_paddings.dart';
 import '../../responsive/responsive_utils.dart';
+import '../../analytics/analytics_manager.dart';
+import '../../analytics/analytics_event_types.dart';
 
 class CustomBottomNavigationBar extends StatefulWidget {
   final int currentIndex;
@@ -100,6 +102,30 @@ class _CustomBottomNavigationBarState extends State<CustomBottomNavigationBar>
   void _onItemTapped(int index) {
     if (index != widget.currentIndex) {
       HapticFeedback.lightImpact();
+      
+      // Log navigation event
+      final navigationEvents = [
+        NavigationEvent.tapHomeTab,
+        NavigationEvent.tapIssueTab,
+        NavigationEvent.tapBlindSpotTab,
+        NavigationEvent.tapMediaTab,
+        NavigationEvent.tapMyPageTab,
+      ];
+      
+      final tabNames = ['home', 'topic', 'blind_spot', 'media', 'my_page'];
+      final previousTabName = widget.currentIndex < tabNames.length ? tabNames[widget.currentIndex] : 'unknown';
+      final newTabName = index < tabNames.length ? tabNames[index] : 'unknown';
+      
+      AnalyticsManager.logNavigationEvent(
+        navigationEvents[index],
+        fromScreen: previousTabName,
+        toScreen: newTabName,
+        additionalParams: {
+          'tab_index': index,
+          'tab_name': _items[index].label,
+        },
+      );
+      
       widget.onTap(index);
     }
   }

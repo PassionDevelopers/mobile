@@ -7,7 +7,7 @@ class FetchNoticeUseCase {
 
   FetchNoticeUseCase(this._noticeRepository);
 
-  Future<Notice> fetchPopUpNotice() async {
+  Future<Notice?> fetchPopUpNotice() async {
     return await _noticeRepository.fetchPopupNotice();
   }
 

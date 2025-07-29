@@ -49,6 +49,14 @@ class MyPageViewModel extends ChangeNotifier {
     fetchDasiScore();
   }
 
+  void refresh() {
+    _fetchUserBias();
+    checkIsGuestLogin();
+    fetchWholeBiasScore();
+    fetchBiasScoreHistory();
+    fetchDasiScore();
+  }
+
   void changeHexagonZoom(bool isAbsolute) {
     _state = state.copyWith(isHexagonAbsolute: isAbsolute);
     notifyListeners();

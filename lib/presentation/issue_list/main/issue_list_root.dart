@@ -71,7 +71,7 @@ class _IssueListRootState extends State<IssueListRoot> {
   Widget build(BuildContext context) {
     return RefreshIndicator(
       onRefresh: () async {
-        viewModel.fetchInitalIssues(topicId: widget.topicId);
+        viewModel.fetchInitalIssues(topicId: widget.topicId, issueQueryParam: viewModel.state.issueQueryParam);
         hotIssuesViewModel.fetchHotIssues();
       },
       backgroundColor: AppColors.primaryLight,
@@ -83,8 +83,7 @@ class _IssueListRootState extends State<IssueListRoot> {
           children: [
             widget.appBar ?? SizedBox.shrink(),
             if(widget.isFeedView) MainAppBar(
-                onSearchSubmitted: viewModel.searchIssues,
-                onNoticePressed: viewModel.showNoticeDialog,
+              onSearchSubmitted: viewModel.searchIssues,
             ),
             if(widget.isFeedView) IssueQueryParamsView(
               changeQueryParam: viewModel.changeQueryParam,

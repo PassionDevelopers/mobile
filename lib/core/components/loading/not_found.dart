@@ -8,7 +8,8 @@ enum NotFoundType {
   article,
   topic,
   source,
-  user;
+  user,
+  notice;
 
   String get name {
     switch (this) {
@@ -22,6 +23,8 @@ enum NotFoundType {
         return '평가한 언론이';
       case NotFoundType.user:
         return '발견된 사용자가';
+      case NotFoundType.notice:
+        return '등록된 공지사항이';
     }
   }
 }

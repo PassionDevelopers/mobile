@@ -5,6 +5,9 @@ abstract class RouteNames{
   home = '/home',
   // login = '/login',
 
+  //notice
+  notice = '/notice',
+
   //forced update
   unsupportedDevice = '/unsupportedDevice',
   needUpdate = '/needUpdate',

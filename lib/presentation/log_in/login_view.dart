@@ -8,6 +8,8 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:sign_button/constants.dart';
 import '../../ui/color.dart';
+import '../../core/analytics/analytics_manager.dart';
+import '../../core/analytics/analytics_event_types.dart';
 
 class LoginView extends StatelessWidget {
   const LoginView({super.key, required this.onLoginSuccess});
@@ -46,6 +48,10 @@ class LoginView extends StatelessWidget {
                 LoginButton(
                   buttonType: ButtonType.googleDark,
                   onPressed: () async {
+                    AnalyticsManager.logAuthEvent(
+                      AuthenticationEvent.tapGoogleLogin,
+                      method: 'google',
+                    );
                     await viewModel.signIn(context, signInMethod: SignInMethod.google);
                     onLoginSuccess();
                   },
@@ -53,6 +59,10 @@ class LoginView extends StatelessWidget {
                 if(kIsWeb || Platform.isIOS) LoginButton(
                   buttonType: ButtonType.appleDark,
                   onPressed: () async {
+                    AnalyticsManager.logAuthEvent(
+                      AuthenticationEvent.tapAppleLogin,
+                      method: 'apple',
+                    );
                     await viewModel.signIn(context, signInMethod: SignInMethod.apple);
                     onLoginSuccess();
                   },
@@ -60,6 +70,10 @@ class LoginView extends StatelessWidget {
                 LoginButton(
                   buttonType: ButtonType.amazon,
                   onPressed: () async {
+                    AnalyticsManager.logAuthEvent(
+                      AuthenticationEvent.tapKakaoLogin,
+                      method: 'kakao',
+                    );
                     await viewModel.signIn(context, signInMethod: SignInMethod.kakao);
                     onLoginSuccess();
                   },

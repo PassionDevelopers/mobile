@@ -55,7 +55,7 @@ Text parseAiText(String text, double fontSize, Color boldColor, Color highlightC
           fontWeight: i % 2 == 1 ? FontWeight.w800 : FontWeight.normal,
           color: i % 2 == 1 ? boldColor : AppColors.gray1,
           decoration: i % 2 == 1 ? TextDecoration.lineThrough : null,
-          decorationThickness: 26,
+          decorationThickness: fontSize,
           decorationColor: highlightColor.withOpacity(0.2)
         ),
       ));

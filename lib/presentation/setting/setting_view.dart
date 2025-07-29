@@ -19,6 +19,8 @@ import 'package:in_app_review/in_app_review.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:could_be/core/analytics/analytics_manager.dart';
+import 'package:could_be/core/analytics/analytics_event_types.dart';
 
 class SettingView extends StatelessWidget {
   const SettingView({super.key});
@@ -47,18 +49,33 @@ class SettingView extends StatelessWidget {
                   BigButton(
                     '다시 스탠드 공유하기',
                     onPressed: (){
+                      AnalyticsManager.logUIEvent(
+                        UIEvent.tapButton,
+                        elementName: 'share_app',
+                      );
                       shareDasiStand();
                     },
                   ),
                   SizedBox(height: MyPaddings.medium),
                   BigButton(
                     '피드백 및 문의하기',
-                    onPressed: () => context.push(RouteNames.feedback),
+                    onPressed: () {
+                      AnalyticsManager.logNavigationEvent(
+                        NavigationEvent.navigateToFeedback,
+                        fromScreen: 'settings',
+                        toScreen: 'feedback',
+                      );
+                      context.push(RouteNames.feedback);
+                    },
                   ),
                   SizedBox(height: MyPaddings.medium),
                   BigButton(
                     '다시 스탠드 평가하기',
                     onPressed: () {
+                      AnalyticsManager.logUIEvent(
+                        UIEvent.tapButton,
+                        elementName: 'rate_app',
+                      );
                       final InAppReview inAppReview = InAppReview.instance;
                       inAppReview.openStoreListing(appStoreId: '6739764701');
                     },
@@ -72,7 +89,11 @@ class SettingView extends StatelessWidget {
                         ) {
                       if (snapshot.connectionState == ConnectionState.done) {
                         if (snapshot.hasData) {
-                          return BigButton(snapshot.data!, onPressed: () {});
+                          return BigButton(
+                            snapshot.data!, 
+                            onPressed: () {
+                            },
+                          );
                         }
                       }
                       return BigButtonSkeleton();
@@ -135,7 +156,13 @@ class SettingView extends StatelessWidget {
                             if(!state.isGuestLogin) BigButton(
                               '로그아웃',
                               onPressed: () async {
+                                AnalyticsManager.logAuthEvent(
+                                  AuthenticationEvent.tapLogout,
+                                );
                                 await viewModel.signOut();
+                                AnalyticsManager.logAuthEvent(
+                                  AuthenticationEvent.logoutSuccess,
+                                );
                                 if(context.mounted) context.go(RouteNames.root);
                               },
                             ),

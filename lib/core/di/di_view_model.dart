@@ -1,10 +1,13 @@
 import 'package:could_be/core/method/bias/bias_enum.dart';
 import 'package:could_be/domain/entities/article.dart';
+import 'package:could_be/domain/entities/notice.dart';
 import 'package:could_be/presentation/home/home_view_model.dart';
 import 'package:could_be/presentation/home/issue_query_params/issue_query_params_view_model.dart';
 import 'package:could_be/presentation/hot_issue/hot_issues_view_model.dart';
 import 'package:could_be/presentation/media/subscribed_media/subscribed_media_view_model.dart';
 import 'package:could_be/presentation/my_page/manage_source_evaluation/manage_source_evaluation_view_model.dart';
+import 'package:could_be/presentation/notice/notice_dialog/notice_dialog_view_model.dart';
+import 'package:could_be/presentation/notice/notice_view_model.dart';
 import 'package:could_be/presentation/topic/topic_detail_view/topic_detail_view_model.dart';
 import 'package:could_be/presentation/topic/whole_topics/whole_topic_view_model.dart';
 import 'package:could_be/presentation/web_view/web_view_view_model.dart';
@@ -20,9 +23,19 @@ import 'di_setup.dart';
 
 Future<void> diViewModelSetup() async {
 
+  //notice
+  getIt.registerFactory<NoticeViewModel>(
+        () => NoticeViewModel(getIt()),
+  );
+  getIt.registerFactoryParam<NoticeDialogViewModel, Notice, void>(
+      (notice, _) => NoticeDialogViewModel(
+      fetchNoticeUseCase: getIt(),
+      notice: notice,
+    ),
+  );
   //home
   getIt.registerFactory<HomeViewModel>(
-        () =>  HomeViewModel()
+        () =>  HomeViewModel(fetchNoticeUseCase: getIt()),
   );
 
   //issue

@@ -16,6 +16,8 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../core/themes/margins_paddings.dart';
+import '../../../core/analytics/analytics_manager.dart';
+import '../../../core/analytics/analytics_event_types.dart';
 
 class MyPageView extends StatefulWidget {
   const MyPageView({
@@ -60,37 +62,73 @@ class _MyPageViewState extends State<MyPageView> {
               icon: Icons.bookmark_outline,
               title: '관심 이슈',
               count: '',
-              onTap: widget.toSubscribedIssue,
+              onTap: () {
+                AnalyticsManager.logUserEvent(
+                  UserEvent.viewSubscribedIssues,
+                  action: 'tap_subscribed_issues',
+                );
+                widget.toSubscribedIssue();
+              },
             ),
             _buildActionTile(
               icon: Icons.newspaper_outlined,
               title: '관심 언론',
               count: '',
-              onTap: widget.toManageMediaSubscription,
+              onTap: () {
+                AnalyticsManager.logUserEvent(
+                  UserEvent.viewSubscribedMedia,
+                  action: 'tap_subscribed_media',
+                );
+                widget.toManageMediaSubscription();
+              },
             ),
             _buildActionTile(
               icon: Icons.tag,
               title: '관심 토픽',
               count: '',
-              onTap: widget.toManageTopicSubscription,
+              onTap: () {
+                AnalyticsManager.logUserEvent(
+                  UserEvent.viewSubscribedTopics,
+                  action: 'tap_subscribed_topics',
+                );
+                widget.toManageTopicSubscription();
+              },
             ),
             _buildActionTile(
               icon: Icons.history_outlined,
               title: '본 이슈',
               count: '',
-              onTap: widget.toWatchHistory,
+              onTap: () {
+                AnalyticsManager.logUserEvent(
+                  UserEvent.viewWatchHistory,
+                  action: 'tap_watch_history',
+                );
+                widget.toWatchHistory();
+              },
             ),
             _buildActionTile(
               icon: Icons.star_outline,
               title: '평가한 이슈',
               count: '',
-              onTap: widget.toManageIssueEvaluation,
+              onTap: () {
+                AnalyticsManager.logUserEvent(
+                  UserEvent.viewEvaluationHistory,
+                  action: 'tap_evaluated_issues',
+                );
+                widget.toManageIssueEvaluation();
+              },
             ),
             _buildActionTile(
               icon: Icons.analytics_outlined,
               title: '평가한 언론',
               count: '',
-              onTap: widget.toManageSourceEvaluation,
+              onTap: () {
+                AnalyticsManager.logUserEvent(
+                  UserEvent.viewEvaluationHistory,
+                  action: 'tap_evaluated_media',
+                );
+                widget.toManageSourceEvaluation();
+              },
             ),
           ],
         ),
@@ -170,48 +208,53 @@ class _MyPageViewState extends State<MyPageView> {
 
     return Stack(
       children: [
-        SingleChildScrollView(
-          child: Column(
-            children: [
-              RegAppBar(
-                title: '마이페이지',
-                iconData: Icons.account_circle_rounded,
-                actions: [
-                  IconButton(
-                    icon: Icon(Icons.settings, size: 30),
-                    onPressed: () {
-                      context.push(RouteNames.settings);
-                    },
-                  ),
-                ],
-              ),
-              SizedBox(height: MyPaddings.extraLarge),
-              MyPageHeader(viewModel: viewModel),
-              SizedBox(height: MyPaddings.extraLarge),
-              Padding(
-                padding: EdgeInsets.symmetric(
-                  horizontal: MyPaddings.large,
-                ),
-                child: Column(
-                  children: [
-                    // Bias Card
-                    MyPageHexagon(viewModel: viewModel),
-
-                    SizedBox(height: MyPaddings.extraLarge),
-
-                    // Quick Actions Grid
-                    _buildQuickActionsGrid(),
-
-                    SizedBox(height: MyPaddings.extraLarge),
-
-                    // Trend Section
-                    MyPageTrendChart(viewModel: viewModel),
-
-                    SizedBox(height: MyPaddings.extraLarge),
+        RefreshIndicator(
+          onRefresh: () async {
+            viewModel.refresh();
+          },
+          child: SingleChildScrollView(
+            child: Column(
+              children: [
+                RegAppBar(
+                  title: '마이페이지',
+                  iconData: Icons.account_circle_rounded,
+                  actions: [
+                    IconButton(
+                      icon: Icon(Icons.settings, size: 30),
+                      onPressed: () {
+                        context.push(RouteNames.settings);
+                      },
+                    ),
                   ],
                 ),
-              ),
-            ],
+                SizedBox(height: MyPaddings.extraLarge),
+                MyPageHeader(viewModel: viewModel),
+                SizedBox(height: MyPaddings.extraLarge),
+                Padding(
+                  padding: EdgeInsets.symmetric(
+                    horizontal: MyPaddings.large,
+                  ),
+                  child: Column(
+                    children: [
+                      // Bias Card
+                      MyPageHexagon(viewModel: viewModel),
+
+                      SizedBox(height: MyPaddings.extraLarge),
+
+                      // Quick Actions Grid
+                      _buildQuickActionsGrid(),
+
+                      SizedBox(height: MyPaddings.extraLarge),
+
+                      // Trend Section
+                      MyPageTrendChart(viewModel: viewModel),
+
+                      SizedBox(height: MyPaddings.extraLarge),
+                    ],
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
         ListenableBuilder(
@@ -228,6 +271,7 @@ class _MyPageViewState extends State<MyPageView> {
                   child: LoginView(
                     onLoginSuccess: () {
                       viewModel.checkIsGuestLogin();
+                      viewModel.refresh();
                     },
                   ),
                 ),

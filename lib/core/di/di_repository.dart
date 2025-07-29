@@ -7,6 +7,7 @@ import 'package:could_be/data/repositoryImpl/manage_source_evaluation_impl.dart'
 import 'package:could_be/data/repositoryImpl/manage_topic_subscription_repository_impl.dart';
 import 'package:could_be/data/repositoryImpl/manage_user_profile_repository_impl.dart';
 import 'package:could_be/data/repositoryImpl/manage_user_status_repository_impl.dart';
+import 'package:could_be/data/repositoryImpl/notice_repository_impl.dart';
 import 'package:could_be/data/repositoryImpl/source_detail_impl.dart';
 import 'package:could_be/data/repositoryImpl/topic_detail_repository_impl.dart';
 import 'package:could_be/data/repositoryImpl/track_user_activity_repository_impl.dart';
@@ -22,13 +23,13 @@ import 'package:could_be/domain/repositoryInterfaces/manage_topic_subscription_i
 import 'package:could_be/domain/repositoryInterfaces/manage_user_profile_interface.dart';
 import 'package:could_be/domain/repositoryInterfaces/manage_user_status_interface.dart';
 import 'package:could_be/domain/repositoryInterfaces/mange_source_evalutaion_interface.dart';
+import 'package:could_be/domain/repositoryInterfaces/notice_interface.dart';
 import 'package:could_be/domain/repositoryInterfaces/source_detail_interface.dart';
 import 'package:could_be/domain/repositoryInterfaces/topic_detail_interface.dart';
 import 'package:could_be/domain/repositoryInterfaces/topics_interface.dart';
 import 'package:could_be/domain/repositoryInterfaces/track_user_activity_interface.dart';
 import 'package:could_be/domain/repositoryInterfaces/user_bias_interface.dart';
 import 'package:could_be/domain/repositoryInterfaces/whole_bias_score_interface.dart';
-import 'package:could_be/domain/useCases/fetch_hot_issues_use_case.dart';
 import 'package:dio/dio.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
@@ -43,11 +44,15 @@ import '../../data/repositoryImpl/topics_repository_impl.dart';
 import '../../data/repositoryImpl/user_bias_repository_impl.dart';
 import '../../domain/repositoryInterfaces/feedback_interface.dart';
 import '../../domain/repositoryInterfaces/issue_detail_interface.dart';
-import '../../domain/repositoryInterfaces/media_interface.dart';
 import '../../domain/repositoryInterfaces/sources_interface.dart';
 import 'di_setup.dart';
 
 Future<void> diRepoSetup()async {
+  //notice
+  getIt.registerSingleton<NoticeRepository>(
+    NoticeRepositoryImpl(getIt<Dio>()),
+  );
+
   //article
   getIt.registerSingleton<ArticlesRepository>(
     ArticlesRepositoryImpl(getIt<Dio>()),

@@ -7,6 +7,7 @@ import 'package:could_be/presentation/init/root.dart';
 import 'package:could_be/presentation/issue_detail_feed/issue_detail_feed_root.dart';
 import 'package:could_be/presentation/my_page/manage_issue_evaluation_view.dart';
 import 'package:could_be/presentation/my_page/manage_source_evaluation/manage_source_evaluation_view.dart';
+import 'package:could_be/presentation/notice/notice_view.dart';
 import 'package:could_be/presentation/setting/setting_view.dart';
 import 'package:could_be/presentation/topic/whole_topics/whole_topic_view.dart';
 import 'package:could_be/presentation/update_management/have_update.dart';
@@ -30,6 +31,8 @@ import '../method/bias/bias_enum.dart';
 final router = GoRouter(
   initialLocation: RouteNames.root,
   routes: [
+    GoRoute(path: RouteNames.notice, builder: (context, state) => NoticeView()),
+
     GoRoute(path: RouteNames.root, builder: (context, state) =>Root()),
     // GoRoute(
     //   path: RouteNames.login,

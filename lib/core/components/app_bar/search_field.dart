@@ -1,8 +1,11 @@
 
 import 'package:could_be/core/components/alert/dialog.dart';
 import 'package:could_be/core/components/alert/toast.dart';
+import 'package:could_be/core/themes/margins_paddings.dart';
 import 'package:could_be/ui/color.dart';
 import 'package:flutter/material.dart';
+import '../../analytics/analytics_manager.dart';
+import '../../analytics/analytics_event_types.dart';
 
 class SearchAppBar extends StatefulWidget {
   const SearchAppBar({super.key, this.backButtonVisible = false, required this.appBar,
@@ -36,11 +39,13 @@ class _SearchAppBarState extends State<SearchAppBar> {
       if (_isSearchActive) {
         if(_searchController.text.isNotEmpty){
           _searchController.clear();
+          AnalyticsManager.logSearchEvent(SearchEvent.clearSearch);
         }else{
           closeSearch();
         }
       } else {
         _isSearchActive = true;
+        AnalyticsManager.logSearchEvent(SearchEvent.tapSearchBar);
       }
     });
   }
@@ -51,6 +56,10 @@ class _SearchAppBarState extends State<SearchAppBar> {
     }else if(query.trim().length >20){
       showMyToast(msg: '검색어는 20자 이내로 입력해주세요');
     }else{
+      AnalyticsManager.logSearchEvent(
+        SearchEvent.performSearch,
+        searchQuery: query.trim(),
+      );
       widget.onSearchSubmitted(query);
     }
   }
@@ -111,14 +120,23 @@ class _SearchAppBarState extends State<SearchAppBar> {
             ? _buildSearchField()
             : widget.appBar,
         actions: [
-          IconButton(
-            icon: Icon(_isSearchActive ? Icons.close : Icons.search_rounded),
-            onPressed: _toggleSearch,
+          GestureDetector(
+            onTap: _toggleSearch,
+            child: Icon(_isSearchActive ? Icons.close : Icons.search_rounded),
           ),
-          if(widget.onNoticePressed != null && _isSearchActive) GestureDetector(
-            onTap: widget.onNoticePressed,
+          SizedBox(width: 10),
+          if(widget.onNoticePressed != null && !_isSearchActive) GestureDetector(
+            onTap: () {
+              AnalyticsManager.logNavigationEvent(
+                NavigationEvent.navigateToNotice,
+                fromScreen: 'search_bar',
+                toScreen: 'notice',
+              );
+              widget.onNoticePressed?.call();
+            },
             child: Icon(Icons.notifications_none_rounded),
           ),
+          SizedBox(width: MyPaddings.small),
         ],
       ),
     );

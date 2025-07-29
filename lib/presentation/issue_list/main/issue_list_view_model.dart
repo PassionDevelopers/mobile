@@ -102,11 +102,11 @@ class IssueListViewModel with ChangeNotifier {
     notifyListeners();
   }
 
-  void fetchInitalIssues({String? topicId}) async {
+  void fetchInitalIssues({String? topicId, IssueQueryParam? issueQueryParam}) async {
     _state = state.copyWith(isLoading: true);
     _state = state.copyWith(query: null);
     notifyListeners();
-    final Issues result = await _fetchIssuesByType(topicId: topicId);
+    final Issues result = await _fetchIssuesByType(topicId: topicId, issueQueryParam: issueQueryParam);
     _state = state.copyWith(
       issueList: result.issues,
       hasMore: result.hasMore,

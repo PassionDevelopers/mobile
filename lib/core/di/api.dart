@@ -51,6 +51,7 @@ class AuthInterceptor extends Interceptor {
     log('Response Data: ${response.data}');
     // log('Response Data: ${response.data['issues']['isSubscribed']}');
     log('Response Headers: ${response.headers}');
+    log('Response Request Options: ${response.requestOptions.path}');
     log('Response Error: ${response.statusMessage}');
     handler.next(response);
   }
@@ -92,7 +93,7 @@ class AuthInterceptor extends Interceptor {
 Dio createDio(TokenStorageRepository tokenStorageRepository) {
   final dio = Dio(
     BaseOptions(
-      baseUrl: dev,
+      baseUrl: prod,
       connectTimeout: const Duration(seconds: 10),
       receiveTimeout: const Duration(seconds: 10),
       sendTimeout: const Duration(seconds: 10),

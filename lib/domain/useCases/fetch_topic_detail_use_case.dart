@@ -10,7 +10,6 @@ class FetchTopicDetailUseCase {
   FetchTopicDetailUseCase(this._topicDetailRepository);
 
   Future<TopicDetail> fetchTopicDetailById(String topicId) async {
-    getIt<Amplitude>().track(AmplitudeEvents.fetchTopicDetailById);
     return await _topicDetailRepository.fetchTopicDetailById(topicId);
   }
 }
