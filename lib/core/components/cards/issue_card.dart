@@ -251,9 +251,7 @@ class _IssueCardState extends State<IssueCard> with TickerProviderStateMixin {
                                       mediaTotal:
                                           widget.issue.coverageSpectrum.total,
                                       viewCount: widget.issue.view,
-                                      time:
-                                          widget.issue.updatedAt ??
-                                          widget.issue.createdAt,
+                                      time: widget.issue.createdAt,
                                       isRead: widget.issue.isRead,
                                     ),
                                   ],
@@ -268,12 +266,14 @@ class _IssueCardState extends State<IssueCard> with TickerProviderStateMixin {
                               child: SizedBox(
                                 height: 32,
                                 child: ListView.builder(
+                                  padding: EdgeInsets.symmetric(
+                                    horizontal : MyPaddings.small
+                                  ),
                                   scrollDirection: Axis.horizontal,
                                   shrinkWrap: true,
                                   itemCount: widget.issue.tags.length,
                                   itemBuilder: (_, index) {
                                     return BlindChip(
-                                      isFirst: index == 0,
                                       tag: widget.issue.tags[index],
                                     );
                                   },

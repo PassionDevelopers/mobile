@@ -5,9 +5,8 @@ import '../../../ui/color.dart';
 import '../../many_use.dart';
 
 class BlindChip extends StatelessWidget {
-  const BlindChip({super.key, required this.tag, required this.isFirst, this.topPadding, this.insetPadding});
+  const BlindChip({super.key, required this.tag, this.topPadding, this.insetPadding});
   final IssueTag tag;
-  final bool isFirst;
   final double? topPadding;
   final EdgeInsetsGeometry? insetPadding;
 
@@ -17,8 +16,7 @@ class BlindChip extends StatelessWidget {
     // Color secondary = primary.withAlpha(80);
     return Container(
       margin: EdgeInsets.only(
-        top: topPadding ?? MyPaddings.small,
-          left: isFirst ? MyPaddings.small : MyPaddings.extraSmall),
+        top: topPadding ?? MyPaddings.small, right: MyPaddings.small),
       padding: insetPadding ?? EdgeInsets.symmetric(horizontal: 8, vertical: 4),
       decoration: BoxDecoration(
         color: primary,

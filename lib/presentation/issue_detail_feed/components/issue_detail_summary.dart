@@ -143,17 +143,17 @@ class _IssueDetailSummaryState extends State<IssueDetailSummary> {
               children: [
                 if (widget.issue.tags.isNotEmpty)
                   Padding(
-                    padding: EdgeInsets.only(top: MyPaddings.medium, left: MyPaddings.small),
+                    padding: EdgeInsets.only(top: MyPaddings.medium),
                     child: SizedBox(
                       height: 24,
                       child: ListView.builder(
                         scrollDirection: Axis.horizontal,
                         shrinkWrap: true,
+                        padding: EdgeInsets.symmetric(horizontal: MyPaddings.medium),
                         itemCount: widget.issue.tags.length,
                         itemBuilder: (_, index) {
                           return BlindChip(
                             topPadding: 0,
-                            isFirst: index == 0,
                             tag: widget.issue.tags[index],
                           );
                         },
@@ -169,7 +169,7 @@ class _IssueDetailSummaryState extends State<IssueDetailSummary> {
                   ),
                 ),
                 Padding(
-                  padding: EdgeInsets.symmetric(horizontal: MyPaddings.large),
+                  padding: EdgeInsets.symmetric(horizontal: MyPaddings.medium),
                   child: CardBiasBar(
                     coverageSpectrum: widget.issue.coverageSpectrum,
                     isDailyIssue: true,
