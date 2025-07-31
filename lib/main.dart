@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:developer';
 import 'package:app_links/app_links.dart';
 import 'package:clarity_flutter/clarity_flutter.dart';
 import 'package:could_be/core/di/di_setup.dart';
@@ -93,7 +94,7 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
   void initState() {
     super.initState();
     WidgetsBinding.instance.addObserver(this);
-    // initDeepLinks();
+    initDeepLinks();
   }
 
   @override
@@ -114,12 +115,14 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
 
   void openAppLink(Uri uri) {
     AnalyticsManager.logSystemEvent(
-      SystemEvent.tapNotification,
+      SystemEvent.openDeepLink,
       additionalParams: {
         'deep_link': uri.toString(),
       },
     );
-    // _navigatorKey.currentState?.pushNamed(uri.fragment);
+    log('Deep link opened: $uri');
+    log('Navigating to: ${uri.fragment}');
+    _navigatorKey.currentState?.pushNamed(uri.fragment);
   }
   
   @override

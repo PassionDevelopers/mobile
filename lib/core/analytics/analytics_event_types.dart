@@ -246,6 +246,9 @@ enum SystemEvent {
   startUpdate,
   completeUpdate,
   skipUpdate,
+
+  // Deep Links
+  openDeepLink,
   
   // Notifications
   receiveNotification,

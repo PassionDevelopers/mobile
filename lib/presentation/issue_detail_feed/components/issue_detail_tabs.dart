@@ -214,7 +214,7 @@ class _IssueDetailTabsState extends State<IssueDetailTabs>
                 ),
                 SizedBox(width: MyPaddings.medium),
                 Text(
-                  '구체적인 보도 내용 차이점',
+                  '성향별 관점 요약',
                   style: MyFontStyle.h2.copyWith(
                     color: AppColors.primary,
                     fontWeight: FontWeight.w600,

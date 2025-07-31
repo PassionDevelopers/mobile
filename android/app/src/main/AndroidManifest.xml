@@ -1,4 +1,5 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="com.PassionDev.DasiStand">
 
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS"/>
@@ -58,7 +59,7 @@
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
                 <data android:scheme="http" android:host="dasi-stand.com"/>
-                <data android:scheme="https"/>
+                <data android:scheme="https" android:host="dasi-stand.com"/>
             </intent-filter>
 
             <!-- Deep Link sample -->
@@ -68,7 +69,7 @@
                 <category android:name="android.intent.category.BROWSABLE" />
                 <!-- Add optional android:host to distinguish your app
                       from others in case of conflicting scheme name -->
-                <data android:scheme="dasistand"/>
+                <data android:scheme="dasi-stand"/>
                 <!-- <data android:scheme="sample" /> -->
             </intent-filter>
 

@@ -29,6 +29,14 @@ import '../../presentation/topic/topic_detail_view/topic_detail_view.dart';
 import '../method/bias/bias_enum.dart';
 
 final router = GoRouter(
+  redirect: (context, state) {
+
+    if (state.uri.scheme.startsWith('kakao') && state.uri.authority == 'oauth') {
+      return null; // or return '/login'
+    }
+
+    return null;
+  },
   initialLocation: RouteNames.root,
   routes: [
     GoRoute(path: RouteNames.notice, builder: (context, state) => NoticeView()),
