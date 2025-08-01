@@ -1,5 +1,6 @@
 import 'dart:developer';
 
+import 'package:could_be/core/components/layouts/bottom_safe_padding.dart';
 import 'package:could_be/core/di/di_setup.dart';
 import 'package:could_be/core/themes/margins_paddings.dart';
 import 'package:could_be/domain/entities/articles.dart';
@@ -110,6 +111,7 @@ class _IssueDetailFeedRootState extends State<IssueDetailFeedRoot> {
   @override
   Widget build(BuildContext context) {
     return RegScaffold(
+      isScrollPage: true,
       backgroundColor: AppColors.background,
       body: Ink(
         color: AppColors.background,
@@ -236,6 +238,7 @@ class _IssueDetailFeedRootState extends State<IssueDetailFeedRoot> {
                                       //   padding: EdgeInsets.symmetric(horizontal: MyPaddings.large),
                                       //   child: CustomReportPage(),
                                       // ),
+                                      BottomSafePadding()
                                     ],
                                   ),
                                 ),

@@ -2,6 +2,7 @@ import 'dart:developer';
 
 import 'package:could_be/core/components/app_bar/app_bar.dart';
 import 'package:could_be/core/components/cards/source_evaluate_card.dart';
+import 'package:could_be/core/components/layouts/bottom_safe_padding.dart';
 import 'package:could_be/core/components/layouts/scaffold_layout.dart';
 import 'package:could_be/core/components/loading/not_found.dart';
 import 'package:could_be/core/di/di_setup.dart';
@@ -43,6 +44,7 @@ class ManageSourceEvaluationView extends StatelessWidget {
   Widget build(BuildContext context) {
     final viewModel = getIt<ManageSourceEvaluationViewModel>();
     return RegScaffold(
+      isScrollPage: true,
       body: SingleChildScrollView(
         child: Column(
           children: [
@@ -72,6 +74,7 @@ class ManageSourceEvaluationView extends StatelessWidget {
                 );
               },
             ),
+            BottomSafePadding()
           ],
         ),
       ),

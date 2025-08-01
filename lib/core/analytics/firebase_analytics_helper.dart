@@ -37,7 +37,7 @@ class FirebaseAnalyticsHelper {
   // Authentication Events
   static Future<void> logAuthEvent({
     required String method,
-    bool success = true,
+    required String success,
   }) async {
     await _analytics.logEvent(
       name: 'auth_tap_${method}_login',
@@ -108,7 +108,7 @@ class FirebaseAnalyticsHelper {
   // Form Events
   static Future<void> logFormSubmit({
     required String formName,
-    bool success = true,
+    required String success,
     Map<String, dynamic>? parameters,
   }) async {
     await _analytics.logEvent(

@@ -1,5 +1,6 @@
 import 'package:could_be/core/components/app_bar/app_bar.dart';
 import 'package:could_be/core/components/cards/source_evaluate_card.dart';
+import 'package:could_be/core/components/layouts/bottom_safe_padding.dart';
 import 'package:could_be/core/components/layouts/scaffold_layout.dart';
 import 'package:could_be/core/di/di_setup.dart';
 import 'package:could_be/core/method/bias/bias_method.dart';
@@ -39,6 +40,7 @@ class _MediaDetailViewState extends State<MediaDetailView> {
   @override
   Widget build(BuildContext context) {
     return RegScaffold(
+        isScrollPage: true,
         backgroundColor: AppColors.background,
         body: SingleChildScrollView(
           child: Column(children: [
@@ -206,6 +208,7 @@ class _MediaDetailViewState extends State<MediaDetailView> {
                         ),
                       ),
                       const SizedBox(height: MyPaddings.extraLarge),
+                      BottomSafePadding()
                     ],
                   );
                 }

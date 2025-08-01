@@ -1,3 +1,4 @@
+import 'package:could_be/core/method/date_time_parsing.dart';
 import 'package:could_be/core/routes/route_names.dart';
 import 'package:could_be/core/themes/margins_paddings.dart';
 import 'package:could_be/domain/entities/hot_issues.dart';
@@ -28,7 +29,6 @@ class _HotIssueCardState extends State<HotIssueCard>
   ).animate(
     CurvedAnimation(parent: _animationController, curve: Curves.easeInOut),
   );
-  late final String _formattedDate = '${widget.updateTime.month}월 ${widget.updateTime.day}일 ${widget.updateTime.hour}:${widget.updateTime.minute}';
 
   @override
   void dispose() {
@@ -125,7 +125,7 @@ class _HotIssueCardState extends State<HotIssueCard>
                                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  MyText.reg('$_formattedDate 업데이트', color: AppColors.gray4),
+                                  MyText.reg('${formatDateTimeToMinute(widget.hotIssues.hotTime)} 업데이트', color: AppColors.gray4),
                                   // 화살표 버튼
                                   Container(
                                     width: 42,

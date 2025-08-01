@@ -1,4 +1,5 @@
 import 'package:could_be/core/components/app_bar/app_bar.dart';
+import 'package:could_be/core/components/layouts/bottom_safe_padding.dart';
 import 'package:could_be/core/components/layouts/scaffold_layout.dart';
 import 'package:could_be/core/components/loading/not_found.dart';
 import 'package:could_be/core/di/di_setup.dart';
@@ -63,6 +64,7 @@ class _NoticeViewState extends State<NoticeView> {
   @override
   Widget build(BuildContext context) {
     return RegScaffold(
+      isScrollPage: true,
       body: Column(
         children: [
           RegAppBar(title: '공지사항'),
@@ -87,6 +89,7 @@ class _NoticeViewState extends State<NoticeView> {
                   }
                   return ListView.builder(
                     itemCount: state.notices!.notices.length,
+                    padding: EdgeInsets.only(bottom: getBottomSafePadding(context)),
                     itemBuilder: (context, index) {
                       final notice = state.notices!.notices[index];
                       return NoticeCard(notice: notice,

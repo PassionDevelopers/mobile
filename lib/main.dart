@@ -16,8 +16,7 @@ import 'package:kakao_flutter_sdk_common/kakao_flutter_sdk_common.dart';
 import 'core/behavior/scroll_behavior.dart';
 import 'core/themes/app_bar_theme.dart';
 import 'firebase_options.dart';
-import 'core/analytics/analytics_manager.dart';
-import 'core/analytics/analytics_event_types.dart';
+import 'core/analytics/unified_analytics_helper.dart';
 
 @pragma('vm:entry-point')
 Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
@@ -99,14 +98,18 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
     initDeepLinks();
     
     // Log app open event
-    AnalyticsManager.logSystemEvent(SystemEvent.appOpen);
+    UnifiedAnalyticsHelper.logEvent(
+      name: 'app_open',
+    );
   }
 
   @override
   void dispose() {
     WidgetsBinding.instance.removeObserver(this);
     _linkSubscription?.cancel();
-    AnalyticsManager.logSystemEvent(SystemEvent.appTerminate);
+    UnifiedAnalyticsHelper.logEvent(
+      name: 'app_terminate',
+    );
     super.dispose();
   }
 
@@ -119,9 +122,9 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
   }
 
   void openAppLink(Uri uri) {
-    AnalyticsManager.logSystemEvent(
-      SystemEvent.openDeepLink,
-      additionalParams: {
+    UnifiedAnalyticsHelper.logEvent(
+      name: 'open_deep_link',
+      parameters: {
         'deep_link': uri.toString(),
       },
     );
@@ -135,10 +138,14 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
     super.didChangeAppLifecycleState(state);
     switch (state) {
       case AppLifecycleState.resumed:
-        AnalyticsManager.logSystemEvent(SystemEvent.appForeground);
+        UnifiedAnalyticsHelper.logEvent(
+          name: 'app_foreground',
+        );
         break;
       case AppLifecycleState.paused:
-        AnalyticsManager.logSystemEvent(SystemEvent.appBackground);
+        UnifiedAnalyticsHelper.logEvent(
+          name: 'app_background',
+        );
         break;
       default:
         break;

@@ -6,8 +6,9 @@ class SplashScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return RegScaffold(body:
-      Column(
+    return RegScaffold(
+      isScrollPage: false,
+      body: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Image.asset('assets/images/logo/logo_rect.png', height: 100),

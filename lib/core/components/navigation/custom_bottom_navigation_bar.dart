@@ -5,8 +5,7 @@ import '../../../ui/color.dart';
 import '../../../ui/fonts.dart';
 import '../../themes/margins_paddings.dart';
 import '../../responsive/responsive_utils.dart';
-import '../../analytics/analytics_manager.dart';
-import '../../analytics/analytics_event_types.dart';
+import '../../analytics/unified_analytics_helper.dart';
 
 class CustomBottomNavigationBar extends StatefulWidget {
   final int currentIndex;
@@ -104,26 +103,12 @@ class _CustomBottomNavigationBarState extends State<CustomBottomNavigationBar>
       HapticFeedback.lightImpact();
       
       // Log navigation event
-      final navigationEvents = [
-        NavigationEvent.tapHomeTab,
-        NavigationEvent.tapIssueTab,
-        NavigationEvent.tapBlindSpotTab,
-        NavigationEvent.tapMediaTab,
-        NavigationEvent.tapMyPageTab,
-      ];
-      
       final tabNames = ['home', 'topic', 'blind_spot', 'media', 'my_page'];
-      final previousTabName = widget.currentIndex < tabNames.length ? tabNames[widget.currentIndex] : 'unknown';
       final newTabName = index < tabNames.length ? tabNames[index] : 'unknown';
       
-      AnalyticsManager.logNavigationEvent(
-        navigationEvents[index],
-        fromScreen: previousTabName,
-        toScreen: newTabName,
-        additionalParams: {
-          'tab_index': index,
-          'tab_name': _items[index].label,
-        },
+      UnifiedAnalyticsHelper.logTabNavigation(
+        tabIndex: index,
+        tabName: newTabName,
       );
       
       widget.onTap(index);
@@ -136,11 +121,10 @@ class _CustomBottomNavigationBarState extends State<CustomBottomNavigationBar>
     if (ResponsiveUtils.isDesktop(context)) {
       return SizedBox.shrink();
     }
-
     return Container(
       height: 80,
       decoration: BoxDecoration(
-        color: Colors.white.withOpacity(0.9),
+        color:AppColors.primaryLight,
         borderRadius: BorderRadius.only(
           topLeft: Radius.circular(16),
           topRight: Radius.circular(16),
@@ -155,6 +139,7 @@ class _CustomBottomNavigationBarState extends State<CustomBottomNavigationBar>
         children: List.generate(_items.length, (index) {
           final isSelected = index == widget.currentIndex;
           final item = _items[index];
+
 
           return Expanded(
             child: GestureDetector(

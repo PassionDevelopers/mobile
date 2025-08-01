@@ -20,8 +20,7 @@ import '../chips/blind_chip.dart';
 import '../chips/key_word_chip_component.dart';
 import '../../responsive/responsive_utils.dart';
 import '../../responsive/responsive_layout.dart';
-import '../../analytics/analytics_manager.dart';
-import '../../analytics/analytics_event_types.dart';
+import '../../analytics/unified_analytics_helper.dart';
 
 class IssueCard extends StatefulWidget {
   final Issue issue;
@@ -95,17 +94,16 @@ class _IssueCardState extends State<IssueCard> with TickerProviderStateMixin {
                     borderRadius: BorderRadius.circular(16),
                     onTap: () {
                       // Log issue tap event
-                      AnalyticsManager.logIssueEvent(
-                        IssueEvent.tapIssueCard,
+                      UnifiedAnalyticsHelper.logIssueEvent(
+                        action: 'tap_issue_card',
                         issueId: widget.issue.id,
-                        issueTitle: widget.issue.title,
-                        issueCategory: widget.issue.category,
-                        issueTags: widget.issue.tags,
                         additionalParams: {
+                          'issue_title': widget.issue.title,
+                          'issue_category': widget.issue.category,
+                          'issue_tags': widget.issue.tags.join(','),
                           'from_screen': widget.isEvaluatedView ? 'evaluated_issues' : 'issue_list',
                         },
                       );
-                      
                       context.push(
                         RouteNames.issueDetailFeed,
                         extra: widget.issue.id,

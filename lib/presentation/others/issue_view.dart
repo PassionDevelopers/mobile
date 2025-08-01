@@ -190,6 +190,7 @@ class _IssueViewState extends State<IssueView> with SingleTickerProviderStateMix
     return Stack(
       children: [
         RegScaffold(
+          isScrollPage: true,
           body: SingleChildScrollView(
             child: Column(
               children: [

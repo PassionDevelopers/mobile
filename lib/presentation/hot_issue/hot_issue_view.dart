@@ -1,6 +1,7 @@
 import 'package:card_swiper/card_swiper.dart';
 import 'package:could_be/core/components/layouts/scaffold_layout.dart';
 import 'package:could_be/core/components/loading/not_found.dart';
+import 'package:could_be/core/method/date_time_parsing.dart';
 import 'package:could_be/domain/entities/hot_issues.dart';
 import 'package:could_be/presentation/hot_issue/hot_issue_last_page_card.dart';
 import 'package:could_be/presentation/hot_issue/hot_issue_page_card.dart';
@@ -16,7 +17,6 @@ class HotIssueView extends StatefulWidget {
 
 class _HotIssueViewState extends State<HotIssueView> {
   late List<Widget> cards;
-  late final String _formattedDate = '${widget.hotIssues.hotTime.month}월 ${widget.hotIssues.hotTime.day}일';
   final SwiperController controller = SwiperController();
 
   @override
@@ -34,7 +34,8 @@ class _HotIssueViewState extends State<HotIssueView> {
   @override
   Widget build(BuildContext context) {
     return RegScaffold(
-      appBarTitle: '$_formattedDate 주요 이슈 모음',
+      isScrollPage: false,
+      appBarTitle: '${formatDateTimeToDay(widget.hotIssues.hotTime)} 주요 이슈 모음',
       backgroundColor: AppColors.background,
       body: Ink(
         color: AppColors.background,

@@ -1,13 +1,8 @@
 
-
-import 'dart:developer';
-
-import 'package:could_be/core/method/time.dart';
 import 'package:flutter/material.dart';
-
-import '../../../domain/entities/issue.dart';
 import '../../../ui/color.dart';
 import '../../../ui/fonts.dart';
+import '../../method/date_time_parsing.dart';
 
 class IssueInfoTitle extends StatelessWidget {
   const IssueInfoTitle({super.key, required this.mediaTotal, required this.viewCount, required this.time, this.isRead});

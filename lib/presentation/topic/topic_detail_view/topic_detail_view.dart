@@ -1,3 +1,4 @@
+import 'package:could_be/core/components/layouts/bottom_safe_padding.dart';
 import 'package:could_be/presentation/topic/topic_detail_view/topic_detail_view_model.dart';
 import 'package:flutter/material.dart';
 import '../../../core/components/cards/issue_card.dart';
@@ -22,6 +23,7 @@ class TopicDetailView extends StatelessWidget {
   Widget build(BuildContext context) {
     final viewModel = getIt<TopicDetailViewModel>(param1: topicId);
     return RegScaffold(
+      isScrollPage: true,
       backgroundColor: primaryLight,
       body: ListenableBuilder(
         listenable: viewModel,
@@ -129,7 +131,7 @@ class TopicDetailView extends StatelessWidget {
                             );
                           },
                         ),
-
+                  BottomSafePadding()
                 ],
               ),
             );

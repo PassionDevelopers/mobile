@@ -19,8 +19,7 @@ import 'package:package_info_plus/package_info_plus.dart';
 import '../../core/di/di_setup.dart';
 import '../../data/data_source/local/user_preferences.dart';
 import '../../domain/repositoryInterfaces/token_storage_interface.dart';
-import '../../core/analytics/analytics_manager.dart';
-import '../../core/analytics/analytics_event_types.dart';
+import '../../core/analytics/unified_analytics_helper.dart';
 
 StreamSubscription? fireSubscription;
 
@@ -81,37 +80,57 @@ class _RootState extends State<Root> {
       return false;
     }
 
-    usersStream.listen((snapshot){
+    usersStream.listen((snapshot) {
       log('check update status ${snapshot.data()}');
-      AnalyticsManager.logSystemEvent(SystemEvent.checkForUpdate);
+      UnifiedAnalyticsHelper.logEvent(
+        name: 'check_for_update',
+      );
       
       if (Platform.isAndroid) {
         if (snapshot.data()![CheckUpdateField.androidServerCheck]) {
           log('서버 점검으로 가자');
           isRoutedToUpdate = true;
-          AnalyticsManager.logSystemEvent(SystemEvent.networkError, additionalParams: {'error_type': 'server_maintenance'});
+          UnifiedAnalyticsHelper.logEvent(
+            name: 'network_error',
+            parameters: {'error_type': 'server_maintenance'},
+          );
           router.go(RouteNames.serverCheck);
         } else if (isNeedUpdate(snapshot.data()![CheckUpdateField.androidVersionForce], version)) {
           isRoutedToUpdate = true;
-          AnalyticsManager.logSystemEvent(SystemEvent.startUpdate, additionalParams: {'update_type': 'force_update', 'platform': 'android'});
+          UnifiedAnalyticsHelper.logEvent(
+            name: 'start_update',
+            parameters: {'update_type': 'force_update', 'platform': 'android'},
+          );
           router.go(RouteNames.needUpdate);
         } else if (isHaveUpdate(snapshot.data()![CheckUpdateField.androidVersionLatest], version)) {
           isRoutedToUpdate = true;
-          AnalyticsManager.logSystemEvent(SystemEvent.startUpdate, additionalParams: {'update_type': 'optional_update', 'platform': 'android'});
+          UnifiedAnalyticsHelper.logEvent(
+            name: 'start_update',
+            parameters: {'update_type': 'optional_update', 'platform': 'android'},
+          );
           router.go(RouteNames.haveUpdate, extra: snapshot.data()![CheckUpdateField.androidVersionLatest]);
         }
       } else if (Platform.isIOS) {
         if (snapshot.data()![CheckUpdateField.iosServerCheck]) {
           isRoutedToUpdate = true;
-          AnalyticsManager.logSystemEvent(SystemEvent.networkError, additionalParams: {'error_type': 'server_maintenance'});
+          UnifiedAnalyticsHelper.logEvent(
+            name: 'network_error',
+            parameters: {'error_type': 'server_maintenance'},
+          );
           router.go(RouteNames.serverCheck);
         } else if (isNeedUpdate(snapshot.data()![CheckUpdateField.iosVersionForce], version)) {
           isRoutedToUpdate = true;
-          AnalyticsManager.logSystemEvent(SystemEvent.startUpdate, additionalParams: {'update_type': 'force_update', 'platform': 'ios'});
+          UnifiedAnalyticsHelper.logEvent(
+            name: 'start_update',
+            parameters: {'update_type': 'force_update', 'platform': 'ios'},
+          );
           router.go(RouteNames.needUpdate);
         } else if (isHaveUpdate(snapshot.data()![CheckUpdateField.iosVersionLatest], version)) {
           isRoutedToUpdate = true;
-          AnalyticsManager.logSystemEvent(SystemEvent.startUpdate, additionalParams: {'update_type': 'optional_update', 'platform': 'ios'});
+          UnifiedAnalyticsHelper.logEvent(
+            name: 'start_update',
+            parameters: {'update_type': 'optional_update', 'platform': 'ios'},
+          );
           router.go(RouteNames.haveUpdate, extra: snapshot.data()![CheckUpdateField.iosVersionLatest]);
         }
       } else {
@@ -136,21 +155,33 @@ class _RootState extends State<Root> {
       await manageUserStatusUseCase.registerIdToken(idToken);
       log('if mounted: ${mounted}');
       if(mounted && !isRoutedToUpdate) {
-        AnalyticsManager.logAuthEvent(AuthenticationEvent.loginSuccess, method: 'first_time_user');
-        AnalyticsManager.logNavigationEvent(NavigationEvent.navigateToIssueDetail, fromScreen: 'root', toScreen: 'home');
+        UnifiedAnalyticsHelper.logAuthEvent(
+          method: 'first_time_user',
+          success: true,
+        );
+        UnifiedAnalyticsHelper.logNavigationEvent(
+          fromScreen: 'root',
+          toScreen: 'home',
+        );
         context.go(RouteNames.home);
       }
     } else {
       log('if mounted2: ${mounted}');
       if(mounted && !isRoutedToUpdate) {
-        AnalyticsManager.logAuthEvent(AuthenticationEvent.loginSuccess, method: 'returning_user');
-        AnalyticsManager.logNavigationEvent(NavigationEvent.navigateToIssueDetail, fromScreen: 'root', toScreen: 'home');
+        UnifiedAnalyticsHelper.logAuthEvent(
+          method: 'returning_user',
+          success: true,
+        );
+        UnifiedAnalyticsHelper.logNavigationEvent(
+          fromScreen: 'root',
+          toScreen: 'home',
+        );
         context.go(RouteNames.home);
       }
     }
   }
 
-  void initializeNotification() async {
+  Future<void> initializeNotification() async {
     // await Firebase.initializeApp();
     FirebaseMessaging messaging = FirebaseMessaging.instance;
 
@@ -193,7 +224,7 @@ class _RootState extends State<Root> {
     );
   }
 
-  void _requestPermission() async {
+  Future<void> _requestPermission() async {
     final settings = await FirebaseMessaging.instance.requestPermission(
       alert: true,
       announcement: false,
@@ -204,9 +235,9 @@ class _RootState extends State<Root> {
       sound: true,
     );
     
-    AnalyticsManager.logSystemEvent(
-      SystemEvent.requestPermission,
-      additionalParams: {
+    UnifiedAnalyticsHelper.logEvent(
+      name: 'request_permission',
+      parameters: {
         'permission_type': 'notifications',
         'result': settings.authorizationStatus.name
       }
@@ -216,15 +247,23 @@ class _RootState extends State<Root> {
   @override
   void initState(){
     super.initState();
-    AnalyticsManager.logSystemEvent(SystemEvent.appOpen);
-    AnalyticsManager.logScreenView(screenName: 'root', screenClass: 'Root');
+    UnifiedAnalyticsHelper.logEvent(
+      name: 'app_open',
+    );
+    UnifiedAnalyticsHelper.logScreenView(
+      screenName: 'root',
+      screenClass: 'Root',
+    );
     
     final firebaseAuth = getIt<FirebaseAuth>();
     final viewModel = getIt<LoginViewModel>();
     fireSubscription = firebaseAuth.authStateChanges().listen((User? user)async{
       log('Auth state changed: ${user?.uid}');
       if (user == null) {
-        AnalyticsManager.logAuthEvent(AuthenticationEvent.tapGoogleLogin, method: 'anonymous');
+        UnifiedAnalyticsHelper.logAuthEvent(
+          method: 'anonymous',
+          success: true,
+        );
         await viewModel.signIn(context, signInMethod: SignInMethod.anonymous);
         return;
       }
@@ -233,8 +272,11 @@ class _RootState extends State<Root> {
         fireSubscription?.cancel();
         if(token != null){
           log('Login success - User: ${user.isAnonymous ? "Anonymous" : "Registered"}');
-          AnalyticsManager.setUserId(user.uid);
-          AnalyticsManager.setUserProperty(name: 'user_type', value: user.isAnonymous ? 'anonymous' : 'registered');
+          UnifiedAnalyticsHelper.setUserId(user.uid);
+          UnifiedAnalyticsHelper.setUserProperty(
+            name: 'user_type',
+            value: user.isAnonymous ? 'anonymous' : 'registered',
+          );
           _requestPermission();
           await userLogined(token);
         }
@@ -242,11 +284,17 @@ class _RootState extends State<Root> {
         log('Error getting ID token: $e');
         // 게스트 로그인 사용자이면
         if (user.isAnonymous) {
-          AnalyticsManager.logErrorEvent(ErrorEvent.authenticationError, errorMessage: 'Anonymous user token error');
+          UnifiedAnalyticsHelper.logEvent(
+            name: 'authentication_error',
+            parameters: {'error_message': 'Anonymous user token error'},
+          );
           await firebaseAuth.signOut();
           await viewModel.signIn(context, signInMethod: SignInMethod.anonymous);
         }else{
-          AnalyticsManager.logAuthEvent(AuthenticationEvent.loginFailure, method: 're_sign_in', success: false);
+          UnifiedAnalyticsHelper.logAuthEvent(
+            method: 're_sign_in',
+            success: false,
+          );
           await viewModel.resignIn(context);
         }
       }
@@ -256,6 +304,7 @@ class _RootState extends State<Root> {
   @override
   Widget build(BuildContext context) {
     return RegScaffold(
+      isScrollPage: false,
       backgroundColor: Colors.white,
       body: Container(
         width: double.infinity,

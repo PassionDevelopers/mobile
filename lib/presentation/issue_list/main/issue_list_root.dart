@@ -69,14 +69,6 @@ class _IssueListRootState extends State<IssueListRoot> {
 
   @override
   Widget build(BuildContext context) {
-    return ListView(
-      children: [
-        for(int i = 0; i < 100; i++)
-          ListTile(
-            title: Text('Item $i'),
-          ),
-      ],
-    );
     return RefreshIndicator(
       onRefresh: () async {
         viewModel.fetchInitalIssues(topicId: widget.topicId, issueQueryParam: viewModel.state.issueQueryParam);
@@ -85,22 +77,61 @@ class _IssueListRootState extends State<IssueListRoot> {
       backgroundColor: AppColors.primaryLight,
       color: AppColors.primary,
 
-      child: NotificationListener(
-        onNotification: (ScrollNotification scrollNotification) {
-          final maxScroll = scrollNotification.metrics.maxScrollExtent;
-          final currentScroll = scrollNotification.metrics.pixels;
-          final delta = MediaQuery.of(context).size.height * 0.50;
-          if (maxScroll - currentScroll <= delta) {
-            viewModel.fetchMoreIssues();
-          }
-          return false;
-        },
-        child: ListView(
+      child:  SingleChildScrollView(
+        controller: scrollController,
+        physics: ClampingScrollPhysics(),
+        child: Column(
           children: [
-            for(int i = 0; i < 100; i++)
-              ListTile(
-                title: Text('Item $i'),
-              ),
+            widget.appBar ?? SizedBox.shrink(),
+            if(widget.isFeedView) MainAppBar(onSearchSubmitted: viewModel.searchIssues),
+            if(widget.isFeedView) IssueQueryParamsView(
+              changeQueryParam: viewModel.changeQueryParam,
+            ),
+            if(widget.isTopicView) SubscribedTopicView(
+              onTopicSelected: viewModel.changeTopicId,
+            ),
+            widget.upperWidget ?? SizedBox.shrink(),
+            ListenableBuilder(
+              listenable: viewModel,
+              builder: (context, _) {
+                final state = viewModel.state;
+                log('IssueQueryParam: ${state.issueQueryParam?.queryParam}');
+                if (state.isLoading) {
+                  return IssueListLoadingView();
+                } else {
+                  if (state.issueList.isEmpty) {
+                    return NotFound(notFoundType: NotFoundType.issue);
+                  } else {
+                    return Column(
+                      children: [
+                        ListenableBuilder(
+                            listenable: hotIssuesViewModel,
+                            builder: (context, _){
+                              bool isDailyQueryParam = state.issueQueryParam != null && state.issueQueryParam!.queryParam == IssueType.daily.name;
+                              bool isDailyIssueType = state.issueQueryParam == null && widget.issueType == IssueType.daily;
+                              bool isSearching = state.query != null;
+                              log('isDailyQueryParam: $isDailyQueryParam, isDailyIssueType: $isDailyIssueType, isSearching: $isSearching');
+                              if(widget.isFeedView && (isDailyQueryParam || isDailyIssueType) && !isSearching && hotIssuesViewModel.state.hotIssues != null){
+                                return HotIssueCard(
+                                  updateTime: hotIssuesViewModel.state.hotIssues!.hotTime,
+                                  hotIssues: hotIssuesViewModel.state.hotIssues!,
+                                );
+                              }
+                              return SizedBox.shrink();
+                            }
+                        ),
+                        IssueListView(issueList: state.issueList,
+                          onBiasSelected: viewModel.manageIssueEvaluation,
+                          isEvaluating: state.isEvaluating,
+                          isEvaluatedView: widget.isEvaluatedView,
+                        ),
+                        if (state.isLoadingMore) IssueListLoadingView(),
+                      ],
+                    );
+                  }
+                }
+              },
+            ),
           ],
         ),
       ),

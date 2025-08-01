@@ -26,6 +26,7 @@ class HaveUpdate extends StatelessWidget {
     }
     final languageCode = LanguageCode.code.code;
     return RegScaffold(
+      isScrollPage: false,
         body: Container(
             padding: const EdgeInsets.all(8.0),
             height: double.infinity,

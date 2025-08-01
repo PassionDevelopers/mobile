@@ -5,7 +5,7 @@ import 'package:could_be/ui/fonts.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import '../../../ui/color.dart';
-import '../../method/time.dart';
+import '../../method/date_time_parsing.dart';
 import '../../themes/margins_paddings.dart';
 import '../../responsive/responsive_utils.dart';
 

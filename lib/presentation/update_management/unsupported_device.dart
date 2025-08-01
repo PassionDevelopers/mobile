@@ -8,6 +8,7 @@ class UnsupportedDevice extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return RegScaffold(
+      isScrollPage: false,
         body: Container(
           height: double.infinity,
           width: double.infinity,

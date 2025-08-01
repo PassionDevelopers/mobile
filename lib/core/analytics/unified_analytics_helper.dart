@@ -42,16 +42,17 @@ class UnifiedAnalyticsHelper {
   // Authentication Events
   static Future<void> logAuthEvent({
     required String method,
-    bool success = true,
+    success = true,
   }) async {
+    final String successString = success ? 'success' : 'fail';
     await Future.wait([
       FirebaseAnalyticsHelper.logAuthEvent(
         method: method,
-        success: success,
+        success: successString,
       ),
       AmplitudeAnalyticsHelper.logAuthEvent(
         method: method,
-        success: success,
+        success: successString,
       ),
     ]);
   }
@@ -142,15 +143,16 @@ class UnifiedAnalyticsHelper {
     bool success = true,
     Map<String, dynamic>? parameters,
   }) async {
+    final String successString = success ? 'success' : 'fail';
     await Future.wait([
       FirebaseAnalyticsHelper.logFormSubmit(
         formName: formName,
-        success: success,
+        success: successString,
         parameters: parameters,
       ),
       AmplitudeAnalyticsHelper.logFormSubmit(
         formName: formName,
-        success: success,
+        success: successString,
         parameters: parameters,
       ),
     ]);

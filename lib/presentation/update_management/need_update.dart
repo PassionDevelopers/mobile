@@ -21,6 +21,7 @@ class NeedUpdate extends StatelessWidget {
     }
     final languageCode = LanguageCode.code.code;
     return RegScaffold(
+      isScrollPage: false,
         body: Container(
           height: double.infinity,
           width: double.infinity,

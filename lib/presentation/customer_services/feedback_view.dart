@@ -1,5 +1,7 @@
 import 'package:could_be/core/components/app_bar/app_bar.dart';
 import 'package:could_be/core/components/buttons/big_button.dart';
+import 'package:could_be/core/components/layouts/bottom_safe_padding.dart';
+import 'package:could_be/core/components/layouts/scaffold_layout.dart';
 import 'package:could_be/core/components/text_form_field.dart';
 import 'package:could_be/core/components/title/big_title.dart';
 import 'package:could_be/core/di/di_setup.dart';
@@ -54,8 +56,8 @@ class _FeedbackViewState extends State<FeedbackView> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: AppColors.background,
+    return RegScaffold(
+      isScrollPage: true,
       body: SingleChildScrollView(
         child: Column(
           children: [
@@ -202,6 +204,7 @@ class _FeedbackViewState extends State<FeedbackView> {
                 ),
               ),
             ),
+            BottomSafePadding()
           ],
         ),
       ),

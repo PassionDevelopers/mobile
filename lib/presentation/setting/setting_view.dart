@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:could_be/core/components/app_bar/app_bar.dart';
 import 'package:could_be/core/components/buttons/big_button.dart';
+import 'package:could_be/core/components/layouts/bottom_safe_padding.dart';
 import 'package:could_be/core/components/layouts/scaffold_layout.dart';
 import 'package:could_be/core/components/loading/skeleton.dart';
 import 'package:could_be/core/components/title/big_title.dart';
@@ -19,8 +20,7 @@ import 'package:in_app_review/in_app_review.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:url_launcher/url_launcher.dart';
-import 'package:could_be/core/analytics/analytics_manager.dart';
-import 'package:could_be/core/analytics/analytics_event_types.dart';
+import 'package:could_be/core/analytics/unified_analytics_helper.dart';
 
 class SettingView extends StatelessWidget {
   const SettingView({super.key});
@@ -35,6 +35,7 @@ class SettingView extends StatelessWidget {
   Widget build(BuildContext context) {
     final viewModel = getIt<MyPageViewModel>();
     return RegScaffold(
+      isScrollPage: true,
       body: SingleChildScrollView(
         child: Column(
           children: [
@@ -48,10 +49,10 @@ class SettingView extends StatelessWidget {
                   SizedBox(height: MyPaddings.large),
                   BigButton(
                     '다시 스탠드 공유하기',
-                    onPressed: (){
-                      AnalyticsManager.logUIEvent(
-                        UIEvent.tapButton,
-                        elementName: 'share_app',
+                    onPressed: () {
+                      UnifiedAnalyticsHelper.logButtonTap(
+                        module: 'settings',
+                        buttonName: 'share_app',
                       );
                       shareDasiStand();
                     },
@@ -60,8 +61,7 @@ class SettingView extends StatelessWidget {
                   BigButton(
                     '피드백 및 문의하기',
                     onPressed: () {
-                      AnalyticsManager.logNavigationEvent(
-                        NavigationEvent.navigateToFeedback,
+                      UnifiedAnalyticsHelper.logNavigationEvent(
                         fromScreen: 'settings',
                         toScreen: 'feedback',
                       );
@@ -72,9 +72,9 @@ class SettingView extends StatelessWidget {
                   BigButton(
                     '다시 스탠드 평가하기',
                     onPressed: () {
-                      AnalyticsManager.logUIEvent(
-                        UIEvent.tapButton,
-                        elementName: 'rate_app',
+                      UnifiedAnalyticsHelper.logButtonTap(
+                        module: 'settings',
+                        buttonName: 'rate_app',
                       );
                       final InAppReview inAppReview = InAppReview.instance;
                       inAppReview.openStoreListing(appStoreId: '6739764701');
@@ -156,12 +156,14 @@ class SettingView extends StatelessWidget {
                             if(!state.isGuestLogin) BigButton(
                               '로그아웃',
                               onPressed: () async {
-                                AnalyticsManager.logAuthEvent(
-                                  AuthenticationEvent.tapLogout,
+                                UnifiedAnalyticsHelper.logButtonTap(
+                                  module: 'settings',
+                                  buttonName: 'logout',
                                 );
                                 await viewModel.signOut();
-                                AnalyticsManager.logAuthEvent(
-                                  AuthenticationEvent.logoutSuccess,
+                                UnifiedAnalyticsHelper.logAuthEvent(
+                                  method: 'logout',
+                                  success: true,
                                 );
                                 if(context.mounted) context.go(RouteNames.root);
                               },
@@ -188,6 +190,7 @@ class SettingView extends StatelessWidget {
                     },
                   ),
                   SizedBox(height: MyPaddings.medium),
+                  BottomSafePadding()
                 ],
               ),
             ),

@@ -1,3 +1,4 @@
+import 'package:could_be/core/components/layouts/bottom_safe_padding.dart';
 import 'package:could_be/core/method/bias/bias_enum.dart';
 import 'package:flutter/material.dart';
 import '../../../core/components/cards/issue_card.dart';
@@ -34,6 +35,8 @@ class IssueListView extends StatelessWidget {
               }, 
               isEvaluating: isEvaluating,
             ),
+          // 모바일에서는 하단 안전 패딩 추가
+          BottomSafePadding()
         ],
       );
     }

@@ -16,8 +16,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../core/themes/margins_paddings.dart';
-import '../../../core/analytics/analytics_manager.dart';
-import '../../../core/analytics/analytics_event_types.dart';
+import '../../../core/analytics/unified_analytics_helper.dart';
 
 class MyPageView extends StatefulWidget {
   const MyPageView({
@@ -63,9 +62,10 @@ class _MyPageViewState extends State<MyPageView> {
               title: '관심 이슈',
               count: '',
               onTap: () {
-                AnalyticsManager.logUserEvent(
-                  UserEvent.viewSubscribedIssues,
-                  action: 'tap_subscribed_issues',
+                UnifiedAnalyticsHelper.logButtonTap(
+                  module: 'my_page',
+                  buttonName: 'subscribed_issues',
+                  parameters: {'action': 'tap_subscribed_issues'},
                 );
                 widget.toSubscribedIssue();
               },
@@ -75,9 +75,10 @@ class _MyPageViewState extends State<MyPageView> {
               title: '관심 언론',
               count: '',
               onTap: () {
-                AnalyticsManager.logUserEvent(
-                  UserEvent.viewSubscribedMedia,
-                  action: 'tap_subscribed_media',
+                UnifiedAnalyticsHelper.logButtonTap(
+                  module: 'my_page',
+                  buttonName: 'subscribed_media',
+                  parameters: {'action': 'tap_subscribed_media'},
                 );
                 widget.toManageMediaSubscription();
               },
@@ -87,9 +88,10 @@ class _MyPageViewState extends State<MyPageView> {
               title: '관심 토픽',
               count: '',
               onTap: () {
-                AnalyticsManager.logUserEvent(
-                  UserEvent.viewSubscribedTopics,
-                  action: 'tap_subscribed_topics',
+                UnifiedAnalyticsHelper.logButtonTap(
+                  module: 'my_page',
+                  buttonName: 'subscribed_topics',
+                  parameters: {'action': 'tap_subscribed_topics'},
                 );
                 widget.toManageTopicSubscription();
               },
@@ -99,9 +101,10 @@ class _MyPageViewState extends State<MyPageView> {
               title: '본 이슈',
               count: '',
               onTap: () {
-                AnalyticsManager.logUserEvent(
-                  UserEvent.viewWatchHistory,
-                  action: 'tap_watch_history',
+                UnifiedAnalyticsHelper.logButtonTap(
+                  module: 'my_page',
+                  buttonName: 'watch_history',
+                  parameters: {'action': 'tap_watch_history'},
                 );
                 widget.toWatchHistory();
               },
@@ -111,9 +114,10 @@ class _MyPageViewState extends State<MyPageView> {
               title: '평가한 이슈',
               count: '',
               onTap: () {
-                AnalyticsManager.logUserEvent(
-                  UserEvent.viewEvaluationHistory,
-                  action: 'tap_evaluated_issues',
+                UnifiedAnalyticsHelper.logButtonTap(
+                  module: 'my_page',
+                  buttonName: 'evaluated_issues',
+                  parameters: {'action': 'tap_evaluated_issues'},
                 );
                 widget.toManageIssueEvaluation();
               },
@@ -123,9 +127,10 @@ class _MyPageViewState extends State<MyPageView> {
               title: '평가한 언론',
               count: '',
               onTap: () {
-                AnalyticsManager.logUserEvent(
-                  UserEvent.viewEvaluationHistory,
-                  action: 'tap_evaluated_media',
+                UnifiedAnalyticsHelper.logButtonTap(
+                  module: 'my_page',
+                  buttonName: 'evaluated_media',
+                  parameters: {'action': 'tap_evaluated_media'},
                 );
                 widget.toManageSourceEvaluation();
               },

@@ -9,6 +9,7 @@ import '../navigation/side_navigation_bar.dart';
 class RegScaffold extends StatelessWidget {
   const RegScaffold({
     super.key,
+    required this.isScrollPage,
     required this.body,
     this.appBar,
     this.drawer,
@@ -25,6 +26,7 @@ class RegScaffold extends StatelessWidget {
   final Widget? drawer;
   final Widget? endDrawer;
   final bool showBottomBar;
+  final bool isScrollPage;
   final String? appBarTitle;
   final PreferredSizeWidget? appBar;
   final Color? backgroundColor;
@@ -49,25 +51,30 @@ class RegScaffold extends StatelessWidget {
   }
 
   Widget _buildMobileLayout(BuildContext context) {
-    final double statusBarHeight = MediaQuery.of(context).padding.top;
+    final safeBottomPadding = MediaQuery.of(context).padding.bottom;
     return Container(
-      padding: EdgeInsets.only(top: statusBarHeight),
-      color: backgroundColor ?? AppColors.primaryLight,
-      child: Scaffold(
-        appBar: appBar ?? (appBarTitle != null
-            ? AppBar(
-          title: MyText.h2(appBarTitle!),
-          backgroundColor: AppColors.primaryLight,
-        )
-            : null),
-        drawer: drawer,
-        endDrawer: endDrawer,
-        floatingActionButtonLocation: floatingActionButtonLocation,
-        floatingActionButton: floatingActionButton,
-        resizeToAvoidBottomInset: false,
-        body: SafeArea(
-          bottom: false,
-          child: body),
+      color: AppColors.primaryLight,
+      child: SafeArea(
+        bottom: false,
+        child: Scaffold(
+          appBar: appBar ?? (appBarTitle != null
+              ? AppBar(
+            title: MyText.h2(appBarTitle!),
+            backgroundColor: AppColors.primaryLight,
+          )
+              : null),
+          drawer: drawer,
+          endDrawer: endDrawer,
+          floatingActionButtonLocation: floatingActionButtonLocation,
+          floatingActionButton: floatingActionButton,
+          resizeToAvoidBottomInset: false,
+          body: Column(
+            children: [
+              Expanded(child: body),
+              if(!isScrollPage) Container(height: safeBottomPadding,  color: AppColors.primaryLight,)
+            ],
+          ),
+        ),
       ),
     );
   }
@@ -137,17 +144,19 @@ class HomeScaffold extends StatelessWidget {
   Widget _buildMobileLayout(BuildContext context) {
     return Container(
       color: backgroundColor ?? AppColors.primaryLight,
-      child: Scaffold(
-        drawer: drawer,
-        endDrawer: endDrawer,
-        floatingActionButtonLocation: floatingActionButtonLocation,
-        floatingActionButton: floatingActionButton,
-        resizeToAvoidBottomInset: false,
-        // body: body,
-        body: body,
-        bottomNavigationBar: CustomBottomNavigationBar(
-          currentIndex: currentNavigationIndex,
-          onTap: onNavigationChanged,
+      child: SafeArea(
+        child: Scaffold(
+          drawer: drawer,
+          endDrawer: endDrawer,
+          floatingActionButtonLocation: floatingActionButtonLocation,
+          floatingActionButton: floatingActionButton,
+          resizeToAvoidBottomInset: false,
+          // body: body,
+          body: body,
+          bottomNavigationBar: CustomBottomNavigationBar(
+            currentIndex: currentNavigationIndex,
+            onTap: onNavigationChanged,
+          ),
         ),
       ),
     );
