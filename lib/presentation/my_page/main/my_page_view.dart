@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:could_be/core/components/alert/dialog.dart';
 import 'package:could_be/core/components/app_bar/app_bar.dart';
+import 'package:could_be/core/components/buttons/big_button.dart';
 import 'package:could_be/core/di/di_setup.dart';
 import 'package:could_be/core/method/bias/bias_enum.dart';
 import 'package:could_be/core/routes/route_names.dart';
@@ -234,7 +235,9 @@ class _MyPageViewState extends State<MyPageView> {
                 ),
                 SizedBox(height: MyPaddings.extraLarge),
                 MyPageHeader(viewModel: viewModel),
+
                 SizedBox(height: MyPaddings.extraLarge),
+
                 Padding(
                   padding: EdgeInsets.symmetric(
                     horizontal: MyPaddings.large,

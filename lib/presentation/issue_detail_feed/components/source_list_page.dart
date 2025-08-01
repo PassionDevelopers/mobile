@@ -206,28 +206,68 @@ class _SourceListPageState extends State<SourceListPage>
                 Container(
                   width: double.infinity,
                   height: 48,
-                  child: ElevatedButton(
-                    onPressed:
-                        widget.hasNextIssue
-                            ? widget.toNextIssue
-                            : () {
-                              context.pop();
-                            },
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: AppColors.primary,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(12),
+                  child: Row(
+                    children: [
+                      if(widget.hasNextIssue)ElevatedButton(
+                        onPressed: () {
+                          context.pop();
+                        },
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: AppColors.primary,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(12),
+                          ),
+                          elevation: 0,
+                        ),
+                        child: Row(
+                          children: [
+                            Icon(Icons.home, color: Colors.white, size: 25),
+                            SizedBox(width: MyPaddings.small),
+                            Text(
+                              '홈으로',
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 16,
+                                fontWeight: FontWeight.w600,
+                              ),
+                            ),
+                          ],
+                        ),
                       ),
-                      elevation: 0,
-                    ),
-                    child: Text(
-                      widget.hasNextIssue ? '다음 이슈 보기' : '홈으로 돌아가기',
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 16,
-                        fontWeight: FontWeight.w600,
+                      SizedBox(width: MyPaddings.large),
+                      Expanded(
+                        child: ElevatedButton(
+                          onPressed:
+                              widget.hasNextIssue
+                                  ? widget.toNextIssue
+                                  : () {
+                                    context.pop();
+                                  },
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: AppColors.primary,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(12),
+                            ),
+                            elevation: 0,
+                          ),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Text(
+                                widget.hasNextIssue ? '다음 이슈 보기' : '홈으로 돌아가기',
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w600,
+                                ),
+                              ),
+                              SizedBox(width: MyPaddings.small),
+                              Icon(Icons.keyboard_arrow_right_rounded, color: Colors.white, size: 25),
+                            ],
+                          ),
+                        ),
                       ),
-                    ),
+                    ],
                   ),
                 ),
               ],
