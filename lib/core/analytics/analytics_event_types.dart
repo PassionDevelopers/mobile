@@ -310,6 +310,7 @@ class AnalyticsParams {
   static const String issueTitle = 'issue_title';
   static const String issueCategory = 'issue_category';
   static const String issueBias = 'issue_bias';
+  static const String issueTags = 'issue_tags';
   
   // Media
   static const String mediaId = 'media_id';

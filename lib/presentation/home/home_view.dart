@@ -1,4 +1,6 @@
 import 'package:could_be/core/di/di_setup.dart';
+import 'package:could_be/presentation/issue_list/issue_type.dart';
+import 'package:could_be/presentation/issue_list/main/issue_list_root.dart';
 import 'package:flutter/material.dart';
 import '../../../core/components/layouts/scaffold_layout.dart';
 import '../../../ui/color.dart';

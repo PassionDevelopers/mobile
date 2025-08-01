@@ -15,7 +15,6 @@ class SubmitFeedbackUseCase {
     required String title,
     required String content,
   }) async {
-    getIt<Amplitude>().track(AmplitudeEvents.submitFeedback);
     await _feedbackRepository.submitFeedback(
       category: category,
       name: name,

@@ -5,6 +5,8 @@ import 'package:could_be/presentation/home/feed_view.dart';
 import 'package:could_be/presentation/hot_issue/hot_issue_view.dart';
 import 'package:could_be/presentation/init/root.dart';
 import 'package:could_be/presentation/issue_detail_feed/issue_detail_feed_root.dart';
+import 'package:could_be/presentation/issue_list/issue_type.dart';
+import 'package:could_be/presentation/issue_list/main/issue_list_root.dart';
 import 'package:could_be/presentation/my_page/manage_issue_evaluation_view.dart';
 import 'package:could_be/presentation/my_page/manage_source_evaluation/manage_source_evaluation_view.dart';
 import 'package:could_be/presentation/notice/notice_view.dart';

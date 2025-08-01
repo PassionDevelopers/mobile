@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'package:app_links/app_links.dart';
 import 'package:clarity_flutter/clarity_flutter.dart';
 import 'package:could_be/core/di/di_setup.dart';
+import 'package:amplitude_flutter/amplitude.dart';
 import 'package:could_be/core/routes/router.dart';
 import 'package:could_be/data/data_source/local/user_preferences.dart';
 import 'package:could_be/ui/color.dart';
@@ -75,6 +76,7 @@ void main() async {
 
   await diSetupToken();
   await diSetup();
+  
   runApp(ClarityWidget(app: const MyApp(), clarityConfig: config));
 }
 
@@ -95,6 +97,9 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
     super.initState();
     WidgetsBinding.instance.addObserver(this);
     initDeepLinks();
+    
+    // Log app open event
+    AnalyticsManager.logSystemEvent(SystemEvent.appOpen);
   }
 
   @override

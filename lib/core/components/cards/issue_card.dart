@@ -99,7 +99,8 @@ class _IssueCardState extends State<IssueCard> with TickerProviderStateMixin {
                         IssueEvent.tapIssueCard,
                         issueId: widget.issue.id,
                         issueTitle: widget.issue.title,
-                        issueCategory: widget.isDailyIssue ? 'daily' : 'regular',
+                        issueCategory: widget.issue.category,
+                        issueTags: widget.issue.tags,
                         additionalParams: {
                           'from_screen': widget.isEvaluatedView ? 'evaluated_issues' : 'issue_list',
                         },

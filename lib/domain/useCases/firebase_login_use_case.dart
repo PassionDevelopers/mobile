@@ -1,9 +1,6 @@
 import 'dart:developer';
 
-import 'package:amplitude_flutter/amplitude.dart';
-import 'package:could_be/core/amplitude/amplitude.dart';
 import 'package:could_be/core/components/alert/dialog.dart';
-import 'package:could_be/core/di/di_setup.dart';
 import 'package:could_be/core/routes/route_names.dart';
 import 'package:could_be/core/routes/router.dart';
 import 'package:could_be/domain/repositoryInterfaces/kakao_register_uuid_interface.dart';
@@ -126,7 +123,6 @@ class FirebaseLoginUseCase {
   }
 
   Future<bool> signInWithApple({bool? isReauth}) async {
-    getIt<Amplitude>().track(AmplitudeEvents.appleLogin);
     try {
       final appleCredential = await SignInWithApple.getAppleIDCredential(
         scopes: [
@@ -169,13 +165,10 @@ class FirebaseLoginUseCase {
 
     UserCredential userCredential = await FirebaseAuth.instance
         .signInWithCredential(credential);
-    // Log the event to Amplitude
-    getIt<Amplitude>().track(AmplitudeEvents.googleLogin);
     return saveIdToken(userCredential);
   }
 
   Future<void> signOut() async {
-    getIt<Amplitude>().track(AmplitudeEvents.signOut);
     await FirebaseAuth.instance.signOut();
     if (await GoogleSignIn().isSignedIn()) {
       await GoogleSignIn().signOut();
@@ -210,7 +203,6 @@ class FirebaseLoginUseCase {
   }
 
   Future<void> deleteUserAccount(BuildContext context) async {
-    getIt<Amplitude>().track(AmplitudeEvents.deleteUserAccount);
     final user = _firebaseAuth.currentUser;
     if (user == null) {
       log("No user is currently signed in.");
