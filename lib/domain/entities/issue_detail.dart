@@ -1,8 +1,11 @@
+import 'package:could_be/domain/entities/issue_tag.dart';
+
 import 'articles.dart';
 import 'coverage_spectrum.dart';
 
 class IssueDetail {
   final String id;
+  final List<IssueTag> tags;
   final String title;
   final String category;
   final String summary;
@@ -60,6 +63,7 @@ class IssueDetail {
     required this.leftLikeCount,
     required this.centerLikeCount,
     required this.rightLikeCount,
+    required this.tags,
   });
 
   IssueDetail copyWith({
@@ -73,6 +77,7 @@ class IssueDetail {
     List<String>? keywords,
     DateTime? createdAt,
     int? view,
+    List<IssueTag> ? tags,
     CoverageSpectrum? coverageSpectrum,
     DateTime? updatedAt,
     String? leftSummary,
@@ -104,6 +109,7 @@ class IssueDetail {
       keywords: keywords ?? this.keywords,
       createdAt: createdAt ?? this.createdAt,
       view: view ?? this.view,
+      tags: tags ?? this.tags,
       coverageSpectrum: coverageSpectrum ?? this.coverageSpectrum,
       updatedAt: updatedAt ?? this.updatedAt,
       leftSummary: leftSummary ?? this.leftSummary,

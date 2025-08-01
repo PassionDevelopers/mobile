@@ -6,6 +6,7 @@ class Source {
   final Bias bias;
   final String logoUrl;
   final bool isSubscribed;
+  final Bias? userEvaluatedPerspective;
 
   Source({
     required this.id,
@@ -13,6 +14,7 @@ class Source {
     required this.bias,
     required this.logoUrl,
     required this.isSubscribed,
+    required this.userEvaluatedPerspective
   });
 
   Source copyWith({
@@ -21,6 +23,7 @@ class Source {
     Bias? bias,
     String? logoUrl,
     bool? isSubscribed,
+    Bias? userEvaluatedPerspective,
   }) {
     return Source(
       id: id ?? this.id,
@@ -28,6 +31,7 @@ class Source {
       bias: bias ?? this.bias,
       logoUrl: logoUrl ?? this.logoUrl,
       isSubscribed: isSubscribed ?? this.isSubscribed,
+      userEvaluatedPerspective: userEvaluatedPerspective
     );
   }
 } 

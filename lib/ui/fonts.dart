@@ -170,12 +170,12 @@ abstract class MyText {
     return AutoSizeText(text, style: MyFontStyle.h0, group: group, maxLines: maxLines ?? 1, minFontSize: 1, overflow: TextOverflow.ellipsis);
   }
 
-  static AutoSizeText h1(String text,{Color? color, AutoSizeGroup? group, int? maxLines}){
-    return AutoSizeText(text, style: MyFontStyle.h1.copyWith(color: color), group: group, maxLines: maxLines ?? 1, minFontSize: 1, overflow: TextOverflow.ellipsis);
+  static AutoSizeText h1(String text,{Color? color, AutoSizeGroup? group, int? maxLines, FontWeight? fontWeight, List<Shadow>? shadows}){
+    return AutoSizeText(text, style: MyFontStyle.h1.copyWith(color: color, fontWeight: fontWeight, shadows: shadows), group: group, maxLines: maxLines ?? 1, minFontSize: 1, overflow: TextOverflow.ellipsis);
   }
 
-  static AutoSizeText h2(String text, {Color? color, AutoSizeGroup? group, int? maxLines, double? fontSize, List<Shadow>? shadows}){
-    return AutoSizeText(text, style: MyFontStyle.h2.copyWith(color: color, fontSize: fontSize, shadows: shadows ) ,group: group,
+  static AutoSizeText h2(String text, {Color? color, AutoSizeGroup? group, int? maxLines, double? fontSize, List<Shadow>? shadows, FontWeight? fontWeight}){
+    return AutoSizeText(text, style: MyFontStyle.h2.copyWith(color: color, fontSize: fontSize, shadows: shadows, fontWeight: fontWeight) ,group: group,
         maxLines: maxLines ?? 1, minFontSize: 1, overflow: TextOverflow.ellipsis);
   }
   static AutoSizeText h2w(String text, {Color? color, AutoSizeGroup? group, int? maxLines}){
@@ -193,8 +193,11 @@ abstract class MyText {
     return Text(text, style: MyFontStyle.articleSmall.copyWith(color: color));
   }
 
-  static AutoSizeText reg(String text, {Color? color, AutoSizeGroup? group, int? maxLines, FontWeight? fontWeight}){
-    return AutoSizeText(text, style: MyFontStyle.reg.copyWith(color: color, fontWeight: fontWeight), group: group, maxLines: maxLines ?? 1, minFontSize: 1,
+  static AutoSizeText reg(String text, {Color? color, AutoSizeGroup? group, int? maxLines, FontWeight? fontWeight,
+    TextDecoration? decoration, Color? decorationColor, double? decorationThickness, TextDecorationStyle? decorationStyle}){
+    return AutoSizeText(text, style: MyFontStyle.reg.copyWith(color: color, fontWeight: fontWeight,
+        decoration: decoration, decorationColor: decorationColor, decorationThickness: decorationThickness, decorationStyle: decorationStyle),
+        group: group, maxLines: maxLines ?? 1, minFontSize: 1,
         overflow: TextOverflow.ellipsis);
   }
 

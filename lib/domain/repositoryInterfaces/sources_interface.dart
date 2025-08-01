@@ -4,5 +4,7 @@ abstract class SourcesRepository {
 
   Future<Sources> fetchSubscribedSources();
 
+  Future<Sources> fetchEvaluatedSources();
+
   Future<Sources> fetchAllSources();
 }

@@ -1,11 +1,9 @@
 
+import 'dart:async';
 import 'dart:developer';
-
+import 'package:could_be/core/domain/nick_name_error.dart';
+import 'package:could_be/core/domain/result.dart';
 import 'package:could_be/core/method/bias/bias_enum.dart';
-import 'package:could_be/core/method/bias/bias_method.dart';
-import 'package:could_be/domain/entities/bias_score_element.dart';
-import 'package:could_be/domain/entities/bias_score_history.dart';
-import 'package:could_be/domain/entities/whole_bias_score.dart';
 import 'package:could_be/domain/useCases/fetch_user_bias_user_case.dart';
 import 'package:could_be/domain/useCases/fetch_whole_bias_score_use_case.dart';
 import 'package:could_be/domain/useCases/firebase_login_use_case.dart';
@@ -24,6 +22,10 @@ class MyPageViewModel extends ChangeNotifier {
   final FetchWholeBiasScoreUseCase _fetchWholeBiasScoreUseCase;
   final TrackUserActivityUseCase _trackUserActivityUseCase;
 
+  final _eventController = StreamController<NickNameError>();
+
+  Stream<NickNameError> get eventStream => _eventController.stream;
+
   MyPageState _state = MyPageState(isGuestLogin: true);
   MyPageState get state => _state;
 
@@ -40,6 +42,14 @@ class MyPageViewModel extends ChangeNotifier {
       _fetchWholeBiasScoreUseCase = fetchWholeBiasUseCase,
       _trackUserActivityUseCase = trackUserActivityUseCase,
        _manageUserStatusUseCase = manageUserStatusUseCase {
+    _fetchUserBias();
+    checkIsGuestLogin();
+    fetchWholeBiasScore();
+    fetchBiasScoreHistory();
+    fetchDasiScore();
+  }
+
+  void refresh() {
     _fetchUserBias();
     checkIsGuestLogin();
     fetchWholeBiasScore();
@@ -130,14 +140,28 @@ class MyPageViewModel extends ChangeNotifier {
     }
     _state = state.copyWith(isBiasLoading: true);
     notifyListeners();
-    await _manageUserProfileUseCase.updateUserNickname(name);
-    final result = await _fetchUserBiasUseCase.execute();
-    _state = state.copyWith(
-      userBias: result,
-      isEditMode: false,
-      isBiasLoading: false,
-    );
-    notifyListeners();
+    final nickNameResult = await _manageUserProfileUseCase.updateUserNickname(name);
+    log('updateUserNickname: $nickNameResult');
+    switch(nickNameResult) {
+      case ResultSuccess<bool, NickNameError> success:
+        _state = state.copyWith(
+          isEditMode: false,
+          isBiasLoading: false,
+        );
+        final result = await _fetchUserBiasUseCase.execute();
+        _state = state.copyWith(
+          userBias: result,
+          isEditMode: false,
+          isBiasLoading: false,
+        );
+        notifyListeners();
+      case ResultError<bool, NickNameError> error:
+        _state = state.copyWith(
+          isBiasLoading: false,
+        );
+        _eventController.add(error.error);
+        notifyListeners();
+    }
   }
 
   void setEditMode(){

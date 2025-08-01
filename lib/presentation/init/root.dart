@@ -19,6 +19,7 @@ import 'package:package_info_plus/package_info_plus.dart';
 import '../../core/di/di_setup.dart';
 import '../../data/data_source/local/user_preferences.dart';
 import '../../domain/repositoryInterfaces/token_storage_interface.dart';
+import '../../core/analytics/unified_analytics_helper.dart';
 
 StreamSubscription? fireSubscription;
 
@@ -79,29 +80,57 @@ class _RootState extends State<Root> {
       return false;
     }
 
-    usersStream.listen((snapshot){
+    usersStream.listen((snapshot) {
       log('check update status ${snapshot.data()}');
+      UnifiedAnalyticsHelper.logEvent(
+        name: 'check_for_update',
+      );
+      
       if (Platform.isAndroid) {
         if (snapshot.data()![CheckUpdateField.androidServerCheck]) {
           log('서버 점검으로 가자');
           isRoutedToUpdate = true;
+          UnifiedAnalyticsHelper.logEvent(
+            name: 'network_error',
+            parameters: {'error_type': 'server_maintenance'},
+          );
           router.go(RouteNames.serverCheck);
         } else if (isNeedUpdate(snapshot.data()![CheckUpdateField.androidVersionForce], version)) {
           isRoutedToUpdate = true;
+          UnifiedAnalyticsHelper.logEvent(
+            name: 'start_update',
+            parameters: {'update_type': 'force_update', 'platform': 'android'},
+          );
           router.go(RouteNames.needUpdate);
         } else if (isHaveUpdate(snapshot.data()![CheckUpdateField.androidVersionLatest], version)) {
           isRoutedToUpdate = true;
+          UnifiedAnalyticsHelper.logEvent(
+            name: 'start_update',
+            parameters: {'update_type': 'optional_update', 'platform': 'android'},
+          );
           router.go(RouteNames.haveUpdate, extra: snapshot.data()![CheckUpdateField.androidVersionLatest]);
         }
       } else if (Platform.isIOS) {
         if (snapshot.data()![CheckUpdateField.iosServerCheck]) {
           isRoutedToUpdate = true;
+          UnifiedAnalyticsHelper.logEvent(
+            name: 'network_error',
+            parameters: {'error_type': 'server_maintenance'},
+          );
           router.go(RouteNames.serverCheck);
         } else if (isNeedUpdate(snapshot.data()![CheckUpdateField.iosVersionForce], version)) {
           isRoutedToUpdate = true;
+          UnifiedAnalyticsHelper.logEvent(
+            name: 'start_update',
+            parameters: {'update_type': 'force_update', 'platform': 'ios'},
+          );
           router.go(RouteNames.needUpdate);
         } else if (isHaveUpdate(snapshot.data()![CheckUpdateField.iosVersionLatest], version)) {
           isRoutedToUpdate = true;
+          UnifiedAnalyticsHelper.logEvent(
+            name: 'start_update',
+            parameters: {'update_type': 'optional_update', 'platform': 'ios'},
+          );
           router.go(RouteNames.haveUpdate, extra: snapshot.data()![CheckUpdateField.iosVersionLatest]);
         }
       } else {
@@ -125,14 +154,34 @@ class _RootState extends State<Root> {
     if (!result.exists) {
       await manageUserStatusUseCase.registerIdToken(idToken);
       log('if mounted: ${mounted}');
-      if(mounted && !isRoutedToUpdate) context.go(RouteNames.home);
+      if(mounted && !isRoutedToUpdate) {
+        UnifiedAnalyticsHelper.logAuthEvent(
+          method: 'first_time_user',
+          success: true,
+        );
+        UnifiedAnalyticsHelper.logNavigationEvent(
+          fromScreen: 'root',
+          toScreen: 'home',
+        );
+        context.go(RouteNames.home);
+      }
     } else {
       log('if mounted2: ${mounted}');
-      if(mounted && !isRoutedToUpdate) context.go(RouteNames.home);
+      if(mounted && !isRoutedToUpdate) {
+        UnifiedAnalyticsHelper.logAuthEvent(
+          method: 'returning_user',
+          success: true,
+        );
+        UnifiedAnalyticsHelper.logNavigationEvent(
+          fromScreen: 'root',
+          toScreen: 'home',
+        );
+        context.go(RouteNames.home);
+      }
     }
   }
 
-  void initializeNotification() async {
+  Future<void> initializeNotification() async {
     // await Firebase.initializeApp();
     FirebaseMessaging messaging = FirebaseMessaging.instance;
 
@@ -175,8 +224,8 @@ class _RootState extends State<Root> {
     );
   }
 
-  void _requestPermission() async {
-    await FirebaseMessaging.instance.requestPermission(
+  Future<void> _requestPermission() async {
+    final settings = await FirebaseMessaging.instance.requestPermission(
       alert: true,
       announcement: false,
       badge: true,
@@ -185,43 +234,68 @@ class _RootState extends State<Root> {
       provisional: false,
       sound: true,
     );
+    
+    UnifiedAnalyticsHelper.logEvent(
+      name: 'request_permission',
+      parameters: {
+        'permission_type': 'notifications',
+        'result': settings.authorizationStatus.name
+      }
+    );
   }
 
   @override
   void initState(){
     super.initState();
+    UnifiedAnalyticsHelper.logEvent(
+      name: 'app_open',
+    );
+    UnifiedAnalyticsHelper.logScreenView(
+      screenName: 'root',
+      screenClass: 'Root',
+    );
+    
     final firebaseAuth = getIt<FirebaseAuth>();
     final viewModel = getIt<LoginViewModel>();
-    fireSubscription = firebaseAuth.userChanges().listen((User? user)async{
-      log(firebaseAuth.currentUser.toString());
+    fireSubscription = firebaseAuth.authStateChanges().listen((User? user)async{
+      log('Auth state changed: ${user?.uid}');
       if (user == null) {
-        viewModel.signIn(context, signInMethod: SignInMethod.anonymous);
-      }else{
-        String? token = await firebaseAuth.currentUser!.getIdToken();
-        //id token이 만료되었을때
-        if(token == null){
-          // 게스트 로그인 사용자이면
-          if (user.isAnonymous) {
-            // 리프레쉬 토큰 마저 만료되었으면 다시 게스트로 로그인
-            if(user.refreshToken == null){
-              viewModel.signIn(context, signInMethod: SignInMethod.anonymous);
-            }else{
-              //리프레쉬 토큰이 남아있으면 id token 재발급
-              user.getIdToken(true);
-            }
-          } else {
-            //게스트 로그인 사용자가 아니라면 로그인 페이지로 이동
-            if(user.refreshToken == null){
-              viewModel.resignIn(context);
-            }else{
-              //리프레쉬 토큰이 남아있으면 id token 재발급
-              user.getIdToken(true);
-            }
-          }
-        }else{
-          log('login success');
+        UnifiedAnalyticsHelper.logAuthEvent(
+          method: 'anonymous',
+          success: true,
+        );
+        await viewModel.signIn(context, signInMethod: SignInMethod.anonymous);
+        return;
+      }
+      try {
+        String? token = await user.getIdToken();
+        fireSubscription?.cancel();
+        if(token != null){
+          log('Login success - User: ${user.isAnonymous ? "Anonymous" : "Registered"}');
+          UnifiedAnalyticsHelper.setUserId(user.uid);
+          UnifiedAnalyticsHelper.setUserProperty(
+            name: 'user_type',
+            value: user.isAnonymous ? 'anonymous' : 'registered',
+          );
           _requestPermission();
           await userLogined(token);
+        }
+      } catch (e) {
+        log('Error getting ID token: $e');
+        // 게스트 로그인 사용자이면
+        if (user.isAnonymous) {
+          UnifiedAnalyticsHelper.logEvent(
+            name: 'authentication_error',
+            parameters: {'error_message': 'Anonymous user token error'},
+          );
+          await firebaseAuth.signOut();
+          await viewModel.signIn(context, signInMethod: SignInMethod.anonymous);
+        }else{
+          UnifiedAnalyticsHelper.logAuthEvent(
+            method: 're_sign_in',
+            success: false,
+          );
+          await viewModel.resignIn(context);
         }
       }
     });
@@ -230,6 +304,7 @@ class _RootState extends State<Root> {
   @override
   Widget build(BuildContext context) {
     return RegScaffold(
+      isScrollPage: false,
       backgroundColor: Colors.white,
       body: Container(
         width: double.infinity,

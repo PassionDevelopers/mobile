@@ -1,4 +1,5 @@
 import 'dart:developer';
+import 'package:could_be/core/components/alert/toast.dart';
 import 'package:could_be/core/di/di_setup.dart';
 import 'package:dio/dio.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -48,6 +49,10 @@ class AuthInterceptor extends Interceptor {
   ) {
     log('Response Status Code: ${response.statusCode}');
     log('Response Data: ${response.data}');
+    // log('Response Data: ${response.data['issues']['isSubscribed']}');
+    log('Response Headers: ${response.headers}');
+    log('Response Request Options: ${response.requestOptions.path}');
+    log('Response Error: ${response.statusMessage}');
     handler.next(response);
   }
 

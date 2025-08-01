@@ -1,9 +1,13 @@
+import 'dart:io';
+
 import 'package:could_be/core/components/app_bar/app_bar.dart';
 import 'package:could_be/core/components/buttons/big_button.dart';
+import 'package:could_be/core/components/layouts/bottom_safe_padding.dart';
 import 'package:could_be/core/components/layouts/scaffold_layout.dart';
 import 'package:could_be/core/components/loading/skeleton.dart';
 import 'package:could_be/core/components/title/big_title.dart';
 import 'package:could_be/core/di/di_setup.dart';
+import 'package:could_be/core/method/share_dasi_stand.dart';
 import 'package:could_be/core/routes/route_names.dart';
 import 'package:could_be/core/routes/router.dart';
 import 'package:could_be/core/themes/margins_paddings.dart';
@@ -14,7 +18,9 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:in_app_review/in_app_review.dart';
 import 'package:package_info_plus/package_info_plus.dart';
+import 'package:share_plus/share_plus.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:could_be/core/analytics/unified_analytics_helper.dart';
 
 class SettingView extends StatelessWidget {
   const SettingView({super.key});
@@ -29,6 +35,7 @@ class SettingView extends StatelessWidget {
   Widget build(BuildContext context) {
     final viewModel = getIt<MyPageViewModel>();
     return RegScaffold(
+      isScrollPage: true,
       body: SingleChildScrollView(
         child: Column(
           children: [
@@ -41,13 +48,34 @@ class SettingView extends StatelessWidget {
                   BigTitle(title: '설정'),
                   SizedBox(height: MyPaddings.large),
                   BigButton(
+                    '다시 스탠드 공유하기',
+                    onPressed: () {
+                      UnifiedAnalyticsHelper.logButtonTap(
+                        module: 'settings',
+                        buttonName: 'share_app',
+                      );
+                      shareDasiStand();
+                    },
+                  ),
+                  SizedBox(height: MyPaddings.medium),
+                  BigButton(
                     '피드백 및 문의하기',
-                    onPressed: () => context.push(RouteNames.feedback),
+                    onPressed: () {
+                      UnifiedAnalyticsHelper.logNavigationEvent(
+                        fromScreen: 'settings',
+                        toScreen: 'feedback',
+                      );
+                      context.push(RouteNames.feedback);
+                    },
                   ),
                   SizedBox(height: MyPaddings.medium),
                   BigButton(
                     '다시 스탠드 평가하기',
                     onPressed: () {
+                      UnifiedAnalyticsHelper.logButtonTap(
+                        module: 'settings',
+                        buttonName: 'rate_app',
+                      );
                       final InAppReview inAppReview = InAppReview.instance;
                       inAppReview.openStoreListing(appStoreId: '6739764701');
                     },
@@ -61,7 +89,11 @@ class SettingView extends StatelessWidget {
                         ) {
                       if (snapshot.connectionState == ConnectionState.done) {
                         if (snapshot.hasData) {
-                          return BigButton(snapshot.data!, onPressed: () {});
+                          return BigButton(
+                            snapshot.data!, 
+                            onPressed: () {
+                            },
+                          );
                         }
                       }
                       return BigButtonSkeleton();
@@ -124,7 +156,15 @@ class SettingView extends StatelessWidget {
                             if(!state.isGuestLogin) BigButton(
                               '로그아웃',
                               onPressed: () async {
+                                UnifiedAnalyticsHelper.logButtonTap(
+                                  module: 'settings',
+                                  buttonName: 'logout',
+                                );
                                 await viewModel.signOut();
+                                UnifiedAnalyticsHelper.logAuthEvent(
+                                  method: 'logout',
+                                  success: true,
+                                );
                                 if(context.mounted) context.go(RouteNames.root);
                               },
                             ),
@@ -150,6 +190,7 @@ class SettingView extends StatelessWidget {
                     },
                   ),
                   SizedBox(height: MyPaddings.medium),
+                  BottomSafePadding()
                 ],
               ),
             ),

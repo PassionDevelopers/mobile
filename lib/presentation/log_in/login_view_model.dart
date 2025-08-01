@@ -13,6 +13,7 @@ enum SignInMethod {
   google,
   apple,
   anonymous,
+  kakao,
 }
 
 class LoginViewModel with ChangeNotifier {
@@ -34,9 +35,9 @@ class LoginViewModel with ChangeNotifier {
         SignInMethod.google => await _firebaseLoginUseCase.signInWithGoogle(),
         SignInMethod.apple => await _firebaseLoginUseCase.signInWithApple(),
         SignInMethod.anonymous => await _firebaseLoginUseCase.signInAnon(),
+        SignInMethod.kakao => await _firebaseLoginUseCase.signInWithKakao(),
       }){
         _state = _state.copyWith(isLoginInProgress: false);
-        notifyListeners();
         if(context.mounted) context.go(RouteNames.root);
       }else{
         if(context.mounted) showSnackBar(context, msg: '로그인 실패: 토큰을 받지 못했습니다.');
@@ -46,11 +47,12 @@ class LoginViewModel with ChangeNotifier {
     } catch (e) {
       // Handle error
       log(e.toString());
-      showSnackBar(context, msg: '로그인 실패: 알 수 없는 오류가 발생하였습니다.');
+      if(context.mounted) showSnackBar(context, msg: '로그인 실패: 알 수 없는 오류가 발생하였습니다.');
       _state = _state.copyWith(isLoginInProgress: false);
       notifyListeners();
     }
   }
+
 
   Future<void> resignIn(BuildContext context) async {
     _state = _state.copyWith(isLoginInProgress: true);

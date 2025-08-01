@@ -13,6 +13,7 @@ IssueDTO _$IssueDTOFromJson(Map<String, dynamic> json) => IssueDTO(
           .map((e) => IssueTagDto.fromJson(e as Map<String, dynamic>))
           .toList(),
   summary: json['summary'] as String,
+  isRead: json['isRead'] as bool?,
   title: json['title'] as String,
   createdAt: DateTime.parse(json['createdAt'] as String),
   updatedAt:
@@ -24,6 +25,7 @@ IssueDTO _$IssueDTOFromJson(Map<String, dynamic> json) => IssueDTO(
       (json['keywords'] as List<dynamic>).map((e) => e as String).toList(),
   isSubscribed: json['isSubscribed'] as bool,
   imageUrl: json['imageUrl'] as String?,
+  imageSource: json['imageSource'] as String?,
   view: (json['view'] as num).toInt(),
   coverageSpectrum: CoverageSpectrumDTO.fromJson(
     json['coverageSpectrum'] as Map<String, dynamic>,
@@ -40,6 +42,7 @@ Map<String, dynamic> _$IssueDTOToJson(IssueDTO instance) => <String, dynamic>{
   'category': instance.category,
   'summary': instance.summary,
   'tags': instance.tags,
+  'isRead': instance.isRead,
   'createdAt': instance.createdAt.toIso8601String(),
   'updatedAt': instance.updatedAt?.toIso8601String(),
   'leftLikeCount': instance.leftLikeCount,
@@ -47,6 +50,7 @@ Map<String, dynamic> _$IssueDTOToJson(IssueDTO instance) => <String, dynamic>{
   'rightLikeCount': instance.rightLikeCount,
   'keywords': instance.keywords,
   'imageUrl': instance.imageUrl,
+  'imageSource': instance.imageSource,
   'view': instance.view,
   'isSubscribed': instance.isSubscribed,
   'coverageSpectrum': instance.coverageSpectrum,

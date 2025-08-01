@@ -96,41 +96,40 @@ class _IssueDetailTabsState extends State<IssueDetailTabs>
     required String? text,
     required List<String>? keywords,
   }) {
-    return text == null? Center(child: NotFound(notFoundType: NotFoundType.article,)) :
+    return text == null? bias == Bias.center?
+        Row(
+          children: [
+            IconButton(
+              icon: Icon(Icons.keyboard_arrow_left_outlined, color: AppColors.gray2),
+              onPressed: (){
+                _tabController.animateTo(0);
+              }
+            ),
+            NotFound(notFoundType: NotFoundType.article,),
+            IconButton(
+                icon: Icon(Icons.keyboard_arrow_right_outlined, color: AppColors.gray2),
+                onPressed: (){
+                  _tabController.animateTo(2);
+                }
+            ),
+          ],
+        ):
+    Center(child: NotFound(notFoundType: NotFoundType.article,)) :
       Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           if(keywords != null && keywords.isNotEmpty) Column(
             children: [
-              Container(
+              SizedBox(
                 height: 32,
                 child: ListView.builder(
                   scrollDirection: Axis.horizontal,
                   itemBuilder: (_, index) {
-                    return Padding(
-                      padding: EdgeInsets.only(right: MyPaddings.small),
-                      child: Container(
-                        padding: EdgeInsets.symmetric(
-                          horizontal: MyPaddings.medium,
-                          vertical: 4,
-                        ),
-                        decoration: BoxDecoration(
-                          color: getBiasColor(bias).withOpacity(0.1),
-                          borderRadius: BorderRadius.circular(16),
-                          border: Border.all(
-                            color: getBiasColor(bias).withOpacity(0.3),
-                            width: 1,
-                          ),
-                        ),
-                        child: Text(
-                          keywords[index],
-                          style: TextStyle(
-                            color: getBiasColor(bias),
-                            fontSize: 12,
-                            fontWeight: FontWeight.w500,
-                          ),
-                        ),
-                      ),
+                    return KeyWordChip(
+                      title: keywords[index],
+                      textColor: AppColors.white,
+                      color: getBiasColor(bias),
+                      borderColor: getBiasColor(bias),
                     );
                   },
                   itemCount: keywords.length,
@@ -140,7 +139,7 @@ class _IssueDetailTabsState extends State<IssueDetailTabs>
               SizedBox(height: MyPaddings.large),
             ],
           ),
-          parseAiText(text, widget.fontSize, AppColors.gray1),
+          parseAiText(text, widget.fontSize, AppColors.gray1, getBiasColor(bias)),
         ],
       );
   }
@@ -215,7 +214,7 @@ class _IssueDetailTabsState extends State<IssueDetailTabs>
                 ),
                 SizedBox(width: MyPaddings.medium),
                 Text(
-                  '구체적인 보도 내용 차이점',
+                  '성향별 관점 요약',
                   style: MyFontStyle.h2.copyWith(
                     color: AppColors.primary,
                     fontWeight: FontWeight.w600,

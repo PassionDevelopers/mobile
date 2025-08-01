@@ -1,16 +1,19 @@
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:could_be/data/repositoryImpl/hot_issues_repository_impl.dart';
 import 'package:could_be/data/repositoryImpl/issue_query_params_repository_impl.dart';
 import 'package:could_be/data/repositoryImpl/manage_issue_evaluation_repository_impl.dart';
+import 'package:could_be/data/repositoryImpl/manage_source_evaluation_impl.dart';
 import 'package:could_be/data/repositoryImpl/manage_topic_subscription_repository_impl.dart';
 import 'package:could_be/data/repositoryImpl/manage_user_profile_repository_impl.dart';
 import 'package:could_be/data/repositoryImpl/manage_user_status_repository_impl.dart';
-import 'package:could_be/data/repositoryImpl/media_repository_impl.dart';
+import 'package:could_be/data/repositoryImpl/notice_repository_impl.dart';
 import 'package:could_be/data/repositoryImpl/source_detail_impl.dart';
 import 'package:could_be/data/repositoryImpl/topic_detail_repository_impl.dart';
 import 'package:could_be/data/repositoryImpl/track_user_activity_repository_impl.dart';
 import 'package:could_be/data/repositoryImpl/whole_bias_score_repository_impl.dart';
 import 'package:could_be/domain/repositoryInterfaces/articles_interface.dart';
+import 'package:could_be/domain/repositoryInterfaces/hot_issues_interface.dart';
 import 'package:could_be/domain/repositoryInterfaces/issue_query_params_interface.dart';
 import 'package:could_be/domain/repositoryInterfaces/issues_interface.dart';
 import 'package:could_be/domain/repositoryInterfaces/manage_issue_evaluation_interface.dart';
@@ -19,6 +22,8 @@ import 'package:could_be/domain/repositoryInterfaces/manage_media_subscription_i
 import 'package:could_be/domain/repositoryInterfaces/manage_topic_subscription_interface.dart';
 import 'package:could_be/domain/repositoryInterfaces/manage_user_profile_interface.dart';
 import 'package:could_be/domain/repositoryInterfaces/manage_user_status_interface.dart';
+import 'package:could_be/domain/repositoryInterfaces/mange_source_evalutaion_interface.dart';
+import 'package:could_be/domain/repositoryInterfaces/notice_interface.dart';
 import 'package:could_be/domain/repositoryInterfaces/source_detail_interface.dart';
 import 'package:could_be/domain/repositoryInterfaces/topic_detail_interface.dart';
 import 'package:could_be/domain/repositoryInterfaces/topics_interface.dart';
@@ -39,11 +44,15 @@ import '../../data/repositoryImpl/topics_repository_impl.dart';
 import '../../data/repositoryImpl/user_bias_repository_impl.dart';
 import '../../domain/repositoryInterfaces/feedback_interface.dart';
 import '../../domain/repositoryInterfaces/issue_detail_interface.dart';
-import '../../domain/repositoryInterfaces/media_interface.dart';
 import '../../domain/repositoryInterfaces/sources_interface.dart';
 import 'di_setup.dart';
 
 Future<void> diRepoSetup()async {
+  //notice
+  getIt.registerSingleton<NoticeRepository>(
+    NoticeRepositoryImpl(getIt<Dio>()),
+  );
+
   //article
   getIt.registerSingleton<ArticlesRepository>(
     ArticlesRepositoryImpl(getIt<Dio>()),
@@ -59,6 +68,9 @@ Future<void> diRepoSetup()async {
   getIt.registerSingleton<IssuesRepository>(IssuesRepositoryImpl(getIt<Dio>()));
   getIt.registerSingleton<ManageIssueSubscriptionRepository>(
     ManageIssueSubscriptionRepositoryImpl(getIt<Dio>()),
+  );
+  getIt.registerSingleton<HotIssuesRepository>(
+    HotIssuesRepositoryImpl(getIt<Dio>()),
   );
 
   //user
@@ -85,12 +97,14 @@ Future<void> diRepoSetup()async {
   getIt.registerSingleton<ManageMediaSubscriptionRepository>(
     ManageMediaSubscriptionRepositoryImpl(getIt<Dio>()),
   );
-  getIt.registerSingleton<MediaRepository>(MediaRepositoryImpl(getIt<Dio>()));
   getIt.registerSingleton<SourceDetailRepository>(
     SourceDetailRepositoryImpl(getIt<Dio>()),
   );
   getIt.registerSingleton<SourcesRepository>(
     SourcesRepositoryImpl(getIt<Dio>()),
+  );
+  getIt.registerSingleton<ManageSourceEvaluationRepository>(
+    ManageSourceEvaluationRepositoryImpl(getIt<Dio>()),
   );
 
   //topic

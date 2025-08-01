@@ -14,12 +14,10 @@ class IssueDetailCommonSummary extends StatelessWidget {
     super.key,
     required this.commonSummary,
     required this.fontSize,
-    required this.moveToNextPage,
   });
 
   final String commonSummary;
   final double fontSize;
-  final VoidCallback moveToNextPage;
 
   @override
   Widget build(BuildContext context) {
@@ -68,7 +66,7 @@ class IssueDetailCommonSummary extends StatelessWidget {
           ),
           Padding(
             padding: EdgeInsets.all(MyPaddings.large),
-            child: parseAiText(commonSummary, fontSize, AppColors.gray1),
+            child: parseAiText(commonSummary, fontSize, AppColors.gray1, Colors.amberAccent),
           ),
         ],
       ),

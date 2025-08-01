@@ -11,6 +11,7 @@ class ManageIssueEvaluationView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return RegScaffold(
+      isScrollPage: true,
       body: IssueListRoot(issueType: IssueType.evaluated,
       isEvaluatedView: true,
       appBar: RegAppBar(

@@ -87,6 +87,7 @@ class IssueDetailBiasComparison extends StatelessWidget {
                   style: MyFontStyle.h2.copyWith(
                     color: AppColors.primary,
                     fontWeight: FontWeight.w600,
+                    fontFamily: 'Sonkeechung'
                   ),
                 ),
               ],
@@ -176,7 +177,7 @@ class IssueDetailBiasComparison extends StatelessWidget {
                 ),
               ),
               SizedBox(height: MyPaddings.small),
-              parseAiText(comparison, fontSize, AppColors.gray1),
+              parseAiText(comparison, fontSize, AppColors.gray1, getBiasColor(bias)),
             ],
           ),
         ),

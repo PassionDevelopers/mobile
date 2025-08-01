@@ -1,5 +1,9 @@
+import 'dart:async';
+import 'dart:developer';
+import 'package:app_links/app_links.dart';
 import 'package:clarity_flutter/clarity_flutter.dart';
 import 'package:could_be/core/di/di_setup.dart';
+import 'package:amplitude_flutter/amplitude.dart';
 import 'package:could_be/core/routes/router.dart';
 import 'package:could_be/data/data_source/local/user_preferences.dart';
 import 'package:could_be/ui/color.dart';
@@ -7,9 +11,12 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:kakao_flutter_sdk/kakao_flutter_sdk_auth.dart';
+import 'package:kakao_flutter_sdk_common/kakao_flutter_sdk_common.dart';
 import 'core/behavior/scroll_behavior.dart';
 import 'core/themes/app_bar_theme.dart';
 import 'firebase_options.dart';
+import 'core/analytics/unified_analytics_helper.dart';
 
 @pragma('vm:entry-point')
 Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
@@ -57,6 +64,10 @@ void main() async {
   // });
 
   await UserPreferences.init();
+  KakaoSdk.init(
+    nativeAppKey: '3af3ede3773c2db3782152f2e673395f',
+  );
+
   final config = ClarityConfig(
     projectId: "sbiwi1dz8s",
     logLevel: LogLevel.None, // Note: Use "LogLevel.Verbose" value while testing to debug initialization issues.
@@ -64,12 +75,83 @@ void main() async {
 
   await diSetupToken();
   await diSetup();
+  
   runApp(ClarityWidget(app: const MyApp(), clarityConfig: config));
 }
 
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
   const MyApp({super.key});
+
+  @override
+  State<MyApp> createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
+  final _navigatorKey = GlobalKey<NavigatorState>();
+  StreamSubscription<Uri>? _linkSubscription;
+
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addObserver(this);
+    initDeepLinks();
+    
+    // Log app open event
+    UnifiedAnalyticsHelper.logEvent(
+      name: 'app_open',
+    );
+  }
+
+  @override
+  void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
+    _linkSubscription?.cancel();
+    UnifiedAnalyticsHelper.logEvent(
+      name: 'app_terminate',
+    );
+    super.dispose();
+  }
+
+  Future<void> initDeepLinks() async {
+    // Handle links
+    _linkSubscription = getIt<AppLinks>().uriLinkStream.listen((uri) {
+      debugPrint('onAppLink: $uri');
+      openAppLink(uri);
+    });
+  }
+
+  void openAppLink(Uri uri) {
+    UnifiedAnalyticsHelper.logEvent(
+      name: 'open_deep_link',
+      parameters: {
+        'deep_link': uri.toString(),
+      },
+    );
+    log('Deep link opened: $uri');
+    log('Navigating to: ${uri.fragment}');
+    _navigatorKey.currentState?.pushNamed(uri.fragment);
+  }
+  
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    super.didChangeAppLifecycleState(state);
+    switch (state) {
+      case AppLifecycleState.resumed:
+        UnifiedAnalyticsHelper.logEvent(
+          name: 'app_foreground',
+        );
+        break;
+      case AppLifecycleState.paused:
+        UnifiedAnalyticsHelper.logEvent(
+          name: 'app_background',
+        );
+        break;
+      default:
+        break;
+    }
+  }
+
 
   @override
   Widget build(BuildContext context) {

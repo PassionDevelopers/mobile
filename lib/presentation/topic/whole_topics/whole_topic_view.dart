@@ -1,4 +1,5 @@
 import 'package:could_be/core/components/app_bar/search_field.dart';
+import 'package:could_be/core/components/layouts/bottom_safe_padding.dart';
 import 'package:could_be/core/di/di_setup.dart';
 import 'package:could_be/domain/entities/topic.dart';
 import 'package:could_be/presentation/topic/whole_topics/whole_topic_loading_view.dart';
@@ -20,6 +21,7 @@ class WholeTopicView extends StatelessWidget {
       param1: Categories.politics.id,
     );
     return RegScaffold(
+      isScrollPage: true,
       body: CustomScrollView(
         slivers: [
           // 헤더 섹션
@@ -258,6 +260,9 @@ class CategoryPartSliver extends StatelessWidget {
               ),
             );
           }
+          slivers.add(
+            BottomSafePadding()
+          );
           return SliverPadding(
             padding: EdgeInsets.all(MyPaddings.small),
             sliver: SliverMainAxisGroup(slivers: slivers),
@@ -284,6 +289,7 @@ class CategoryPartSliver extends StatelessWidget {
                   topics: topics,
                   manageTopicSubscription: viewModel.manageTopicSubscription,
                 ),
+                BottomSafePadding()
               ],
             ),
           );

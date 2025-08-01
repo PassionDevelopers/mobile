@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'package:could_be/core/components/buttons/back_button.dart';
 import 'package:could_be/core/components/cards/issue_detail_title_card.dart';
 import 'package:could_be/core/components/cards/text_card.dart';
+import 'package:could_be/core/components/chips/blind_chip.dart';
 import 'package:could_be/core/components/image/image_container.dart';
 import 'package:could_be/core/components/layouts/nested_page_view.dart';
 import 'package:could_be/core/components/title/big_title.dart';
@@ -21,37 +22,17 @@ class IssueDetailSummary extends StatefulWidget {
     super.key,
     required this.issue,
     required this.fontSize,
-    required this.moveToNextPage,
   });
 
   final IssueDetail issue;
   final double fontSize;
-  final VoidCallback moveToNextPage;
 
   @override
   State<IssueDetailSummary> createState() => _IssueDetailSummaryState();
 }
 
 class _IssueDetailSummaryState extends State<IssueDetailSummary> {
-  final ScrollController scrollController = ScrollController();
-  bool _atBottom = false;
 
-  @override
-  void initState() {
-    // TODO: implement initState
-    super.initState();
-    scrollController.addListener(() {
-      if (scrollController.position.atEdge) {
-        log('Reached the end of the summary');
-        // widget.moveToNextPage();
-        if(_atBottom){
-          widget.moveToNextPage();
-        }else{
-          _atBottom = true;
-        }
-      }
-    });
-  }
   @override
   Widget build(BuildContext context) {
 
@@ -60,78 +41,74 @@ class _IssueDetailSummaryState extends State<IssueDetailSummary> {
         Column(
           children: [
             widget.issue.imageUrl != null
-                ? Stack(
-                  children: [
-                    SizedBox(
-                      height: 260,
-                      child: Stack(
+                ? SizedBox(
+              height: 260,
+              child: Stack(
+                children: [
+                  ImageContainer(
+                    height: 260,
+                    imageUrl: widget.issue.imageUrl,
+                    borderRadius: BorderRadius.zero,
+                    imageSource: widget.issue.imageSource,
+                  ),
+                  Container(
+                    height: 260,
+                    decoration: BoxDecoration(
+                      gradient: LinearGradient(
+                        begin: Alignment.topCenter,
+                        end: Alignment.bottomCenter,
+                        colors: [
+                          Colors.transparent,
+                          Colors.black.withOpacity(0.7),
+                        ],
+                        stops: [0.5, 1.0],
+                      ),
+                    ),
+                  ),
+                  Positioned(
+                    bottom: 0,
+                    left: 0,
+                    right: 0,
+                    child: Container(
+                      padding: EdgeInsets.all(MyPaddings.large),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          ImageContainer(
-                            height: 260,
-                            imageUrl: widget.issue.imageUrl,
-                            borderRadius: BorderRadius.zero,
-                            imageSource: widget.issue.imageSource,
+                          Text(
+                            widget.issue.title,
+                            style: MyFontStyle.h0.copyWith(
+                              color: Colors.white,
+                              fontWeight: FontWeight.w700,
+                              shadows: [
+                                Shadow(
+                                  offset: Offset(0, 1),
+                                  blurRadius: 3,
+                                  color: Colors.black.withOpacity(0.5),
+                                ),
+                              ],
+                            ),
+                            maxLines: 3,
+                            overflow: TextOverflow.ellipsis,
                           ),
-                          Container(
-                            height: 260,
-                            decoration: BoxDecoration(
-                              gradient: LinearGradient(
-                                begin: Alignment.topCenter,
-                                end: Alignment.bottomCenter,
-                                colors: [
-                                  Colors.transparent,
-                                  Colors.black.withOpacity(0.7),
-                                ],
-                                stops: [0.5, 1.0],
+                          if(widget.issue.imageSource != null && widget.issue.imageSource!.trim().isNotEmpty)
+                            Padding(
+                              padding: EdgeInsets.only(top: MyPaddings.small),
+                              child: Text(
+                                '이미지 출처 : ${widget.issue.imageSource}',
+                                style: TextStyle(
+                                  color: Colors.white.withOpacity(0.8),
+                                  fontSize: 10,
+                                  fontWeight: FontWeight.w400,
+                                ),
                               ),
                             ),
-                          ),
-                          Positioned(
-                            bottom: 0,
-                            left: 0,
-                            right: 0,
-                            child: Container(
-                              padding: EdgeInsets.all(MyPaddings.large),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    widget.issue.title,
-                                    style: MyFontStyle.h0.copyWith(
-                                      color: Colors.white,
-                                      fontWeight: FontWeight.w700,
-                                      shadows: [
-                                        Shadow(
-                                          offset: Offset(0, 1),
-                                          blurRadius: 3,
-                                          color: Colors.black.withOpacity(0.5),
-                                        ),
-                                      ],
-                                    ),
-                                    maxLines: 3,
-                                    overflow: TextOverflow.ellipsis,
-                                  ),
-                                  if(widget.issue.imageSource != null) 
-                                    Padding(
-                                      padding: EdgeInsets.only(top: MyPaddings.small),
-                                      child: Text(
-                                        '이미지 출처 : ${widget.issue.imageSource}',
-                                        style: TextStyle(
-                                          color: Colors.white.withOpacity(0.8),
-                                          fontSize: 10,
-                                          fontWeight: FontWeight.w400,
-                                        ),
-                                      ),
-                                    ),
-                                ],
-                              ),
-                            ),
-                          ),
                         ],
                       ),
                     ),
-                  ],
-                )
+                  ),
+                ],
+              ),
+            )
                 : Container(
                     height: 180,
                     decoration: BoxDecoration(
@@ -164,13 +141,35 @@ class _IssueDetailSummaryState extends State<IssueDetailSummary> {
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
+                if (widget.issue.tags.isNotEmpty)
+                  Padding(
+                    padding: EdgeInsets.only(top: MyPaddings.medium),
+                    child: SizedBox(
+                      height: 24,
+                      child: ListView.builder(
+                        scrollDirection: Axis.horizontal,
+                        shrinkWrap: true,
+                        padding: EdgeInsets.symmetric(horizontal: MyPaddings.medium),
+                        itemCount: widget.issue.tags.length,
+                        itemBuilder: (_, index) {
+                          return BlindChip(
+                            topPadding: 0,
+                            tag: widget.issue.tags[index],
+                          );
+                        },
+                      ),
+                    ),
+                  ),
                 Padding(
-                  padding: EdgeInsets.symmetric(horizontal: MyPaddings.large),
-                  child: IssueDetailHeader(issue: widget.issue),
+                  padding: EdgeInsets.symmetric(horizontal: MyPaddings.medium, vertical: MyPaddings.medium),
+                  child: IssueDetailHeader(
+                    mediaTotal: widget.issue.coverageSpectrum.total,
+                    viewCount: widget.issue.view,
+                    time: widget.issue.createdAt,
+                  ),
                 ),
-                SizedBox(height: MyPaddings.large),
                 Padding(
-                  padding: EdgeInsets.symmetric(horizontal: MyPaddings.large),
+                  padding: EdgeInsets.symmetric(horizontal: MyPaddings.medium),
                   child: CardBiasBar(
                     coverageSpectrum: widget.issue.coverageSpectrum,
                     isDailyIssue: true,
@@ -217,6 +216,7 @@ class _IssueDetailSummaryState extends State<IssueDetailSummary> {
                               style: MyFontStyle.h2.copyWith(
                                 color: AppColors.primary,
                                 fontWeight: FontWeight.w600,
+                                fontFamily: 'Sonkeechung',
                               ),
                             ),
                           ],
@@ -228,6 +228,7 @@ class _IssueDetailSummaryState extends State<IssueDetailSummary> {
                           widget.issue.summary,
                           widget.fontSize,
                           AppColors.gray1,
+                          Colors.amberAccent
                         ),
                       ),
                     ],
@@ -235,14 +236,6 @@ class _IssueDetailSummaryState extends State<IssueDetailSummary> {
                 ),
               ],
             ),
-
-            // Padding(
-            //   padding: EdgeInsets.symmetric(horizontal: MyPaddings.large),
-            //   child: MoveToNextButton(
-            //     moveToNextPage: widget.moveToNextPage,
-            //     buttonText: '성향별 보도 내용 보기',
-            //   ),
-            // ),
           ],
         ),
         Positioned(

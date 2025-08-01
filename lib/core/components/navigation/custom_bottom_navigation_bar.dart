@@ -5,6 +5,7 @@ import '../../../ui/color.dart';
 import '../../../ui/fonts.dart';
 import '../../themes/margins_paddings.dart';
 import '../../responsive/responsive_utils.dart';
+import '../../analytics/unified_analytics_helper.dart';
 
 class CustomBottomNavigationBar extends StatefulWidget {
   final int currentIndex;
@@ -100,6 +101,16 @@ class _CustomBottomNavigationBarState extends State<CustomBottomNavigationBar>
   void _onItemTapped(int index) {
     if (index != widget.currentIndex) {
       HapticFeedback.lightImpact();
+      
+      // Log navigation event
+      final tabNames = ['home', 'topic', 'blind_spot', 'media', 'my_page'];
+      final newTabName = index < tabNames.length ? tabNames[index] : 'unknown';
+      
+      UnifiedAnalyticsHelper.logTabNavigation(
+        tabIndex: index,
+        tabName: newTabName,
+      );
+      
       widget.onTap(index);
     }
   }
@@ -110,11 +121,10 @@ class _CustomBottomNavigationBarState extends State<CustomBottomNavigationBar>
     if (ResponsiveUtils.isDesktop(context)) {
       return SizedBox.shrink();
     }
-
     return Container(
       height: 80,
       decoration: BoxDecoration(
-        color: Colors.white.withOpacity(0.9),
+        color:AppColors.primaryLight,
         borderRadius: BorderRadius.only(
           topLeft: Radius.circular(16),
           topRight: Radius.circular(16),
@@ -129,6 +139,7 @@ class _CustomBottomNavigationBarState extends State<CustomBottomNavigationBar>
         children: List.generate(_items.length, (index) {
           final isSelected = index == widget.currentIndex;
           final item = _items[index];
+
 
           return Expanded(
             child: GestureDetector(

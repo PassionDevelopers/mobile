@@ -1,3 +1,4 @@
+import 'package:could_be/core/components/layouts/bottom_safe_padding.dart';
 import 'package:could_be/core/components/layouts/scaffold_layout.dart';
 import 'package:could_be/core/components/title/big_title.dart';
 import 'package:could_be/core/di/di_setup.dart';
@@ -19,6 +20,7 @@ class TopicDetailViewNew extends StatelessWidget {
   Widget build(BuildContext context) {
     final viewModel = getIt<TopicDetailViewModel>(param1: topicId);
     return RegScaffold(
+      isScrollPage: true,
       backgroundColor: primaryLight,
       body: ListenableBuilder(
         listenable: viewModel,
@@ -114,6 +116,8 @@ class TopicDetailViewNew extends StatelessWidget {
                         IssueCard(issue: state.topicDetail!.recentIssues.issues[i], isDailyIssue: false),
                     ],
                   ),
+
+                  BottomSafePadding()
 
                 ],
               ),

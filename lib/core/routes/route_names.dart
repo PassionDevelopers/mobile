@@ -5,6 +5,9 @@ abstract class RouteNames{
   home = '/home',
   // login = '/login',
 
+  //notice
+  notice = '/notice',
+
   //forced update
   unsupportedDevice = '/unsupportedDevice',
   needUpdate = '/needUpdate',
@@ -32,13 +35,15 @@ abstract class RouteNames{
   watchHistory = '$myPage/watchHistory',
   subscribedIssue = '$myPage/subscribedIssue',
   manageIssueEvalution = '$myPage/manageIssueEvalution',
+  manageSourceEvaluation = '$myPage/manageSourceEvaluation',
   settings = '$myPage/settings',
 
   //customer services
   feedback = '/feedback',
 
   issueDetailFeed = '/issueDetailFeed',
-  shortsPlayer = '/shortsPlayer/:issueId'
+  hotIssueFeed = '/hotIssueFeed'
+
   ;
 }
 

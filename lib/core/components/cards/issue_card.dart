@@ -6,6 +6,7 @@ import 'package:could_be/core/method/bias/bias_enum.dart';
 import 'package:could_be/core/components/image/image_container.dart';
 import 'package:could_be/core/components/title/issue_info_title.dart';
 import 'package:could_be/core/method/bias/bias_method.dart';
+import 'package:could_be/core/method/text_parsing.dart';
 import 'package:could_be/core/routes/route_names.dart';
 import 'package:could_be/ui/fonts.dart';
 import 'package:flutter/material.dart';
@@ -19,6 +20,7 @@ import '../chips/blind_chip.dart';
 import '../chips/key_word_chip_component.dart';
 import '../../responsive/responsive_utils.dart';
 import '../../responsive/responsive_layout.dart';
+import '../../analytics/unified_analytics_helper.dart';
 
 class IssueCard extends StatefulWidget {
   final Issue issue;
@@ -91,6 +93,17 @@ class _IssueCardState extends State<IssueCard> with TickerProviderStateMixin {
                   child: InkWell(
                     borderRadius: BorderRadius.circular(16),
                     onTap: () {
+                      // Log issue tap event
+                      UnifiedAnalyticsHelper.logIssueEvent(
+                        action: 'tap_issue_card',
+                        issueId: widget.issue.id,
+                        additionalParams: {
+                          'issue_title': widget.issue.title,
+                          'issue_category': widget.issue.category,
+                          'issue_tags': widget.issue.tags.join(','),
+                          'from_screen': widget.isEvaluatedView ? 'evaluated_issues' : 'issue_list',
+                        },
+                      );
                       context.push(
                         RouteNames.issueDetailFeed,
                         extra: widget.issue.id,
@@ -145,14 +158,18 @@ class _IssueCardState extends State<IssueCard> with TickerProviderStateMixin {
                                     Container(
                                       height: 260,
                                       decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.vertical(
+                                          top: Radius.circular(16),
+                                        ),
                                         gradient: LinearGradient(
                                           begin: Alignment.topCenter,
                                           end: Alignment.bottomCenter,
                                           colors: [
                                             Colors.transparent,
-                                            AppColors.black.withOpacity(0.7),
+                                            AppColors.black.withOpacity(0.3),
+                                            AppColors.black.withOpacity(0.8),
                                           ],
-                                          stops: [0.5, 1.0],
+                                          stops: [0, 0.5, 1.0],
                                         ),
                                       ),
                                     ),
@@ -166,12 +183,6 @@ class _IssueCardState extends State<IssueCard> with TickerProviderStateMixin {
                                           MyPaddings.large,
                                           MyPaddings.small,
                                         ),
-                                        // decoration: BoxDecoration(
-                                        //   // borderRadius: BorderRadius.circular(16),
-                                        //   color: Colors.white.withOpacity(
-                                        //     0.60,
-                                        //   ),
-                                        // ),
                                         child: Column(
                                           mainAxisSize: MainAxisSize.min,
                                           crossAxisAlignment:
@@ -191,10 +202,10 @@ class _IssueCardState extends State<IssueCard> with TickerProviderStateMixin {
                                               ],
                                             ),
                                             SizedBox(height: MyPaddings.small),
-                                            MyText.regSummary(
+                                            parseAiTextSummary(
                                               widget.issue.summary,
-                                              color: AppColors.gray5,
-                                              maxLines: 2,
+                                              12,
+                                              AppColors.gray5,
                                             ),
                                           ],
                                         ),
@@ -239,9 +250,8 @@ class _IssueCardState extends State<IssueCard> with TickerProviderStateMixin {
                                       mediaTotal:
                                           widget.issue.coverageSpectrum.total,
                                       viewCount: widget.issue.view,
-                                      time:
-                                          widget.issue.updatedAt ??
-                                          widget.issue.createdAt,
+                                      time: widget.issue.createdAt,
+                                      isRead: widget.issue.isRead,
                                     ),
                                   ],
                                 ),
@@ -255,12 +265,14 @@ class _IssueCardState extends State<IssueCard> with TickerProviderStateMixin {
                               child: SizedBox(
                                 height: 32,
                                 child: ListView.builder(
+                                  padding: EdgeInsets.symmetric(
+                                    horizontal : MyPaddings.small
+                                  ),
                                   scrollDirection: Axis.horizontal,
                                   shrinkWrap: true,
                                   itemCount: widget.issue.tags.length,
                                   itemBuilder: (_, index) {
                                     return BlindChip(
-                                      isFirst: index == 0,
                                       tag: widget.issue.tags[index],
                                     );
                                   },

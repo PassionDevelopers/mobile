@@ -1,13 +1,17 @@
 
 import 'package:could_be/core/components/alert/dialog.dart';
 import 'package:could_be/core/components/alert/toast.dart';
+import 'package:could_be/core/themes/margins_paddings.dart';
 import 'package:could_be/ui/color.dart';
 import 'package:flutter/material.dart';
+import '../../analytics/unified_analytics_helper.dart';
 
 class SearchAppBar extends StatefulWidget {
-  const SearchAppBar({super.key, this.backButtonVisible = false, required this.appBar, required this.onSearchSubmitted, });
+  const SearchAppBar({super.key, this.backButtonVisible = false, required this.appBar,
+    required this.onSearchSubmitted, this.onNoticePressed});
 
   final void Function(String query) onSearchSubmitted;
+  final void Function()? onNoticePressed;
   final Widget appBar;
   final bool backButtonVisible;
 
@@ -34,11 +38,17 @@ class _SearchAppBarState extends State<SearchAppBar> {
       if (_isSearchActive) {
         if(_searchController.text.isNotEmpty){
           _searchController.clear();
+          UnifiedAnalyticsHelper.logEvent(
+            name: 'clear_search',
+          );
         }else{
           closeSearch();
         }
       } else {
         _isSearchActive = true;
+        UnifiedAnalyticsHelper.logEvent(
+          name: 'tap_search_bar',
+        );
       }
     });
   }
@@ -49,6 +59,10 @@ class _SearchAppBarState extends State<SearchAppBar> {
     }else if(query.trim().length >20){
       showMyToast(msg: '검색어는 20자 이내로 입력해주세요');
     }else{
+      UnifiedAnalyticsHelper.logSearchEvent(
+        searchTerm: query.trim(),
+        searchType: 'issue_search',
+      );
       widget.onSearchSubmitted(query);
     }
   }
@@ -109,10 +123,22 @@ class _SearchAppBarState extends State<SearchAppBar> {
             ? _buildSearchField()
             : widget.appBar,
         actions: [
-          IconButton(
-            icon: Icon(_isSearchActive ? Icons.close : Icons.search_rounded),
-            onPressed: _toggleSearch,
+          GestureDetector(
+            onTap: _toggleSearch,
+            child: Icon(_isSearchActive ? Icons.close : Icons.search_rounded),
           ),
+          SizedBox(width: 10),
+          if(widget.onNoticePressed != null && !_isSearchActive) GestureDetector(
+            onTap: () {
+              UnifiedAnalyticsHelper.logNavigationEvent(
+                fromScreen: 'search_bar',
+                toScreen: 'notice',
+              );
+              widget.onNoticePressed?.call();
+            },
+            child: Icon(Icons.notifications_none_rounded),
+          ),
+          SizedBox(width: MyPaddings.small),
         ],
       ),
     );

@@ -1,17 +1,14 @@
-import 'dart:developer';
 import 'dart:io';
 import 'package:could_be/core/components/buttons/login_button.dart';
 import 'package:could_be/core/di/di_setup.dart';
 import 'package:could_be/core/themes/margins_paddings.dart';
 import 'package:could_be/presentation/log_in/login_view_model.dart';
-import 'package:could_be/presentation/my_page/main/my_page_view_model.dart';
 import 'package:could_be/ui/fonts.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:sign_button/constants.dart';
-import '../../core/components/layouts/scaffold_layout.dart';
 import '../../ui/color.dart';
+import '../../core/analytics/unified_analytics_helper.dart';
 
 class LoginView extends StatelessWidget {
   const LoginView({super.key, required this.onLoginSuccess});
@@ -50,6 +47,10 @@ class LoginView extends StatelessWidget {
                 LoginButton(
                   buttonType: ButtonType.googleDark,
                   onPressed: () async {
+                    UnifiedAnalyticsHelper.logAuthEvent(
+                      method: 'google',
+                      success: true,
+                    );
                     await viewModel.signIn(context, signInMethod: SignInMethod.google);
                     onLoginSuccess();
                   },
@@ -57,7 +58,22 @@ class LoginView extends StatelessWidget {
                 if(kIsWeb || Platform.isIOS) LoginButton(
                   buttonType: ButtonType.appleDark,
                   onPressed: () async {
+                    UnifiedAnalyticsHelper.logAuthEvent(
+                      method: 'apple',
+                      success: true,
+                    );
                     await viewModel.signIn(context, signInMethod: SignInMethod.apple);
+                    onLoginSuccess();
+                  },
+                ),
+                LoginButton(
+                  buttonType: ButtonType.amazon,
+                  onPressed: () async {
+                    UnifiedAnalyticsHelper.logAuthEvent(
+                      method: 'kakao',
+                      success: true,
+                    );
+                    await viewModel.signIn(context, signInMethod: SignInMethod.kakao);
                     onLoginSuccess();
                   },
                 ),

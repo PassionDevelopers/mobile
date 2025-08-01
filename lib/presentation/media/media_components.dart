@@ -1,11 +1,13 @@
 import 'package:chat_bubbles/bubbles/bubble_special_three.dart';
 import 'package:could_be/core/method/bias/bias_method.dart';
+import 'package:could_be/core/routes/route_names.dart';
 import 'package:could_be/core/themes/margins_paddings.dart';
 import 'package:could_be/domain/entities/article.dart';
 import 'package:could_be/domain/entities/source.dart';
 import 'package:could_be/ui/color.dart';
 import 'package:could_be/ui/fonts.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
 import '../../core/method/bias/bias_enum.dart';
 import 'media_profile_component.dart';
@@ -101,7 +103,9 @@ class _MediaChatBubbleState extends State<MediaChatBubble> {
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              MediaProfileRef(source: source),
+              MediaProfileRef(source: source, toDetailPage: (){
+                context.push(RouteNames.mediaDetail, extra: source.id);
+              },),
               Expanded(
                 child: bubbleContent(widget.articles.first, bias)
               ),

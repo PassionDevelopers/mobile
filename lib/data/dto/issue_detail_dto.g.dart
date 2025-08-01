@@ -8,6 +8,10 @@ part of 'issue_detail_dto.dart';
 
 IssueDetailDTO _$IssueDetailDTOFromJson(Map<String, dynamic> json) =>
     IssueDetailDTO(
+      tags:
+          (json['tags'] as List<dynamic>)
+              .map((e) => IssueTagDto.fromJson(e as Map<String, dynamic>))
+              .toList(),
       id: json['_id'] as String,
       title: json['title'] as String,
       category: json['category'] as String,
@@ -59,6 +63,7 @@ Map<String, dynamic> _$IssueDetailDTOToJson(IssueDetailDTO instance) =>
       'title': instance.title,
       'category': instance.category,
       'summary': instance.summary,
+      'tags': instance.tags,
       'commonSummary': instance.commonSummary,
       'imageUrl': instance.imageUrl,
       'imageSource': instance.imageSource,

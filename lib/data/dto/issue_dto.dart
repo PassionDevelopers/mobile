@@ -14,6 +14,8 @@ class IssueDTO{
 
   final List<IssueTagDto> tags;
 
+  final bool? isRead;
+
   final DateTime createdAt;
   final DateTime? updatedAt;
 
@@ -23,6 +25,7 @@ class IssueDTO{
 
   final List<String> keywords;
   final String? imageUrl;
+  final String? imageSource;
   final int view;
   final bool isSubscribed;
   final CoverageSpectrumDTO coverageSpectrum;
@@ -33,6 +36,7 @@ class IssueDTO{
     required this.id,
     required this.tags,
     required this.summary,
+    this.isRead,
     required this.title,
     required this.createdAt,
     this.updatedAt,
@@ -40,7 +44,9 @@ class IssueDTO{
     required this.keywords,
     required this.isSubscribed,
     this.imageUrl,
+    this.imageSource,
     required this.view,
+
     required this.coverageSpectrum,
     required this.leftLikeCount,
     required this.centerLikeCount,
@@ -62,6 +68,7 @@ extension IssueDtoX on IssueDTO {
       centerLikeCount: centerLikeCount,
       rightLikeCount: rightLikeCount,
       id: id,
+      isRead: isRead ?? false,
       title: title,
       category: category,
       summary: summary,
@@ -69,6 +76,7 @@ extension IssueDtoX on IssueDTO {
       updatedAt: updatedAt ?? createdAt,
       keywords: keywords,
       imageUrl: imageUrl,
+      imageSource: imageSource,
       view: view,
       coverageSpectrum: coverageSpectrum.toDomain(),
       isSubscribed: isSubscribed,

@@ -1,8 +1,11 @@
+import 'package:could_be/domain/useCases/fetch_hot_issues_use_case.dart';
 import 'package:could_be/domain/useCases/fetch_issue_query_params_use_case.dart';
+import 'package:could_be/domain/useCases/fetch_notice_use_case.dart';
 import 'package:could_be/domain/useCases/fetch_source_detail_use_case.dart';
 import 'package:could_be/domain/useCases/fetch_topic_detail_use_case.dart';
 import 'package:could_be/domain/useCases/fetch_whole_bias_score_use_case.dart';
 import 'package:could_be/domain/useCases/manage_issue_evaluation_use_case.dart';
+import 'package:could_be/domain/useCases/manage_source_evaluation_use_case.dart';
 import 'package:could_be/domain/useCases/manage_user_profile_use_case.dart';
 import 'package:could_be/domain/useCases/manage_user_status_use_case.dart';
 import 'package:could_be/domain/useCases/search_issues_use_case.dart';
@@ -21,12 +24,16 @@ import '../../domain/useCases/manage_topic_subscription_use_case.dart';
 import '../../domain/useCases/submit_feedback_use_case.dart';
 import 'di_setup.dart';
 Future<void> diUseCaseSetup() async {
+  //notice
+  getIt.registerSingleton(FetchNoticeUseCase(getIt()));
+
   //issue
   getIt.registerSingleton(FetchIssuesUseCase(getIt()));
   getIt.registerSingleton(FetchIssueDetailUseCase(getIt()));
   getIt.registerSingleton(ManageIssueSubscriptionUseCase(getIt()));
   getIt.registerSingleton(FetchIssueQueryParamsUseCase(getIt()));
   getIt.registerSingleton(SearchIssuesUseCase(getIt()));
+  getIt.registerSingleton(FetchHotIssuesUseCase(getIt()));
 
   //user
   getIt.registerSingleton(FetchUserBiasUseCase(getIt()));
@@ -49,6 +56,7 @@ Future<void> diUseCaseSetup() async {
   getIt.registerSingleton(FetchSourcesUseCase(getIt()));
   getIt.registerSingleton(ManageMediaSubscriptionUseCase(getIt()));
   getIt.registerSingleton(FetchSourceDetailUseCase(getIt()));
+  getIt.registerSingleton(ManageSourceEvaluationUseCase(getIt()));
 
   //feedback
   getIt.registerSingleton(SubmitFeedbackUseCase(getIt()));

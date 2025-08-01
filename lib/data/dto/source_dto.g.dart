@@ -12,6 +12,7 @@ SourceDTO _$SourceDTOFromJson(Map<String, dynamic> json) => SourceDTO(
   perspective: json['perspective'] as String,
   logoUrl: json['logoUrl'] as String,
   isSubscribed: json['isSubscribed'] as bool,
+  userEvaluatedPerspective: json['userEvaluatedPerspective'] as String?,
 );
 
 Map<String, dynamic> _$SourceDTOToJson(SourceDTO instance) => <String, dynamic>{
@@ -20,4 +21,5 @@ Map<String, dynamic> _$SourceDTOToJson(SourceDTO instance) => <String, dynamic>{
   'perspective': instance.perspective,
   'logoUrl': instance.logoUrl,
   'isSubscribed': instance.isSubscribed,
+  'userEvaluatedPerspective': instance.userEvaluatedPerspective,
 };

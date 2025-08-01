@@ -1,3 +1,4 @@
+import 'package:could_be/core/components/layouts/bottom_safe_padding.dart';
 import 'package:could_be/core/method/bias/bias_enum.dart';
 import 'package:could_be/core/components/layouts/scaffold_layout.dart';
 import 'package:could_be/core/di/di_setup.dart';
@@ -27,6 +28,7 @@ class _WholeMediaViewState extends State<WholeMediaView> {
     final viewModel = getIt<WholeMediaViewModel>();
 
     return RegScaffold(
+      isScrollPage: true,
       backgroundColor: AppColors.gray5,
       appBarTitle: '언론사 둘러보기',
       body: ListenableBuilder(
@@ -157,9 +159,9 @@ class _WholeMediaViewState extends State<WholeMediaView> {
                 padding: EdgeInsets.all(MyPaddings.small),
                 sliver: SliverGrid(
                   gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 3,
+                    crossAxisCount: 4,
                     childAspectRatio: 0.75,
-                    crossAxisSpacing: MyPaddings.small,
+                    crossAxisSpacing: 2,
                     mainAxisSpacing: MyPaddings.small,
                   ),
                   delegate: SliverChildBuilderDelegate(
@@ -178,6 +180,9 @@ class _WholeMediaViewState extends State<WholeMediaView> {
                   ),
                 ),
               ),
+              SliverToBoxAdapter(
+                child: BottomSafePadding(),
+              )
             ],
           );
         },

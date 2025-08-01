@@ -1,19 +1,15 @@
 
-
-import 'package:could_be/core/method/time.dart';
 import 'package:flutter/material.dart';
-
-import '../../../domain/entities/issue.dart';
 import '../../../ui/color.dart';
 import '../../../ui/fonts.dart';
+import '../../method/date_time_parsing.dart';
 
 class IssueInfoTitle extends StatelessWidget {
-  const IssueInfoTitle({super.key, required this.mediaTotal, required this.viewCount, required this.time, });
+  const IssueInfoTitle({super.key, required this.mediaTotal, required this.viewCount, required this.time, this.isRead});
   final int mediaTotal;
   final int viewCount;
   final DateTime time;
-
-
+  final bool? isRead;
 
   String refineViewCount(int viewCount) {
     if (viewCount >= 10000) {
@@ -36,7 +32,7 @@ class IssueInfoTitle extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MyText.reg(
-      '${mediaTotal}개 언론 · 조회수 ${refineViewCount(viewCount)} · ${getTimeAgo(time)}',
+      '$mediaTotal개 언론 · 조회수 ${refineViewCount(viewCount)} · ${getTimeAgo(time)}${isRead ?? false? '· 읽음' : ''}',
       color: AppColors.gray2,
     );
   }

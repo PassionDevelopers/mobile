@@ -39,10 +39,10 @@ class IssueListViewModel with ChangeNotifier {
     _state = state.copyWith(isEvaluating: true);
     notifyListeners();
     final Issue issue = state.issueList[index];
+    await _manageIssueEvaluationUseCase.evaluateIssue(issueId: issue.id, bias: bias);
     if (issue.userEvaluatedPerspective != null) {
       if(issue.userEvaluatedPerspective == bias.toPerspective()) {
-        log('Bias is already ${issue.userEvaluatedPerspective}, deleting evaluation');
-        await _manageIssueEvaluationUseCase.deleteIssueEvaluation(issueId: issue.id);
+        // await _manageIssueEvaluationUseCase.deleteIssueEvaluation(issueId: issue.id);
         _state = state.copyWith(
           issueList: List.from(state.issueList)..[index] = issue.copyWith(
             userEvaluatedPerspective: null,
@@ -52,8 +52,7 @@ class IssueListViewModel with ChangeNotifier {
           ),
         );
       }else{
-        log('Bias changed from ${issue.userEvaluatedPerspective} to $bias');
-        await _manageIssueEvaluationUseCase.updateIssueEvaluation(issueId: issue.id, bias: bias);
+        // await _manageIssueEvaluationUseCase.updateIssueEvaluation(issueId: issue.id, bias: bias);
         _state = state.copyWith(
           issueList: List.from(state.issueList)..[index] = issue.copyWith(
             userEvaluatedPerspective: bias.toPerspective(),
@@ -65,7 +64,6 @@ class IssueListViewModel with ChangeNotifier {
       }
     } else {
       log('Bias selected: $bias, evaluating issue');
-      await _manageIssueEvaluationUseCase.evaluateIssue(issueId: issue.id, bias: bias);
       _state = state.copyWith(
         issueList: List.from(state.issueList)..[index] = issue.copyWith(
           userEvaluatedPerspective: bias.toPerspective(),
@@ -104,10 +102,11 @@ class IssueListViewModel with ChangeNotifier {
     notifyListeners();
   }
 
-  void fetchInitalIssues({String? topicId}) async {
+  void fetchInitalIssues({String? topicId, IssueQueryParam? issueQueryParam}) async {
     _state = state.copyWith(isLoading: true);
+    _state = state.copyWith(query: null);
     notifyListeners();
-    final Issues result = await _fetchIssuesByType(topicId: topicId);
+    final Issues result = await _fetchIssuesByType(topicId: topicId, issueQueryParam: issueQueryParam);
     _state = state.copyWith(
       issueList: result.issues,
       hasMore: result.hasMore,
@@ -159,10 +158,13 @@ class IssueListViewModel with ChangeNotifier {
     if(state.query != null && state.query!.trim().isNotEmpty){
       return await _searchIssuesUseCase.searchIssues(state.query!);
     }else if(issueQueryParam != null) {
+      _state = state.copyWith(query: null);
       return await _fetchIssuesUseCase.fetchQueryParamIssues(issueQueryParam, lastIssueId: lastIssueId);
     }else if(topicId != null){
+      _state = state.copyWith(query: null);
       return await _fetchIssuesUseCase.fetchIssuesByTopicId(topicId, lastIssueId: lastIssueId);
     }else{
+      _state = state.copyWith(query: null);
       switch (_issueType) {
         case IssueType.daily:
           return await _fetchIssuesUseCase.fetchDailyIssues(lastIssueId: lastIssueId);

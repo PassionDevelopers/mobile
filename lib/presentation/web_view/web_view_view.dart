@@ -1,4 +1,5 @@
 import 'package:could_be/core/components/cards/news_card.dart';
+import 'package:could_be/core/components/layouts/bottom_safe_padding.dart';
 import 'package:could_be/core/components/layouts/scaffold_layout.dart';
 import 'package:could_be/core/di/di_setup.dart';
 import 'package:could_be/core/themes/margins_paddings.dart';
@@ -46,6 +47,7 @@ class WebViewView extends StatelessWidget {
       topRight: Radius.circular(24.0),
     );
     return RegScaffold(
+      isScrollPage: false,
       body: ListenableBuilder(
       listenable: viewModel,
       builder: (context, _) {
@@ -60,7 +62,7 @@ class WebViewView extends StatelessWidget {
         } else {
           return SlidingUpPanel(
             panel: Ink(
-              padding: EdgeInsets.symmetric(horizontal: MyPaddings.medium),
+              padding: EdgeInsets.fromLTRB(MyPaddings.medium, 0, MyPaddings.medium, 0),
               decoration: BoxDecoration(
                 color: AppColors.background,
                 borderRadius: radius,

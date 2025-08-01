@@ -5,4 +5,12 @@ class Sources{
   Sources({
     required this.sources,
   });
+
+  Sources copyWith({
+    List<Source>? sources,
+  }) {
+    return Sources(
+      sources: sources ?? this.sources,
+    );
+  }
 }

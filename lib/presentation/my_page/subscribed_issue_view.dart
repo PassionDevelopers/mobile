@@ -10,6 +10,7 @@ class SubscribedIssueView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return RegScaffold(
+      isScrollPage: true,
       body: IssueListRoot(
         appBar: RegAppBar(
           title: '나의 관심 이슈',

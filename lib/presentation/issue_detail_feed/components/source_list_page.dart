@@ -1,6 +1,7 @@
 import 'dart:developer';
 
 import 'package:could_be/core/components/layouts/text_helper.dart';
+import 'package:could_be/core/components/loading/not_found.dart';
 import 'package:could_be/domain/entities/articles_group_by_bias.dart';
 import 'package:could_be/presentation/media/media_components.dart';
 import 'package:flutter/material.dart';
@@ -82,26 +83,7 @@ class _SourceListPageState extends State<SourceListPage>
     required List<OneSourceArticles> oneSourceArticles,
   }) {
     return oneSourceArticles.isEmpty
-        ? Container(
-          height: 200,
-          child: Center(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Icon(
-                  Icons.article_outlined,
-                  size: 48,
-                  color: AppColors.gray3,
-                ),
-                SizedBox(height: MyPaddings.medium),
-                Text(
-                  '기사가 없습니다',
-                  style: TextStyle(color: AppColors.gray2, fontSize: 16),
-                ),
-              ],
-            ),
-          ),
-        )
+        ? NotFound(notFoundType: NotFoundType.article)
         : SingleChildScrollView(
           child: Column(
             children: [
@@ -224,28 +206,68 @@ class _SourceListPageState extends State<SourceListPage>
                 Container(
                   width: double.infinity,
                   height: 48,
-                  child: ElevatedButton(
-                    onPressed:
-                        widget.hasNextIssue
-                            ? widget.toNextIssue
-                            : () {
-                              context.pop();
-                            },
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: AppColors.primary,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(12),
+                  child: Row(
+                    children: [
+                      if(widget.hasNextIssue)ElevatedButton(
+                        onPressed: () {
+                          context.pop();
+                        },
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: AppColors.primary,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(12),
+                          ),
+                          elevation: 0,
+                        ),
+                        child: Row(
+                          children: [
+                            Icon(Icons.home, color: Colors.white, size: 25),
+                            SizedBox(width: MyPaddings.small),
+                            Text(
+                              '홈으로',
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 16,
+                                fontWeight: FontWeight.w600,
+                              ),
+                            ),
+                          ],
+                        ),
                       ),
-                      elevation: 0,
-                    ),
-                    child: Text(
-                      widget.hasNextIssue ? '다음 이슈 보기' : '홈으로 돌아가기',
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 16,
-                        fontWeight: FontWeight.w600,
+                      SizedBox(width: MyPaddings.large),
+                      Expanded(
+                        child: ElevatedButton(
+                          onPressed:
+                              widget.hasNextIssue
+                                  ? widget.toNextIssue
+                                  : () {
+                                    context.pop();
+                                  },
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: AppColors.primary,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(12),
+                            ),
+                            elevation: 0,
+                          ),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Text(
+                                widget.hasNextIssue ? '다음 이슈 보기' : '홈으로 돌아가기',
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w600,
+                                ),
+                              ),
+                              SizedBox(width: MyPaddings.small),
+                              Icon(Icons.keyboard_arrow_right_rounded, color: Colors.white, size: 25),
+                            ],
+                          ),
+                        ),
                       ),
-                    ),
+                    ],
                   ),
                 ),
               ],

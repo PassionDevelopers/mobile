@@ -9,7 +9,6 @@ class FetchIssueQueryParamsUseCase{
   FetchIssueQueryParamsUseCase(this._issueQueryParamsRepository);
 
   Future<IssueQueryParams> fetchIssueQueryParams() async {
-    getIt<Amplitude>().track(AmplitudeEvents.fetchIssueQueryParams);
     return await _issueQueryParamsRepository.fetchIssueQueryParams();
   }
 }

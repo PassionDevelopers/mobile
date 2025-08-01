@@ -10,6 +10,11 @@ class UserPreferences{
   static Future<bool?> setIgnoredVersion(String version) async => await _preferences?.setString(_keyIgnoredVersion, version);
   static String? getIgnoredVersion() => _preferences?.getString(_keyIgnoredVersion);
 
+  //seen notice id
+  static const _keySeenNoticeId = 'SeenNoticeId';
+  static Future<bool?> setSeenNoticeId(String noticeId) async => await _preferences?.setString(_keySeenNoticeId, noticeId);
+  static String? getSeenNoticeId() => _preferences?.getString(_keySeenNoticeId);
+
   static const _keyIdToken = 'IdToken';
   static Future<bool?> setIdToken(String idToken) async => await _preferences?.setString(_keyIdToken, idToken);
   static String? getIdToken() => _preferences?.getString(_keyIdToken);

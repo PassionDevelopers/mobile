@@ -77,10 +77,10 @@ class IssueDetailViewModel with ChangeNotifier {
   void manageIssueEvaluation(Bias bias) async {
     _state = state.copyWith(isEvaluating: true);
     notifyListeners();
-
+    await manageIssueEvaluationUseCase.evaluateIssue(issueId: issueId, bias: bias);
     if (state.issueDetail!.userEvaluation != null) {
       if(state.issueDetail!.userEvaluation == bias.toPerspective()) {
-        await manageIssueEvaluationUseCase.deleteIssueEvaluation(issueId: issueId);
+        // await manageIssueEvaluationUseCase.deleteIssueEvaluation(issueId: issueId);
         _state = state.copyWith(
           issueDetail: state.issueDetail!.copyWith(
               userEvaluation: null,
@@ -90,7 +90,7 @@ class IssueDetailViewModel with ChangeNotifier {
           ),
         );
       }else{
-        await manageIssueEvaluationUseCase.updateIssueEvaluation(issueId: issueId, bias: bias);
+        // await manageIssueEvaluationUseCase.updateIssueEvaluation(issueId: issueId, bias: bias);
         _state = state.copyWith(
           issueDetail: state.issueDetail!.copyWith(
               userEvaluation: bias.toPerspective(),
@@ -101,7 +101,6 @@ class IssueDetailViewModel with ChangeNotifier {
         );
       }
     } else {
-      await manageIssueEvaluationUseCase.evaluateIssue(issueId: issueId, bias: bias);
       _state = state.copyWith(
         issueDetail: state.issueDetail!.copyWith(
             userEvaluation: bias.toPerspective(),

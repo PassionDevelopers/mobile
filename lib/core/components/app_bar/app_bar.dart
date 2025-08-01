@@ -1,8 +1,10 @@
 import 'dart:developer';
 
 import 'package:could_be/core/components/app_bar/search_field.dart';
+import 'package:could_be/core/routes/route_names.dart';
 import 'package:could_be/ui/fonts.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
 import '../../../ui/color.dart';
 import '../../themes/margins_paddings.dart';
@@ -36,6 +38,9 @@ class MainAppBar extends StatelessWidget {
     return SearchAppBar(
       appBar: _buildLogo(),
       onSearchSubmitted: onSearchSubmitted,
+      onNoticePressed: (){
+        context.push(RouteNames.notice);
+      },
     );
   }
 }
@@ -58,6 +63,7 @@ class RegAppBar extends StatelessWidget {
     final toolbarHeight = isDesktop ? 80.0 : AppBar().preferredSize.height;
 
     return AppBar(
+      centerTitle: true,
       scrolledUnderElevation: 0,
       automaticallyImplyLeading: !isDesktop,
       // 데스크탑에서는 back button 숨김
