@@ -191,7 +191,7 @@ class _FeedbackViewState extends State<FeedbackView> {
                       listenable: _viewModel,
                       builder: (context, _) {
                         return BigButton(
-                          '피드백 보내기',
+                          text: '피드백 보내기',
                           onPressed: _viewModel.state.isSubmitting
                               ? () {}
                               : () => _submitFeedback(),

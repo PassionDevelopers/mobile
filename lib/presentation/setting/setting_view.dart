@@ -1,5 +1,4 @@
-import 'dart:io';
-
+import 'package:could_be/core/analytics/unified_analytics_helper.dart';
 import 'package:could_be/core/components/app_bar/app_bar.dart';
 import 'package:could_be/core/components/buttons/big_button.dart';
 import 'package:could_be/core/components/layouts/bottom_safe_padding.dart';
@@ -8,19 +7,18 @@ import 'package:could_be/core/components/loading/skeleton.dart';
 import 'package:could_be/core/components/title/big_title.dart';
 import 'package:could_be/core/di/di_setup.dart';
 import 'package:could_be/core/method/share_dasi_stand.dart';
+import 'package:could_be/core/permission/permission_management.dart';
 import 'package:could_be/core/routes/route_names.dart';
-import 'package:could_be/core/routes/router.dart';
 import 'package:could_be/core/themes/margins_paddings.dart';
 import 'package:could_be/presentation/log_in/login_dialog.dart';
 import 'package:could_be/presentation/my_page/main/my_page_view_model.dart';
 import 'package:could_be/ui/color.dart';
+import 'package:could_be/ui/fonts.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:in_app_review/in_app_review.dart';
 import 'package:package_info_plus/package_info_plus.dart';
-import 'package:share_plus/share_plus.dart';
 import 'package:url_launcher/url_launcher.dart';
-import 'package:could_be/core/analytics/unified_analytics_helper.dart';
 
 class SettingView extends StatelessWidget {
   const SettingView({super.key});
@@ -48,7 +46,7 @@ class SettingView extends StatelessWidget {
                   BigTitle(title: '설정'),
                   SizedBox(height: MyPaddings.large),
                   BigButton(
-                    '다시 스탠드 공유하기',
+                    text: '다시 스탠드 공유하기',
                     onPressed: () {
                       UnifiedAnalyticsHelper.logButtonTap(
                         module: 'settings',
@@ -59,7 +57,7 @@ class SettingView extends StatelessWidget {
                   ),
                   SizedBox(height: MyPaddings.medium),
                   BigButton(
-                    '피드백 및 문의하기',
+                    text: '피드백 및 문의하기',
                     onPressed: () {
                       UnifiedAnalyticsHelper.logNavigationEvent(
                         fromScreen: 'settings',
@@ -70,7 +68,7 @@ class SettingView extends StatelessWidget {
                   ),
                   SizedBox(height: MyPaddings.medium),
                   BigButton(
-                    '다시 스탠드 평가하기',
+                    text: '다시 스탠드 평가하기',
                     onPressed: () {
                       UnifiedAnalyticsHelper.logButtonTap(
                         module: 'settings',
@@ -81,17 +79,30 @@ class SettingView extends StatelessWidget {
                     },
                   ),
                   SizedBox(height: MyPaddings.medium),
-                  FutureBuilder<String>(
-                    future: getVersion(),
+                  FutureBuilder<bool>(
+                    future: checkFCMPermissionStatus(),
                     builder: (
-                        BuildContext context,
-                        AsyncSnapshot<String> snapshot,
-                        ) {
+                      BuildContext context,
+                      AsyncSnapshot<bool> snapshot,
+                    ) {
                       if (snapshot.connectionState == ConnectionState.done) {
                         if (snapshot.hasData) {
+                          final bool isPermissionGranted = snapshot.data!;
                           return BigButton(
-                            snapshot.data!, 
-                            onPressed: () {
+                            widget : Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                MyText.h3('알림 설정',),
+                                const SizedBox(width: 10),
+                                Icon(
+                                  isPermissionGranted
+                                      ? Icons.notifications_rounded : Icons.notifications_off,
+                                  color: AppColors.gray1,
+                                ),
+                              ],
+                            ),
+                            onPressed: ()async{
+                              requestFCMPermission(false);
                             },
                           );
                         }
@@ -100,8 +111,23 @@ class SettingView extends StatelessWidget {
                     },
                   ),
                   SizedBox(height: MyPaddings.medium),
+                  FutureBuilder<String>(
+                    future: getVersion(),
+                    builder: (
+                      BuildContext context,
+                      AsyncSnapshot<String> snapshot,
+                    ) {
+                      if (snapshot.connectionState == ConnectionState.done) {
+                        if (snapshot.hasData) {
+                          return BigButton(text: snapshot.data!, onPressed: () {});
+                        }
+                      }
+                      return BigButtonSkeleton();
+                    },
+                  ),
+                  SizedBox(height: MyPaddings.medium),
                   BigButton(
-                    '오픈소스 라이선스',
+                    text: '오픈소스 라이선스',
                     onPressed: () {
                       Navigator.of(
                         context,
@@ -110,7 +136,7 @@ class SettingView extends StatelessWidget {
                   ),
                   SizedBox(height: MyPaddings.medium),
                   BigButton(
-                    '서비스 이용약관',
+                    text: '서비스 이용약관',
                     onPressed: () async {
                       final Uri url = Uri.parse(
                         'https://passiondevelopers.github.io/docs_hosting/%EC%95%BD%EA%B4%80.html',
@@ -123,7 +149,7 @@ class SettingView extends StatelessWidget {
                   SizedBox(height: MyPaddings.medium),
 
                   BigButton(
-                    '개인정보처리방침',
+                    text: '개인정보처리방침',
                     onPressed: () async {
                       final Uri url = Uri.parse(
                         'https://passiondevelopers.github.io/docs_hosting/privacy-policy-dasi-stand.html',
@@ -145,32 +171,36 @@ class SettingView extends StatelessWidget {
                       if (state.isUserStatusLoading) {
                         return Column(
                           children: [
-                            if(!state.isGuestLogin) BigButtonSkeleton(),
-                            if(!state.isGuestLogin) SizedBox(height: MyPaddings.medium),
+                            if (!state.isGuestLogin) BigButtonSkeleton(),
+                            if (!state.isGuestLogin)
+                              SizedBox(height: MyPaddings.medium),
                             BigButtonSkeleton(),
                           ],
                         );
                       } else {
                         return Column(
                           children: [
-                            if(!state.isGuestLogin) BigButton(
-                              '로그아웃',
-                              onPressed: () async {
-                                UnifiedAnalyticsHelper.logButtonTap(
-                                  module: 'settings',
-                                  buttonName: 'logout',
-                                );
-                                await viewModel.signOut();
-                                UnifiedAnalyticsHelper.logAuthEvent(
-                                  method: 'logout',
-                                  success: true,
-                                );
-                                if(context.mounted) context.go(RouteNames.root);
-                              },
-                            ),
-                            if(!state.isGuestLogin) SizedBox(height: MyPaddings.medium),
+                            if (!state.isGuestLogin)
+                              BigButton(
+                                text: '로그아웃',
+                                onPressed: () async {
+                                  UnifiedAnalyticsHelper.logButtonTap(
+                                    module: 'settings',
+                                    buttonName: 'logout',
+                                  );
+                                  await viewModel.signOut();
+                                  UnifiedAnalyticsHelper.logAuthEvent(
+                                    method: 'logout',
+                                    success: true,
+                                  );
+                                  if (context.mounted)
+                                    context.go(RouteNames.root);
+                                },
+                              ),
+                            if (!state.isGuestLogin)
+                              SizedBox(height: MyPaddings.medium),
                             BigButton(
-                              '계정 삭제',
+                              text: '계정 삭제',
                               textColor: AppColors.warning,
                               onPressed: () async {
                                 if (!context.mounted) return;
@@ -179,8 +209,9 @@ class SettingView extends StatelessWidget {
                                   context: context,
                                   builder:
                                       (context) => LoginDialog(
-                                    onDeleteAccount: viewModel.deleteAccount,
-                                  ),
+                                        onDeleteAccount:
+                                            viewModel.deleteAccount,
+                                      ),
                                 );
                               },
                             ),
@@ -190,7 +221,7 @@ class SettingView extends StatelessWidget {
                     },
                   ),
                   SizedBox(height: MyPaddings.medium),
-                  BottomSafePadding()
+                  BottomSafePadding(),
                 ],
               ),
             ),

@@ -4,6 +4,7 @@ import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:could_be/core/components/layouts/scaffold_layout.dart';
+import 'package:could_be/core/permission/permission_management.dart';
 import 'package:could_be/core/routes/route_names.dart';
 import 'package:could_be/core/routes/router.dart';
 import 'package:could_be/domain/repositoryInterfaces/track_user_activity_interface.dart';
@@ -224,26 +225,6 @@ class _RootState extends State<Root> {
     );
   }
 
-  Future<void> _requestPermission() async {
-    final settings = await FirebaseMessaging.instance.requestPermission(
-      alert: true,
-      announcement: false,
-      badge: true,
-      carPlay: false,
-      criticalAlert: false,
-      provisional: false,
-      sound: true,
-    );
-    
-    UnifiedAnalyticsHelper.logEvent(
-      name: 'request_permission',
-      parameters: {
-        'permission_type': 'notifications',
-        'result': settings.authorizationStatus.name
-      }
-    );
-  }
-
   @override
   void initState(){
     super.initState();
@@ -277,7 +258,7 @@ class _RootState extends State<Root> {
             name: 'user_type',
             value: user.isAnonymous ? 'anonymous' : 'registered',
           );
-          _requestPermission();
+          requestFCMPermission(true);
           await userLogined(token);
         }
       } catch (e) {

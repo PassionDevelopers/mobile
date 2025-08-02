@@ -3,18 +3,19 @@ import 'package:could_be/ui/fonts.dart';
 import 'package:flutter/material.dart';
 
 class BigButton extends StatelessWidget {
-  final String text;
+  final String? text;
   final Color? backgroundColor;
   final Color? textColor;
+  final Widget? widget;
   final void Function() onPressed;
 
-  const BigButton(
-      this.text, {
-        super.key,
-        required this.onPressed,
-        this.backgroundColor,
-        this.textColor,
-      });
+  const BigButton({
+    super.key,
+    this.text,
+    required this.onPressed,
+    this.backgroundColor,
+    this.textColor, this.widget,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -37,18 +38,20 @@ class BigButton extends StatelessWidget {
             ),
           ],
         ),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            MyText.h3(text, color: textColor ?? AppColors.primary,),
-            const SizedBox(width: 11),
-            Icon(
-              Icons.keyboard_arrow_right_rounded,
-              size: 20,
-              color: textColor ?? AppColors.primary,
-            )
-          ],
-        ),
+        child:
+            widget ??
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                MyText.h3(text ?? '', color: textColor ?? AppColors.primary),
+                const SizedBox(width: 11),
+                Icon(
+                  Icons.keyboard_arrow_right_rounded,
+                  size: 20,
+                  color: textColor ?? AppColors.primary,
+                ),
+              ],
+            ),
       ),
     );
   }

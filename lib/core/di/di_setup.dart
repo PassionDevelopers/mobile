@@ -13,6 +13,7 @@ import 'package:could_be/presentation/log_in/login_view_model.dart';
 import 'package:dio/dio.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:get_it/get_it.dart';
 
 import 'api.dart';
@@ -38,6 +39,7 @@ Future<void> diSetupToken() async {
   getIt.registerSingleton<FirebaseFirestore>(FirebaseFirestore.instance);
   getIt.registerSingleton<FirebaseAuth>(FirebaseAuth.instance);
   getIt.registerSingleton<FirebaseAnalytics>(FirebaseAnalytics.instance);
+  getIt.registerSingleton<FirebaseMessaging>(FirebaseMessaging.instance);
   getIt.registerSingleton<FirebaseLoginUseCase>(
     FirebaseLoginUseCase(
       tokenStorageRepository: getIt(),
