@@ -21,6 +21,7 @@ import '../../core/di/di_setup.dart';
 import '../../data/data_source/local/user_preferences.dart';
 import '../../domain/repositoryInterfaces/token_storage_interface.dart';
 import '../../core/analytics/unified_analytics_helper.dart';
+import '../../core/analytics/analytics_event_names.dart';
 
 StreamSubscription? fireSubscription;
 
@@ -84,7 +85,7 @@ class _RootState extends State<Root> {
     usersStream.listen((snapshot) {
       log('check update status ${snapshot.data()}');
       UnifiedAnalyticsHelper.logEvent(
-        name: 'check_for_update',
+        name: AnalyticsEventNames.checkForUpdate,
       );
       
       if (Platform.isAndroid) {
@@ -92,21 +93,21 @@ class _RootState extends State<Root> {
           log('서버 점검으로 가자');
           isRoutedToUpdate = true;
           UnifiedAnalyticsHelper.logEvent(
-            name: 'network_error',
+            name: AnalyticsEventNames.networkError,
             parameters: {'error_type': 'server_maintenance'},
           );
           router.go(RouteNames.serverCheck);
         } else if (isNeedUpdate(snapshot.data()![CheckUpdateField.androidVersionForce], version)) {
           isRoutedToUpdate = true;
           UnifiedAnalyticsHelper.logEvent(
-            name: 'start_update',
+            name: AnalyticsEventNames.startUpdate,
             parameters: {'update_type': 'force_update', 'platform': 'android'},
           );
           router.go(RouteNames.needUpdate);
         } else if (isHaveUpdate(snapshot.data()![CheckUpdateField.androidVersionLatest], version)) {
           isRoutedToUpdate = true;
           UnifiedAnalyticsHelper.logEvent(
-            name: 'start_update',
+            name: AnalyticsEventNames.startUpdate,
             parameters: {'update_type': 'optional_update', 'platform': 'android'},
           );
           router.go(RouteNames.haveUpdate, extra: snapshot.data()![CheckUpdateField.androidVersionLatest]);
@@ -115,21 +116,21 @@ class _RootState extends State<Root> {
         if (snapshot.data()![CheckUpdateField.iosServerCheck]) {
           isRoutedToUpdate = true;
           UnifiedAnalyticsHelper.logEvent(
-            name: 'network_error',
+            name: AnalyticsEventNames.networkError,
             parameters: {'error_type': 'server_maintenance'},
           );
           router.go(RouteNames.serverCheck);
         } else if (isNeedUpdate(snapshot.data()![CheckUpdateField.iosVersionForce], version)) {
           isRoutedToUpdate = true;
           UnifiedAnalyticsHelper.logEvent(
-            name: 'start_update',
+            name: AnalyticsEventNames.startUpdate,
             parameters: {'update_type': 'force_update', 'platform': 'ios'},
           );
           router.go(RouteNames.needUpdate);
         } else if (isHaveUpdate(snapshot.data()![CheckUpdateField.iosVersionLatest], version)) {
           isRoutedToUpdate = true;
           UnifiedAnalyticsHelper.logEvent(
-            name: 'start_update',
+            name: AnalyticsEventNames.startUpdate,
             parameters: {'update_type': 'optional_update', 'platform': 'ios'},
           );
           router.go(RouteNames.haveUpdate, extra: snapshot.data()![CheckUpdateField.iosVersionLatest]);
@@ -159,10 +160,6 @@ class _RootState extends State<Root> {
         UnifiedAnalyticsHelper.logAuthEvent(
           method: 'first_time_user',
           success: true,
-        );
-        UnifiedAnalyticsHelper.logNavigationEvent(
-          fromScreen: 'root',
-          toScreen: 'home',
         );
         context.go(RouteNames.home);
       }
@@ -229,11 +226,7 @@ class _RootState extends State<Root> {
   void initState(){
     super.initState();
     UnifiedAnalyticsHelper.logEvent(
-      name: 'app_open',
-    );
-    UnifiedAnalyticsHelper.logScreenView(
-      screenName: 'root',
-      screenClass: 'Root',
+      name: AnalyticsEventNames.appOpen,
     );
     
     final firebaseAuth = getIt<FirebaseAuth>();
@@ -266,7 +259,7 @@ class _RootState extends State<Root> {
         // 게스트 로그인 사용자이면
         if (user.isAnonymous) {
           UnifiedAnalyticsHelper.logEvent(
-            name: 'authentication_error',
+            name: AnalyticsEventNames.authenticationError,
             parameters: {'error_message': 'Anonymous user token error'},
           );
           await firebaseAuth.signOut();
@@ -284,6 +277,7 @@ class _RootState extends State<Root> {
 
   @override
   Widget build(BuildContext context) {
+
     return RegScaffold(
       isScrollPage: false,
       backgroundColor: Colors.white,

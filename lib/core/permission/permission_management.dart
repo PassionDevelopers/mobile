@@ -4,6 +4,7 @@ import 'package:could_be/data/data_source/local/user_preferences.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:permission_handler/permission_handler.dart';
 import '../analytics/unified_analytics_helper.dart';
+import '../analytics/analytics_event_names.dart';
 
 Future<void> requestFCMPermission(bool isFirst) async {
   final bool isPermissionRequested = UserPreferences.getNotificationPermissionRequested() ?? false;
@@ -24,7 +25,7 @@ Future<void> requestFCMPermission(bool isFirst) async {
     }
 
     UnifiedAnalyticsHelper.logEvent(
-        name: 'request_permission',
+        name: AnalyticsEventNames.requestPermission,
         parameters: {
           'permission_type': 'notifications',
           'result': settings.authorizationStatus.name

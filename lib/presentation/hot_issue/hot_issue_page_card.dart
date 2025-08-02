@@ -130,7 +130,7 @@ class HotIssuePageCard extends StatelessWidget {
                 ),
                 GestureDetector(
                   onTap: () {
-                    context.push(RouteNames.issueDetailFeed, extra: issue.id);
+                    context.push('${RouteNames.issueDetailFeed}/${issue.id}');
                   },
                   child: Padding(
                     padding: const EdgeInsets.only(bottom: MyPaddings.medium, top: MyPaddings.extraSmall),

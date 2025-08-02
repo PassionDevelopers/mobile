@@ -2,9 +2,12 @@ import 'dart:async';
 import 'dart:developer';
 import 'package:app_links/app_links.dart';
 import 'package:clarity_flutter/clarity_flutter.dart';
+import 'package:could_be/core/components/alert/dialog.dart';
+import 'package:could_be/core/components/alert/toast.dart';
 import 'package:could_be/core/di/di_setup.dart';
 import 'package:amplitude_flutter/amplitude.dart';
 import 'package:could_be/core/routes/router.dart';
+import 'package:could_be/data/data_source/cache/deep_link_storage.dart';
 import 'package:could_be/data/data_source/local/user_preferences.dart';
 import 'package:could_be/ui/color.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -12,11 +15,11 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:kakao_flutter_sdk/kakao_flutter_sdk_auth.dart';
-import 'package:kakao_flutter_sdk_common/kakao_flutter_sdk_common.dart';
 import 'core/behavior/scroll_behavior.dart';
 import 'core/themes/app_bar_theme.dart';
 import 'firebase_options.dart';
 import 'core/analytics/unified_analytics_helper.dart';
+import 'core/analytics/analytics_event_names.dart';
 
 @pragma('vm:entry-point')
 Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
@@ -88,7 +91,6 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
-  final _navigatorKey = GlobalKey<NavigatorState>();
   StreamSubscription<Uri>? _linkSubscription;
 
   @override
@@ -99,7 +101,7 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
     
     // Log app open event
     UnifiedAnalyticsHelper.logEvent(
-      name: 'app_open',
+      name: AnalyticsEventNames.appOpen,
     );
   }
 
@@ -108,7 +110,7 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
     WidgetsBinding.instance.removeObserver(this);
     _linkSubscription?.cancel();
     UnifiedAnalyticsHelper.logEvent(
-      name: 'app_terminate',
+      name: AnalyticsEventNames.appTerminate,
     );
     super.dispose();
   }
@@ -123,14 +125,13 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
 
   void openAppLink(Uri uri) {
     UnifiedAnalyticsHelper.logEvent(
-      name: 'open_deep_link',
+      name: AnalyticsEventNames.openDeepLink,
       parameters: {
         'deep_link': uri.toString(),
       },
     );
-    log('Deep link opened: $uri');
-    log('Navigating to: ${uri.fragment}');
-    _navigatorKey.currentState?.pushNamed(uri.fragment);
+    getIt<DeepLinkStorage>().changeDeepLink(uri.path);
+    // showMyToast(msg: 'Deep link opened: $uri  Navigating to: ${uri.path}');
   }
   
   @override
@@ -139,12 +140,12 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
     switch (state) {
       case AppLifecycleState.resumed:
         UnifiedAnalyticsHelper.logEvent(
-          name: 'app_foreground',
+          name: AnalyticsEventNames.appForeground,
         );
         break;
       case AppLifecycleState.paused:
         UnifiedAnalyticsHelper.logEvent(
-          name: 'app_background',
+          name: AnalyticsEventNames.appBackground,
         );
         break;
       default:

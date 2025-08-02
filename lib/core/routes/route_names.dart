@@ -40,7 +40,6 @@ abstract class RouteNames{
 
   //customer services
   feedback = '/feedback',
-
   issueDetailFeed = '/issueDetailFeed',
   hotIssueFeed = '/hotIssueFeed'
 

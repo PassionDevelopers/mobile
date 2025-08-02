@@ -104,9 +104,9 @@ class _IssueCardState extends State<IssueCard> with TickerProviderStateMixin {
                           'from_screen': widget.isEvaluatedView ? 'evaluated_issues' : 'issue_list',
                         },
                       );
+                      log('${RouteNames.issueDetailFeed}/${widget.issue.id}');
                       context.push(
-                        RouteNames.issueDetailFeed,
-                        extra: widget.issue.id,
+                        '${RouteNames.issueDetailFeed}/${widget.issue.id}',
                       );
                     },
                     child: Ink(

@@ -49,6 +49,7 @@ class _IssueDetailFeedRootState extends State<IssueDetailFeedRoot> {
   @override
   void initState() {
     super.initState();
+    log('IssueDetailFeedRoot initState called with issueId: ${widget.issueId}');
     viewModel = getIt<IssueDetailViewModel>(param1: widget.issueId);
     controller = ScrollController();
     controller.addListener(_onScroll);

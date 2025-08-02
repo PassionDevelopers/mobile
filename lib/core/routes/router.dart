@@ -31,19 +31,11 @@ import '../../presentation/topic/topic_detail_view/topic_detail_view.dart';
 import '../method/bias/bias_enum.dart';
 
 final router = GoRouter(
-  redirect: (context, state) {
-
-    if (state.uri.scheme.startsWith('kakao') && state.uri.authority == 'oauth') {
-      return null; // or return '/login'
-    }
-
-    return null;
-  },
   initialLocation: RouteNames.root,
   routes: [
-    GoRoute(path: RouteNames.notice, builder: (context, state) => NoticeView()),
-
-    GoRoute(path: RouteNames.root, builder: (context, state) =>Root()),
+    GoRoute(path: RouteNames.root,
+      builder: (context, state) =>Root(),
+    ),
     // GoRoute(
     //   path: RouteNames.login,
     //   builder:
@@ -53,6 +45,85 @@ final router = GoRouter(
     //         },
     //       ),
     // ),
+
+    //bottom nav
+    StatefulShellRoute.indexedStack(
+      builder: (context, state, navigationShell) {
+        return HomeView(
+          body: navigationShell,
+          currentPageIndex: navigationShell.currentIndex,
+          setCurrentIndex: (index) {
+            navigationShell.goBranch(
+              index,
+              initialLocation: index == navigationShell.currentIndex,
+            );
+          },
+        );
+      },
+      branches: [
+        StatefulShellBranch(
+          routes: [
+            GoRoute(
+              path: RouteNames.home,
+              builder: (context, state) => FeedView(),
+            ),
+          ],
+        ),
+        StatefulShellBranch(
+          routes: [
+            GoRoute(
+              path: RouteNames.topic,
+              builder: (context, state) => SubscribedTopicRoot(),
+            ),
+          ],
+        ),
+        StatefulShellBranch(
+          routes: [
+            GoRoute(
+              path: RouteNames.blindSpot,
+              builder:
+                  (context, state) => BlindSpotRoot(
+                onIssueSelected:
+                    (issueId) => context.push(
+                  '${RouteNames.issueDetailFeed}/$issueId',
+                ),
+              ),
+            ),
+          ],
+        ),
+        StatefulShellBranch(
+          routes: [
+            GoRoute(
+              path: RouteNames.media,
+              builder: (context, state) => SubscribedMediaRoot(),
+            ),
+          ],
+        ),
+        StatefulShellBranch(
+          routes: [
+            GoRoute(
+              path: RouteNames.myPage,
+              builder:
+                  (context, state) => MyPageView(
+                toWatchHistory: () => context.push(RouteNames.watchHistory),
+                toSubscribedIssue:
+                    () => context.push(RouteNames.subscribedIssue),
+                toManageMediaSubscription:
+                    () => context.push(RouteNames.wholeMedia),
+                toManageTopicSubscription:
+                    () => context.push(RouteNames.wholeTopics),
+                toManageIssueEvaluation:
+                    () => context.push(RouteNames.manageIssueEvalution),
+                toManageSourceEvaluation:
+                    () => context.push(RouteNames.manageSourceEvaluation),
+              ),
+            ),
+          ],
+        ),
+      ],
+    ),
+
+    GoRoute(path: RouteNames.notice, builder: (context, state) => NoticeView()),
     GoRoute(
       path: RouteNames.unsupportedDevice,
       builder: (context, state) => UnsupportedDevice(),
@@ -69,7 +140,7 @@ final router = GoRouter(
       path: RouteNames.haveUpdate,
       builder:
           (context, state) =>
-              HaveUpdate(latestVersionNow: state.extra as String),
+          HaveUpdate(latestVersionNow: state.extra as String),
     ),
 
     // GoRoute(
@@ -80,18 +151,18 @@ final router = GoRouter(
     //   },
     // ),
     GoRoute(
-      path: RouteNames.issueDetailFeed,
+      path: '${RouteNames.issueDetailFeed}/:id',
       builder: (context, state) {
-        final issueId = state.extra as String;
+        final issueId = state.pathParameters['id']!;
         return IssueDetailFeedRoot(issueId: issueId);
       },
     ),
     GoRoute(
-      path: RouteNames.hotIssueFeed,
-      builder: (context, state){
-        final hotIssues = state.extra as HotIssues;
-        return HotIssueView(hotIssues: hotIssues);
-      }
+        path: RouteNames.hotIssueFeed,
+        builder: (context, state){
+          final hotIssues = state.extra as HotIssues;
+          return HotIssueView(hotIssues: hotIssues);
+        }
     ),
 
     //article
@@ -158,8 +229,8 @@ final router = GoRouter(
       builder: (context, state) => ManageIssueEvaluationView(),
     ),
     GoRoute(
-      path: RouteNames.settings,
-      builder: (context, state) => SettingView()
+        path: RouteNames.settings,
+        builder: (context, state) => SettingView()
     ),
     GoRoute(
       path: RouteNames.manageSourceEvaluation,
@@ -172,82 +243,5 @@ final router = GoRouter(
       builder: (context, state) => FeedbackRoot(),
     ),
 
-    //bottom nav
-    StatefulShellRoute.indexedStack(
-      builder: (context, state, navigationShell) {
-        return HomeView(
-          body: navigationShell,
-          currentPageIndex: navigationShell.currentIndex,
-          setCurrentIndex: (index) {
-            navigationShell.goBranch(
-              index,
-              initialLocation: index == navigationShell.currentIndex,
-            );
-          },
-        );
-      },
-      branches: [
-        StatefulShellBranch(
-          routes: [
-            GoRoute(
-              path: RouteNames.home,
-              builder: (context, state) => FeedView(),
-            ),
-          ],
-        ),
-        StatefulShellBranch(
-          routes: [
-            GoRoute(
-              path: RouteNames.topic,
-              builder: (context, state) => SubscribedTopicRoot(),
-            ),
-          ],
-        ),
-        StatefulShellBranch(
-          routes: [
-            GoRoute(
-              path: RouteNames.blindSpot,
-              builder:
-                  (context, state) => BlindSpotRoot(
-                    onIssueSelected:
-                        (issueId) => context.push(
-                          RouteNames.issueDetailFeed,
-                          extra: issueId,
-                        ),
-                  ),
-            ),
-          ],
-        ),
-        StatefulShellBranch(
-          routes: [
-            GoRoute(
-              path: RouteNames.media,
-              builder: (context, state) => SubscribedMediaRoot(),
-            ),
-          ],
-        ),
-        StatefulShellBranch(
-          routes: [
-            GoRoute(
-              path: RouteNames.myPage,
-              builder:
-                (context, state) => MyPageView(
-                  toWatchHistory: () => context.push(RouteNames.watchHistory),
-                  toSubscribedIssue:
-                      () => context.push(RouteNames.subscribedIssue),
-                  toManageMediaSubscription:
-                      () => context.push(RouteNames.wholeMedia),
-                  toManageTopicSubscription:
-                      () => context.push(RouteNames.wholeTopics),
-                  toManageIssueEvaluation:
-                      () => context.push(RouteNames.manageIssueEvalution),
-                  toManageSourceEvaluation:
-                      () => context.push(RouteNames.manageSourceEvaluation),
-                ),
-            ),
-          ],
-        ),
-      ],
-    ),
   ],
 );

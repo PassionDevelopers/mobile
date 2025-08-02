@@ -5,6 +5,7 @@ import 'package:could_be/core/themes/margins_paddings.dart';
 import 'package:could_be/ui/color.dart';
 import 'package:flutter/material.dart';
 import '../../analytics/unified_analytics_helper.dart';
+import '../../analytics/analytics_event_names.dart';
 
 class SearchAppBar extends StatefulWidget {
   const SearchAppBar({super.key, this.backButtonVisible = false, required this.appBar,
@@ -39,7 +40,7 @@ class _SearchAppBarState extends State<SearchAppBar> {
         if(_searchController.text.isNotEmpty){
           _searchController.clear();
           UnifiedAnalyticsHelper.logEvent(
-            name: 'clear_search',
+            name: AnalyticsEventNames.clearSearch,
           );
         }else{
           closeSearch();
@@ -47,7 +48,7 @@ class _SearchAppBarState extends State<SearchAppBar> {
       } else {
         _isSearchActive = true;
         UnifiedAnalyticsHelper.logEvent(
-          name: 'tap_search_bar',
+          name: AnalyticsEventNames.tapSearchBar,
         );
       }
     });
