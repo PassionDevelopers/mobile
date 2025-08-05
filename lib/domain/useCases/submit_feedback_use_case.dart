@@ -10,14 +10,14 @@ class SubmitFeedbackUseCase {
 
   Future<void> execute({
     required String category,
-    required String name,
-    required String email,
-    required String title,
+    // required String name,
+    required String? email,
+    required String? title,
     required String content,
   }) async {
     await _feedbackRepository.submitFeedback(
       category: category,
-      name: name,
+      // name: name,
       email: email,
       title: title,
       content: content,

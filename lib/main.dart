@@ -91,13 +91,11 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
-  StreamSubscription<Uri>? _linkSubscription;
 
   @override
   void initState() {
     super.initState();
     WidgetsBinding.instance.addObserver(this);
-    initDeepLinks();
     
     // Log app open event
     UnifiedAnalyticsHelper.logEvent(
@@ -108,30 +106,10 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
   @override
   void dispose() {
     WidgetsBinding.instance.removeObserver(this);
-    _linkSubscription?.cancel();
     UnifiedAnalyticsHelper.logEvent(
       name: AnalyticsEventNames.appTerminate,
     );
     super.dispose();
-  }
-
-  Future<void> initDeepLinks() async {
-    // Handle links
-    _linkSubscription = getIt<AppLinks>().uriLinkStream.listen((uri) {
-      debugPrint('onAppLink: $uri');
-      openAppLink(uri);
-    });
-  }
-
-  void openAppLink(Uri uri) {
-    UnifiedAnalyticsHelper.logEvent(
-      name: AnalyticsEventNames.openDeepLink,
-      parameters: {
-        'deep_link': uri.toString(),
-      },
-    );
-    getIt<DeepLinkStorage>().changeDeepLink(uri.path);
-    // showMyToast(msg: 'Deep link opened: $uri  Navigating to: ${uri.path}');
   }
   
   @override

@@ -212,13 +212,13 @@ class _MyPageViewState extends State<MyPageView> {
   @override
   Widget build(BuildContext context) {
 
-    return Stack(
-      children: [
-        RefreshIndicator(
-          onRefresh: () async {
-            viewModel.refresh();
-          },
-          child: SingleChildScrollView(
+    return RefreshIndicator(
+      onRefresh: () async {
+        viewModel.refresh();
+      },
+      child: Stack(
+        children: [
+          SingleChildScrollView(
             child: Column(
               children: [
                 RegAppBar(
@@ -235,7 +235,6 @@ class _MyPageViewState extends State<MyPageView> {
                 ),
                 SizedBox(height: MyPaddings.extraLarge),
                 MyPageHeader(viewModel: viewModel),
-
                 SizedBox(height: MyPaddings.extraLarge),
 
                 Padding(
@@ -264,32 +263,32 @@ class _MyPageViewState extends State<MyPageView> {
               ],
             ),
           ),
-        ),
-        ListenableBuilder(
-          listenable: viewModel,
-          builder: (context, _) {
-            if (viewModel.state.isGuestLogin) {
-              return Center(
-                child: Container(
-                  width: double.infinity,
-                  height: double.infinity,
-                  decoration: BoxDecoration(
-                    color: AppColors.black.withAlpha(180),
+          ListenableBuilder(
+            listenable: viewModel,
+            builder: (context, _) {
+              if (viewModel.state.isGuestLogin) {
+                return Center(
+                  child: Container(
+                    width: double.infinity,
+                    height: double.infinity,
+                    decoration: BoxDecoration(
+                      color: AppColors.black.withAlpha(180),
+                    ),
+                    child: LoginView(
+                      onLoginSuccess: () {
+                        viewModel.checkIsGuestLogin();
+                        viewModel.refresh();
+                      },
+                    ),
                   ),
-                  child: LoginView(
-                    onLoginSuccess: () {
-                      viewModel.checkIsGuestLogin();
-                      viewModel.refresh();
-                    },
-                  ),
-                ),
-              );
-            } else {
-              return const SizedBox.shrink();
-            }
-          },
-        ),
-      ],
+                );
+              } else {
+                return const SizedBox.shrink();
+              }
+            },
+          ),
+        ],
+      ),
     );
   }
 }

@@ -13,9 +13,9 @@ class FeedbackRepositoryImpl implements FeedbackInterface {
   @override
   Future<void> submitFeedback({
     required String category,
-    required String name,
-    required String email,
-    required String title,
+    // required String name,
+    required String? email,
+    required String? title,
     required String content,
   }) async {
     try {
@@ -27,7 +27,7 @@ class FeedbackRepositoryImpl implements FeedbackInterface {
       final feedbackData = {
         // Form data
         'category': category,
-        'name': name,
+        // 'name': name,
         'email': email,
         'title': title,
         'content': content,

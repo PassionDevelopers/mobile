@@ -14,10 +14,14 @@ class IssueDetailCommonSummary extends StatelessWidget {
     super.key,
     required this.commonSummary,
     required this.fontSize,
+    required this.isSpread,
+    required this.spreadCallback,
   });
 
   final String commonSummary;
   final double fontSize;
+  final bool isSpread;
+  final VoidCallback spreadCallback;
 
   @override
   Widget build(BuildContext context) {
@@ -45,29 +49,35 @@ class IssueDetailCommonSummary extends StatelessWidget {
                 ),
               ),
             ),
-            child: Row(
-              children: [
-                Icon(
-                  Icons.join_inner,
-                  color: AppColors.primary,
-                  size: 24,
+            child: InkWell(
+              onTap: spreadCallback,
+              child: Ink(
+                child: Row(
+                  children: [
+                    Icon(
+                      Icons.join_inner,
+                      color: AppColors.primary,
+                      size: 24,
+                    ),
+                    SizedBox(width: MyPaddings.medium),
+                    Text(
+                      '공통 보도 내용',
+                      style: TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.w600,
+                        color: AppColors.primary,
+                      ),
+                    ),
+                    Icon(isSpread? Icons.keyboard_arrow_up : Icons.keyboard_arrow_down_rounded)
+                  ],
                 ),
-                SizedBox(width: MyPaddings.medium),
-                Text(
-                  '공통 보도 내용',
-                  style: TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.w600,
-                    color: AppColors.primary,
-                  ),
-                ),
-              ],
+              ),
             ),
           ),
-          Padding(
+          isSpread? Padding(
             padding: EdgeInsets.all(MyPaddings.large),
             child: parseAiText(commonSummary, fontSize, AppColors.gray1, Colors.amberAccent),
-          ),
+          ) : SizedBox.shrink(),
         ],
       ),
     );

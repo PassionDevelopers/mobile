@@ -19,12 +19,17 @@ class AnalyticsEventNames {
   static const String authTapEmailLogin = 'auth_tap_email_login';
   static const String authTapGuestLogin = 'auth_tap_guest_login';
   static const String authenticationError = 'authentication_error';
-  
+
+  //Share Events
+  static const String shareApp = 'share_app';
+  static const String shareIssue = 'share_issue';
+
   // Issue Events
   static const String issueTapItem = 'issue_tap_item';
   static const String issueViewItem = 'issue_view_item';
   static const String issueSwipeItem = 'issue_swipe_item';
   static const String issueShareItem = 'issue_share_item';
+  static const String openHotIssues = 'open_hot_issues';
   
   // Media Events
   static const String mediaTapItem = 'media_tap_item';

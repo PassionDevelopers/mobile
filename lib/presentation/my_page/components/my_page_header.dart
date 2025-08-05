@@ -144,7 +144,6 @@ class MyPageHeader extends StatelessWidget {
                           children: [
                             if (!state.isEditMode)
                               MyText.h1(
-                                state.isGuestLogin? '게스트 사용자' :
                                 state.userBias == null? '   ' : state.userBias!.nickname,
                                 color: AppColors.primary,
                               )

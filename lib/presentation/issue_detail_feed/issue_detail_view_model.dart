@@ -1,8 +1,10 @@
 import 'dart:developer';
+import 'package:could_be/core/method/share_dasi_stand.dart';
 import 'package:could_be/domain/useCases/manage_issue_evaluation_use_case.dart';
 import 'package:could_be/domain/useCases/manage_issue_subscription_use_case.dart';
 import 'package:could_be/domain/useCases/track_user_activity_use_case.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:share_plus/share_plus.dart';
 import '../../core/components/alert/toast.dart';
 import '../../core/method/bias/bias_enum.dart';
 import '../../domain/useCases/fetch_whole_issue_use_case.dart';
@@ -29,6 +31,22 @@ class IssueDetailViewModel with ChangeNotifier {
     required this.manageIssueSubscriptionUseCase,
   }) : _fetchIssueDetailUseCase = fetchIssueDetailUseCase {
     fetchIssueDetailById(issueId);
+  }
+
+  void share() {
+    if (state.issueDetail == null) {
+      log("Issue detail is null");
+      return;
+    }
+    shareIssue(
+      issueId: state.issueDetail!.id,
+      issueTitle: state.issueDetail!.title,
+    );
+  }
+
+  void spreadCommonSummary() {
+    _state = state.copyWith(isCommonSummarySpread: !state.isCommonSummarySpread);
+    notifyListeners();
   }
 
   void postDasiScore() async {

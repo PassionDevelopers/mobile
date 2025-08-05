@@ -22,10 +22,14 @@ class IssueDetailSummary extends StatefulWidget {
     super.key,
     required this.issue,
     required this.fontSize,
+    required this.isSubscribed,
+    required this.onSubscribe,
   });
 
   final IssueDetail issue;
   final double fontSize;
+  final bool isSubscribed;
+  final VoidCallback onSubscribe;
 
   @override
   State<IssueDetailSummary> createState() => _IssueDetailSummaryState();
@@ -36,232 +40,252 @@ class _IssueDetailSummaryState extends State<IssueDetailSummary> {
   @override
   Widget build(BuildContext context) {
 
-    return Stack(
+    return Column(
       children: [
-        Column(
-          children: [
-            widget.issue.imageUrl != null
-                ? SizedBox(
-              height: 260,
-              child: Stack(
-                children: [
-                  ImageContainer(
-                    height: 260,
-                    imageUrl: widget.issue.imageUrl,
-                    borderRadius: BorderRadius.zero,
-                    imageSource: widget.issue.imageSource,
+        widget.issue.imageUrl != null
+            ? SizedBox(
+          height: 260,
+          child: Stack(
+            children: [
+              ImageContainer(
+                height: 260,
+                imageUrl: widget.issue.imageUrl,
+                borderRadius: BorderRadius.zero,
+                imageSource: widget.issue.imageSource,
+              ),
+              Container(
+                height: 260,
+                decoration: BoxDecoration(
+                  gradient: LinearGradient(
+                    begin: Alignment.topCenter,
+                    end: Alignment.bottomCenter,
+                    colors: [ Colors.transparent, Colors.black.withOpacity(0.7), ],
+                    stops: [0.5, 1.0],
                   ),
-                  Container(
-                    height: 260,
-                    decoration: BoxDecoration(
-                      gradient: LinearGradient(
-                        begin: Alignment.topCenter,
-                        end: Alignment.bottomCenter,
-                        colors: [
-                          Colors.transparent,
-                          Colors.black.withOpacity(0.7),
-                        ],
-                        stops: [0.5, 1.0],
+                ),
+              ),
+              Positioned(
+                bottom: 0,
+                left: 0,
+                right: 0,
+                child: Container(
+                  padding: EdgeInsets.all(MyPaddings.large),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        widget.issue.title,
+                        style: MyFontStyle.h0.copyWith(
+                          color: Colors.white,
+                          fontWeight: FontWeight.w700,
+                          shadows: [
+                            Shadow(
+                              offset: Offset(0, 1),
+                              blurRadius: 3,
+                              color: Colors.black.withOpacity(0.5),
+                            ),
+                          ],
+                        ),
+                        maxLines: 3,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                      if(widget.issue.imageSource != null && widget.issue.imageSource!.trim().isNotEmpty)
+                        Padding(
+                          padding: EdgeInsets.only(top: MyPaddings.small),
+                          child: Text(
+                            '이미지 출처 : ${widget.issue.imageSource}',
+                            style: TextStyle(
+                              color: Colors.white.withOpacity(0.8),
+                              fontSize: 10,
+                              fontWeight: FontWeight.w400,
+                            ),
+                          ),
+                        ),
+                    ],
+                  ),
+                ),
+              ),
+              Positioned(
+                top: MediaQuery.of(context).padding.top + 12,
+                left: 12,
+                child: Container(
+                  decoration: BoxDecoration(
+                    color: Colors.black.withOpacity(0.3),
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                  child: Material(
+                    color: Colors.transparent,
+                    child: InkWell(
+                      borderRadius: BorderRadius.circular(12),
+                      onTap: () => Navigator.of(context).pop(),
+                      child: Padding(
+                        padding: EdgeInsets.all(8),
+                        child: Icon(
+                          Icons.arrow_back_ios_new,
+                          color: Colors.white,
+                          size: 20,
+                        ),
                       ),
                     ),
                   ),
-                  Positioned(
-                    bottom: 0,
-                    left: 0,
-                    right: 0,
-                    child: Container(
-                      padding: EdgeInsets.all(MyPaddings.large),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            widget.issue.title,
-                            style: MyFontStyle.h0.copyWith(
-                              color: Colors.white,
-                              fontWeight: FontWeight.w700,
-                              shadows: [
-                                Shadow(
-                                  offset: Offset(0, 1),
-                                  blurRadius: 3,
-                                  color: Colors.black.withOpacity(0.5),
-                                ),
-                              ],
-                            ),
-                            maxLines: 3,
-                            overflow: TextOverflow.ellipsis,
-                          ),
-                          if(widget.issue.imageSource != null && widget.issue.imageSource!.trim().isNotEmpty)
-                            Padding(
-                              padding: EdgeInsets.only(top: MyPaddings.small),
-                              child: Text(
-                                '이미지 출처 : ${widget.issue.imageSource}',
-                                style: TextStyle(
-                                  color: Colors.white.withOpacity(0.8),
-                                  fontSize: 10,
-                                  fontWeight: FontWeight.w400,
-                                ),
-                              ),
-                            ),
-                        ],
+                ),
+              ),
+              Positioned(
+                top: MediaQuery.of(context).padding.top + 12,
+                right: 12,
+                child: Container(
+                  decoration: BoxDecoration(
+                    color: Colors.black.withOpacity(0.3),
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                  child: Material(
+                    color: Colors.transparent,
+                    child: InkWell(
+                      borderRadius: BorderRadius.circular(12),
+                      onTap: widget.onSubscribe,
+                      child: Padding(
+                        padding: EdgeInsets.all(8),
+                        child: Icon(
+                          widget.isSubscribed
+                              ? Icons.bookmark
+                              : Icons.bookmark_add_outlined,
+                          color: Colors.white,
+                          size: 25,
+                        ),
                       ),
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ),
+        )
+            : Container(
+                height: 180,
+                decoration: BoxDecoration(
+                  gradient: LinearGradient(
+                    begin: Alignment.topLeft,
+                    end: Alignment.bottomRight,
+                    colors: [
+                      AppColors.primary.withOpacity(0.8),
+                      AppColors.primary,
+                    ],
+                  ),
+                ),
+                child: Align(
+                  alignment: Alignment.bottomLeft,
+                  child: Padding(
+                    padding: EdgeInsets.all(MyPaddings.large),
+                    child: Text(
+                      widget.issue.title,
+                      style: MyFontStyle.h0.copyWith(
+                        color: Colors.white,
+                        fontWeight: FontWeight.w700,
+                      ),
+                      maxLines: 3,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                  ),
+                ),
+              ),
+        // SizedBox(height: MyPaddings.small),
+        Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            if (widget.issue.tags.isNotEmpty)
+              Padding(
+                padding: EdgeInsets.only(top: MyPaddings.medium),
+                child: SizedBox(
+                  height: 24,
+                  child: ListView.builder(
+                    scrollDirection: Axis.horizontal,
+                    shrinkWrap: true,
+                    padding: EdgeInsets.symmetric(horizontal: MyPaddings.medium),
+                    itemCount: widget.issue.tags.length,
+                    itemBuilder: (_, index) {
+                      return BlindChip(
+                        topPadding: 0,
+                        tag: widget.issue.tags[index],
+                      );
+                    },
+                  ),
+                ),
+              ),
+            Padding(
+              padding: EdgeInsets.symmetric(horizontal: MyPaddings.medium, vertical: MyPaddings.medium),
+              child: IssueDetailHeader(
+                mediaTotal: widget.issue.coverageSpectrum.total,
+                viewCount: widget.issue.view,
+                time: widget.issue.createdAt,
+              ),
+            ),
+            Padding(
+              padding: EdgeInsets.symmetric(horizontal: MyPaddings.medium),
+              child: CardBiasBar(
+                coverageSpectrum: widget.issue.coverageSpectrum,
+                isDailyIssue: true,
+              ),
+            ),
+            SizedBox(height: MyPaddings.large),
+            AnimatedContainer(
+              duration: Duration(milliseconds: 300),
+              curve: Curves.easeOutCubic,
+              decoration: BoxDecoration(
+                color: AppColors.white,
+                borderRadius: BorderRadius.circular(16),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black.withOpacity(0.05),
+                    blurRadius: 10,
+                    offset: Offset(0, 2),
+                  ),
+                ],
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Container(
+                    padding: EdgeInsets.all(MyPaddings.large),
+                    decoration: BoxDecoration(
+                      border: Border(
+                        bottom: BorderSide(
+                          color: AppColors.gray5,
+                          width: 1,
+                        ),
+                      ),
+                    ),
+                    child: Row(
+                      children: [
+                        Icon(
+                          Icons.article_outlined,
+                          color: AppColors.primary,
+                          size: 24,
+                        ),
+                        SizedBox(width: MyPaddings.medium),
+                        Text(
+                          '이슈 개요',
+                          style: MyFontStyle.h2.copyWith(
+                            color: AppColors.primary,
+                            fontWeight: FontWeight.w600,
+                            fontFamily: 'Sonkeechung',
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  Padding(
+                    padding: EdgeInsets.all(MyPaddings.large),
+                    child: parseAiText(
+                      widget.issue.summary,
+                      widget.fontSize,
+                      AppColors.gray1,
+                      Colors.amberAccent
                     ),
                   ),
                 ],
               ),
-            )
-                : Container(
-                    height: 180,
-                    decoration: BoxDecoration(
-                      gradient: LinearGradient(
-                        begin: Alignment.topLeft,
-                        end: Alignment.bottomRight,
-                        colors: [
-                          AppColors.primary.withOpacity(0.8),
-                          AppColors.primary,
-                        ],
-                      ),
-                    ),
-                    child: Align(
-                      alignment: Alignment.bottomLeft,
-                      child: Padding(
-                        padding: EdgeInsets.all(MyPaddings.large),
-                        child: Text(
-                          widget.issue.title,
-                          style: MyFontStyle.h0.copyWith(
-                            color: Colors.white,
-                            fontWeight: FontWeight.w700,
-                          ),
-                          maxLines: 3,
-                          overflow: TextOverflow.ellipsis,
-                        ),
-                      ),
-                    ),
-                  ),
-            // SizedBox(height: MyPaddings.small),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                if (widget.issue.tags.isNotEmpty)
-                  Padding(
-                    padding: EdgeInsets.only(top: MyPaddings.medium),
-                    child: SizedBox(
-                      height: 24,
-                      child: ListView.builder(
-                        scrollDirection: Axis.horizontal,
-                        shrinkWrap: true,
-                        padding: EdgeInsets.symmetric(horizontal: MyPaddings.medium),
-                        itemCount: widget.issue.tags.length,
-                        itemBuilder: (_, index) {
-                          return BlindChip(
-                            topPadding: 0,
-                            tag: widget.issue.tags[index],
-                          );
-                        },
-                      ),
-                    ),
-                  ),
-                Padding(
-                  padding: EdgeInsets.symmetric(horizontal: MyPaddings.medium, vertical: MyPaddings.medium),
-                  child: IssueDetailHeader(
-                    mediaTotal: widget.issue.coverageSpectrum.total,
-                    viewCount: widget.issue.view,
-                    time: widget.issue.createdAt,
-                  ),
-                ),
-                Padding(
-                  padding: EdgeInsets.symmetric(horizontal: MyPaddings.medium),
-                  child: CardBiasBar(
-                    coverageSpectrum: widget.issue.coverageSpectrum,
-                    isDailyIssue: true,
-                  ),
-                ),
-                SizedBox(height: MyPaddings.large),
-                AnimatedContainer(
-                  duration: Duration(milliseconds: 300),
-                  curve: Curves.easeOutCubic,
-                  decoration: BoxDecoration(
-                    color: AppColors.white,
-                    borderRadius: BorderRadius.circular(16),
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.black.withOpacity(0.05),
-                        blurRadius: 10,
-                        offset: Offset(0, 2),
-                      ),
-                    ],
-                  ),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Container(
-                        padding: EdgeInsets.all(MyPaddings.large),
-                        decoration: BoxDecoration(
-                          border: Border(
-                            bottom: BorderSide(
-                              color: AppColors.gray5,
-                              width: 1,
-                            ),
-                          ),
-                        ),
-                        child: Row(
-                          children: [
-                            Icon(
-                              Icons.article_outlined,
-                              color: AppColors.primary,
-                              size: 24,
-                            ),
-                            SizedBox(width: MyPaddings.medium),
-                            Text(
-                              '이슈 개요',
-                              style: MyFontStyle.h2.copyWith(
-                                color: AppColors.primary,
-                                fontWeight: FontWeight.w600,
-                                fontFamily: 'Sonkeechung',
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                      Padding(
-                        padding: EdgeInsets.all(MyPaddings.large),
-                        child: parseAiText(
-                          widget.issue.summary,
-                          widget.fontSize,
-                          AppColors.gray1,
-                          Colors.amberAccent
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ],
             ),
           ],
-        ),
-        Positioned(
-          top: MediaQuery.of(context).padding.top + 12,
-          left: 12,
-          child: Container(
-            decoration: BoxDecoration(
-              color: Colors.black.withOpacity(0.3),
-              borderRadius: BorderRadius.circular(12),
-            ),
-            child: Material(
-              color: Colors.transparent,
-              child: InkWell(
-                borderRadius: BorderRadius.circular(12),
-                onTap: () => Navigator.of(context).pop(),
-                child: Padding(
-                  padding: EdgeInsets.all(8),
-                  child: Icon(
-                    Icons.arrow_back_ios_new,
-                    color: Colors.white,
-                    size: 20,
-                  ),
-                ),
-              ),
-            ),
-          ),
         ),
       ],
     );

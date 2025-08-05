@@ -57,6 +57,7 @@ class RegScaffold extends StatelessWidget {
       child: SafeArea(
         bottom: false,
         child: Scaffold(
+          resizeToAvoidBottomInset: true,
           appBar: appBar ?? (appBarTitle != null
               ? AppBar(
             title: MyText.h2(appBarTitle!),
@@ -67,7 +68,6 @@ class RegScaffold extends StatelessWidget {
           endDrawer: endDrawer,
           floatingActionButtonLocation: floatingActionButtonLocation,
           floatingActionButton: floatingActionButton,
-          resizeToAvoidBottomInset: false,
           body: Column(
             children: [
               Expanded(child: body),
@@ -148,9 +148,9 @@ class HomeScaffold extends StatelessWidget {
         child: Scaffold(
           drawer: drawer,
           endDrawer: endDrawer,
+          resizeToAvoidBottomInset: true,
           floatingActionButtonLocation: floatingActionButtonLocation,
           floatingActionButton: floatingActionButton,
-          resizeToAvoidBottomInset: false,
           // body: body,
           body: body,
           bottomNavigationBar: CustomBottomNavigationBar(

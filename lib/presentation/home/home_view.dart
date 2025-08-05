@@ -1,5 +1,8 @@
+import 'dart:async';
 import 'dart:developer';
 
+import 'package:app_links/app_links.dart';
+import 'package:could_be/core/components/alert/toast.dart';
 import 'package:could_be/core/di/di_setup.dart';
 import 'package:could_be/core/routes/route_names.dart';
 import 'package:could_be/data/data_source/cache/deep_link_storage.dart';
@@ -31,6 +34,29 @@ class _HomeViewState extends State<HomeView> with WidgetsBindingObserver{
 
   late final HomeViewModel viewModel;
 
+  StreamSubscription<Uri>? _linkSubscription;
+
+  Future<void> initDeepLinks() async {
+    // Handle links
+    _linkSubscription = getIt<AppLinks>().uriLinkStream.listen((uri) {
+      debugPrint('onAppLink: $uri');
+      openAppLink(uri);
+    });
+  }
+
+  void openAppLink(Uri uri) {
+    getIt<DeepLinkStorage>().changeDeepLink(uri.path);
+    Map<String, String> queryParameters = uri.queryParameters;
+    if(queryParameters.containsKey('issueId')){
+      String? issueId = queryParameters['issueId'];
+      if(issueId != null && issueId.isNotEmpty){
+        showMyToast(msg: 'Deep link opened: $uri  Navigating to: ${uri.queryParameters}');
+        context.push('${RouteNames.issueDetailFeed}/$issueId');
+      }
+    }
+  }
+
+
   @override
   void initState() {
     // TODO: implement initState
@@ -40,23 +66,27 @@ class _HomeViewState extends State<HomeView> with WidgetsBindingObserver{
     Future.delayed(Duration.zero, () {
       viewModel.showNotice(context);
     });
-    final deeplinkStorage = getIt<DeepLinkStorage>();
-    final String? deepLink = deeplinkStorage.getDeepLink();
-    if(deepLink != null){
-      deeplinkStorage.clearDeepLink();
-      Future.delayed(Duration.zero, (){
-        if(deepLink.contains(RouteNames.issueDetailFeed)){
-          context.push(
-            deepLink,
-          );
-        }
-      });
-    }
+
+    initDeepLinks();
+    // final deeplinkStorage = getIt<DeepLinkStorage>();
+    // final String? deepLink = deeplinkStorage.getDeepLink();
+    // if(deepLink != null){
+    //   deeplinkStorage.clearDeepLink();
+    //   Future.delayed(Duration.zero, (){
+    //     if(deepLink.contains(RouteNames.issueDetailFeed)){
+    //       context.push(
+    //         deepLink,
+    //       );
+    //     }
+    //   });
+    // }
   }
 
   @override
   void dispose() {
     viewModel.dispose();
+    WidgetsBinding.instance.removeObserver(this);
+    _linkSubscription?.cancel();
     super.dispose();
   }
 

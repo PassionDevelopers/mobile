@@ -75,7 +75,7 @@ class SettingView extends StatelessWidget {
                         buttonName: 'rate_app',
                       );
                       final InAppReview inAppReview = InAppReview.instance;
-                      inAppReview.openStoreListing(appStoreId: '6739764701');
+                      inAppReview.openStoreListing(appStoreId: '6748309466');
                     },
                   ),
                   SizedBox(height: MyPaddings.medium),

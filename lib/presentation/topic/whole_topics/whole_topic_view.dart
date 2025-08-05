@@ -261,7 +261,7 @@ class CategoryPartSliver extends StatelessWidget {
             );
           }
           slivers.add(
-            BottomSafePadding()
+            SliverToBoxAdapter(child:  BottomSafePadding())
           );
           return SliverPadding(
             padding: EdgeInsets.all(MyPaddings.small),
@@ -289,7 +289,7 @@ class CategoryPartSliver extends StatelessWidget {
                   topics: topics,
                   manageTopicSubscription: viewModel.manageTopicSubscription,
                 ),
-                BottomSafePadding()
+                SliverToBoxAdapter(child:  BottomSafePadding())
               ],
             ),
           );

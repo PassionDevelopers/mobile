@@ -7,12 +7,15 @@ class IssueDetailFeedState{
   final bool isEvaluating;
   final double fontSize;
 
+  final bool isCommonSummarySpread;
+
 
   IssueDetailFeedState({
     this.isLoading = false,
     this.isEvaluating = false,
     this.issueDetail,
     this.fontSize = 18,
+    this.isCommonSummarySpread = false,
   });
 
   IssueDetailFeedState copyWith({
@@ -21,12 +24,14 @@ class IssueDetailFeedState{
     bool? isEvaluating,
     int? pageCount,
     double? fontSize,
+    bool? isCommonSummarySpread,
   }) {
     return IssueDetailFeedState(
       issueDetail: issueDetail ?? this.issueDetail,
       isLoading: isLoading ?? this.isLoading,
       isEvaluating: isEvaluating ?? this.isEvaluating,
       fontSize: fontSize ?? this.fontSize,
+      isCommonSummarySpread: isCommonSummarySpread ?? this.isCommonSummarySpread,
     );
   }
 }
