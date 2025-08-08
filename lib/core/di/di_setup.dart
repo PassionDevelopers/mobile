@@ -26,7 +26,8 @@ final getIt = GetIt.instance;
 Future<void> diSetupToken() async {
 
   getIt.registerSingleton<Amplitude>(Amplitude(Configuration(
-          apiKey: "f7b82ddae07365f5aa64dc2496a44dc8"
+    apiKey: "ffa5222c804a8bac6ca8dea208d6d27f"
+
         ))
   );
 

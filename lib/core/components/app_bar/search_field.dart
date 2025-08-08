@@ -6,6 +6,8 @@ import 'package:could_be/ui/color.dart';
 import 'package:flutter/material.dart';
 import '../../analytics/unified_analytics_helper.dart';
 import '../../analytics/analytics_event_names.dart';
+import '../../analytics/analytics_parameter_keys.dart';
+import '../../analytics/analytics_screen_names.dart';
 
 class SearchAppBar extends StatefulWidget {
   const SearchAppBar({super.key, this.backButtonVisible = false, required this.appBar,
@@ -60,9 +62,12 @@ class _SearchAppBarState extends State<SearchAppBar> {
     }else if(query.trim().length >20){
       showMyToast(msg: '검색어는 20자 이내로 입력해주세요');
     }else{
-      UnifiedAnalyticsHelper.logSearchEvent(
-        searchTerm: query.trim(),
-        searchType: 'issue_search',
+      UnifiedAnalyticsHelper.logEvent(
+        name: AnalyticsEventNames.search,
+        parameters: {
+          AnalyticsParameterKeys.searchTerm: query.trim(),
+          AnalyticsParameterKeys.searchType: AnalyticsParameterKeys.searchTypeIssue,
+        },
       );
       widget.onSearchSubmitted(query);
     }
@@ -132,8 +137,8 @@ class _SearchAppBarState extends State<SearchAppBar> {
           if(widget.onNoticePressed != null && !_isSearchActive) GestureDetector(
             onTap: () {
               UnifiedAnalyticsHelper.logNavigationEvent(
-                fromScreen: 'search_bar',
-                toScreen: 'notice',
+                fromScreen: AnalyticsScreenNames.searchBarScreen,
+                toScreen: AnalyticsScreenNames.noticeScreen,
               );
               widget.onNoticePressed?.call();
             },

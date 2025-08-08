@@ -10,6 +10,10 @@ import 'package:could_be/presentation/issue_list/issue_type.dart';
 import 'package:could_be/presentation/issue_list/main/issue_list_root.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:could_be/core/analytics/unified_analytics_helper.dart';
+import 'package:could_be/core/analytics/analytics_event_names.dart';
+import 'package:could_be/core/analytics/analytics_parameter_keys.dart';
+import 'package:could_be/core/analytics/analytics_screen_names.dart';
 import '../../../core/components/layouts/scaffold_layout.dart';
 import '../../../ui/color.dart';
 import 'home_view_model.dart';
@@ -35,6 +39,8 @@ class _HomeViewState extends State<HomeView> with WidgetsBindingObserver{
   late final HomeViewModel viewModel;
 
   StreamSubscription<Uri>? _linkSubscription;
+  
+  final List<String> _tabNames = ['Home', 'Topic', 'Blind Spot', 'Media', 'My Page'];
 
   Future<void> initDeepLinks() async {
     // Handle links
@@ -51,6 +57,14 @@ class _HomeViewState extends State<HomeView> with WidgetsBindingObserver{
       String? issueId = queryParameters['issueId'];
       if(issueId != null && issueId.isNotEmpty){
         showMyToast(msg: 'Deep link opened: $uri  Navigating to: ${uri.queryParameters}');
+        UnifiedAnalyticsHelper.logNavigationEvent(
+          fromScreen: AnalyticsScreenNames.deepLinkScreen,
+          toScreen: AnalyticsScreenNames.issueDetailFeedScreen,
+          parameters: {
+            AnalyticsParameterKeys.issueId: issueId,
+            AnalyticsParameterKeys.source: AnalyticsScreenNames.deepLinkScreen
+          },
+        );
         context.push('${RouteNames.issueDetailFeed}/$issueId');
       }
     }
@@ -94,7 +108,15 @@ class _HomeViewState extends State<HomeView> with WidgetsBindingObserver{
   Widget build(BuildContext context) {
     return HomeScaffold(
       currentNavigationIndex: widget.currentPageIndex,
-      onNavigationChanged: widget.setCurrentIndex,
+      onNavigationChanged: (index) {
+        UnifiedAnalyticsHelper.logEvent(
+          name: AnalyticsEventNames.tabNavigation,
+          parameters: {
+            AnalyticsParameterKeys.tabName: _tabNames[index],
+          },
+        );
+        widget.setCurrentIndex(index);
+      },
       body: Ink(color: AppColors.background, child: widget.body),
     );
   }

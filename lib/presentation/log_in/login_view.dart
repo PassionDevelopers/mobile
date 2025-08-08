@@ -11,6 +11,8 @@ import 'package:go_router/go_router.dart';
 import 'package:sign_button/constants.dart';
 import '../../ui/color.dart';
 import '../../core/analytics/unified_analytics_helper.dart';
+import '../../core/analytics/analytics_event_names.dart';
+import '../../core/analytics/analytics_parameter_keys.dart';
 
 class LoginView extends StatelessWidget {
   const LoginView({super.key, required this.onLoginSuccess});
@@ -64,9 +66,11 @@ class LoginView extends StatelessWidget {
                         LoginButton(
                           buttonType: ButtonType.googleDark,
                           onPressed: () async {
-                            UnifiedAnalyticsHelper.logAuthEvent(
-                              method: 'google',
-                              success: true,
+                            UnifiedAnalyticsHelper.logEvent(
+                              name: AnalyticsEventNames.authTapGoogleLogin,
+                              parameters: {
+                                AnalyticsParameterKeys.success: 'true',
+                              },
                             );
                             await viewModel.signIn(
                               context,
@@ -79,9 +83,11 @@ class LoginView extends StatelessWidget {
                           LoginButton(
                             buttonType: ButtonType.appleDark,
                             onPressed: () async {
-                              UnifiedAnalyticsHelper.logAuthEvent(
-                                method: 'apple',
-                                success: true,
+                              UnifiedAnalyticsHelper.logEvent(
+                                name: AnalyticsEventNames.authTapAppleLogin,
+                                parameters: {
+                                  AnalyticsParameterKeys.success: 'true',
+                                },
                               );
                               await viewModel.signIn(
                                 context,
@@ -93,9 +99,11 @@ class LoginView extends StatelessWidget {
                         LoginButton(
                           buttonType: ButtonType.amazon,
                           onPressed: () async {
-                            UnifiedAnalyticsHelper.logAuthEvent(
-                              method: 'kakao',
-                              success: true,
+                            UnifiedAnalyticsHelper.logEvent(
+                              name: AnalyticsEventNames.authTapKakaoLogin,
+                              parameters: {
+                                AnalyticsParameterKeys.success: 'true',
+                              },
                             );
                             await viewModel.signIn(
                               context,

@@ -21,6 +21,9 @@ import 'package:go_router/go_router.dart';
 
 import '../../../core/themes/margins_paddings.dart';
 import '../../../core/analytics/unified_analytics_helper.dart';
+import '../../../core/analytics/analytics_event_names.dart';
+import '../../../core/analytics/analytics_parameter_keys.dart';
+import '../../../core/analytics/analytics_screen_names.dart';
 
 class MyPageView extends StatefulWidget {
   const MyPageView({
@@ -69,10 +72,12 @@ class _MyPageViewState extends State<MyPageView> {
               title: '관심 이슈',
               count: '',
               onTap: () {
-                UnifiedAnalyticsHelper.logButtonTap(
-                  module: 'my_page',
-                  buttonName: 'subscribed_issues',
-                  parameters: {'action': 'tap_subscribed_issues'},
+                UnifiedAnalyticsHelper.logEvent(
+                  name: AnalyticsEventNames.buttonTap('my_page', 'subscribed_issues'),
+                  parameters: {
+                    AnalyticsParameterKeys.module: AnalyticsScreenNames.myPageScreen,
+                    AnalyticsParameterKeys.action: 'tap_subscribed_issues',
+                  },
                 );
                 widget.toSubscribedIssue();
               },
@@ -82,10 +87,12 @@ class _MyPageViewState extends State<MyPageView> {
               title: '관심 언론',
               count: '',
               onTap: () {
-                UnifiedAnalyticsHelper.logButtonTap(
-                  module: 'my_page',
-                  buttonName: 'subscribed_media',
-                  parameters: {'action': 'tap_subscribed_media'},
+                UnifiedAnalyticsHelper.logEvent(
+                  name: AnalyticsEventNames.buttonTap('my_page', 'subscribed_media'),
+                  parameters: {
+                    AnalyticsParameterKeys.module: AnalyticsScreenNames.myPageScreen,
+                    AnalyticsParameterKeys.action: 'tap_subscribed_media',
+                  },
                 );
                 widget.toManageMediaSubscription();
               },
@@ -95,10 +102,12 @@ class _MyPageViewState extends State<MyPageView> {
               title: '관심 토픽',
               count: '',
               onTap: () {
-                UnifiedAnalyticsHelper.logButtonTap(
-                  module: 'my_page',
-                  buttonName: 'subscribed_topics',
-                  parameters: {'action': 'tap_subscribed_topics'},
+                UnifiedAnalyticsHelper.logEvent(
+                  name: AnalyticsEventNames.buttonTap('my_page', 'subscribed_topics'),
+                  parameters: {
+                    AnalyticsParameterKeys.module: AnalyticsScreenNames.myPageScreen,
+                    AnalyticsParameterKeys.action: 'tap_subscribed_topics',
+                  },
                 );
                 widget.toManageTopicSubscription();
               },
@@ -108,10 +117,12 @@ class _MyPageViewState extends State<MyPageView> {
               title: '본 이슈',
               count: '',
               onTap: () {
-                UnifiedAnalyticsHelper.logButtonTap(
-                  module: 'my_page',
-                  buttonName: 'watch_history',
-                  parameters: {'action': 'tap_watch_history'},
+                UnifiedAnalyticsHelper.logEvent(
+                  name: AnalyticsEventNames.buttonTap('my_page', 'watch_history'),
+                  parameters: {
+                    AnalyticsParameterKeys.module: AnalyticsScreenNames.myPageScreen,
+                    AnalyticsParameterKeys.action: 'tap_watch_history',
+                  },
                 );
                 widget.toWatchHistory();
               },
@@ -121,10 +132,12 @@ class _MyPageViewState extends State<MyPageView> {
               title: '평가한 이슈',
               count: '',
               onTap: () {
-                UnifiedAnalyticsHelper.logButtonTap(
-                  module: 'my_page',
-                  buttonName: 'evaluated_issues',
-                  parameters: {'action': 'tap_evaluated_issues'},
+                UnifiedAnalyticsHelper.logEvent(
+                  name: AnalyticsEventNames.buttonTap('my_page', 'evaluated_issues'),
+                  parameters: {
+                    AnalyticsParameterKeys.module: AnalyticsScreenNames.myPageScreen,
+                    AnalyticsParameterKeys.action: 'tap_evaluated_issues',
+                  },
                 );
                 widget.toManageIssueEvaluation();
               },
@@ -134,10 +147,12 @@ class _MyPageViewState extends State<MyPageView> {
               title: '평가한 언론',
               count: '',
               onTap: () {
-                UnifiedAnalyticsHelper.logButtonTap(
-                  module: 'my_page',
-                  buttonName: 'evaluated_media',
-                  parameters: {'action': 'tap_evaluated_media'},
+                UnifiedAnalyticsHelper.logEvent(
+                  name: AnalyticsEventNames.buttonTap('my_page', 'evaluated_media'),
+                  parameters: {
+                    AnalyticsParameterKeys.module: AnalyticsScreenNames.myPageScreen,
+                    AnalyticsParameterKeys.action: 'tap_evaluated_media',
+                  },
                 );
                 widget.toManageSourceEvaluation();
               },

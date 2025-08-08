@@ -21,6 +21,9 @@ import '../chips/key_word_chip_component.dart';
 import '../../responsive/responsive_utils.dart';
 import '../../responsive/responsive_layout.dart';
 import '../../analytics/unified_analytics_helper.dart';
+import '../../analytics/analytics_event_names.dart';
+import '../../analytics/analytics_parameter_keys.dart';
+import '../../analytics/analytics_screen_names.dart';
 
 class IssueCard extends StatefulWidget {
   final Issue issue;
@@ -94,14 +97,14 @@ class _IssueCardState extends State<IssueCard> with TickerProviderStateMixin {
                     borderRadius: BorderRadius.circular(16),
                     onTap: () {
                       // Log issue tap event
-                      UnifiedAnalyticsHelper.logIssueEvent(
-                        action: 'tap_issue_card',
-                        issueId: widget.issue.id,
-                        additionalParams: {
-                          'issue_title': widget.issue.title,
-                          'issue_category': widget.issue.category,
-                          'issue_tags': widget.issue.tags.join(','),
-                          'from_screen': widget.isEvaluatedView ? 'evaluated_issues' : 'issue_list',
+                      UnifiedAnalyticsHelper.logEvent(
+                        name: AnalyticsEventNames.issueTapItem,
+                        parameters: {
+                          AnalyticsParameterKeys.issueId: widget.issue.id,
+                          AnalyticsParameterKeys.issueTitle: widget.issue.title,
+                          AnalyticsParameterKeys.issueCategory: widget.issue.category,
+                          AnalyticsParameterKeys.issueTags: widget.issue.tags.join(','),
+                          AnalyticsParameterKeys.fromScreen: widget.isEvaluatedView ? AnalyticsScreenNames.manageIssueEvaluationScreen : AnalyticsScreenNames.homeScreen,
                         },
                       );
                       log('${RouteNames.issueDetailFeed}/${widget.issue.id}');

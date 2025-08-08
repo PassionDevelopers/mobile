@@ -10,6 +10,10 @@ import 'package:could_be/presentation/hot_issue/hot_issues_view_model.dart';
 import 'package:could_be/ui/color.dart';
 import 'package:flutter/material.dart';
 import '../../../core/di/di_setup.dart';
+import 'package:could_be/core/analytics/unified_analytics_helper.dart';
+import 'package:could_be/core/analytics/analytics_event_names.dart';
+import 'package:could_be/core/analytics/analytics_parameter_keys.dart';
+import 'package:could_be/core/analytics/analytics_screen_names.dart';
 import '../../topic/subscribed_topic/subscribed_topic_view.dart';
 import '../issue_list_loading_view.dart';
 import '../issue_type.dart';
@@ -103,6 +107,12 @@ class _IssueListRootState extends State<IssueListRoot> {
   Widget build(BuildContext context) {
     return RefreshIndicator(
       onRefresh: () async {
+        UnifiedAnalyticsHelper.logEvent(
+          name: AnalyticsEventNames.pullToRefresh,
+          parameters: {
+            AnalyticsParameterKeys.screenName: widget.isFeedView ? AnalyticsScreenNames.homeScreen : widget.issueType.name,
+          },
+        );
         viewModel.fetchInitalIssues(topicId: widget.topicId, issueQueryParam: viewModel.state.issueQueryParam);
         hotIssuesViewModel.fetchHotIssues();
       },
@@ -142,7 +152,6 @@ class _IssueListRootState extends State<IssueListRoot> {
                               bool isDailyQueryParam = state.issueQueryParam != null && state.issueQueryParam!.queryParam == IssueType.daily.name;
                               bool isDailyIssueType = state.issueQueryParam == null && widget.issueType == IssueType.daily;
                               bool isSearching = state.query != null;
-                              log('isDailyQueryParam: $isDailyQueryParam, isDailyIssueType: $isDailyIssueType, isSearching: $isSearching');
                               if(widget.isFeedView && (isDailyQueryParam || isDailyIssueType) && !isSearching && hotIssuesViewModel.state.hotIssues != null){
                                 return HotIssueCard(
                                   updateTime: hotIssuesViewModel.state.hotIssues!.hotTime,

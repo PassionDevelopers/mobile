@@ -1,6 +1,8 @@
 import 'dart:developer';
 
 import 'package:could_be/core/components/alert/dialog.dart';
+import 'package:could_be/core/analytics/unified_analytics_helper.dart';
+import 'package:could_be/core/analytics/analytics_event_names.dart';
 import 'package:could_be/core/routes/route_names.dart';
 import 'package:could_be/core/routes/router.dart';
 import 'package:could_be/domain/repositoryInterfaces/kakao_register_uuid_interface.dart';
@@ -76,6 +78,9 @@ class FirebaseLoginUseCase {
   }
 
   Future<bool> signInWithKakao(BuildContext context) async {
+    UnifiedAnalyticsHelper.logEvent(
+      name: AnalyticsEventNames.signInWithKakao,
+    );
     try {
       if (await isKakaoTalkInstalled()) {
         try {
@@ -143,6 +148,9 @@ class FirebaseLoginUseCase {
   }
 
   Future<bool> signInAnon() async {
+    UnifiedAnalyticsHelper.logEvent(
+      name: AnalyticsEventNames.signInAnonymous,
+    );
     try {
       UserCredential userCredential =
           await FirebaseAuth.instance.signInAnonymously();
@@ -154,6 +162,12 @@ class FirebaseLoginUseCase {
   }
 
   Future<bool> signInWithApple(BuildContext context, {bool? isReauth}) async {
+    UnifiedAnalyticsHelper.logEvent(
+      name: AnalyticsEventNames.signInWithApple,
+      parameters: {
+        'is_reauth': (isReauth ?? false).toString(),
+      },
+    );
     try {
       final appleCredential = await SignInWithApple.getAppleIDCredential(
         scopes: [
@@ -189,6 +203,9 @@ class FirebaseLoginUseCase {
   }
 
   Future<bool> signInWithGoogle(BuildContext context) async {
+    UnifiedAnalyticsHelper.logEvent(
+      name: AnalyticsEventNames.signInWithGoogle,
+    );
     //계정 다시 선택하도록 연결 끊기
     // await GoogleSignIn().disconnect();
     // Trigger the authentication flow
@@ -219,6 +236,9 @@ class FirebaseLoginUseCase {
   }
 
   Future<void> signOut() async {
+    UnifiedAnalyticsHelper.logEvent(
+      name: AnalyticsEventNames.signOut,
+    );
     await FirebaseAuth.instance.signOut();
     if (await GoogleSignIn().isSignedIn()) {
       await GoogleSignIn().signOut();
