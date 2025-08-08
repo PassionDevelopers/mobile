@@ -22,14 +22,15 @@ class ManageUserStatusRepositoryImpl extends ManageUserStatusRepository{
   }
 
   @override
-  Future<void> registerUserWithIdToken()async{
+  Future<void> registerUserWithIdToken({required String? guestUid})async{
+    Map<String,String> data = {};
+    if(guestUid != null){
+      data['previous_uid'] = guestUid;
+    }
     final result = await dio.post(
       '${ApiVersions.v1}/user/register',
-      data: {
-        // "perspective": "center"
-      }
+      data: data
     );
-    log(result.data.toString());
   }
 
   @override

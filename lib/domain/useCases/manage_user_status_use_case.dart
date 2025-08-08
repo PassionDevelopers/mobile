@@ -13,11 +13,11 @@ class ManageUserStatusUseCase{
     return await _manageUserStatusRepository.checkUserRegisterStatus();
   }
 
-  Future<bool> registerIdToken(String idToken) async {
+  Future<bool> registerIdToken({required String? guestUid}) async {
     try {
       final UserRegisterStatus userRegisterStatus = await _manageUserStatusRepository.checkUserRegisterStatus();
       if(!userRegisterStatus.exists){
-        await _manageUserStatusRepository.registerUserWithIdToken();
+        await _manageUserStatusRepository.registerUserWithIdToken(guestUid: guestUid);
       }
       return true;
     } catch (e) {

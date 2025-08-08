@@ -1,9 +1,12 @@
 import 'dart:async';
 
+import 'package:could_be/presentation/log_in/login_pop_up.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:could_be/core/components/alert/dialog.dart';
 import 'package:could_be/core/components/app_bar/app_bar.dart';
 import 'package:could_be/core/components/buttons/big_button.dart';
 import 'package:could_be/core/di/di_setup.dart';
+import 'package:could_be/core/events/tab_reselection_event.dart';
 import 'package:could_be/core/method/bias/bias_enum.dart';
 import 'package:could_be/core/routes/route_names.dart';
 import 'package:could_be/presentation/log_in/login_view.dart';
@@ -43,6 +46,9 @@ class MyPageView extends StatefulWidget {
 
 class _MyPageViewState extends State<MyPageView> {
   late final MyPageViewModel viewModel;
+  final ScrollController scrollController = ScrollController();
+  StreamSubscription<int>? _tabReselectionSubscription;
+  StreamSubscription<User?>? _authStateSubscription;
 
   Widget _buildQuickActionsGrid() {
     return Column(
@@ -200,11 +206,34 @@ class _MyPageViewState extends State<MyPageView> {
         showAlert(context: context, msg: event.toString());
       }
     });
+    
+    // Firebase Auth 상태 변경 리스너 추가
+    _authStateSubscription = getIt<FirebaseAuth>().authStateChanges().listen((User? user) {
+      if (mounted) {
+        // 로그인 상태가 변경되었을 때 (로그인/로그아웃)
+        viewModel.refresh();
+      }
+    });
+    
+    // 탭 재선택 이벤트 리스닝
+    _tabReselectionSubscription = TabReselectionEvent.stream.listen((tabIndex) {
+      // 마이페이지 탭(4)이 재선택되었을 때
+      if (tabIndex == 4) {
+        scrollController.animateTo(
+          0,
+          duration: Duration(milliseconds: 300),
+          curve: Curves.easeOut,
+        );
+      }
+    });
   }
 
   @override
   void dispose() {
     eventSubscription?.cancel();
+    _authStateSubscription?.cancel();
+    _tabReselectionSubscription?.cancel();
+    scrollController.dispose();
     viewModel.dispose();
     super.dispose();
   }
@@ -219,6 +248,7 @@ class _MyPageViewState extends State<MyPageView> {
       child: Stack(
         children: [
           SingleChildScrollView(
+            controller: scrollController,
             child: Column(
               children: [
                 RegAppBar(
@@ -236,7 +266,8 @@ class _MyPageViewState extends State<MyPageView> {
                 SizedBox(height: MyPaddings.extraLarge),
                 MyPageHeader(viewModel: viewModel),
                 SizedBox(height: MyPaddings.extraLarge),
-
+                if(viewModel.state.isGuestLogin) LoginPopUp(isMyPage: true,) ,
+                if(viewModel.state.isGuestLogin) SizedBox(height: MyPaddings.extraLarge),
                 Padding(
                   padding: EdgeInsets.symmetric(
                     horizontal: MyPaddings.large,
@@ -263,30 +294,30 @@ class _MyPageViewState extends State<MyPageView> {
               ],
             ),
           ),
-          ListenableBuilder(
-            listenable: viewModel,
-            builder: (context, _) {
-              if (viewModel.state.isGuestLogin) {
-                return Center(
-                  child: Container(
-                    width: double.infinity,
-                    height: double.infinity,
-                    decoration: BoxDecoration(
-                      color: AppColors.black.withAlpha(180),
-                    ),
-                    child: LoginView(
-                      onLoginSuccess: () {
-                        viewModel.checkIsGuestLogin();
-                        viewModel.refresh();
-                      },
-                    ),
-                  ),
-                );
-              } else {
-                return const SizedBox.shrink();
-              }
-            },
-          ),
+          // ListenableBuilder(
+          //   listenable: viewModel,
+          //   builder: (context, _) {
+          //     if (viewModel.state.isGuestLogin) {
+          //       return Center(
+          //         child: Container(
+          //           width: double.infinity,
+          //           height: double.infinity,
+          //           decoration: BoxDecoration(
+          //             color: AppColors.black.withAlpha(180),
+          //           ),
+          //           child: LoginView(
+          //             onLoginSuccess: () {
+          //               viewModel.checkIsGuestLogin();
+          //               viewModel.refresh();
+          //             },
+          //           ),
+          //         ),
+          //       );
+          //     } else {
+          //       return const SizedBox.shrink();
+          //     }
+          //   },
+          // ),
         ],
       ),
     );

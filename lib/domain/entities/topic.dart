@@ -2,7 +2,7 @@ class Topic{
   final String id;
   final String name;
   final String category;
-  final int issuesCount;
+  final int? issuesCount;
   final bool isSubscribed;
 
   Topic({

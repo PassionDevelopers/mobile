@@ -24,12 +24,16 @@ class IssueDetailSummary extends StatefulWidget {
     required this.fontSize,
     required this.isSubscribed,
     required this.onSubscribe,
+    required this.isSpread,
+    required this.spreadCallback,
   });
 
   final IssueDetail issue;
   final double fontSize;
   final bool isSubscribed;
   final VoidCallback onSubscribe;
+  final bool isSpread;
+  final VoidCallback spreadCallback;
 
   @override
   State<IssueDetailSummary> createState() => _IssueDetailSummaryState();
@@ -254,34 +258,44 @@ class _IssueDetailSummaryState extends State<IssueDetailSummary> {
                         ),
                       ),
                     ),
-                    child: Row(
-                      children: [
-                        Icon(
-                          Icons.article_outlined,
-                          color: AppColors.primary,
-                          size: 24,
+                    child: GestureDetector(
+                      onTap: widget.spreadCallback,
+                      child: Container(
+                        child: Row(
+                          children: [
+                            Icon(
+                              Icons.article_outlined,
+                              color: AppColors.primary,
+                              size: 24,
+                            ),
+                            SizedBox(width: MyPaddings.medium),
+                            Text(
+                              '이슈 개요',
+                              style: MyFontStyle.h2.copyWith(
+                                color: AppColors.primary,
+                                fontWeight: FontWeight.w600,
+                                fontFamily: 'Sonkeechung',
+                              ),
+                            ),
+                            Spacer(),
+                            Icon(
+                              widget.isSpread ? Icons.keyboard_arrow_up : Icons.keyboard_arrow_down,
+                            ),
+                          ],
                         ),
-                        SizedBox(width: MyPaddings.medium),
-                        Text(
-                          '이슈 개요',
-                          style: MyFontStyle.h2.copyWith(
-                            color: AppColors.primary,
-                            fontWeight: FontWeight.w600,
-                            fontFamily: 'Sonkeechung',
-                          ),
-                        ),
-                      ],
+                      ),
                     ),
                   ),
-                  Padding(
-                    padding: EdgeInsets.all(MyPaddings.large),
-                    child: parseAiText(
-                      widget.issue.summary,
-                      widget.fontSize,
-                      AppColors.gray1,
-                      Colors.amberAccent
+                  if(widget.isSpread)
+                    Padding(
+                      padding: EdgeInsets.all(MyPaddings.large),
+                      child: parseAiText(
+                        widget.issue.summary,
+                        widget.fontSize,
+                        AppColors.gray1,
+                        Colors.amberAccent
+                      ),
                     ),
-                  ),
                 ],
               ),
             ),

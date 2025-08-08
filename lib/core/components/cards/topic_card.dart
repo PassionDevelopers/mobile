@@ -40,7 +40,18 @@ class TopicCard extends StatelessWidget {
             width: isSelected ? 2 : 1,
           ),
         ),
-        child: Row(
+        child: topic.issuesCount == null ? Center(
+          child: MyText.reg(
+            topic.name,
+            color: isSelected
+                ? AppColors.primary
+                : AppColors.gray1,
+            fontWeight: isSelected
+                ? FontWeight.w600
+                : FontWeight.w500,
+          ),
+        ) :
+          Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             // 토픽 이름

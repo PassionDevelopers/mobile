@@ -197,7 +197,10 @@ class _MediaDetailViewState extends State<MediaDetailView> {
                                   SourceEvaluationRow(
                                     userEvaluatedPerspective: state.sourceDetail!.userEvaluatedPerspective,
                                     onBiasSelected: (bias) {
-                                      viewModel.manageSourceEvaluation(bias);
+                                      viewModel.manageSourceEvaluation(
+                                        perspective: bias,
+                                        context: context
+                                      );
                                     },
                                   ),
                                   const SizedBox(height: MyPaddings.large),

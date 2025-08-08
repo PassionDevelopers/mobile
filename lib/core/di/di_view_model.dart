@@ -50,6 +50,7 @@ Future<void> diViewModelSetup() async {
   getIt.registerFactoryParam<IssueDetailViewModel, String, void>(
         (issueId, _) => IssueDetailViewModel(
       trackUserActivityUseCase: getIt(),
+      firebaseLoginUseCase: getIt(),
       fetchIssueDetailUseCase: getIt(),
       manageIssueEvaluationUseCase: getIt(),
       manageIssueSubscriptionUseCase: getIt(),
@@ -74,6 +75,7 @@ Future<void> diViewModelSetup() async {
   );
   getIt.registerFactoryParam<WholeTopicViewModel, String, void>(
         (category, _) => WholeTopicViewModel(
+      firebaseLoginUseCase: getIt(),
       fetchTopicsUseCase: getIt(),
       searchTopicsUseCase: getIt(),
       manageTopicSubscriptionUseCase: getIt(),
@@ -97,11 +99,13 @@ Future<void> diViewModelSetup() async {
   getIt.registerFactory<WholeMediaViewModel>(
         () => WholeMediaViewModel(
       fetchSourcesUseCase: getIt(),
+      firebaseLoginUseCase: getIt(),
       manageMediaSubscriptionUseCase: getIt(),
     ),
   );
   getIt.registerFactoryParam<MediaDetailViewModel, String, void>(
         (sourceId, _) => MediaDetailViewModel(
+      firebaseLoginUseCase: getIt(),
       manageSourceEvaluationUseCase: getIt(),
       manageMediaSubscriptionUseCase: getIt(),
       fetchSourceDetailUseCase: getIt(),
@@ -110,8 +114,7 @@ Future<void> diViewModelSetup() async {
   );
 
   //my page
-  getIt.registerFactory<MyPageViewModel>(
-        () => MyPageViewModel(
+  getIt.registerFactory<MyPageViewModel>(()=>MyPageViewModel(
       trackUserActivityUseCase: getIt(),
       manageUserProfileUseCase: getIt(),
       fetchWholeBiasUseCase: getIt(),

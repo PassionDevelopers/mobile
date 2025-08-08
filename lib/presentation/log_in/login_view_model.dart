@@ -4,6 +4,7 @@ import 'package:could_be/core/components/alert/snack_bar.dart';
 import 'package:could_be/core/routes/route_names.dart';
 import 'package:could_be/core/routes/router.dart';
 import 'package:could_be/domain/useCases/firebase_login_use_case.dart';
+import 'package:could_be/presentation/log_in/login_loading_view.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
@@ -32,13 +33,13 @@ class LoginViewModel with ChangeNotifier {
     notifyListeners();
     try {
       if(switch(signInMethod) {
-        SignInMethod.google => await _firebaseLoginUseCase.signInWithGoogle(),
-        SignInMethod.apple => await _firebaseLoginUseCase.signInWithApple(),
+        SignInMethod.google => await _firebaseLoginUseCase.signInWithGoogle(context),
+        SignInMethod.apple => await _firebaseLoginUseCase.signInWithApple(context),
         SignInMethod.anonymous => await _firebaseLoginUseCase.signInAnon(),
-        SignInMethod.kakao => await _firebaseLoginUseCase.signInWithKakao(),
+        SignInMethod.kakao => await _firebaseLoginUseCase.signInWithKakao(context),
       }){
         _state = _state.copyWith(isLoginInProgress: false);
-        if(context.mounted) context.go(RouteNames.root);
+        router.go(RouteNames.root);
       }else{
         if(context.mounted) showSnackBar(context, msg: '로그인 실패: 토큰을 받지 못했습니다.');
         _state = _state.copyWith(isLoginInProgress: false);

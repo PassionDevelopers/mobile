@@ -8,13 +8,15 @@ part of 'dasi_score_dto.dart';
 
 DasiScoreDto _$DasiScoreDtoFromJson(Map<String, dynamic> json) => DasiScoreDto(
   (json['score'] as num).toDouble(),
-  DateTime.parse(json['createdAt'] as String),
+  json['createdAt'] == null
+      ? null
+      : DateTime.parse(json['createdAt'] as String),
   json['userId'] as String,
 );
 
 Map<String, dynamic> _$DasiScoreDtoToJson(DasiScoreDto instance) =>
     <String, dynamic>{
       'score': instance.score,
-      'createdAt': instance.createdAt.toIso8601String(),
+      'createdAt': instance.createdAt?.toIso8601String(),
       'userId': instance.userId,
     };

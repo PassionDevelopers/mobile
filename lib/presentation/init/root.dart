@@ -154,8 +154,8 @@ class _RootState extends State<Root> {
     ManageUserStatusUseCase manageUserStatusUseCase = getIt<ManageUserStatusUseCase>();
     var result = await manageUserStatusUseCase.checkUserRegisterStatus();
     if (!result.exists) {
-      await manageUserStatusUseCase.registerIdToken(idToken);
-      log('if mounted: ${mounted}');
+      String? guestUid = await tokenRepo.getGuestUid();
+      await manageUserStatusUseCase.registerIdToken(guestUid: guestUid);
       if(mounted && !isRoutedToUpdate) {
         UnifiedAnalyticsHelper.logAuthEvent(
           method: 'first_time_user',
@@ -164,7 +164,6 @@ class _RootState extends State<Root> {
         context.go(RouteNames.home);
       }
     } else {
-      log('if mounted2: ${mounted}');
       if(mounted && !isRoutedToUpdate) {
         UnifiedAnalyticsHelper.logAuthEvent(
           method: 'returning_user',

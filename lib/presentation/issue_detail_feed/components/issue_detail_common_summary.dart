@@ -5,6 +5,7 @@ import 'package:could_be/core/components/title/big_title.dart';
 import 'package:could_be/core/method/text_parsing.dart';
 import 'package:could_be/core/themes/margins_paddings.dart';
 import 'package:could_be/ui/color.dart';
+import 'package:could_be/ui/fonts.dart';
 import 'package:flutter/material.dart';
 
 import 'move_to_next_button.dart' show MoveToNextButton;
@@ -60,14 +61,11 @@ class IssueDetailCommonSummary extends StatelessWidget {
                       size: 24,
                     ),
                     SizedBox(width: MyPaddings.medium),
-                    Text(
+                    MyText.h2(
                       '공통 보도 내용',
-                      style: TextStyle(
-                        fontSize: 18,
-                        fontWeight: FontWeight.w600,
-                        color: AppColors.primary,
-                      ),
+                      color: AppColors.primary,
                     ),
+                    Spacer(),
                     Icon(isSpread? Icons.keyboard_arrow_up : Icons.keyboard_arrow_down_rounded)
                   ],
                 ),

@@ -1,4 +1,5 @@
 import 'package:could_be/domain/entities/issue_detail.dart';
+import 'package:flutter/cupertino.dart';
 
 class IssueDetailFeedState{
 
@@ -8,6 +9,10 @@ class IssueDetailFeedState{
   final double fontSize;
 
   final bool isCommonSummarySpread;
+  final bool isBiasComparisonSpread;
+  final bool isTabsSpread;
+  final bool isSummarySpread;
+  final bool isSourceListSpread;
 
 
   IssueDetailFeedState({
@@ -16,6 +21,10 @@ class IssueDetailFeedState{
     this.issueDetail,
     this.fontSize = 18,
     this.isCommonSummarySpread = false,
+    this.isBiasComparisonSpread = true,
+    this.isTabsSpread = false,
+    this.isSummarySpread = true,
+    this.isSourceListSpread = true,
   });
 
   IssueDetailFeedState copyWith({
@@ -25,6 +34,10 @@ class IssueDetailFeedState{
     int? pageCount,
     double? fontSize,
     bool? isCommonSummarySpread,
+    bool? isBiasComparisonSpread,
+    bool? isTabsSpread,
+    bool? isSummarySpread,
+    bool? isSourceListSpread,
   }) {
     return IssueDetailFeedState(
       issueDetail: issueDetail ?? this.issueDetail,
@@ -32,6 +45,10 @@ class IssueDetailFeedState{
       isEvaluating: isEvaluating ?? this.isEvaluating,
       fontSize: fontSize ?? this.fontSize,
       isCommonSummarySpread: isCommonSummarySpread ?? this.isCommonSummarySpread,
+      isBiasComparisonSpread: isBiasComparisonSpread ?? this.isBiasComparisonSpread,
+      isTabsSpread: isTabsSpread ?? this.isTabsSpread,
+      isSummarySpread: isSummarySpread ?? this.isSummarySpread,
+      isSourceListSpread: isSourceListSpread ?? this.isSourceListSpread,
     );
   }
 }

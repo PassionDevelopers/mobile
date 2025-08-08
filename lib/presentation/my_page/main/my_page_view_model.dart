@@ -178,13 +178,11 @@ class MyPageViewModel extends ChangeNotifier {
 
   void setIsGuestLogin(){
     _state = state.copyWith(isGuestLogin: false);
-    log('set isGuestLogin: ${_state.isGuestLogin}');
     notifyListeners();
   }
 
   void checkIsGuestLogin() {
     _state = state.copyWith(isGuestLogin: _firebaseLoginUseCase.isGuest());
-    log('isGuestLoginReal: ${_state.isGuestLogin}');
     notifyListeners();
   }
 

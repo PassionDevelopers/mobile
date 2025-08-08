@@ -24,11 +24,6 @@ class LoginView extends StatelessWidget {
       mainAxisSize: MainAxisSize.min,
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        // Container(
-        //   height: 100,
-        //   margin: const EdgeInsets.only(bottom: 30),
-        //   child: Image.asset('assets/images/logo/logo_rect.png'),
-        // ),
         ListenableBuilder(
           listenable: viewModel,
           builder: (context, _) {
@@ -62,7 +57,7 @@ class LoginView extends StatelessWidget {
                           color: AppColors.primaryLight,
                         ),
                         MyText.h2(
-                          '다양한 기능을 이용해보세요!',
+                          '모든 기능을 이용해보세요!',
                           color: AppColors.primaryLight,
                         ),
                         SizedBox(height: MyPaddings.medium),

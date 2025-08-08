@@ -4,9 +4,12 @@ import 'package:could_be/core/components/alert/dialog.dart';
 import 'package:could_be/core/routes/route_names.dart';
 import 'package:could_be/core/routes/router.dart';
 import 'package:could_be/domain/repositoryInterfaces/kakao_register_uuid_interface.dart';
+import 'package:could_be/presentation/log_in/login_loading_view.dart';
+import 'package:could_be/presentation/log_in/login_pop_up.dart';
 import 'package:could_be/presentation/log_in/login_view_model.dart';
 import 'package:firebase_auth/firebase_auth.dart' hide User;
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_sign_in/google_sign_in.dart';
@@ -37,8 +40,24 @@ class FirebaseLoginUseCase {
     return user.isAnonymous;
   }
 
+  bool isNeedLoginPopUp(BuildContext context){
+    if(isGuest()) {
+      showModalBottomSheet(
+          context: context,
+          builder: (context) {
+            return LoginPopUp();
+          });
+      return true;
+    }else{
+      return false;
+    }
+  }
+
   Future<bool> saveIdToken(UserCredential userCredential) async {
     String? idToken = await userCredential.user?.getIdToken();
+    bool isGuest = userCredential.user?.isAnonymous ?? false;
+    if(isGuest) await _tokenStorageRepository.saveGuestUid(userCredential.user?.uid ?? '');
+
     if (idToken == null) {
       log("idToken is null");
       return false;
@@ -48,14 +67,19 @@ class FirebaseLoginUseCase {
     }
   }
 
-  Future<bool> signInWithKakao() async {
-    try {
-      log('fuckkkkkkkkkckkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk');
+  void loginBarrier(BuildContext context) {
+    showDialog(context: context, barrierDismissible: false,
 
+        builder: (context) {
+          return LoginLoadingView();
+        });
+  }
+
+  Future<bool> signInWithKakao(BuildContext context) async {
+    try {
       if (await isKakaoTalkInstalled()) {
         try {
           await UserApi.instance.loginWithKakaoTalk();
-          log('카카오톡으로 로그인 성공');
         } catch (error) {
           log('카카오톡으로 로그인 실패 $error');
           // 사용자가 카카오톡 설치 후 디바이스 권한 요청 화면에서 로그인을 취소한 경우,
@@ -82,11 +106,18 @@ class FirebaseLoginUseCase {
         }
       }
 
+      // barrier
+      loginBarrier(context);
+
       try {
         final User user = await UserApi.instance.me();
         final firebaseToken = await _kakaoRegisterUuidRepository.registerKakaoUuid(user.id.toString());
         log("firebaseToken: $firebaseToken");
         try {
+
+          // Check if the user is already signed in
+          if(FirebaseAuth.instance.currentUser?.isAnonymous ?? false) await FirebaseAuth.instance.currentUser!.delete();
+
           final UserCredential userCredential = await FirebaseAuth.instance.signInWithCustomToken(firebaseToken);
           log("Sign-in successful.");
           return saveIdToken(userCredential);
@@ -122,7 +153,7 @@ class FirebaseLoginUseCase {
     }
   }
 
-  Future<bool> signInWithApple({bool? isReauth}) async {
+  Future<bool> signInWithApple(BuildContext context, {bool? isReauth}) async {
     try {
       final appleCredential = await SignInWithApple.getAppleIDCredential(
         scopes: [
@@ -130,15 +161,26 @@ class FirebaseLoginUseCase {
           AppleIDAuthorizationScopes.fullName,
         ],
       );
+
+      if(appleCredential.identityToken == null) {
+        log("Apple sign-in failed: identityToken or authorizationCode is null.");
+        return false; // The user cancelled the sign-in
+      }else{
+        loginBarrier(context);
+      }
+
       // Create an `OAuthCredential` from the credential returned by Apple.
       final oauthCredential = OAuthProvider("apple.com").credential(
         idToken: appleCredential.identityToken,
         accessToken: appleCredential.authorizationCode,
       );
-      // Sign in the user with Firebase. If the nonce we generated earlier does
+
+      // Check if the user is already signed in
+      if(FirebaseAuth.instance.currentUser?.isAnonymous ?? false) await FirebaseAuth.instance.currentUser!.delete();
+
       // not match the nonce in `appleCredential.identityToken`, sign in will fail.
-      UserCredential userCredential = await FirebaseAuth.instance
-          .signInWithCredential(oauthCredential);
+      UserCredential userCredential = await FirebaseAuth.instance.signInWithCredential(oauthCredential);
+
       return saveIdToken(userCredential);
     } catch (e) {
       log(e.toString());
@@ -146,15 +188,20 @@ class FirebaseLoginUseCase {
     }
   }
 
-  Future<bool> signInWithGoogle() async {
+  Future<bool> signInWithGoogle(BuildContext context) async {
     //계정 다시 선택하도록 연결 끊기
     // await GoogleSignIn().disconnect();
     // Trigger the authentication flow
     final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
+    if (googleUser == null) {
+      log("Google sign-in cancelled or failed.");
+      return false; // The user cancelled the sign-in
+    }else{
+      loginBarrier(context);
+    }
 
     // Obtain the auth details from the request
-    final GoogleSignInAuthentication? googleAuth =
-        await googleUser?.authentication;
+    final GoogleSignInAuthentication? googleAuth = await googleUser?.authentication;
     //GoogleSignInAuthentication:Instance of 'GoogleSignInTokenData'
 
     // Create a new credential
@@ -162,6 +209,9 @@ class FirebaseLoginUseCase {
       accessToken: googleAuth?.accessToken,
       idToken: googleAuth?.idToken,
     );
+
+    // Check if the user is already signed in
+    if(FirebaseAuth.instance.currentUser?.isAnonymous ?? false) await FirebaseAuth.instance.currentUser!.delete();
 
     UserCredential userCredential = await FirebaseAuth.instance
         .signInWithCredential(credential);

@@ -1,3 +1,5 @@
+import 'package:could_be/core/analytics/analytics_event_names.dart';
+import 'package:could_be/core/analytics/unified_analytics_helper.dart';
 import 'package:could_be/domain/entities/issue.dart';
 import 'package:could_be/domain/repositoryInterfaces/track_user_activity_interface.dart';
 import 'package:could_be/domain/useCases/fetch_articles_use_case.dart';
@@ -51,6 +53,8 @@ class WebViewViewModel with ChangeNotifier {
 
   void _getWebViewController() {
     late final PlatformWebViewControllerCreationParams params;
+
+    UnifiedAnalyticsHelper.logEvent(name: AnalyticsEventNames.fecthWebArticle);
 
     if (WebViewPlatform.instance is WebKitWebViewPlatform) {
       params = WebKitWebViewControllerCreationParams(

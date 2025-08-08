@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:could_be/ui/color.dart';
 import 'package:flutter/material.dart';
 
@@ -5,6 +7,7 @@ Text parseAiTextSummary(String text, double fontSize, Color boldColor) {
   final List<String> paras = text.split('(sep)');
   List<TextSpan> spans = [];
   for (int p = 0; p < paras.length; p++) {
+    paras[p] = paras[p].replaceAll(r"\n\n", '\n\n  ');
 
     List<String> boldParts = paras[p].split('**');
     for(int i = 0; i < boldParts.length; i++) {
@@ -36,14 +39,19 @@ Text parseAiTextSummary(String text, double fontSize, Color boldColor) {
 }
 
 Text parseAiText(String text, double fontSize, Color boldColor, Color highlightColor) {
+
+  log('parseAiText: $text');
+
   final List<String> paras = text.split('(sep)');
   List<TextSpan> spans = [];
   for (int p = 0; p < paras.length; p++) {
 
+    paras[p] = paras[p].replaceAll(r"\n\n", '\n\n  ');
+
     List<String> boldParts = paras[p].split('**');
     for(int i = 0; i < boldParts.length; i++) {
       spans.add(TextSpan(
-        text: '${p != 0 && i==0? '\n\n' : '' }${i == 0 && paras.length > 1? '• ' :  i == 0? ' ' : '' }${boldParts[i]}',
+        text: '${p != 0 && i==0? '\n\n' : '' }${i == 0 && paras.length > 1? '• ' :  i == 0? '  ' : '' }${boldParts[i]}',
         style: TextStyle(
           fontSize: fontSize,
           // fontSize: i % 2 == 1 ? fontSize *0.95 : fontSize,

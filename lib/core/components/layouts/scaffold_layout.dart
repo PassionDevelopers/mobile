@@ -19,6 +19,7 @@ class RegScaffold extends StatelessWidget {
     this.backgroundColor,
     this.floatingActionButton,
     this.floatingActionButtonLocation,
+
     this.sideNavigationBar,
   });
 

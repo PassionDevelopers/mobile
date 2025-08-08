@@ -45,7 +45,6 @@ final router = GoRouter(
     //         },
     //       ),
     // ),
-
     //bottom nav
     StatefulShellRoute.indexedStack(
       builder: (context, state, navigationShell) {

@@ -1,3 +1,5 @@
+import 'package:could_be/core/analytics/analytics_event_names.dart';
+import 'package:could_be/core/analytics/unified_analytics_helper.dart';
 import 'package:could_be/core/components/image/image_container.dart';
 import 'package:could_be/core/routes/route_names.dart';
 import 'package:could_be/domain/entities/article.dart';

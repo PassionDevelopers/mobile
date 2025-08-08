@@ -1,8 +1,10 @@
+import 'dart:async';
 import 'dart:developer';
 
 import 'package:could_be/core/components/app_bar/app_bar.dart';
 import 'package:could_be/core/components/cards/hot_issue_card.dart';
 import 'package:could_be/core/components/loading/not_found.dart';
+import 'package:could_be/core/events/tab_reselection_event.dart';
 import 'package:could_be/presentation/home/issue_query_params/issue_query_params_view.dart';
 import 'package:could_be/presentation/hot_issue/hot_issues_view_model.dart';
 import 'package:could_be/ui/color.dart';
@@ -42,6 +44,7 @@ class _IssueListRootState extends State<IssueListRoot> {
   final ScrollController scrollController = ScrollController();
   late IssueListViewModel viewModel;
   late HotIssuesViewModel hotIssuesViewModel;
+  StreamSubscription<int>? _tabReselectionSubscription;
 
   @override
   void initState() {
@@ -57,10 +60,39 @@ class _IssueListRootState extends State<IssueListRoot> {
         viewModel.fetchMoreIssues();
       }
     });
+    
+    // 탭 재선택 이벤트 리스닝
+    _tabReselectionSubscription = TabReselectionEvent.stream.listen((tabIndex) {
+      // 홈 탭(0)이 재선택되었을 때
+      if (tabIndex == 0 && widget.isFeedView) {
+        scrollController.animateTo(
+          0,
+          duration: Duration(milliseconds: 300),
+          curve: Curves.easeOut,
+        );
+      }
+      // 토픽 탭(1)이 재선택되었을 때
+      else if (tabIndex == 1 && widget.isTopicView) {
+        scrollController.animateTo(
+          0,
+          duration: Duration(milliseconds: 300),
+          curve: Curves.easeOut,
+        );
+      }
+      // 사각지대 탭(2)이 재선택되었을 때
+      else if (tabIndex == 2 && (widget.issueType == IssueType.blindSpotLeft || widget.issueType == IssueType.blindSpotRight)) {
+        scrollController.animateTo(
+          0,
+          duration: Duration(milliseconds: 300),
+          curve: Curves.easeOut,
+        );
+      }
+    });
   }
 
   @override
   void dispose() {
+    _tabReselectionSubscription?.cancel();
     scrollController.dispose();
     viewModel.dispose();
     hotIssuesViewModel.dispose();

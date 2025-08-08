@@ -6,7 +6,7 @@ class AnalyticsEventNames {
   static const String appOpen = 'app_open';
   static const String appTerminate = 'app_terminate';
   static const String appForeground = 'app_foreground';
-  static const String appBackground = 'app_background';
+  static const String appBackground = 'app_is_background';
   
   // Navigation Events
   static const String navigateToScreen = 'navigate_to_screen';
@@ -30,6 +30,9 @@ class AnalyticsEventNames {
   static const String issueSwipeItem = 'issue_swipe_item';
   static const String issueShareItem = 'issue_share_item';
   static const String openHotIssues = 'open_hot_issues';
+
+  // Article Events
+  static const String fecthWebArticle = 'fetch_web_article';
   
   // Media Events
   static const String mediaTapItem = 'media_tap_item';

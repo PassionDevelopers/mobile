@@ -10,6 +10,7 @@ import 'package:could_be/presentation/issue_detail_feed/components/issue_detail_
 import 'package:could_be/presentation/issue_detail_feed/components/scroll_gage.dart';
 import 'package:could_be/presentation/issue_detail_feed/issue_detail_loading_view.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import '../../core/components/layouts/scaffold_layout.dart';
 import '../../core/responsive/responsive_utils.dart';
 import '../../ui/color.dart';
@@ -146,8 +147,9 @@ class _IssueDetailFeedRootState extends State<IssueDetailFeedRoot> {
                                         issue: issue,
                                         fontSize: state.fontSize,
                                         isSubscribed: state.issueDetail!.isSubscribed,
-                                        onSubscribe: viewModel.manageIssueSubscription,
-
+                                        onSubscribe: (){viewModel.manageIssueSubscription(context); },
+                                        isSpread: state.isSummarySpread,
+                                        spreadCallback: viewModel.spreadSummary,
                                       ),
                                       if (issue.commonSummary != null) SizedBox(height: MyPaddings.large),
 
@@ -161,6 +163,7 @@ class _IssueDetailFeedRootState extends State<IssueDetailFeedRoot> {
                                       if (issue.leftComparison != null ||
                                           issue.centerComparison != null ||
                                           issue.rightComparison != null)
+
                                         SizedBox(height: MyPaddings.large),
 
                                       if (issue.leftComparison != null ||
@@ -186,9 +189,11 @@ class _IssueDetailFeedRootState extends State<IssueDetailFeedRoot> {
                                                   existLeft: issue.leftComparison != null,
                                                   existRight: issue.rightComparison != null,
                                                   isEvaluating: state.isEvaluating,
-                                                  onBiasSelected:
-                                                  viewModel
-                                                      .manageIssueEvaluation,
+                                                  onBiasSelected: (Bias bias){viewModel
+                                                      .manageIssueEvaluation(
+                                                        context: context,
+                                                        bias: bias,
+                                                      );},
                                                   leftLikeCount:
                                                   issue.leftLikeCount,
                                                   centerLikeCount:
@@ -202,6 +207,8 @@ class _IssueDetailFeedRootState extends State<IssueDetailFeedRoot> {
                                                   issue.centerComparison,
                                                   rightComparison:
                                                   issue.rightComparison,
+                                                  isSpread: state.isBiasComparisonSpread,
+                                                  spreadCallback: viewModel.spreadBiasComparison,
                                                 ),
 
                                                 SizedBox(height: MyPaddings.large),
@@ -211,11 +218,11 @@ class _IssueDetailFeedRootState extends State<IssueDetailFeedRoot> {
                                                   existLeft: issue.leftComparison != null,
                                                   existRight: issue.rightComparison != null,
                                                   isEvaluating: state.isEvaluating,
-                                                  onBiasSelected: (Bias bias){
-
-                                                    viewModel.manageIssueEvaluation(bias);
-
-                                                  },
+                                                  onBiasSelected: (Bias bias){viewModel
+                                                      .manageIssueEvaluation(
+                                                    context: context,
+                                                    bias: bias,
+                                                  );},
                                                   leftLikeCount:
                                                   issue.leftLikeCount,
                                                   centerLikeCount:
@@ -240,6 +247,8 @@ class _IssueDetailFeedRootState extends State<IssueDetailFeedRoot> {
                                           );
                                         },
                                         postDasiScore: viewModel.postDasiScore,
+                                        isSpread: state.isTabsSpread,
+                                        spreadCallback: viewModel.spreadTabs,
                                       ),
 
                                       SizedBox(height: MyPaddings.large),
@@ -255,6 +264,81 @@ class _IssueDetailFeedRootState extends State<IssueDetailFeedRoot> {
                                             issue.nextIssueIds.first,
                                           );
                                         },
+                                        isSpread: state.isSourceListSpread,
+                                        spreadCallback: viewModel.spreadSourceList,
+                                      ),
+                                      SizedBox(height: MyPaddings.large),
+                                      Container(
+                                        width: double.infinity,
+                                        padding: EdgeInsets.symmetric(horizontal: MyPaddings.medium),
+                                        height: 48,
+                                        child: Row(
+                                          children: [
+                                            if(issue.nextIssueIds.isNotEmpty)ElevatedButton(
+                                              onPressed: () {
+                                                context.pop();
+                                              },
+                                              style: ElevatedButton.styleFrom(
+                                                backgroundColor: AppColors.primary,
+                                                shape: RoundedRectangleBorder(
+                                                  borderRadius: BorderRadius.circular(12),
+                                                ),
+                                                elevation: 0,
+                                              ),
+                                              child: Row(
+                                                children: [
+                                                  Icon(Icons.home, color: Colors.white, size: 25),
+                                                  SizedBox(width: MyPaddings.small),
+                                                  Text(
+                                                    '홈으로',
+                                                    style: TextStyle(
+                                                      color: Colors.white,
+                                                      fontSize: 16,
+                                                      fontWeight: FontWeight.w600,
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
+                                            SizedBox(width: MyPaddings.large),
+                                            Expanded(
+                                              child: ElevatedButton(
+                                                onPressed:
+                                                issue.nextIssueIds.isNotEmpty
+                                                    ? (){
+                                                  viewModel.fetchIssueDetailById(
+                                                    issue.nextIssueIds.first,
+                                                  );
+                                                }
+                                                    : () {
+                                                  context.pop();
+                                                },
+                                                style: ElevatedButton.styleFrom(
+                                                  backgroundColor: AppColors.primary,
+                                                  shape: RoundedRectangleBorder(
+                                                    borderRadius: BorderRadius.circular(12),
+                                                  ),
+                                                  elevation: 0,
+                                                ),
+                                                child: Row(
+                                                  mainAxisAlignment: MainAxisAlignment.center,
+                                                  children: [
+                                                    Text(
+                                                      issue.nextIssueIds.isNotEmpty ? '다음 이슈 보기' : '홈으로 돌아가기',
+                                                      style: TextStyle(
+                                                        color: Colors.white,
+                                                        fontSize: 16,
+                                                        fontWeight: FontWeight.w600,
+                                                      ),
+                                                    ),
+                                                    SizedBox(width: MyPaddings.small),
+                                                    Icon(Icons.keyboard_arrow_right_rounded, color: Colors.white, size: 25),
+                                                  ],
+                                                ),
+                                              ),
+                                            ),
+                                          ],
+                                        ),
                                       ),
                                       SizedBox(height: MyPaddings.large),
                                       // Padding(

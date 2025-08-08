@@ -10,7 +10,7 @@ TopicDto _$TopicDtoFromJson(Map<String, dynamic> json) => TopicDto(
   id: json['_id'] as String,
   name: json['name'] as String,
   category: json['category'] as String,
-  issuesCount: (json['issuesCount'] as num).toInt(),
+  issuesCount: (json['issuesCount'] as num?)?.toInt(),
   isSubscribed: json['isSubscribed'] as bool,
 );
 
