@@ -2,6 +2,10 @@
 /// This class contains all analytics event names used throughout the app
 /// to ensure consistency and prevent typos
 class AnalyticsEventNames {
+
+  //utm
+  static const String utmLinkClicked = 'utm_link_clicked';
+
   // App Lifecycle Events
   static const String appOpen = 'app_open';
   static const String appTerminate = 'app_terminate';
@@ -97,7 +101,6 @@ class AnalyticsEventNames {
   
   // Filter Events
   static const String filterApplied = 'filter_applied';
-  
   
   // Tab Navigation Events
   static const String tabNavigation = 'tab_navigation';

@@ -20,7 +20,7 @@ void shareDasiStand(){
 void shareIssue({required String issueId, required String issueTitle}) {
   UnifiedAnalyticsHelper.logEvent(name: AnalyticsEventNames.shareIssue);
   final url = Uri.parse(
-    'https://dasi-stand.com/issueDetailFeed/$issueId',
+    'https://dasi-stand.com?id=$issueId',
   );
 
   final params = ShareParams(uri: url,

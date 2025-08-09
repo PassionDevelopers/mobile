@@ -1,13 +1,9 @@
 import 'dart:async';
-import 'dart:developer';
-
 import 'package:app_links/app_links.dart';
 import 'package:could_be/core/components/alert/toast.dart';
 import 'package:could_be/core/di/di_setup.dart';
 import 'package:could_be/core/routes/route_names.dart';
 import 'package:could_be/data/data_source/cache/deep_link_storage.dart';
-import 'package:could_be/presentation/issue_list/issue_type.dart';
-import 'package:could_be/presentation/issue_list/main/issue_list_root.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:could_be/core/analytics/unified_analytics_helper.dart';
@@ -47,16 +43,18 @@ class _HomeViewState extends State<HomeView> with WidgetsBindingObserver{
     _linkSubscription = getIt<AppLinks>().uriLinkStream.listen((uri) {
       debugPrint('onAppLink: $uri');
       openAppLink(uri);
+
     });
   }
 
   void openAppLink(Uri uri) {
     getIt<DeepLinkStorage>().changeDeepLink(uri.path);
     Map<String, String> queryParameters = uri.queryParameters;
+    debugPrint('queryParameters: $queryParameters');
+
     if(queryParameters.containsKey('issueId')){
       String? issueId = queryParameters['issueId'];
       if(issueId != null && issueId.isNotEmpty){
-        showMyToast(msg: 'Deep link opened: $uri  Navigating to: ${uri.queryParameters}');
         UnifiedAnalyticsHelper.logNavigationEvent(
           fromScreen: AnalyticsScreenNames.deepLinkScreen,
           toScreen: AnalyticsScreenNames.issueDetailFeedScreen,
@@ -68,6 +66,19 @@ class _HomeViewState extends State<HomeView> with WidgetsBindingObserver{
         context.push('${RouteNames.issueDetailFeed}/$issueId');
       }
     }
+
+    // if(queryParameters.containsKey('utm')) {
+    //   String? utm = queryParameters['utm'];
+    //   if(utm != null && utm.isNotEmpty){
+    //     UnifiedAnalyticsHelper.logEvent(
+    //       name: AnalyticsEventNames.utmLinkClicked,
+    //       parameters: {
+    //         AnalyticsParameterKeys.utm : utm,
+    //       },
+    //     );
+    //   }
+    // }
+
   }
 
 

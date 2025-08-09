@@ -2,6 +2,10 @@
 /// This class contains all analytics parameter keys used throughout the app
 /// to ensure consistency and prevent typos
 class AnalyticsParameterKeys {
+
+  //utm
+  static const String utm = 'utm';
+
   // Navigation Parameters
   static const String fromScreen = 'from_screen';
   static const String toScreen = 'to_screen';

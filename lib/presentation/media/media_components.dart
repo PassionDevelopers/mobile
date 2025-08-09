@@ -83,7 +83,7 @@ class _MediaChatBubbleState extends State<MediaChatBubble> {
         textStyle: TextStyle(
           fontSize: 14,
           color: Colors.black,
-          fontStyle: FontStyle.italic,
+          // fontStyle: FontStyle.italic,
           // fontWeight: FontWeight.bold,
           // overflow: TextOverflow.ellipsis,
         ),
