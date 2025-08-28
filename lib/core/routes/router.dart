@@ -1,3 +1,5 @@
+import 'package:could_be/presentation/bias_test/bias_test_view.dart';
+import 'package:could_be/presentation/my_page/profile_manage/profile_manage_view.dart';
 import 'package:could_be/core/routes/route_names.dart';
 import 'package:could_be/domain/entities/hot_issues.dart';
 import 'package:could_be/presentation/customer_services/feedback_root.dart';
@@ -33,9 +35,7 @@ import '../method/bias/bias_enum.dart';
 final router = GoRouter(
   initialLocation: RouteNames.root,
   routes: [
-    GoRoute(path: RouteNames.root,
-      builder: (context, state) =>Root(),
-    ),
+    GoRoute(path: RouteNames.root, builder: (context, state) => Root()),
     // GoRoute(
     //   path: RouteNames.login,
     //   builder:
@@ -82,11 +82,11 @@ final router = GoRouter(
               path: RouteNames.blindSpot,
               builder:
                   (context, state) => BlindSpotRoot(
-                onIssueSelected:
-                    (issueId) => context.push(
-                  '${RouteNames.issueDetailFeed}/$issueId',
-                ),
-              ),
+                    onIssueSelected:
+                        (issueId) => context.push(
+                          '${RouteNames.issueDetailFeed}/$issueId',
+                        ),
+                  ),
             ),
           ],
         ),
@@ -104,18 +104,18 @@ final router = GoRouter(
               path: RouteNames.myPage,
               builder:
                   (context, state) => MyPageView(
-                toWatchHistory: () => context.push(RouteNames.watchHistory),
-                toSubscribedIssue:
-                    () => context.push(RouteNames.subscribedIssue),
-                toManageMediaSubscription:
-                    () => context.push(RouteNames.wholeMedia),
-                toManageTopicSubscription:
-                    () => context.push(RouteNames.wholeTopics),
-                toManageIssueEvaluation:
-                    () => context.push(RouteNames.manageIssueEvalution),
-                toManageSourceEvaluation:
-                    () => context.push(RouteNames.manageSourceEvaluation),
-              ),
+                    toWatchHistory: () => context.push(RouteNames.watchHistory),
+                    toSubscribedIssue:
+                        () => context.push(RouteNames.subscribedIssue),
+                    toManageMediaSubscription:
+                        () => context.push(RouteNames.wholeMedia),
+                    toManageTopicSubscription:
+                        () => context.push(RouteNames.wholeTopics),
+                    toManageIssueEvaluation:
+                        () => context.push(RouteNames.manageIssueEvalution),
+                    toManageSourceEvaluation:
+                        () => context.push(RouteNames.manageSourceEvaluation),
+                  ),
             ),
           ],
         ),
@@ -139,7 +139,7 @@ final router = GoRouter(
       path: RouteNames.haveUpdate,
       builder:
           (context, state) =>
-          HaveUpdate(latestVersionNow: state.extra as String),
+              HaveUpdate(latestVersionNow: state.extra as String),
     ),
 
     // GoRoute(
@@ -157,11 +157,11 @@ final router = GoRouter(
       },
     ),
     GoRoute(
-        path: RouteNames.hotIssueFeed,
-        builder: (context, state){
-          final hotIssues = state.extra as HotIssues;
-          return HotIssueView(hotIssues: hotIssues);
-        }
+      path: RouteNames.hotIssueFeed,
+      builder: (context, state) {
+        final hotIssues = state.extra as HotIssues;
+        return HotIssueView(hotIssues: hotIssues);
+      },
     ),
 
     //article
@@ -228,19 +228,29 @@ final router = GoRouter(
       builder: (context, state) => ManageIssueEvaluationView(),
     ),
     GoRoute(
-        path: RouteNames.settings,
-        builder: (context, state) => SettingView()
+      path: RouteNames.settings,
+      builder: (context, state) => SettingView(),
     ),
     GoRoute(
       path: RouteNames.manageSourceEvaluation,
       builder: (context, state) => ManageSourceEvaluationView(),
     ),
+    GoRoute(
+      path: RouteNames.profileManage,
+      builder: (context, state) {
+        final extra = state.extra as String?;
+        return ProfileManageView(imageUrl: extra,);
+      },
+    ),
+    GoRoute(
+      path: RouteNames.biasTest,
+      builder: (context, state) => PMTITestPage()
+      ),
 
     //customer services
     GoRoute(
       path: RouteNames.feedback,
       builder: (context, state) => FeedbackRoot(),
     ),
-
   ],
 );

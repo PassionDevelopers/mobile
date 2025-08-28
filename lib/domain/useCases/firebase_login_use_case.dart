@@ -218,20 +218,20 @@ class FirebaseLoginUseCase {
     }
 
     // Obtain the auth details from the request
-    final GoogleSignInAuthentication? googleAuth = await googleUser?.authentication;
+    final GoogleSignInAuthentication googleAuth = await googleUser.authentication;
     //GoogleSignInAuthentication:Instance of 'GoogleSignInTokenData'
 
     // Create a new credential
     final credential = GoogleAuthProvider.credential(
-      accessToken: googleAuth?.accessToken,
-      idToken: googleAuth?.idToken,
+      accessToken: googleAuth.accessToken,
+      idToken: googleAuth.idToken,
     );
 
+    // FirebaseAuth.instance.currentUser?.linkWithCredential(credential);
     // Check if the user is already signed in
     if(FirebaseAuth.instance.currentUser?.isAnonymous ?? false) await FirebaseAuth.instance.currentUser!.delete();
 
-    UserCredential userCredential = await FirebaseAuth.instance
-        .signInWithCredential(credential);
+    UserCredential userCredential = await FirebaseAuth.instance.signInWithCredential(credential);
     return saveIdToken(userCredential);
   }
 

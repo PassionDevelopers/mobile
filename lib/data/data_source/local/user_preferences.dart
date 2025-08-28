@@ -36,5 +36,9 @@ class UserPreferences{
   static Future<bool?> setNotificationPermissionRequested(bool requested) async => await _preferences?.setBool(_keyNotificationPermissionRequested, requested);
   static bool? getNotificationPermissionRequested() => _preferences?.getBool(_keyNotificationPermissionRequested);
 
+  // 유저 프로필 이미지 url
+  static const _keyUserProfileImageUrl = 'UserProfileImageUrl';
+  static Future<bool?> setUserProfileImageUrl(String imageUrl) async => await _preferences?.setString(_keyUserProfileImageUrl, imageUrl);
+  static String? getUserProfileImageUrl() => _preferences?.getString(_keyUserProfileImageUrl);
 
 }

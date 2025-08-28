@@ -7,7 +7,9 @@ import 'package:could_be/core/components/layouts/scaffold_layout.dart';
 import 'package:could_be/core/permission/permission_management.dart';
 import 'package:could_be/core/routes/route_names.dart';
 import 'package:could_be/core/routes/router.dart';
+import 'package:could_be/domain/repositoryInterfaces/manage_fcm_interface.dart';
 import 'package:could_be/domain/repositoryInterfaces/track_user_activity_interface.dart';
+import 'package:could_be/domain/useCases/fcm_use_case.dart';
 import 'package:could_be/domain/useCases/manage_user_status_use_case.dart';
 import 'package:could_be/presentation/log_in/login_view_model.dart';
 import 'package:could_be/presentation/update_management/check_update_field.dart';
@@ -33,7 +35,7 @@ class Root extends StatefulWidget {
 }
 
 class _RootState extends State<Root> {
-  final _flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
+
   bool isRoutedToUpdate = false;
 
   Future startListenUpdateStatus() async {
@@ -178,49 +180,6 @@ class _RootState extends State<Root> {
     }
   }
 
-  Future<void> initializeNotification() async {
-    // await Firebase.initializeApp();
-    FirebaseMessaging messaging = FirebaseMessaging.instance;
-
-    final channel = const AndroidNotificationChannel(
-      'Dasi Stand', // id
-      'High Importance Notifications', // title// description
-      importance: Importance.high,
-    );
-
-    await _flutterLocalNotificationsPlugin
-        .resolvePlatformSpecificImplementation<
-        AndroidFlutterLocalNotificationsPlugin>()
-        ?.createNotificationChannel(channel);
-
-    FirebaseMessaging.onMessage.listen((RemoteMessage message) {
-      RemoteNotification? notification = message.notification;
-      AndroidNotification? android = message.notification?.android;
-
-      if (notification != null && android != null) {
-        _flutterLocalNotificationsPlugin.show(
-            notification.hashCode,
-            notification.title,
-            notification.body,
-            NotificationDetails(
-              android: AndroidNotificationDetails(
-                channel.id,
-                channel.name,
-                // icon: 'app_icon2',
-              ),
-            ));
-      }
-    });
-
-    await messaging.setAutoInitEnabled(true);
-
-    await messaging.setForegroundNotificationPresentationOptions(
-      alert: true,
-      badge: true,
-      sound: true,
-    );
-  }
-
   @override
   void initState(){
     super.initState();
@@ -230,6 +189,8 @@ class _RootState extends State<Root> {
     
     final firebaseAuth = getIt<FirebaseAuth>();
     final viewModel = getIt<LoginViewModel>();
+    final fcmUseCase = getIt<FcmUseCase>();
+    fcmUseCase.updateFcmToken();
     fireSubscription = firebaseAuth.authStateChanges().listen((User? user)async{
       log('Auth state changed: ${user?.uid}');
       if (user == null) {

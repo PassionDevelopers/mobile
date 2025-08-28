@@ -1,6 +1,6 @@
 import 'package:could_be/core/method/bias/bias_method.dart';
 import 'package:could_be/core/themes/margins_paddings.dart';
-import 'package:could_be/domain/entities/user_bias.dart';
+import 'package:could_be/domain/entities/user_profile.dart';
 import 'package:could_be/domain/entities/whole_bias_score.dart';
 import 'package:could_be/presentation/my_page/main/my_page_view_model.dart';
 import 'package:could_be/presentation/my_page/components/my_bias_status_view.dart';
@@ -78,7 +78,7 @@ class MyPageHexagon extends StatelessWidget {
       builder: (context, _) {
         final state = viewModel.state;
         final wholeBiasScore = state.wholeBiasScore;
-        final UserBias? bias = state.userBias;
+        final UserProfile? bias = state.userProfile;
         return Ink(
           padding: EdgeInsets.fromLTRB(
               MyPaddings.extraLarge,

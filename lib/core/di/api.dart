@@ -1,5 +1,4 @@
 import 'dart:developer';
-import 'package:could_be/core/components/alert/toast.dart';
 import 'package:could_be/core/di/di_setup.dart';
 import 'package:dio/dio.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -27,6 +26,7 @@ class AuthInterceptor extends Interceptor {
     if (token != null) {
       options.headers['Authorization'] = 'Bearer $token';
     }
+    options.headers['accept'] = 'application/json';
     if(options.queryParameters.containsKey('lastIssueId') && options.queryParameters['lastIssueId'] == null) {
       options.queryParameters.remove('lastIssueId');
     }
@@ -93,7 +93,7 @@ class AuthInterceptor extends Interceptor {
 Dio createDio(TokenStorageRepository tokenStorageRepository) {
   final dio = Dio(
     BaseOptions(
-      baseUrl: prod,
+      baseUrl: dev,
       connectTimeout: const Duration(seconds: 10),
       receiveTimeout: const Duration(seconds: 10),
       sendTimeout: const Duration(seconds: 10),

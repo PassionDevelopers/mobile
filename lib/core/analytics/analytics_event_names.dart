@@ -144,6 +144,8 @@ class AnalyticsEventNames {
   static const String manageSourceEvaluation = 'manage_source_evaluation';
   static const String manageTopicSubscription = 'manage_topic_subscription';
   static const String manageUserProfile = 'manage_user_profile';
+  static const String uploadProfileImage = 'upload_profile_image';
+  static const String deleteUserProfileImage = 'delete_user_profile_image';
   static const String manageUserStatus = 'manage_user_status';
   
   // Submit Events

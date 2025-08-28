@@ -2,6 +2,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:could_be/data/repositoryImpl/hot_issues_repository_impl.dart';
 import 'package:could_be/data/repositoryImpl/issue_query_params_repository_impl.dart';
+import 'package:could_be/data/repositoryImpl/manage_fcm_repository_impl.dart';
 import 'package:could_be/data/repositoryImpl/manage_issue_evaluation_repository_impl.dart';
 import 'package:could_be/data/repositoryImpl/manage_source_evaluation_impl.dart';
 import 'package:could_be/data/repositoryImpl/manage_topic_subscription_repository_impl.dart';
@@ -16,6 +17,7 @@ import 'package:could_be/domain/repositoryInterfaces/articles_interface.dart';
 import 'package:could_be/domain/repositoryInterfaces/hot_issues_interface.dart';
 import 'package:could_be/domain/repositoryInterfaces/issue_query_params_interface.dart';
 import 'package:could_be/domain/repositoryInterfaces/issues_interface.dart';
+import 'package:could_be/domain/repositoryInterfaces/manage_fcm_interface.dart';
 import 'package:could_be/domain/repositoryInterfaces/manage_issue_evaluation_interface.dart';
 import 'package:could_be/domain/repositoryInterfaces/manage_issue_subscription_interface.dart';
 import 'package:could_be/domain/repositoryInterfaces/manage_media_subscription_interface.dart';
@@ -28,7 +30,6 @@ import 'package:could_be/domain/repositoryInterfaces/source_detail_interface.dar
 import 'package:could_be/domain/repositoryInterfaces/topic_detail_interface.dart';
 import 'package:could_be/domain/repositoryInterfaces/topics_interface.dart';
 import 'package:could_be/domain/repositoryInterfaces/track_user_activity_interface.dart';
-import 'package:could_be/domain/repositoryInterfaces/user_bias_interface.dart';
 import 'package:could_be/domain/repositoryInterfaces/whole_bias_score_interface.dart';
 import 'package:dio/dio.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -41,7 +42,6 @@ import '../../data/repositoryImpl/manage_issue_subscription_repository_impl.dart
 import '../../data/repositoryImpl/manage_media_subscription_repository_impl.dart';
 import '../../data/repositoryImpl/sources_repository_impl.dart';
 import '../../data/repositoryImpl/topics_repository_impl.dart';
-import '../../data/repositoryImpl/user_bias_repository_impl.dart';
 import '../../domain/repositoryInterfaces/feedback_interface.dart';
 import '../../domain/repositoryInterfaces/issue_detail_interface.dart';
 import '../../domain/repositoryInterfaces/sources_interface.dart';
@@ -80,9 +80,6 @@ Future<void> diRepoSetup()async {
   getIt.registerSingleton<ManageUserStatusRepository>(
     ManageUserStatusRepositoryImpl(getIt<Dio>()),
   );
-  getIt.registerSingleton<UserBiasRepository>(
-    UserBiasRepositoryImpl(getIt<Dio>()),
-  );
   getIt.registerSingleton<ManageUserProfileRepository>(
     ManageUserProfileRepositoryImpl(getIt<Dio>()),
   );
@@ -91,6 +88,9 @@ Future<void> diRepoSetup()async {
   );
   getIt.registerSingleton<TrackUserActivityRepository>(
     TrackUserActivityRepositoryImpl(getIt<Dio>()),
+  );
+  getIt.registerSingleton<ManageFcmRepository>(
+    ManageFcmRepositoryImpl(getIt<Dio>()),
   );
 
   //source

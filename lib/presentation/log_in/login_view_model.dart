@@ -39,6 +39,7 @@ class LoginViewModel with ChangeNotifier {
         SignInMethod.kakao => await _firebaseLoginUseCase.signInWithKakao(context),
       }){
         _state = _state.copyWith(isLoginInProgress: false);
+        // 기존 페이지로 이동
         router.go(RouteNames.root);
       }else{
         if(context.mounted) showSnackBar(context, msg: '로그인 실패: 토큰을 받지 못했습니다.');

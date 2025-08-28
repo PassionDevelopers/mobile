@@ -4,5 +4,4 @@ enum IssueCategoryEnum{
   economy,
   society,
   politics,
-
 }

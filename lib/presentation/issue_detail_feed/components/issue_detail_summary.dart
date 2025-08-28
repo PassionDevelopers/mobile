@@ -8,6 +8,7 @@ import 'package:could_be/core/components/image/image_container.dart';
 import 'package:could_be/core/components/layouts/nested_page_view.dart';
 import 'package:could_be/core/components/title/big_title.dart';
 import 'package:could_be/core/method/text_parsing.dart';
+import 'package:could_be/core/components/text/interactive_text.dart';
 import 'package:could_be/presentation/issue_detail_feed/components/move_to_next_button.dart';
 import 'package:could_be/ui/color.dart';
 import 'package:could_be/ui/fonts.dart';
@@ -15,6 +16,7 @@ import 'package:flutter/material.dart';
 import '../../../core/components/bias/bias_bar.dart';
 import '../../../core/themes/margins_paddings.dart';
 import '../../../domain/entities/issue_detail.dart';
+import 'background_description.dart' show BackgroundDescription;
 import 'header.dart';
 
 class IssueDetailSummary extends StatefulWidget {
@@ -231,6 +233,20 @@ class _IssueDetailSummaryState extends State<IssueDetailSummary> {
               ),
             ),
             SizedBox(height: MyPaddings.large),
+            BackgroundDescription(
+              issue: widget.issue,
+              fontSize: widget.fontSize,
+              isSubscribed:
+              widget.issue.isSubscribed,
+              onSubscribe: () {
+
+              },
+              isSpread: widget.isSpread,
+              spreadCallback: (){
+
+              },
+            ),
+            SizedBox(height: MyPaddings.large),
             AnimatedContainer(
               duration: Duration(milliseconds: 300),
               curve: Curves.easeOutCubic,
@@ -289,11 +305,11 @@ class _IssueDetailSummaryState extends State<IssueDetailSummary> {
                   if(widget.isSpread)
                     Padding(
                       padding: EdgeInsets.all(MyPaddings.large),
-                      child: parseAiText(
-                        widget.issue.summary,
-                        widget.fontSize,
-                        AppColors.gray1,
-                        Colors.amberAccent
+                      child: InteractiveText(
+                        text: widget.issue.summary,
+                        fontSize: widget.fontSize,
+                        textColor: AppColors.gray1,
+                        highlightColor: Colors.amberAccent,
                       ),
                     ),
                 ],

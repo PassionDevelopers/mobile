@@ -4,6 +4,7 @@ import 'package:could_be/core/components/alert/toast.dart';
 import 'package:could_be/core/di/di_setup.dart';
 import 'package:could_be/core/routes/route_names.dart';
 import 'package:could_be/data/data_source/cache/deep_link_storage.dart';
+import 'package:could_be/domain/useCases/fcm_use_case.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:could_be/core/analytics/unified_analytics_helper.dart';
@@ -33,6 +34,7 @@ class HomeView extends StatefulWidget {
 class _HomeViewState extends State<HomeView> with WidgetsBindingObserver{
 
   late final HomeViewModel viewModel;
+  final fcmUseCase = getIt<FcmUseCase>();
 
   StreamSubscription<Uri>? _linkSubscription;
   
@@ -43,7 +45,6 @@ class _HomeViewState extends State<HomeView> with WidgetsBindingObserver{
     _linkSubscription = getIt<AppLinks>().uriLinkStream.listen((uri) {
       debugPrint('onAppLink: $uri');
       openAppLink(uri);
-
     });
   }
 
@@ -81,12 +82,12 @@ class _HomeViewState extends State<HomeView> with WidgetsBindingObserver{
 
   }
 
-
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
     viewModel = getIt<HomeViewModel>();
+    fcmUseCase.initListeners(context);
     WidgetsBinding.instance.addObserver(this);
     Future.delayed(Duration.zero, () {
       viewModel.showNotice(context);

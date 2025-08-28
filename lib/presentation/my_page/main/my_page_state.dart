@@ -3,12 +3,12 @@
 import 'package:could_be/core/method/bias/bias_enum.dart';
 import 'package:could_be/domain/entities/bias_score_history.dart';
 import 'package:could_be/domain/entities/dasi_score.dart';
+import 'package:could_be/domain/entities/user_profile.dart';
 import 'package:could_be/domain/entities/whole_bias_score.dart';
 import 'package:flutter/material.dart';
-import '../../../domain/entities/user_bias.dart';
 
 class MyPageState{
-  final UserBias? userBias;
+  final UserProfile? userProfile;
   final DasiScore? dasiScore;
 
   final bool isBiasLoading;
@@ -36,7 +36,7 @@ class MyPageState{
 
 
   MyPageState({
-    this.userBias,
+    this.userProfile,
     this.dasiScore,
     this.isBiasLoading = false,
     this.isUserStatusLoading = false,
@@ -58,7 +58,7 @@ class MyPageState{
   });
 
   MyPageState copyWith({
-    UserBias? userBias,
+    UserProfile? userProfile,
     DasiScore? dasiScore,
     bool? isBiasLoading,
     bool? isDasiScoreLoading,
@@ -78,7 +78,7 @@ class MyPageState{
     bool? isHexagonAbsolute,
   }) {
     return MyPageState(
-      userBias: userBias ?? this.userBias,
+      userProfile: userProfile ?? this.userProfile,
       dasiScore: dasiScore ?? this.dasiScore,
       isBiasLoading: isBiasLoading ?? this.isBiasLoading,
       isHexagonAbsolute: isHexagonAbsolute ?? this.isHexagonAbsolute,

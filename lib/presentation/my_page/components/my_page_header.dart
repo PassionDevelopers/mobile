@@ -1,13 +1,18 @@
+import 'package:could_be/core/components/profile/default_profile.dart';
+import 'package:could_be/core/components/profile/profile_frame.dart';
 import 'package:could_be/core/components/text_form_field.dart';
+import 'package:could_be/core/routes/route_names.dart';
 import 'package:could_be/core/themes/margins_paddings.dart';
 import 'package:could_be/domain/entities/dasi_score.dart';
 import 'package:could_be/presentation/my_page/main/my_page_view_model.dart';
 import 'package:could_be/ui/color.dart';
 import 'package:could_be/ui/fonts.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
 class MyPageHeader extends StatelessWidget {
   const MyPageHeader({super.key, required this.viewModel});
+
   final MyPageViewModel viewModel;
 
   Widget _buildCompactScoreSection() {
@@ -26,7 +31,7 @@ class MyPageHeader extends StatelessWidget {
             ),
             SizedBox(width: MyPaddings.small),
             Text(
-              '${score == null || viewModel.state.isDasiScoreLoading? '??' : score.score.round() }',
+              '${score == null || viewModel.state.isDasiScoreLoading ? '??' : score.score.round()}',
               style: MyFontStyle.h3.copyWith(
                 color: AppColors.primary,
                 fontWeight: FontWeight.w700,
@@ -39,7 +44,8 @@ class MyPageHeader extends StatelessWidget {
             SizedBox(width: MyPaddings.small),
             GestureDetector(
               onTap: viewModel.fetchDasiScore,
-              child: Icon(Icons.refresh, size: 15, color: AppColors.gray2)),
+              child: Icon(Icons.refresh, size: 15, color: AppColors.gray2),
+            ),
           ],
         ),
         SizedBox(height: MyPaddings.small),
@@ -65,14 +71,12 @@ class MyPageHeader extends StatelessWidget {
       ],
     );
   }
+
   @override
   Widget build(BuildContext context) {
-
     return Container(
       padding: EdgeInsets.all(MyPaddings.large),
-      margin: EdgeInsets.symmetric(
-        horizontal: MyPaddings.large,
-      ),
+      margin: EdgeInsets.symmetric(horizontal: MyPaddings.large),
       decoration: BoxDecoration(
         color: AppColors.white,
         borderRadius: BorderRadius.circular(20),
@@ -96,45 +100,50 @@ class MyPageHeader extends StatelessWidget {
                   child: Row(
                     children: [
                       // Profile Image
-                      Stack(
-                        children: [
-                          Container(
-                            width: 70,
-                            height: 70,
-                            decoration: BoxDecoration(
-                              shape: BoxShape.circle,
-                              color: AppColors.gray5,
+                      GestureDetector(
+                        onTap: () {
+                          if (state.isEditMode) {
+                            context.push(RouteNames.profileManage, extra: state.userProfile?.imageUrl);
+                          }
+                        },
+                        child: Stack(
+                          children: [
+                            ProfileFrame(
+                              width: 70,
+                              child:
+                                  state.isBiasLoading? CircularProgressIndicator() :
+                                  state.userProfile?.imageUrl == null
+                                      ? DefaultProfile(size: 35)
+                                      : Image.network(
+                                        state.userProfile!.imageUrl!,
+                                        fit: BoxFit.cover,
+                                      ),
                             ),
-                            child: Icon(
-                              Icons.person,
-                              size: 35,
-                              color: AppColors.gray2,
-                            ),
-                          ),
-                          if (state.isEditMode)
-                            Positioned(
-                              bottom: 0,
-                              right: 0,
-                              child: Container(
-                                width: 24,
-                                height: 24,
-                                decoration: BoxDecoration(
-                                  color: AppColors.primary,
-                                  shape: BoxShape.circle,
-                                  border: Border.all(
+                            if (state.isEditMode)
+                              Positioned(
+                                bottom: 0,
+                                right: 0,
+                                child: Container(
+                                  width: 24,
+                                  height: 24,
+                                  decoration: BoxDecoration(
+                                    color: AppColors.primary,
+                                    shape: BoxShape.circle,
+                                    border: Border.all(
+                                      color: AppColors.white,
+                                      width: 2,
+                                    ),
+                                  ),
+
+                                  child: Icon(
+                                    Icons.camera_alt,
+                                    size: 14,
                                     color: AppColors.white,
-                                    width: 2,
                                   ),
                                 ),
-
-                                child: Icon(
-                                  Icons.camera_alt,
-                                  size: 14,
-                                  color: AppColors.white,
-                                ),
                               ),
-                            ),
-                        ],
+                          ],
+                        ),
                       ),
                       SizedBox(width: MyPaddings.large),
                       // Name and Score
@@ -144,14 +153,17 @@ class MyPageHeader extends StatelessWidget {
                           children: [
                             if (!state.isEditMode)
                               MyText.h1(
-                                state.userBias == null? '   ' : state.userBias!.nickname,
+                                state.userProfile == null
+                                    ? '   '
+                                    : state.userProfile!.nickname,
                                 color: AppColors.primary,
                               )
                             else
                               MyForm(
                                 formKey: state.formKey,
                                 controller: state.nicknameController,
-                                hintText: state.userBias?.nickname ?? '닉네임을 입력하세요',
+                                hintText:
+                                    state.userProfile?.nickname ?? '닉네임을 입력하세요',
                               ),
                             SizedBox(height: MyPaddings.small),
                             if (!state.isEditMode)
@@ -214,18 +226,19 @@ class MyPageHeader extends StatelessWidget {
               // Edit button
               SizedBox(
                 width: 20,
-                child: !viewModel.state.isEditMode
-                    ? GestureDetector(
-                  onTap: () {
-                    viewModel.setEditMode();
-                  },
-                  child: Icon(
-                    Icons.edit_outlined,
-                    color: AppColors.primary,
-                    size: 20,
-                  ),
-                )
-                    : SizedBox.shrink(),
+                child:
+                    !viewModel.state.isEditMode
+                        ? GestureDetector(
+                          onTap: () {
+                            viewModel.setEditMode();
+                          },
+                          child: Icon(
+                            Icons.edit_outlined,
+                            color: AppColors.primary,
+                            size: 20,
+                          ),
+                        )
+                        : SizedBox.shrink(),
               ),
               SizedBox(width: MyPaddings.large),
             ],

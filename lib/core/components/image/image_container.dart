@@ -55,7 +55,7 @@ class ImageContainer extends StatelessWidget {
                 );
               },
               imageUrl!,
-              fit: BoxFit.cover,
+              fit: BoxFit.fitWidth,
             ),
           ),
         ),

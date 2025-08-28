@@ -1,10 +1,10 @@
-
 import 'dart:async';
 import 'dart:developer';
 import 'package:could_be/core/domain/nick_name_error.dart';
 import 'package:could_be/core/domain/result.dart';
+import 'package:could_be/core/events/profile_events.dart';
 import 'package:could_be/core/method/bias/bias_enum.dart';
-import 'package:could_be/domain/useCases/fetch_user_bias_user_case.dart';
+import 'package:could_be/domain/entities/user_profile.dart';
 import 'package:could_be/domain/useCases/fetch_whole_bias_score_use_case.dart';
 import 'package:could_be/domain/useCases/firebase_login_use_case.dart';
 import 'package:could_be/domain/useCases/manage_user_profile_use_case.dart';
@@ -15,7 +15,6 @@ import 'package:flutter/material.dart';
 
 class MyPageViewModel extends ChangeNotifier {
 
-  final FetchUserBiasUseCase _fetchUserBiasUseCase;
   final ManageUserStatusUseCase _manageUserStatusUseCase;
   final FirebaseLoginUseCase _firebaseLoginUseCase;
   final ManageUserProfileUseCase _manageUserProfileUseCase;
@@ -25,32 +24,43 @@ class MyPageViewModel extends ChangeNotifier {
   final _eventController = StreamController<NickNameError>();
 
   Stream<NickNameError> get eventStream => _eventController.stream;
+  StreamSubscription<String?>? _profileStreamSubscription;
 
   MyPageState _state = MyPageState(isGuestLogin: true);
   MyPageState get state => _state;
 
   MyPageViewModel({
-    required FetchUserBiasUseCase fetchUserBiasUseCase,
     required ManageUserStatusUseCase manageUserStatusUseCase,
     required FirebaseLoginUseCase firebaseLoginUseCase,
     required ManageUserProfileUseCase manageUserProfileUseCase,
     required FetchWholeBiasScoreUseCase fetchWholeBiasUseCase,
     required TrackUserActivityUseCase trackUserActivityUseCase,
-  }) : _fetchUserBiasUseCase = fetchUserBiasUseCase,
-      _firebaseLoginUseCase = firebaseLoginUseCase,
+  }) : _firebaseLoginUseCase = firebaseLoginUseCase,
       _manageUserProfileUseCase = manageUserProfileUseCase,
       _fetchWholeBiasScoreUseCase = fetchWholeBiasUseCase,
       _trackUserActivityUseCase = trackUserActivityUseCase,
        _manageUserStatusUseCase = manageUserStatusUseCase {
-    _fetchUserBias();
+    _fetchUserProfile();
     checkIsGuestLogin();
     fetchWholeBiasScore();
     fetchBiasScoreHistory();
     fetchDasiScore();
+    _setupProfileListener();
+  }
+
+  void _setupProfileListener(){
+    _profileStreamSubscription = ProfileEvents.profileStream.listen((imageUrl) {
+        log('Profile image updated: $imageUrl');
+        _state = state.copyWith(
+          userProfile: state.userProfile?.copyWith(clearImage : imageUrl == null, imageUrl: imageUrl),
+        );
+        notifyListeners();
+      },
+    );
   }
 
   void refresh() {
-    _fetchUserBias();
+    _fetchUserProfile();
     checkIsGuestLogin();
     fetchWholeBiasScore();
     fetchBiasScoreHistory();
@@ -148,9 +158,9 @@ class MyPageViewModel extends ChangeNotifier {
           isEditMode: false,
           isBiasLoading: false,
         );
-        final result = await _fetchUserBiasUseCase.execute();
+        final UserProfile result = await _manageUserProfileUseCase.fetchUserProfile();
         _state = state.copyWith(
-          userBias: result,
+          userProfile: result,
           isEditMode: false,
           isBiasLoading: false,
         );
@@ -168,7 +178,7 @@ class MyPageViewModel extends ChangeNotifier {
     if(state.isEditMode) {
       // _state.nicknameController.clear();
     } else {
-      log('setEditMode: ${state.userBias?.nickname}');
+      log('setEditMode: ${state.userProfile?.nickname}');
       _state.nicknameController.text = 'sdfsdfsdfsdfsdfsdfsdfsdfsd';
       // _state.nicknameController.text = state.userBias?.nickname ?? '';
     }
@@ -186,13 +196,13 @@ class MyPageViewModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  void _fetchUserBias() async{
+  void _fetchUserProfile() async{
     _state = state.copyWith(isBiasLoading: true);
     notifyListeners();
-    final result = await _fetchUserBiasUseCase.execute();
+    final result = await _manageUserProfileUseCase.fetchUserProfile();
 
     _state = state.copyWith(
-      userBias: result,
+      userProfile: result,
       isBiasLoading: false,
     );
     notifyListeners();
@@ -212,5 +222,12 @@ class MyPageViewModel extends ChangeNotifier {
     await _firebaseLoginUseCase.deleteUserAccount(context);
     _state = state.copyWith(isUserStatusLoading: false);
     notifyListeners();
+  }
+
+  @override
+  void dispose() {
+    _profileStreamSubscription?.cancel();
+    _eventController.close();
+    super.dispose();
   }
 }

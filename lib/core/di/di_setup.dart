@@ -43,7 +43,7 @@ Future<void> diSetupToken() async {
   getIt.registerSingleton<FirebaseFirestore>(FirebaseFirestore.instance);
   getIt.registerSingleton<FirebaseAuth>(FirebaseAuth.instance);
   getIt.registerSingleton<FirebaseAnalytics>(FirebaseAnalytics.instance);
-  getIt.registerSingleton<FirebaseMessaging>(FirebaseMessaging.instance);
+
   getIt.registerSingleton<FirebaseLoginUseCase>(
     FirebaseLoginUseCase(
       tokenStorageRepository: getIt(),

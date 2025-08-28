@@ -498,8 +498,7 @@ class _IssueViewState extends State<IssueView> with SingleTickerProviderStateMix
                 //     ),
                 //   ),
                 // ),
-                //커뮤니티
-                MajorUserOpinionView(),
+
                 // 서비스 소개 섹션
                 // Container(
                 //   width: double.infinity,

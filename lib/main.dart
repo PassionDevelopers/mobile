@@ -1,25 +1,18 @@
 import 'dart:async';
-import 'dart:developer';
-import 'package:app_links/app_links.dart';
 import 'package:clarity_flutter/clarity_flutter.dart';
-import 'package:could_be/core/components/alert/dialog.dart';
-import 'package:could_be/core/components/alert/toast.dart';
 import 'package:could_be/core/di/di_setup.dart';
-import 'package:amplitude_flutter/amplitude.dart';
 import 'package:could_be/core/routes/router.dart';
-import 'package:could_be/data/data_source/cache/deep_link_storage.dart';
 import 'package:could_be/data/data_source/local/user_preferences.dart';
 import 'package:could_be/ui/color.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:kakao_flutter_sdk/kakao_flutter_sdk_auth.dart';
+import 'core/analytics/analytics_event_names.dart';
+import 'core/analytics/unified_analytics_helper.dart';
 import 'core/behavior/scroll_behavior.dart';
 import 'core/themes/app_bar_theme.dart';
 import 'firebase_options.dart';
-import 'core/analytics/unified_analytics_helper.dart';
-import 'core/analytics/analytics_event_names.dart';
 
 @pragma('vm:entry-point')
 Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
@@ -29,7 +22,6 @@ Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   // KakaoSdk.init(nativeAppKey: 'c0f1b2d3e4f5g6h7i8j9k0l1m2n3o4p5'); // 카카오 SDK 초기화
-
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   // SystemChrome.setEnabledSystemUIMode(
   //     SystemUiMode.manual,
@@ -67,9 +59,7 @@ void main() async {
   // });
 
   await UserPreferences.init();
-  KakaoSdk.init(
-    nativeAppKey: '3af3ede3773c2db3782152f2e673395f',
-  );
+  KakaoSdk.init(nativeAppKey: '3af3ede3773c2db3782152f2e673395f');
 
   final config = ClarityConfig(
     projectId: "sbiwi1dz8s",
@@ -96,8 +86,7 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
   void initState() {
     super.initState();
     WidgetsBinding.instance.addObserver(this);
-    
-    // Log app open event
+
     UnifiedAnalyticsHelper.logEvent(
       name: AnalyticsEventNames.appOpen,
     );

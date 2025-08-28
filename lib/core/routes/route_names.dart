@@ -37,6 +37,8 @@ abstract class RouteNames{
   manageIssueEvalution = '$myPage/manageIssueEvalution',
   manageSourceEvaluation = '$myPage/manageSourceEvaluation',
   settings = '$myPage/settings',
+  profileManage = '$myPage/profileManage',
+  biasTest = '$myPage/biasTest',
 
   //customer services
   feedback = '/feedback',
