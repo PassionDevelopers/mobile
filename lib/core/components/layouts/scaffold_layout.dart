@@ -177,8 +177,8 @@ class HomeScaffold extends StatelessWidget {
             sideNavigationBar!
           else
             SideNavigationBar(
-              currentIndex: currentNavigationIndex!,
-              onTap: onNavigationChanged!,
+              currentIndex: currentNavigationIndex,
+              onTap: onNavigationChanged,
             ),
           // 메인 컨텐츠
           Expanded(

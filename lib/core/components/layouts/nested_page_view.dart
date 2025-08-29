@@ -1,6 +1,5 @@
 import 'dart:developer' show log;
 
-import 'package:could_be/ui/color.dart';
 import 'package:flutter/material.dart';
 
 class NestedScrollPage extends StatefulWidget {

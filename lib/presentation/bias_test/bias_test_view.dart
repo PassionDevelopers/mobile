@@ -1,209 +1,510 @@
+import 'package:could_be/ui/color.dart';
 import 'package:flutter/material.dart';
 
-import 'bias_result_view.dart';
+import 'political_result_view.dart';
 
-class PMTIQuestion {
+enum QuestionCategory {
+  politics('정치'),
+  economy('경제'),
+  society('사회'),
+  culture('문화'),
+  world('세계'),
+  technology('기술');
+
+  const QuestionCategory(this.displayName);
+  final String displayName;
+}
+
+class PoliticalQuestion {
   final String text;
-  final String dimension; // 예: 'E/C'
-  final String leanToward; // 예: 'E' or 'C'
+  final QuestionCategory category;
+  final String leftLabel;
+  final String rightLabel;
+  final String dimension;
 
-  PMTIQuestion({
+  PoliticalQuestion({
     required this.text,
+    required this.category,
+    required this.leftLabel,
+    required this.rightLabel,
     required this.dimension,
-    required this.leanToward,
   });
 }
 
-
-class PMTITestPage extends StatefulWidget {
-  const PMTITestPage({super.key});
+class PoliticalTestPage extends StatefulWidget {
+  const PoliticalTestPage({super.key});
 
   @override
-  State<PMTITestPage> createState() => _PMTITestPageState();
+  State<PoliticalTestPage> createState() => _PoliticalTestPageState();
 }
 
-class _PMTITestPageState extends State<PMTITestPage> {
+class _PoliticalTestPageState extends State<PoliticalTestPage> {
+  final PageController _pageController = PageController();
+  int _currentQuestionIndex = 0;
   final Map<int, int> answers = {};
-  final List<PMTIQuestion> questions = [
-    // [E/C] Economic vs. Communal
-    PMTIQuestion(
-      text: '부유한 사람은 더 많은 세금을 내야 하며, 그 재원은 사회적 약자를 위해 사용되어야 한다.',
-      dimension: 'E/C',
-      leanToward: 'C',
+
+  final List<PoliticalQuestion> questions = [
+    // 정치 카테고리
+    PoliticalQuestion(
+      text: '정치인의 특권과 면책은 최대한 제한되어야 한다.',
+      category: QuestionCategory.politics,
+      leftLabel: '매우 반대',
+      rightLabel: '매우 찬성',
+      dimension: 'democratic',
+
     ),
-    PMTIQuestion(
-      text: '정부는 시장에 최대한 개입하지 말고 자율적으로 운영되게 해야 한다.',
-      dimension: 'E/C',
-      leanToward: 'E',
+    PoliticalQuestion(
+      text: '국정감사나 국정조사는 정치적 목적보다 국정 개선에 초점을 맞춰야 한다.',
+      category: QuestionCategory.politics,
+      leftLabel: '매우 반대',
+      rightLabel: '매우 찬성',
+      dimension: 'democratic',
     ),
-    PMTIQuestion(
-      text: '경제 성장은 민간 주도의 자유 경쟁이 이끌어야 한다.',
-      dimension: 'E/C',
-      leanToward: 'E',
-    ),
-    PMTIQuestion(
-      text: '복지제도는 국가의 가장 중요한 역할 중 하나다.',
-      dimension: 'E/C',
-      leanToward: 'C',
-    ),
-    PMTIQuestion(
-      text: '일자리를 창출하려면 기업 규제를 완화해야 한다.',
-      dimension: 'E/C',
-      leanToward: 'E',
+    PoliticalQuestion(
+      text: '정부의 정책 결정 과정은 시민들에게 투명하게 공개되어야 한다.',
+      category: QuestionCategory.politics,
+      leftLabel: '매우 반대',
+      rightLabel: '매우 찬성',
+      dimension: 'democratic',
     ),
 
-    // [A/T] Authoritarian vs. Tolerant
-    PMTIQuestion(
-      text: '사회 질서를 유지하기 위해 표현의 자유가 어느 정도 제한되는 것은 필요하다.',
-      dimension: 'A/T',
-      leanToward: 'A',
+    // 경제 카테고리
+    PoliticalQuestion(
+      text: '부유층에 대한 세금 부담을 늘려 소득 불평등을 줄여야 한다.',
+      category: QuestionCategory.economy,
+      leftLabel: '매우 반대',
+      rightLabel: '매우 찬성',
+      dimension: 'economic',
     ),
-    PMTIQuestion(
-      text: '정부는 시민의 윤리와 도덕에 개입해서는 안 된다.',
-      dimension: 'A/T',
-      leanToward: 'T',
+    PoliticalQuestion(
+      text: '기업 규제를 완화해 경제 성장을 촉진해야 한다.',
+      category: QuestionCategory.economy,
+      leftLabel: '매우 반대',
+      rightLabel: '매우 찬성',
+      dimension: 'economic',
     ),
-    PMTIQuestion(
-      text: '정치적 올바름은 표현의 자유를 억압하는 경향이 있다.',
-      dimension: 'A/T',
-      leanToward: 'A',
-    ),
-    PMTIQuestion(
-      text: '다양한 사회 집단이 자유롭게 목소리를 낼 수 있어야 건강한 사회다.',
-      dimension: 'A/T',
-      leanToward: 'T',
-    ),
-    PMTIQuestion(
-      text: '전통적인 가족 가치관은 법적으로도 보호받아야 한다.',
-      dimension: 'A/T',
-      leanToward: 'A',
+    PoliticalQuestion(
+      text: '기본소득 같은 보편적 복지제도가 필요하다.',
+      category: QuestionCategory.economy,
+      leftLabel: '매우 반대',
+      rightLabel: '매우 찬성',
+      dimension: 'economic',
     ),
 
-    // [N/P] Nationalist vs. Pluralist
-    PMTIQuestion(
-      text: '외국인 이민은 우리 문화와 정체성을 위협할 수 있다.',
-      dimension: 'N/P',
-      leanToward: 'N',
+    // 사회 카테고리
+    PoliticalQuestion(
+      text: '성소수자의 권리를 법적으로 보장해야 한다.',
+      category: QuestionCategory.society,
+      leftLabel: '매우 반대',
+      rightLabel: '매우 찬성',
+      dimension: 'social',
     ),
-    PMTIQuestion(
-      text: '다문화 사회는 국가를 더 창의적이고 풍요롭게 만든다.',
-      dimension: 'N/P',
-      leanToward: 'P',
+    PoliticalQuestion(
+      text: '여성의 사회 진출을 위한 적극적인 정책이 필요하다.',
+      category: QuestionCategory.society,
+      leftLabel: '매우 반대',
+      rightLabel: '매우 찬성',
+      dimension: 'social',
     ),
-    PMTIQuestion(
-      text: '국제기구나 세계 인권 기준이 국내 법보다 우선되어야 한다.',
-      dimension: 'N/P',
-      leanToward: 'P',
-    ),
-    PMTIQuestion(
-      text: '전통 문화와 민족 정체성은 절대적으로 지켜져야 한다.',
-      dimension: 'N/P',
-      leanToward: 'N',
-    ),
-    PMTIQuestion(
-      text: '외국인도 우리 사회의 동등한 구성원으로 받아들여야 한다.',
-      dimension: 'N/P',
-      leanToward: 'P',
+    PoliticalQuestion(
+      text: '종교의 자유는 다른 사람의 인권을 침해하지 않는 선에서 보장되어야 한다.',
+      category: QuestionCategory.society,
+      leftLabel: '매우 반대',
+      rightLabel: '매우 찬성',
+      dimension: 'social',
     ),
 
-    // [R/S] Radical vs. Systemic
-    PMTIQuestion(
-      text: '지금의 정치 시스템은 근본적으로 바뀌어야 한다.',
-      dimension: 'R/S',
-      leanToward: 'R',
+    // 문화 카테고리
+    PoliticalQuestion(
+      text: '전통 문화보다는 창의적이고 진보적인 문화를 장려해야 한다.',
+      category: QuestionCategory.culture,
+      leftLabel: '매우 반대',
+      rightLabel: '매우 찬성',
+      dimension: 'cultural',
     ),
-    PMTIQuestion(
-      text: '제도 안에서의 점진적 개혁이 더 현실적인 방법이다.',
-      dimension: 'R/S',
-      leanToward: 'S',
+    PoliticalQuestion(
+      text: '문화 다양성을 위해 외국 문화의 유입을 적극 받아들여야 한다.',
+      category: QuestionCategory.culture,
+      leftLabel: '매우 반대',
+      rightLabel: '매우 찬성',
+      dimension: 'cultural',
     ),
-    PMTIQuestion(
-      text: '기존 정치 세력은 모두 기득권이며, 새로운 정치 세력이 필요하다.',
-      dimension: 'R/S',
-      leanToward: 'R',
+    PoliticalQuestion(
+      text: '역사 교육에서 우리나라의 부정적 측면도 균형 있게 다뤄야 한다.',
+      category: QuestionCategory.culture,
+      leftLabel: '매우 반대',
+      rightLabel: '매우 찬성',
+      dimension: 'cultural',
     ),
-    PMTIQuestion(
-      text: '정치란 타협과 점진적인 변화로 이루어져야 한다.',
-      dimension: 'R/S',
-      leanToward: 'S',
+
+    // 세계 카테고리
+    PoliticalQuestion(
+      text: '국익보다는 국제적 협력과 인류 공동의 이익을 우선해야 한다.',
+      category: QuestionCategory.world,
+      leftLabel: '매우 반대',
+      rightLabel: '매우 찬성',
+      dimension: 'global',
     ),
-    PMTIQuestion(
-      text: '혁명적 변화 없이 진정한 사회 정의는 실현될 수 없다.',
-      dimension: 'R/S',
-      leanToward: 'R',
+    PoliticalQuestion(
+      text: '기후변화 대응을 위해 경제적 손실을 감수해서라도 적극적인 정책이 필요하다.',
+      category: QuestionCategory.world,
+      leftLabel: '매우 반대',
+      rightLabel: '매우 찬성',
+      dimension: 'global',
+    ),
+    PoliticalQuestion(
+      text: '난민과 이민자를 적극적으로 받아들여야 한다.',
+      category: QuestionCategory.world,
+      leftLabel: '매우 반대',
+      rightLabel: '매우 찬성',
+      dimension: 'global',
+    ),
+
+    // 기술 카테고리
+    PoliticalQuestion(
+      text: 'AI와 자동화로 인한 실업 문제는 정부가 적극 개입해 해결해야 한다.',
+      category: QuestionCategory.technology,
+      leftLabel: '매우 반대',
+      rightLabel: '매우 찬성',
+      dimension: 'tech',
+    ),
+    PoliticalQuestion(
+      text: '개인정보 보호보다는 기술 발전과 편의성이 더 중요하다.',
+      category: QuestionCategory.technology,
+      leftLabel: '매우 반대',
+      rightLabel: '매우 찬성',
+      dimension: 'tech',
+    ),
+    PoliticalQuestion(
+      text: '인터넷 규제보다는 표현의 자유를 우선해야 한다.',
+      category: QuestionCategory.technology,
+      leftLabel: '매우 반대',
+      rightLabel: '매우 찬성',
+      dimension: 'tech',
     ),
   ];
-
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('PMTI 테스트')),
-      body: ListView.builder(
-        itemCount: questions.length,
-        itemBuilder: (context, index) {
-          final q = questions[index];
-          return Card(
-            margin: EdgeInsets.all(12),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Padding(
-                  padding: EdgeInsets.all(12),
-                  child: Text('${index + 1}. ${q.text}'),
-                ),
-                Slider(
-                  value: (answers[index] ?? 3).toDouble(),
-                  onChanged: (val) {
-                    setState(() {
-                      answers[index] = val.round();
-                    });
-                  },
-                  divisions: 4,
-                  min: 1,
-                  max: 5,
-                  label: '${answers[index] ?? 3}',
-                ),
-              ],
+      backgroundColor: Colors.grey[50],
+      body: SafeArea(
+        child: Column(
+          children: [
+            _buildProgressBar(),
+            Expanded(
+              child: PageView.builder(
+                controller: _pageController,
+                onPageChanged: (index) {
+                  setState(() {
+                    _currentQuestionIndex = index;
+                  });
+                },
+                itemCount: questions.length,
+                itemBuilder: (context, index) {
+                  return _buildQuestionPage(index);
+                },
+              ),
             ),
-          );
-        },
-      ),
-      floatingActionButton: FloatingActionButton.extended(
-        onPressed: _calculateResult,
-        label: Text('결과 보기'),
-        icon: Icon(Icons.analytics),
+          ],
+        ),
       ),
     );
   }
 
+  Widget _buildProgressBar() {
+    final progress = (_currentQuestionIndex + 1) / questions.length;
+    return Container(
+      padding: const EdgeInsets.all(20),
+      child: Column(
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                '정치성향 테스트',
+                style: TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              Text(
+                '${_currentQuestionIndex + 1}/${questions.length}',
+                style: TextStyle(
+                  fontSize: 16,
+                  color: Colors.grey[600],
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 16),
+          LinearProgressIndicator(
+            value: progress,
+            backgroundColor: Colors.grey[300],
+            valueColor: AlwaysStoppedAnimation<Color>(Theme.of(context).primaryColor),
+            minHeight: 8,
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildQuestionPage(int index) {
+    final question = questions[index];
+    
+    return Padding(
+      padding: const EdgeInsets.all(20),
+      child: Column(
+        children: [
+          // Container(
+          //   padding: const EdgeInsets.all(16),
+          //   decoration: BoxDecoration(
+          //     color: Theme.of(context).primaryColor.withValues(alpha: 0.1),
+          //     borderRadius: BorderRadius.circular(12),
+          //   ),
+          //   child: Text(
+          //     question.category.displayName,
+          //     style: TextStyle(
+          //       color: Theme.of(context).primaryColor,
+          //       fontWeight: FontWeight.bold,
+          //       fontSize: 14,
+          //     ),
+          //   ),
+          // ),
+          // const SizedBox(height: 40),
+          Expanded(
+            child: Center(
+              child: Text(
+                question.text,
+                style: TextStyle(
+                  fontSize: 22,
+                  fontWeight: FontWeight.w500,
+                  height: 1.5,
+                  color: AppColors.primary
+                ),
+                textAlign: TextAlign.center,
+              ),
+            ),
+          ),
+          const SizedBox(height: 40),
+          _buildAnswerButtons(index),
+          const SizedBox(height: 40),
+          _buildNavigationButtons(index),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildAnswerButtons(int questionIndex) {
+    return Column(
+      children: [
+        // 라벨 행
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Text(
+              '매우 반대',
+              style: TextStyle(
+                fontSize: 12,
+                color: Colors.grey[600],
+              ),
+            ),
+            Text(
+              '매우 찬성',
+              style: TextStyle(
+                fontSize: 12,
+                color: Colors.grey[600],
+              ),
+            ),
+          ],
+        ),
+        const SizedBox(height: 12),
+        // 버튼 행
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: List.generate(5, (index) {
+            final answerValue = index + 1;
+            final isSelected = answers[questionIndex] == answerValue;
+            
+            return Expanded(
+              child: Padding(
+                padding: EdgeInsets.symmetric(horizontal: index == 0 || index == 4 ? 0 : 4),
+                child: GestureDetector(
+                  onTap: () {
+                    setState(() {
+                      answers[questionIndex] = answerValue;
+                    });
+                  },
+                  child: Container(
+                    height: 60,
+                    decoration: BoxDecoration(
+                      color: isSelected 
+                        ? Theme.of(context).primaryColor 
+                        : Colors.white,
+                      borderRadius: BorderRadius.circular(12),
+                      border: Border.all(
+                        color: isSelected 
+                          ? Theme.of(context).primaryColor 
+                          : Colors.grey[300]!,
+                        width: isSelected ? 2 : 1,
+                      ),
+                      boxShadow: isSelected ? [
+                        BoxShadow(
+                          color: Theme.of(context).primaryColor.withValues(alpha: 0.3),
+                          spreadRadius: 1,
+                          blurRadius: 4,
+                          offset: const Offset(0, 2),
+                        ),
+                      ] : null,
+                    ),
+                    child: Center(
+                      child: Text(
+                        '$answerValue',
+                        style: TextStyle(
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold,
+                          color: isSelected 
+                            ? Colors.white 
+                            : Colors.black87,
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+            );
+          }),
+        ),
+        const SizedBox(height: 8),
+        // 숫자 설명
+        Text(
+          '1: 매우 반대  2: 반대  3: 보통  4: 찬성  5: 매우 찬성',
+          style: TextStyle(
+            fontSize: 11,
+            color: Colors.grey[500],
+          ),
+          textAlign: TextAlign.center,
+        ),
+      ],
+    );
+  }
+
+  Widget _buildNavigationButtons(int index) {
+    return Row(
+      children: [
+        if (index > 0)
+          Expanded(
+            child: ElevatedButton(
+              onPressed: () {
+                _pageController.previousPage(
+                  duration: const Duration(milliseconds: 300),
+                  curve: Curves.easeInOut,
+                );
+              },
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.grey[200],
+                foregroundColor: Colors.black87,
+                elevation: 0,
+                padding: const EdgeInsets.symmetric(vertical: 12),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(8),
+                ),
+              ),
+              child: const Text('이전'),
+            ),
+          ),
+        if (index > 0) const SizedBox(width: 12),
+        Expanded(
+          child: ElevatedButton(
+            onPressed: answers[index] != null 
+              ? () {
+                  if (index < questions.length - 1) {
+                    _pageController.nextPage(
+                      duration: const Duration(milliseconds: 300),
+                      curve: Curves.easeInOut,
+                    );
+                  } else {
+                    _calculateResult();
+                  }
+                }
+              : null,
+            style: ElevatedButton.styleFrom(
+              backgroundColor: Theme.of(context).primaryColor,
+              foregroundColor: Colors.white,
+              elevation: 2,
+              padding: const EdgeInsets.symmetric(vertical: 12),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(8),
+              ),
+            ),
+            child: Text(
+              index < questions.length - 1 ? '다음' : '결과 보기',
+              style: const TextStyle(fontWeight: FontWeight.bold),
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
   void _calculateResult() {
-    final Map<String, int> dimensionScore = {
-      'E': 0, 'C': 0,
-      'A': 0, 'T': 0,
-      'N': 0, 'P': 0,
-      'R': 0, 'S': 0,
+    if (answers.length < questions.length) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('모든 질문에 답해주세요.'),
+        ),
+      );
+      return;
+    }
+
+    final Map<String, double> categoryScores = {
+      'democratic': 0.0,
+      'economic': 0.0,
+      'social': 0.0,
+      'cultural': 0.0,
+      'global': 0.0,
+      'tech': 0.0,
+    };
+
+    final Map<String, int> categoryCount = {
+      'democratic': 0,
+      'economic': 0,
+      'social': 0,
+      'cultural': 0,
+      'global': 0,
+      'tech': 0,
     };
 
     for (int i = 0; i < questions.length; i++) {
-      final q = questions[i];
-      final answer = answers[i] ?? 3;
-      final agreeLevel = 6 - answer; // 1(매우 그렇다) → +5
-
-      dimensionScore[q.leanToward] = (dimensionScore[q.leanToward] ?? 0) + agreeLevel;
+      final question = questions[i];
+      final answer = answers[i]!;
+      final dimension = question.dimension;
+      
+      categoryScores[dimension] = (categoryScores[dimension] ?? 0.0) + answer;
+      categoryCount[dimension] = (categoryCount[dimension] ?? 0) + 1;
     }
 
-    String result = '';
-    result += (dimensionScore['E']! >= dimensionScore['C']!) ? 'E' : 'C';
-    result += (dimensionScore['A']! >= dimensionScore['T']!) ? 'A' : 'T';
-    result += (dimensionScore['N']! >= dimensionScore['P']!) ? 'N' : 'P';
-    result += (dimensionScore['R']! >= dimensionScore['S']!) ? 'R' : 'S';
+    // 카테고리별 평균 점수 계산
+    final Map<String, double> averageScores = {};
+    for (final dimension in categoryScores.keys) {
+      averageScores[dimension] = categoryScores[dimension]! / categoryCount[dimension]!;
+    }
 
     Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (_) => PMTIResultPage(result: result),
+        builder: (_) => PoliticalResultPage(
+          categoryScores: averageScores,
+          answers: answers,
+          questions: questions,
+        ),
       ),
     );
+  }
+
+  @override
+  void dispose() {
+    _pageController.dispose();
+    super.dispose();
   }
 }

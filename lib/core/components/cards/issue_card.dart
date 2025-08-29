@@ -1,13 +1,12 @@
-import 'dart:developer';
 import 'package:could_be/core/components/bias/bias_check_button.dart';
 import 'package:could_be/core/components/image/image_container.dart';
 import 'package:could_be/core/components/title/issue_info_title.dart';
 import 'package:could_be/core/method/bias/bias_enum.dart';
-import 'package:could_be/core/method/text_parsing.dart';
 import 'package:could_be/core/routes/route_names.dart';
 import 'package:could_be/ui/fonts.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+
 import '../../../domain/entities/issue.dart';
 import '../../../ui/color.dart';
 import '../../analytics/analytics_event_names.dart';
@@ -18,7 +17,6 @@ import '../../responsive/responsive_utils.dart';
 import '../../themes/margins_paddings.dart';
 import '../bias/bias_bar.dart';
 import '../chips/blind_chip.dart';
-import '../chips/key_word_chip_component.dart';
 
 class IssueCard extends StatefulWidget {
   final Issue issue;
@@ -111,110 +109,27 @@ class _IssueCardState extends State<IssueCard> with TickerProviderStateMixin {
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(16),
                         color: AppColors.primaryLight,
-                        border: Border.all(
-                          color: AppColors.gray4,
-                          width: 1.5,
-                        ),
-                        // boxShadow: [
-                        //   BoxShadow(
-                        //     color: AppColors.gray4,
-                        //     spreadRadius: 1,
-                        //     blurRadius: 1,
-                        //     offset: Offset(0, 1), // changes position of shadow
-                        //   ),
-                        // ],
+                        // border: Border.all(
+                        //   color: AppColors.gray4,
+                        //   width: 1.5,
+                        // ),
+                        boxShadow: [
+                          BoxShadow(
+                            color: AppColors.gray4,
+                            spreadRadius: 0.5,
+                            blurRadius: 0.5,
+                            offset: Offset(0, 0.5), // changes position of shadow
+                          ),
+                        ],
                       ),
                       child: Stack(
                         children: [
                           Column(
                             mainAxisSize: MainAxisSize.min,
                             children: [
-                              SizedBox(
-                                height: height,
-                                child: Stack(
-                                  children: [
-                                    widget.issue.imageUrl != null
-                                        ? ImageContainer(
-                                          // height: 220,
-                                          height: height,
-                                          imageUrl: widget.issue.imageUrl!,
-                                        )
-                                        : Ink(
-                                          // height: 220,
-                                          height: height,
-                                          decoration: BoxDecoration(
-                                            color: AppColors.gray4,
-                                            borderRadius: BorderRadius.vertical(
-                                              top: Radius.circular(16),
-                                            ),
-                                          ),
-                                          child: Center(
-                                            child: Icon(
-                                              Icons.image_not_supported,
-                                              color: AppColors.gray2,
-                                              size: 40,
-                                            ),
-                                          ),
-                                        ),
-                                    // Container(
-                                    //   // height: 260,
-                                    //   height: height,
-                                    //   decoration: BoxDecoration(
-                                    //     borderRadius: BorderRadius.vertical(
-                                    //       top: Radius.circular(16),
-                                    //     ),
-                                    //     gradient: LinearGradient(
-                                    //       begin: Alignment.topCenter,
-                                    //       end: Alignment.bottomCenter,
-                                    //       colors: [
-                                    //         Colors.transparent,
-                                    //         AppColors.black.withOpacity(0.3),
-                                    //         AppColors.black.withOpacity(0.8),
-                                    //       ],
-                                    //       stops: [0, 0.5, 1.0],
-                                    //     ),
-                                    //   ),
-                                    // ),
-                                    Align(
-                                      alignment: Alignment.bottomCenter,
-                                      child: Container(
-                                        width: double.infinity,
-                                        padding: EdgeInsets.fromLTRB(
-                                          MyPaddings.large,
-                                          MyPaddings.small,
-                                          MyPaddings.large,
-                                          MyPaddings.small,
-                                        ),
-                                        child: Column(
-                                          mainAxisSize: MainAxisSize.min,
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          children: [
-                                            // MyText.h2(
-                                            //   widget.issue.title,
-                                            //   maxLines: 2,
-                                            //   color: AppColors.white,
-                                            //   shadows: [
-                                            //     Shadow(
-                                            //       offset: Offset(0, 1),
-                                            //       blurRadius: 3,
-                                            //       color: Colors.black
-                                            //           .withOpacity(0.5),
-                                            //     ),
-                                            //   ],
-                                            // ),
-                                            // SizedBox(height: MyPaddings.small),
-                                            // parseAiTextSummary(
-                                            //   widget.issue.summary,
-                                            //   12,
-                                            //   AppColors.gray5,
-                                            // ),
-                                          ],
-                                        ),
-                                      ),
-                                    ),
-                                  ],
-                                ),
+                              ImageContainer(
+                                    height: height,
+                                    imageUrl: widget.issue.imageUrl,
                               ),
                               Padding(
                                 padding: EdgeInsets.fromLTRB(

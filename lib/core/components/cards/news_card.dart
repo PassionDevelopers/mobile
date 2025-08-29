@@ -1,15 +1,14 @@
-import 'package:could_be/core/analytics/analytics_event_names.dart';
-import 'package:could_be/core/analytics/unified_analytics_helper.dart';
 import 'package:could_be/core/components/image/image_container.dart';
 import 'package:could_be/core/routes/route_names.dart';
 import 'package:could_be/domain/entities/article.dart';
 import 'package:could_be/ui/fonts.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+
 import '../../../ui/color.dart';
 import '../../method/date_time_parsing.dart';
-import '../../themes/margins_paddings.dart';
 import '../../responsive/responsive_utils.dart';
+import '../../themes/margins_paddings.dart';
 
 class NewsCard extends StatefulWidget {
   final Article article;

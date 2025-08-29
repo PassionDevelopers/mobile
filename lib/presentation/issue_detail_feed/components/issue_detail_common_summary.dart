@@ -1,14 +1,9 @@
-import 'package:could_be/core/method/bias/bias_enum.dart';
-import 'package:could_be/core/components/cards/issue_detail_title_card.dart';
-import 'package:could_be/core/components/cards/text_card.dart';
-import 'package:could_be/core/components/title/big_title.dart';
+
 import 'package:could_be/core/method/text_parsing.dart';
 import 'package:could_be/core/themes/margins_paddings.dart';
 import 'package:could_be/ui/color.dart';
 import 'package:could_be/ui/fonts.dart';
 import 'package:flutter/material.dart';
-
-import 'move_to_next_button.dart' show MoveToNextButton;
 
 class IssueDetailCommonSummary extends StatelessWidget {
   const IssueDetailCommonSummary({

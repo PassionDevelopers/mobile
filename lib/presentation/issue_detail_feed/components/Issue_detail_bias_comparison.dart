@@ -1,11 +1,5 @@
-import 'dart:developer';
 
-import 'package:could_be/core/components/bias/bias_check_button.dart';
-import 'package:could_be/core/components/cards/issue_detail_title_card.dart';
-import 'package:could_be/core/components/cards/text_card.dart';
-import 'package:could_be/core/components/title/big_title.dart';
 import 'package:could_be/core/method/text_parsing.dart';
-import 'package:could_be/presentation/issue_detail_feed/components/move_to_next_button.dart';
 import 'package:could_be/ui/color.dart';
 import 'package:could_be/ui/fonts.dart';
 import 'package:flutter/material.dart';
@@ -29,7 +23,6 @@ class IssueDetailBiasComparison extends StatelessWidget {
     required this.existLeft,
     required this.existCenter,
     required this.existRight,
-    required this.moveToNextPage,
     required this.fontSize,
     required this.isSpread,
     required this.spreadCallback,
@@ -48,7 +41,6 @@ class IssueDetailBiasComparison extends StatelessWidget {
   final bool existRight;
   final double fontSize;
   final void Function(Bias bias) onBiasSelected;
-  final VoidCallback moveToNextPage;
   final bool isSpread;
   final VoidCallback spreadCallback;
 

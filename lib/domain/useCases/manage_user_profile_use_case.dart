@@ -1,12 +1,11 @@
 import 'dart:developer';
 import 'dart:typed_data';
 
+import 'package:could_be/core/analytics/analytics_event_names.dart';
+import 'package:could_be/core/analytics/unified_analytics_helper.dart';
 import 'package:could_be/core/domain/nick_name_error.dart';
 import 'package:could_be/core/domain/result.dart';
-import 'package:could_be/core/analytics/unified_analytics_helper.dart';
-import 'package:could_be/core/analytics/analytics_event_names.dart';
 import 'package:could_be/data/data_source/local/user_preferences.dart';
-import 'package:could_be/domain/entities/comment.dart';
 import 'package:could_be/domain/entities/s3_upload_url.dart';
 import 'package:could_be/domain/entities/user_profile.dart';
 import 'package:could_be/domain/repositoryInterfaces/manage_user_profile_interface.dart';

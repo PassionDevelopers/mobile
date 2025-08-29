@@ -130,7 +130,8 @@ class _DailyUserDataChartState extends State<DailyUserDataChart> {
                           chartBarData(Bias.center),
                           chartBarData(Bias.right),
                         ],
-                        minX: 0, maxX: (dailyClearData.length-1)*1.0, maxY: widget.viewModel.state.maxBiasScore*1.0, minY: 300,
+                        minX: 0, maxX: (dailyClearData.length-1)*1.0, maxY: widget.viewModel.state.maxBiasScore,
+                        minY: widget.viewModel.state.minBiasScore
                       ),
                       duration: const Duration(milliseconds: 250),
                     )

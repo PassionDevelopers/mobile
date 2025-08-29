@@ -1,7 +1,6 @@
 import 'package:could_be/core/di/api_versions.dart';
 import 'package:could_be/domain/entities/issue_detail.dart';
 import 'package:dio/dio.dart';
-import '../../core/base_url.dart';
 import '../../domain/repositoryInterfaces/issue_detail_interface.dart';
 import '../dto/issue_detail_dto.dart';
 

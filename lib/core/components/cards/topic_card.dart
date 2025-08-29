@@ -1,10 +1,9 @@
-import 'package:could_be/core/components/image/image_container.dart';
 import 'package:could_be/domain/entities/topic.dart';
 import 'package:flutter/material.dart';
+
 import '../../../ui/color.dart';
 import '../../../ui/fonts.dart';
 import '../../themes/margins_paddings.dart';
-import '../../responsive/responsive_utils.dart';
 
 
 class TopicCard extends StatelessWidget {

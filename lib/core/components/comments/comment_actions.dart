@@ -53,14 +53,8 @@ class CommentActions extends StatelessWidget {
             padding: EdgeInsets.symmetric(horizontal: 4, vertical: 2),
             child: Row(
               children: [
-                Icon(
-                  Icons.chat_bubble_outline,
-                  size: 16,
-                  color: AppColors.gray2,
-                ),
-                SizedBox(width: 4),
                 MyText.reg(
-                  '답글',
+                  '답글 달기',
                   color: AppColors.gray2,
                 ),
               ],

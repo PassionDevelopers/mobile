@@ -1,4 +1,3 @@
-import 'package:could_be/ui/fonts.dart';
 import 'package:flutter/material.dart';
 
 import '../../../ui/color.dart';
@@ -55,7 +54,7 @@ class ImageContainer extends StatelessWidget {
                 );
               },
               imageUrl!,
-              fit: BoxFit.fitWidth,
+              fit: BoxFit.cover,
             ),
           ),
         ),

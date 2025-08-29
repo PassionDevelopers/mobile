@@ -7,7 +7,7 @@ class ProfileManageState {
   final XFile? imageFile;
   final String? imageUrl;
   final Uint8List? uint8list;
-  final String? mimeType;
+  // final String? mimeType;
 
   final bool isLoading;
   final bool isUploading;
@@ -21,7 +21,7 @@ class ProfileManageState {
   ProfileManageState({
     this.imageFile,
     this.uint8list,
-    this.mimeType,
+    // this.mimeType,
     this.imageUrl,
     this.isUploading = false,
     this.pickImageError,
@@ -46,7 +46,7 @@ class ProfileManageState {
     return ProfileManageState(
       imageFile: clearImage == true ? null : (imageFile ?? this.imageFile),
       uint8list: clearImage == true ? null : (uint8list ?? this.uint8list),
-      mimeType: clearImage == true ? null : (mimeType ?? this.mimeType),
+      // mimeType: clearImage == true ? null : (mimeType ?? this.mimeType),
       pickImageError: pickImageError ?? this.pickImageError,
       isLoading: isLoading ?? this.isLoading,
       widget: widget ?? this.widget,

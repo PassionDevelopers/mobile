@@ -24,6 +24,7 @@ class MyPageState{
   final WholeBiasScore? wholeBiasScore;
   final BiasScoreHistory? biasScoreHistory;
   final double maxBiasScore;
+  final double minBiasScore;
   final List<double>? biasScoreHistoryLeftScores;
   final List<double>? biasScoreHistoryRightScores;
   final List<double>? biasScoreHistoryCenterScores;
@@ -42,6 +43,7 @@ class MyPageState{
     this.isUserStatusLoading = false,
     this.isDasiScoreLoading = false,
     this.maxBiasScore = 100.0,
+    this.minBiasScore = 10,
     this.isHexagonAbsolute = true,
 
     required this.isGuestLogin,
@@ -75,6 +77,7 @@ class MyPageState{
     List<double>? biasScoreHistoryCenterScores,
     List<double>? biasScoreHistoryRightScores,
     double? maxBiasScore,
+    double? minBiasScore,
     bool? isHexagonAbsolute,
   }) {
     return MyPageState(
@@ -96,6 +99,7 @@ class MyPageState{
       biasScoreHistoryCenterScores: biasScoreHistoryCenterScores ?? this.biasScoreHistoryCenterScores,
       biasScorePeriod: biasScorePeriod ?? this.biasScorePeriod,
       maxBiasScore: maxBiasScore ?? this.maxBiasScore,
+      minBiasScore: minBiasScore ?? this.minBiasScore
     );
   }
 }

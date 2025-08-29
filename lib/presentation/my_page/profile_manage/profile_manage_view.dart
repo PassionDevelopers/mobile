@@ -3,6 +3,7 @@ import 'package:could_be/core/components/layouts/scaffold_layout.dart';
 import 'package:could_be/core/components/profile/default_profile.dart';
 import 'package:could_be/core/components/profile/profile_frame.dart';
 import 'package:could_be/core/di/di_setup.dart';
+import 'package:could_be/core/method/bias/bias_enum.dart';
 import 'package:could_be/core/themes/margins_paddings.dart';
 import 'package:could_be/presentation/my_page/profile_manage/profile_manage_view_model.dart';
 import 'package:could_be/ui/color.dart';
@@ -55,6 +56,7 @@ class _ProfileManageViewState extends State<ProfileManageView> {
                         Center(
                           child: ProfileFrame(
                             width: 230,
+                            bias: Bias.center,
                             child:
                                 state.isLoading
                                     ? const CircularProgressIndicator()

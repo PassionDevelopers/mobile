@@ -1,9 +1,6 @@
-import 'dart:developer';
 import 'dart:io';
-import 'dart:typed_data';
 
 import 'package:could_be/core/components/alert/snack_bar.dart';
-import 'package:could_be/core/components/profile/default_profile.dart';
 import 'package:could_be/core/events/profile_events.dart';
 import 'package:could_be/domain/useCases/manage_user_profile_use_case.dart';
 import 'package:flutter/cupertino.dart';
@@ -11,9 +8,9 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter_image_compress/flutter_image_compress.dart';
 import 'package:go_router/go_router.dart';
 import 'package:image_picker/image_picker.dart';
+// import 'package:mime/mime.dart' show lookupMimeType;
 
 import 'profile_manage_state.dart';
-import 'package:mime/mime.dart' show lookupMimeType;
 
 class ProfileManageViewModel with ChangeNotifier{
 
@@ -47,24 +44,24 @@ class ProfileManageViewModel with ChangeNotifier{
     }
 
     if (state.imageFile != null) {
-      _state = state.copyWith(mimeType: lookupMimeType(state.imageFile!.path));
-      const allowedMimeTypes = [
-        'image/png',
-        'image/jpeg',
-        'image/jpg',
-        'image/webp',
-      ];
+      // _state = state.copyWith(mimeType: lookupMimeType(state.imageFile!.path));
+      // const allowedMimeTypes = [
+      //   'image/png',
+      //   'image/jpeg',
+      //   'image/jpg',
+      //   'image/webp',
+      // ];
 
-      if (state.mimeType == null || !allowedMimeTypes.contains(state.mimeType)) {
-        showSnackBar(context, msg:'지원하지 않는 이미지 형식입니다.\n파일 형식: $state.mimeType');
-        _state = state.copyWith(isLoading: false);
-        notifyListeners();
-        return;
-      }
+      // if (state.mimeType == null || !allowedMimeTypes.contains(state.mimeType)) {
+      //   showSnackBar(context, msg:'지원하지 않는 이미지 형식입니다.\n파일 형식: $state.mimeType');
+      //   _state = state.copyWith(isLoading: false);
+      //   notifyListeners();
+      //   return;
+      // }
 
       final XFile? compressedImage = await compressImage(
         state.imageFile,
-        mimeType: state.mimeType!,
+        // mimeType: state.mimeType!,
       );
 
       if (compressedImage != null) {
@@ -153,12 +150,12 @@ class ProfileManageViewModel with ChangeNotifier{
   }
 
   void completeProfileUpdate()async{
-    if (state.uint8list != null && state.mimeType != null) {
+    if (state.uint8list != null) {
       _state = state.copyWith(isUploading: true);
       notifyListeners();
       String? imageUrl = await manageUserProfileUsecase.uploadProfileImage(
         uint8List: state.uint8list!,
-        mimeType: state.mimeType!,
+        mimeType: 'image/webp',
       );
       ProfileEvents.notifyProfileUpdated(imageUrl);
       _state = state.copyWith(isUploading: false);
@@ -170,7 +167,9 @@ class ProfileManageViewModel with ChangeNotifier{
   }
 
   Future<XFile?> compressImage(XFile? pickedFile,
-      {required String mimeType, int maxSizeInBytes = 50 * 1024}) async {
+      {
+        // required String mimeType,
+        int maxSizeInBytes = 50 * 1024}) async {
 
     if (pickedFile == null) return null;
 
@@ -181,15 +180,15 @@ class ProfileManageViewModel with ChangeNotifier{
 
     // 퀄리티를 낮춰가며 반복적으로 압축
 
-    var format = CompressFormat.jpeg; // 기본값
-    if (mimeType == 'image/png') format = CompressFormat.png;
-    if (mimeType == 'image/webp') format = CompressFormat.webp;
+    // var format = CompressFormat.jpeg; // 기본값
+    // if (mimeType == 'image/png') format = CompressFormat.png;
+    // if (mimeType == 'image/webp') format = CompressFormat.webp;
 
     while (quality > 0) {
       compressedBytes = await FlutterImageCompress.compressWithFile(
         originalFile.absolute.path,
         quality: quality,
-        format: format,
+        format: CompressFormat.webp,
       );
 
       if (compressedBytes == null) return null;
@@ -209,8 +208,8 @@ class ProfileManageViewModel with ChangeNotifier{
 
     final compressedFile = XFile.fromData(
       compressedBytes!,
-      name: 'compressed_image.${format.name}',
-      mimeType: mimeType,
+      name: 'compressed_image.webp',
+      mimeType: 'image/webp',
     );
 
     // final compressedFile = XFile.fromData(

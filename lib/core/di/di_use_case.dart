@@ -1,4 +1,5 @@
 
+import 'package:could_be/domain/useCases/comment_use_case.dart';
 import 'package:could_be/domain/useCases/fcm_use_case.dart';
 import 'package:could_be/domain/useCases/fetch_hot_issues_use_case.dart';
 import 'package:could_be/domain/useCases/fetch_issue_query_params_use_case.dart';
@@ -42,6 +43,9 @@ Future<void> diUseCaseSetup() async {
   getIt.registerSingleton(FetchWholeBiasScoreUseCase(getIt()));
   getIt.registerSingleton(TrackUserActivityUseCase(getIt()));
   getIt.registerSingleton(FcmUseCase(getIt()));
+  
+  //community
+  getIt.registerSingleton(CommentUseCase(getIt()));
 
   //articles
   getIt.registerSingleton(FetchArticlesUseCase(getIt()));

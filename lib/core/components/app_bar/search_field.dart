@@ -1,13 +1,13 @@
 
-import 'package:could_be/core/components/alert/dialog.dart';
 import 'package:could_be/core/components/alert/toast.dart';
 import 'package:could_be/core/themes/margins_paddings.dart';
 import 'package:could_be/ui/color.dart';
 import 'package:flutter/material.dart';
-import '../../analytics/unified_analytics_helper.dart';
+
 import '../../analytics/analytics_event_names.dart';
 import '../../analytics/analytics_parameter_keys.dart';
 import '../../analytics/analytics_screen_names.dart';
+import '../../analytics/unified_analytics_helper.dart';
 
 class SearchAppBar extends StatefulWidget {
   const SearchAppBar({super.key, this.backButtonVisible = false, required this.appBar,

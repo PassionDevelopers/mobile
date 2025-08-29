@@ -6,7 +6,8 @@ import 'package:could_be/core/di/di_setup.dart';
 import 'package:could_be/core/method/bias/bias_enum.dart';
 import 'package:could_be/core/themes/margins_paddings.dart';
 import 'package:could_be/domain/entities/articles.dart';
-import 'package:could_be/presentation/community/comment_view.dart';
+import 'package:could_be/presentation/community/comment_input/comment_input_view.dart';
+import 'package:could_be/presentation/community/comment/comment_view.dart';
 import 'package:could_be/presentation/community/major_user_opinion_view.dart';
 import 'package:could_be/presentation/issue_detail_feed/components/background_description.dart';
 import 'package:could_be/presentation/issue_detail_feed/components/issue_detail_common_summary.dart';
@@ -95,14 +96,6 @@ class _IssueDetailFeedRootState extends State<IssueDetailFeedRoot> {
         ),
       ),
     );
-  }
-
-  void moveToNextPage(int page) {
-    // controller.animateToPage(
-    //   page,
-    //   duration: const Duration(milliseconds: 300),
-    //   curve: Curves.easeInOut,
-    // );
   }
 
   @override
@@ -195,14 +188,6 @@ class _IssueDetailFeedRootState extends State<IssueDetailFeedRoot> {
                                               children: [
                                                 IssueDetailBiasComparison(
                                                   fontSize: state.fontSize,
-                                                  moveToNextPage: () {
-                                                    moveToNextPage(
-                                                      issue.commonSummary !=
-                                                              null
-                                                          ? 4
-                                                          : 3,
-                                                    );
-                                                  },
                                                   existCenter:
                                                       issue.centerComparison !=
                                                       null,
@@ -284,11 +269,6 @@ class _IssueDetailFeedRootState extends State<IssueDetailFeedRoot> {
                                       IssueDetailTabs(
                                         fontSize: state.fontSize,
                                         issue: issue,
-                                        moveToNextPage: () {
-                                          moveToNextPage(
-                                            issue.commonSummary != null ? 3 : 2,
-                                          );
-                                        },
                                         postDasiScore: viewModel.postDasiScore,
                                         isSpread: state.isTabsSpread,
                                         spreadCallback: viewModel.spreadTabs,
@@ -491,10 +471,14 @@ class _IssueDetailFeedRootState extends State<IssueDetailFeedRoot> {
                                   floatingButton(
                                     onPressed: () {
                                       showModalBottomSheet(
-                                          context: context,
-                                          builder: (context) {
-                                            return CommentView();
-                                          });
+                                        useSafeArea: true,
+                                        backgroundColor: AppColors.primaryLight,
+                                        isScrollControlled: true,
+                                        showDragHandle: true,
+                                        context: context,
+                                        builder: (context) {
+                                          return CommentView(issueId: widget.issueId,);
+                                        });
                                     },
                                     icon: Icons.comment,
                                     badgeCount: 35,

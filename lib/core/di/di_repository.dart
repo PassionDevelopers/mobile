@@ -1,5 +1,6 @@
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:could_be/data/repositoryImpl/comment_repository_impl.dart';
 import 'package:could_be/data/repositoryImpl/hot_issues_repository_impl.dart';
 import 'package:could_be/data/repositoryImpl/issue_query_params_repository_impl.dart';
 import 'package:could_be/data/repositoryImpl/manage_fcm_repository_impl.dart';
@@ -14,6 +15,7 @@ import 'package:could_be/data/repositoryImpl/topic_detail_repository_impl.dart';
 import 'package:could_be/data/repositoryImpl/track_user_activity_repository_impl.dart';
 import 'package:could_be/data/repositoryImpl/whole_bias_score_repository_impl.dart';
 import 'package:could_be/domain/repositoryInterfaces/articles_interface.dart';
+import 'package:could_be/domain/repositoryInterfaces/comment_interface.dart';
 import 'package:could_be/domain/repositoryInterfaces/hot_issues_interface.dart';
 import 'package:could_be/domain/repositoryInterfaces/issue_query_params_interface.dart';
 import 'package:could_be/domain/repositoryInterfaces/issues_interface.dart';
@@ -92,6 +94,9 @@ Future<void> diRepoSetup()async {
   getIt.registerSingleton<ManageFcmRepository>(
     ManageFcmRepositoryImpl(getIt<Dio>()),
   );
+
+  //community
+  getIt.registerSingleton<CommentRepository>(CommentRepositoryImpl(getIt<Dio>()));
 
   //source
   getIt.registerSingleton<ManageMediaSubscriptionRepository>(

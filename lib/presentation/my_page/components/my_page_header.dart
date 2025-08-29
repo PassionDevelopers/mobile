@@ -110,6 +110,7 @@ class MyPageHeader extends StatelessWidget {
                           children: [
                             ProfileFrame(
                               width: 70,
+                              bias: state.userProfile?.bias,
                               child:
                                   state.isBiasLoading? CircularProgressIndicator() :
                                   state.userProfile?.imageUrl == null

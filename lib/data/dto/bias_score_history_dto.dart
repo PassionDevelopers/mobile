@@ -1,6 +1,4 @@
-import 'package:could_be/core/method/bias/bias_method.dart';
 import 'package:could_be/data/dto/bias_score_element_dto.dart';
-import 'package:could_be/data/dto/whole_bias_score_dto.dart';
 import 'package:could_be/domain/entities/bias_score_history.dart';
 import 'package:json_annotation/json_annotation.dart';
 

@@ -1,7 +1,8 @@
 import 'package:could_be/core/method/bias/bias_enum.dart';
 import 'package:could_be/domain/entities/article.dart';
 import 'package:could_be/domain/entities/notice.dart';
-import 'package:could_be/domain/useCases/manage_user_profile_use_case.dart';
+import 'package:could_be/presentation/community/comment/comment_view_model.dart';
+import 'package:could_be/presentation/community/comment_input/comment_input_view_model.dart';
 import 'package:could_be/presentation/home/home_view_model.dart';
 import 'package:could_be/presentation/home/issue_query_params/issue_query_params_view_model.dart';
 import 'package:could_be/presentation/hot_issue/hot_issues_view_model.dart';
@@ -39,6 +40,23 @@ Future<void> diViewModelSetup() async {
   //home
   getIt.registerFactory<HomeViewModel>(
         () => HomeViewModel(fetchNoticeUseCase: getIt()),
+  );
+
+  //comment
+  getIt.registerFactoryParam<CommentViewModel, String, void>(
+        (issueId, _) => CommentViewModel(
+          issueId: issueId,
+          commentUseCase: getIt(),
+          manageUserProfileUseCase: getIt(),
+        ),
+  );
+  
+  getIt.registerFactoryParam<CommentInputViewModel, String, void>(
+      (issueId, _) => CommentInputViewModel(
+        issueId: issueId,
+        commentUseCase: getIt(),
+        manageUserProfileUseCase: getIt(),
+      ),
   );
 
   //issue

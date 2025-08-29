@@ -1,6 +1,5 @@
 import 'package:could_be/core/themes/margins_paddings.dart';
 import 'package:could_be/ui/color.dart';
-import 'package:could_be/ui/fonts.dart';
 import 'package:flutter/material.dart';
 
 class IssueDetailTitleCard extends StatelessWidget {

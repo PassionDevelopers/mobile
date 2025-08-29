@@ -107,6 +107,17 @@ class MyPageViewModel extends ChangeNotifier {
       }
       return maxValue;
     }
+
+    double findMin(List<double> a, List<double> b, List<double> c) {
+      double minValue = double.infinity;
+
+      for (var list in [a, b, c]) {
+        for (var value in list) {
+          if (value < minValue) minValue = value;
+        }
+      }
+      return minValue;
+    }
     _trackUserActivityUseCase.postUserWatchedArticles();
     final result = await _fetchWholeBiasScoreUseCase.fetchBiasScoreHistory(
         period: state.biasScorePeriod,
@@ -119,6 +130,11 @@ class MyPageViewModel extends ChangeNotifier {
       centerBiasScores,
       rightBiasScores
     );
+    final double minBiasScore = findMin(
+      leftBiasScores,
+      centerBiasScores,
+      rightBiasScores
+    );
     _state = state.copyWith(
       biasScoreHistory: result,
       isBiasScoreHistoryLoading: false,
@@ -126,6 +142,7 @@ class MyPageViewModel extends ChangeNotifier {
       biasScoreHistoryRightScores: rightBiasScores,
       biasScoreHistoryCenterScores: centerBiasScores,
       maxBiasScore: maxBiasScore,
+      minBiasScore: minBiasScore,
     );
     notifyListeners();
   }
@@ -151,7 +168,6 @@ class MyPageViewModel extends ChangeNotifier {
     _state = state.copyWith(isBiasLoading: true);
     notifyListeners();
     final nickNameResult = await _manageUserProfileUseCase.updateUserNickname(name);
-    log('updateUserNickname: $nickNameResult');
     switch(nickNameResult) {
       case ResultSuccess<bool, NickNameError> success:
         _state = state.copyWith(
@@ -179,8 +195,7 @@ class MyPageViewModel extends ChangeNotifier {
       // _state.nicknameController.clear();
     } else {
       log('setEditMode: ${state.userProfile?.nickname}');
-      _state.nicknameController.text = 'sdfsdfsdfsdfsdfsdfsdfsdfsd';
-      // _state.nicknameController.text = state.userBias?.nickname ?? '';
+      _state.nicknameController.text = state.userProfile?.nickname ?? '';
     }
     _state = state.copyWith(isEditMode: !state.isEditMode);
     notifyListeners();

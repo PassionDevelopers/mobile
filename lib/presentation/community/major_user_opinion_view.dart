@@ -41,8 +41,8 @@ class MajorUserOpinionComponent extends StatelessWidget {
             Row(
               children: [
                 UserProfileWidget(
-                  userProfile: comment.author,
-                  size: comment.isReply ? 32 : 40,
+                  userProfile: comment.userProfile,
+                  // size: comment.isReply ? 32 : 40,
                 ),
                 SizedBox(width: 8),
                 Text(
@@ -144,53 +144,13 @@ class _MajorUserOpinionViewState extends State<MajorUserOpinionView> with Ticker
   );
 
   List<MajorUserOpinionComponent> rightOpinions = [
-    MajorUserOpinionComponent(
-      comment: Comment(
-        id: '1',
-        content: '온실가스 없애는 가장 효율적인 방법은 원전밖에 없는데... 원전 못하게 막은 장본인들이... 그 부담을 국민에게 떠넘기고 있는 거다.',
-        author: UserProfile(
-          id: 'user1',
-          bias: Bias.left,
-          nickname: '뉴스독자',
-          imageUrl: null,
-        ),
-        createdAt: DateTime.now().subtract(Duration(minutes: 15)),
-        likeCount: 12,
-        isLiked: false,
-        replies: [
-        ],
-      ),
-      leftCount: 27,
-      centerCount: 32,
-      rightCount: 14,
-    ),
-    MajorUserOpinionComponent(
-      comment: Comment(
-        id: '2',
-        content: '설득이니 뭐니 해도 결국 전기요금 인상해서 국민 생활 어렵게 만들겠다는 거네...',
-        author: UserProfile(
-          id: 'user1',
-          nickname: '사회관찰자',
-          bias: Bias.left,
-          imageUrl: null,
-        ),
-        createdAt: DateTime.now().subtract(Duration(minutes: 15)),
-        likeCount: 12,
-        isLiked: false,
-        replies: [
-        ],
-      ),
-      leftCount: 27,
-      centerCount: 32,
-      rightCount: 14,
-    ),
 
     MajorUserOpinionComponent(
       comment: Comment(
         id: '3',
         content: '원전을 더 지으면 될일인데 과연 태양광 업계의 뒷돈을 얼마나 먹고 저렇게 시동을 거는지 ... 임기 끝날때는 정전 슬슬 나겠구만',
-        author: UserProfile(
-          id: 'user1',
+        userProfile: UserProfile(
+          userId: 'user1',
           nickname: '나무둥글',
           bias: Bias.left,
           imageUrl: null,
@@ -208,32 +168,13 @@ class _MajorUserOpinionViewState extends State<MajorUserOpinionView> with Ticker
   ];
   List<MajorUserOpinionComponent> cetnerOptions = [];
   List<MajorUserOpinionComponent> leftOpinions = [
-    MajorUserOpinionComponent(
-      comment: Comment(
-        id: '4',
-        content: '윤석열 검찰독재 정권이 망친 것이 한들이 아니죠. 그래도 어쩔 수없이 수출품 생산 공장부터 재생에너지 공급해야죠. 제일 먼저 해야 할 것은 석탄화력발전소부터 정지시켜야 합니다. 대신에 풍력발전소로 대체할 기회를 제공하는 것으로',
-        author: UserProfile(
-        id: 'user1',
-        nickname: '뉴스독자',
-        bias: Bias.left,
-        imageUrl: null,
-        ),
-        createdAt: DateTime.now().subtract(Duration(minutes: 15)),
-        likeCount: 12,
-        isLiked: false,
-        replies: [],
-      ),
-      leftCount: 27,
-      centerCount: 32,
-      rightCount: 14,
-    ),
 
     MajorUserOpinionComponent(
       comment: Comment(
         id: '4',
         content: '윤정부 들어서 전기요금으로 국민들이 너무 힘들어 하고 있습니다 환경문제 보다 더시급한게 서민이 살아가는 문제 입니다 윤정부에서 가스요금 전기요금 많이 올려놔 국민들은 삶에 시달리고 있어요',
-        author: UserProfile(
-          id: 'user1',
+        userProfile: UserProfile(
+          userId: 'user1',
           nickname: '뉴스독자',
           bias: Bias.left,
           imageUrl: null,

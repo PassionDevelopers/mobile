@@ -1,16 +1,14 @@
-import 'package:could_be/presentation/bias_test/bias_test_view.dart';
-import 'package:could_be/presentation/my_page/profile_manage/profile_manage_view.dart';
 import 'package:could_be/core/routes/route_names.dart';
 import 'package:could_be/domain/entities/hot_issues.dart';
+import 'package:could_be/presentation/bias_test/bias_test_view.dart';
 import 'package:could_be/presentation/customer_services/feedback_root.dart';
 import 'package:could_be/presentation/home/feed_view.dart';
 import 'package:could_be/presentation/hot_issue/hot_issue_view.dart';
 import 'package:could_be/presentation/init/root.dart';
 import 'package:could_be/presentation/issue_detail_feed/issue_detail_feed_root.dart';
-import 'package:could_be/presentation/issue_list/issue_type.dart';
-import 'package:could_be/presentation/issue_list/main/issue_list_root.dart';
 import 'package:could_be/presentation/my_page/manage_issue_evaluation_view.dart';
 import 'package:could_be/presentation/my_page/manage_source_evaluation/manage_source_evaluation_view.dart';
+import 'package:could_be/presentation/my_page/profile_manage/profile_manage_view.dart';
 import 'package:could_be/presentation/notice/notice_view.dart';
 import 'package:could_be/presentation/setting/setting_view.dart';
 import 'package:could_be/presentation/topic/whole_topics/whole_topic_view.dart';
@@ -19,6 +17,7 @@ import 'package:could_be/presentation/update_management/need_update.dart';
 import 'package:could_be/presentation/update_management/unsupported_device.dart';
 import 'package:could_be/presentation/web_view/web_view_view.dart';
 import 'package:go_router/go_router.dart';
+
 import '../../domain/entities/article.dart';
 import '../../presentation/blind_spot/blind_spot_root.dart';
 import '../../presentation/home/home_view.dart';
@@ -244,7 +243,7 @@ final router = GoRouter(
     ),
     GoRoute(
       path: RouteNames.biasTest,
-      builder: (context, state) => PMTITestPage()
+      builder: (context, state) => PoliticalTestPage()
       ),
 
     //customer services

@@ -1,15 +1,7 @@
-import 'dart:developer';
 
-import 'package:could_be/core/components/buttons/back_button.dart';
-import 'package:could_be/core/components/cards/issue_detail_title_card.dart';
-import 'package:could_be/core/components/cards/text_card.dart';
 import 'package:could_be/core/components/chips/blind_chip.dart';
 import 'package:could_be/core/components/image/image_container.dart';
-import 'package:could_be/core/components/layouts/nested_page_view.dart';
-import 'package:could_be/core/components/title/big_title.dart';
-import 'package:could_be/core/method/text_parsing.dart';
 import 'package:could_be/core/components/text/interactive_text.dart';
-import 'package:could_be/presentation/issue_detail_feed/components/move_to_next_button.dart';
 import 'package:could_be/ui/color.dart';
 import 'package:could_be/ui/fonts.dart';
 import 'package:flutter/material.dart';

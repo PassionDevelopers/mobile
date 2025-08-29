@@ -1,35 +1,27 @@
-
-import 'package:could_be/domain/entities/reply.dart';
 import 'package:could_be/domain/entities/user_profile.dart';
 
-class Comment {
+class Reply{
   final String id;
   final String content;
   final DateTime createdAt;
   final int likeCount;
   final bool isDeleted;
   final List<String> source;
-  final bool isShowReplies;
-
   final UserProfile userProfile;
-
   final bool isLiked;
-  final List<Reply> replies;
 
-  const Comment({
+  const Reply({
     required this.id,
     required this.content,
     required this.createdAt,
-    required this.likeCount,
+    this.likeCount = 0,
     this.isDeleted = false,
     this.source = const [],
     required this.userProfile,
     this.isLiked = false,
-    this.replies = const [],
-    this.isShowReplies = false,
   });
 
-  Comment copyWith({
+  Reply copyWith({
     String? id,
     String? content,
     DateTime? createdAt,
@@ -38,10 +30,8 @@ class Comment {
     List<String>? source,
     UserProfile? userProfile,
     bool? isLiked,
-    List<Reply>? replies,
-    bool? isShowReplies,
   }) {
-    return Comment(
+    return Reply(
       id: id ?? this.id,
       content: content ?? this.content,
       createdAt: createdAt ?? this.createdAt,
@@ -50,8 +40,6 @@ class Comment {
       source: source ?? this.source,
       userProfile: userProfile ?? this.userProfile,
       isLiked: isLiked ?? this.isLiked,
-      replies: replies ?? this.replies,
-      isShowReplies: isShowReplies ?? this.isShowReplies,
     );
   }
 }

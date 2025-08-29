@@ -1,18 +1,10 @@
 
-import 'dart:developer';
-import 'dart:math' hide log;
-
-import 'package:autoscale_tabbarview/autoscale_tabbarview.dart';
-import 'package:could_be/core/components/cards/issue_detail_title_card.dart';
-import 'package:could_be/core/components/cards/text_card.dart';
 import 'package:could_be/core/components/layouts/text_helper.dart';
 import 'package:could_be/core/components/loading/not_found.dart';
-import 'package:could_be/core/components/title/big_title.dart';
-import 'package:could_be/presentation/issue_detail_feed/components/move_to_next_button.dart';
 import 'package:flutter/material.dart';
 
-import '../../../core/method/bias/bias_enum.dart';
 import '../../../core/components/chips/key_word_chip_component.dart';
+import '../../../core/method/bias/bias_enum.dart';
 import '../../../core/method/bias/bias_method.dart';
 import '../../../core/method/text_parsing.dart';
 import '../../../core/themes/margins_paddings.dart';
@@ -24,14 +16,12 @@ class IssueDetailTabs extends StatefulWidget {
   const IssueDetailTabs({super.key,
     required this.fontSize,
     required this.issue,
-    required this.moveToNextPage,
     required this.postDasiScore,
     required this.isSpread,
     required this.spreadCallback,
   });
 
   final IssueDetail issue;
-  final VoidCallback moveToNextPage;
   final double fontSize;
   final VoidCallback postDasiScore;
   final bool isSpread;

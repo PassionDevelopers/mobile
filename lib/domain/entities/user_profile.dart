@@ -1,25 +1,26 @@
 import '../../core/method/bias/bias_enum.dart';
 
 class UserProfile{
-  final String id;
+  final String? userId;
   final Bias bias;
   final String nickname;
   final String? imageUrl;
 
   UserProfile({
-    required this.id,
-    required this.bias, required this.nickname, required this.imageUrl
-  });
+    required this.userId,
+    required this.bias,
+    required nickname,
+    required this.imageUrl
+  }) : nickname = nickname ?? '(탈퇴한 사용자)';
 
   UserProfile copyWith({
-    String? id,
     Bias? bias,
     String? nickname,
     String? imageUrl,
     bool? clearImage,
   }){
     return UserProfile(
-      id: id ?? this.id,
+      userId: userId,
       bias: bias ?? this.bias,
       nickname: nickname ?? this.nickname,
       imageUrl: clearImage == true? null : (imageUrl ?? this.imageUrl),

@@ -7,14 +7,16 @@ part 'user_profile_dto.g.dart';
 
 @JsonSerializable()
 class UserProfileDTO {
-  final String perspective;
-  final String nickname;
+  final String? userId;
+  final String politicalPreference;
+  final String? nickname;
   final String? imageUrl;
 
   UserProfileDTO({
-    required this.perspective,
-    required this.nickname,
-    required this.imageUrl,
+    required this.politicalPreference,
+    this.userId,
+    this.nickname,
+    this.imageUrl,
 });
 
   factory UserProfileDTO.fromJson(Map<String, dynamic> json) =>
@@ -27,9 +29,9 @@ extension UserProfileDtx on UserProfileDTO {
 
   UserProfile toDomain() {
     return UserProfile(
-      id: '',
+      userId: userId,
       nickname: nickname,
-      bias: getBiasFromString(perspective),
+      bias: getBiasFromString(politicalPreference),
       imageUrl: imageUrl,
     );
   }
