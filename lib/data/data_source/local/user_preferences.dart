@@ -19,6 +19,10 @@ class UserPreferences{
   static Future<bool?> setIdToken(String idToken) async => await _preferences?.setString(_keyIdToken, idToken);
   static String? getIdToken() => _preferences?.getString(_keyIdToken);
 
+  static const _keyGuestUid = 'GuestUid';
+  static Future<bool?> setGuestUid(String guestUid) async => await _preferences?.setString(_keyGuestUid, guestUid);
+  static String? getGuestUid() => _preferences?.getString(_keyGuestUid);
+
   static const _keyWatchedArticles = 'WatchedArticles';
   static Future<bool?> setWatchedArticles(List<String> watchedArticles) async => await _preferences?.setStringList(_keyWatchedArticles, watchedArticles);
   static List<String>? getWatchedArticles() => _preferences?.getStringList(_keyWatchedArticles);
@@ -26,5 +30,15 @@ class UserPreferences{
   static const _keyPostedDasiScore = 'PostedDasiScore';
   static Future<bool?> setPostedDasiScore(List<String> postedDasiScore) async => await _preferences?.setStringList(_keyPostedDasiScore, postedDasiScore);
   static List<String>? getPostedDasiScore() => _preferences?.getStringList(_keyPostedDasiScore);
+
+  // 유저가 알림 승인 요청에 답변했는지 체크
+  static const _keyNotificationPermissionRequested = 'NotificationPermissionRequested';
+  static Future<bool?> setNotificationPermissionRequested(bool requested) async => await _preferences?.setBool(_keyNotificationPermissionRequested, requested);
+  static bool? getNotificationPermissionRequested() => _preferences?.getBool(_keyNotificationPermissionRequested);
+
+  // 유저 프로필 이미지 url
+  static const _keyUserProfileImageUrl = 'UserProfileImageUrl';
+  static Future<bool?> setUserProfileImageUrl(String imageUrl) async => await _preferences?.setString(_keyUserProfileImageUrl, imageUrl);
+  static String? getUserProfileImageUrl() => _preferences?.getString(_keyUserProfileImageUrl);
 
 }

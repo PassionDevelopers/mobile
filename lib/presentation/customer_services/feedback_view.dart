@@ -22,7 +22,7 @@ class FeedbackView extends StatefulWidget {
 
 class _FeedbackViewState extends State<FeedbackView> {
   final _formKey = GlobalKey<FormState>();
-  final _nameController = TextEditingController();
+  // final _nameController = TextEditingController();
   final _emailController = TextEditingController();
   final _titleController = TextEditingController();
   final _contentController = TextEditingController();
@@ -47,7 +47,7 @@ class _FeedbackViewState extends State<FeedbackView> {
 
   @override
   void dispose() {
-    _nameController.dispose();
+    // _nameController.dispose();
     _emailController.dispose();
     _titleController.dispose();
     _contentController.dispose();
@@ -117,20 +117,20 @@ class _FeedbackViewState extends State<FeedbackView> {
                     ),
                     SizedBox(height: MyPaddings.large),
 
-                    // Name Field
-                    _buildSectionTitle('이름'),
-                    SizedBox(height: MyPaddings.small),
-                    _buildTextField(
-                      controller: _nameController,
-                      hintText: '이름을 입력해주세요',
-                      validator: (value) {
-                        if (value == null || value.trim().isEmpty) {
-                          return '이름을 입력해주세요';
-                        }
-                        return null;
-                      },
-                    ),
-                    SizedBox(height: MyPaddings.large),
+                    // // Name Field
+                    // _buildSectionTitle('이름'),
+                    // SizedBox(height: MyPaddings.small),
+                    // _buildTextField(
+                    //   controller: _nameController,
+                    //   hintText: '이름을 입력해주세요',
+                    //   validator: (value) {
+                    //     if (value == null || value.trim().isEmpty) {
+                    //       return '이름을 입력해주세요';
+                    //     }
+                    //     return null;
+                    //   },
+                    // ),
+                    // SizedBox(height: MyPaddings.large),
 
                     // Email Field
                     _buildSectionTitle('이메일'),
@@ -140,10 +140,10 @@ class _FeedbackViewState extends State<FeedbackView> {
                       hintText: '답변을 받을 이메일을 입력해주세요',
                       keyboardType: TextInputType.emailAddress,
                       validator: (value) {
-                        if (value == null || value.trim().isEmpty) {
-                          return '이메일을 입력해주세요';
-                        }
-                        if (!RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$')
+                        // if (value == null || value.trim().isEmpty) {
+                        //   return '이메일을 입력해주세요';
+                        // }
+                        if (value != null && value.trim().isNotEmpty && !RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$')
                             .hasMatch(value)) {
                           return '올바른 이메일 형식을 입력해주세요';
                         }
@@ -158,17 +158,17 @@ class _FeedbackViewState extends State<FeedbackView> {
                     _buildTextField(
                       controller: _titleController,
                       hintText: '제목을 입력해주세요',
-                      validator: (value) {
-                        if (value == null || value.trim().isEmpty) {
-                          return '제목을 입력해주세요';
-                        }
-                        return null;
-                      },
+                      // validator: (value) {
+                      //   if (value == null || value.trim().isEmpty) {
+                      //     return '제목을 입력해주세요';
+                      //   }
+                      //   return null;
+                      // },
                     ),
                     SizedBox(height: MyPaddings.large),
 
                     // Content Field
-                    _buildSectionTitle('내용'),
+                    _buildSectionTitle('내용*'),
                     SizedBox(height: MyPaddings.small),
                     _buildTextField(
                       controller: _contentController,
@@ -191,7 +191,7 @@ class _FeedbackViewState extends State<FeedbackView> {
                       listenable: _viewModel,
                       builder: (context, _) {
                         return BigButton(
-                          '피드백 보내기',
+                          text: '피드백 보내기',
                           onPressed: _viewModel.state.isSubmitting
                               ? () {}
                               : () => _submitFeedback(),
@@ -255,7 +255,7 @@ class _FeedbackViewState extends State<FeedbackView> {
     try {
       await _viewModel.submitFeedback(
         category: _selectedCategory,
-        name: _nameController.text.trim(),
+        // name: _nameController.text.trim(),
         email: _emailController.text.trim(),
         title: _titleController.text.trim(),
         content: _contentController.text.trim(),

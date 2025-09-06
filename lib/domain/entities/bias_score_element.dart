@@ -13,6 +13,9 @@ class BiasScoreElement {
 
   double checkFuturePast(double scoreSum) {
     final DateTime now = DateTime.now();
+    return scoreSum;
+
+    //최근으로 바꾸기 전
     if(period.weekday == null){
       // 연간 데이터
       if(period.week == null){

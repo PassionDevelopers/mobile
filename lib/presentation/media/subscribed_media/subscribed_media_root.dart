@@ -4,6 +4,7 @@ import 'package:could_be/core/components/loading/media_loading_view.dart';
 import 'package:could_be/core/components/loading/news_list_loading_view.dart';
 import 'package:could_be/core/components/loading/not_found.dart';
 import 'package:could_be/core/di/di_setup.dart';
+import 'package:could_be/core/events/tab_reselection_event.dart';
 import 'package:could_be/core/routes/route_names.dart';
 import 'package:could_be/ui/color.dart';
 import 'package:could_be/ui/fonts.dart';
@@ -28,6 +29,7 @@ class SubscribedMediaRoot extends StatefulWidget {
 class _SubscribedMediaRootState extends State<SubscribedMediaRoot> {
   late SubscribedMediaViewModel viewModel;
   StreamSubscription? eventSubscription;
+  StreamSubscription<int>? _tabReselectionSubscription;
   final ScrollController scrollController = ScrollController();
 
   @override
@@ -49,12 +51,26 @@ class _SubscribedMediaRootState extends State<SubscribedMediaRoot> {
         );
       }
     });
+    
+    // 탭 재선택 이벤트 리스닝
+    _tabReselectionSubscription = TabReselectionEvent.stream.listen((tabIndex) {
+      // 언론 탭(3)이 재선택되었을 때
+      if (tabIndex == 3) {
+        scrollController.animateTo(
+          0,
+          duration: Duration(milliseconds: 300),
+          curve: Curves.easeOut,
+        );
+      }
+    });
   }
 
   @override
   dispose() {
     eventSubscription?.cancel();
+    _tabReselectionSubscription?.cancel();
     viewModel.dispose();
+    scrollController.dispose();
     super.dispose();
   }
 

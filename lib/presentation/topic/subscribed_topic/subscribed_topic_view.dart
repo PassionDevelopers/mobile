@@ -24,8 +24,7 @@ class SubscribedTopicView extends StatelessWidget {
       listenable: viewModel,
       builder: (context, _) {
         final state = viewModel.state;
-        bool isTopicEmpty =
-            state.topics != null && state.topics!.topics.isEmpty;
+        bool isTopicEmpty = state.topics != null && state.topics!.topics.isEmpty;
         return Column(
           children: [
             Column(

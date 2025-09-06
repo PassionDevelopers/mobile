@@ -1,9 +1,12 @@
 import 'dart:async';
 
+import 'package:could_be/presentation/log_in/login_pop_up.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:could_be/core/components/alert/dialog.dart';
 import 'package:could_be/core/components/app_bar/app_bar.dart';
 import 'package:could_be/core/components/buttons/big_button.dart';
 import 'package:could_be/core/di/di_setup.dart';
+import 'package:could_be/core/events/tab_reselection_event.dart';
 import 'package:could_be/core/method/bias/bias_enum.dart';
 import 'package:could_be/core/routes/route_names.dart';
 import 'package:could_be/presentation/log_in/login_view.dart';
@@ -18,6 +21,9 @@ import 'package:go_router/go_router.dart';
 
 import '../../../core/themes/margins_paddings.dart';
 import '../../../core/analytics/unified_analytics_helper.dart';
+import '../../../core/analytics/analytics_event_names.dart';
+import '../../../core/analytics/analytics_parameter_keys.dart';
+import '../../../core/analytics/analytics_screen_names.dart';
 
 class MyPageView extends StatefulWidget {
   const MyPageView({
@@ -43,6 +49,9 @@ class MyPageView extends StatefulWidget {
 
 class _MyPageViewState extends State<MyPageView> {
   late final MyPageViewModel viewModel;
+  final ScrollController scrollController = ScrollController();
+  StreamSubscription<int>? _tabReselectionSubscription;
+  StreamSubscription<User?>? _authStateSubscription;
 
   Widget _buildQuickActionsGrid() {
     return Column(
@@ -63,10 +72,12 @@ class _MyPageViewState extends State<MyPageView> {
               title: '관심 이슈',
               count: '',
               onTap: () {
-                UnifiedAnalyticsHelper.logButtonTap(
-                  module: 'my_page',
-                  buttonName: 'subscribed_issues',
-                  parameters: {'action': 'tap_subscribed_issues'},
+                UnifiedAnalyticsHelper.logEvent(
+                  name: AnalyticsEventNames.buttonTap('my_page', 'subscribed_issues'),
+                  parameters: {
+                    AnalyticsParameterKeys.module: AnalyticsScreenNames.myPageScreen,
+                    AnalyticsParameterKeys.action: 'tap_subscribed_issues',
+                  },
                 );
                 widget.toSubscribedIssue();
               },
@@ -76,10 +87,12 @@ class _MyPageViewState extends State<MyPageView> {
               title: '관심 언론',
               count: '',
               onTap: () {
-                UnifiedAnalyticsHelper.logButtonTap(
-                  module: 'my_page',
-                  buttonName: 'subscribed_media',
-                  parameters: {'action': 'tap_subscribed_media'},
+                UnifiedAnalyticsHelper.logEvent(
+                  name: AnalyticsEventNames.buttonTap('my_page', 'subscribed_media'),
+                  parameters: {
+                    AnalyticsParameterKeys.module: AnalyticsScreenNames.myPageScreen,
+                    AnalyticsParameterKeys.action: 'tap_subscribed_media',
+                  },
                 );
                 widget.toManageMediaSubscription();
               },
@@ -89,10 +102,12 @@ class _MyPageViewState extends State<MyPageView> {
               title: '관심 토픽',
               count: '',
               onTap: () {
-                UnifiedAnalyticsHelper.logButtonTap(
-                  module: 'my_page',
-                  buttonName: 'subscribed_topics',
-                  parameters: {'action': 'tap_subscribed_topics'},
+                UnifiedAnalyticsHelper.logEvent(
+                  name: AnalyticsEventNames.buttonTap('my_page', 'subscribed_topics'),
+                  parameters: {
+                    AnalyticsParameterKeys.module: AnalyticsScreenNames.myPageScreen,
+                    AnalyticsParameterKeys.action: 'tap_subscribed_topics',
+                  },
                 );
                 widget.toManageTopicSubscription();
               },
@@ -102,10 +117,12 @@ class _MyPageViewState extends State<MyPageView> {
               title: '본 이슈',
               count: '',
               onTap: () {
-                UnifiedAnalyticsHelper.logButtonTap(
-                  module: 'my_page',
-                  buttonName: 'watch_history',
-                  parameters: {'action': 'tap_watch_history'},
+                UnifiedAnalyticsHelper.logEvent(
+                  name: AnalyticsEventNames.buttonTap('my_page', 'watch_history'),
+                  parameters: {
+                    AnalyticsParameterKeys.module: AnalyticsScreenNames.myPageScreen,
+                    AnalyticsParameterKeys.action: 'tap_watch_history',
+                  },
                 );
                 widget.toWatchHistory();
               },
@@ -115,10 +132,12 @@ class _MyPageViewState extends State<MyPageView> {
               title: '평가한 이슈',
               count: '',
               onTap: () {
-                UnifiedAnalyticsHelper.logButtonTap(
-                  module: 'my_page',
-                  buttonName: 'evaluated_issues',
-                  parameters: {'action': 'tap_evaluated_issues'},
+                UnifiedAnalyticsHelper.logEvent(
+                  name: AnalyticsEventNames.buttonTap('my_page', 'evaluated_issues'),
+                  parameters: {
+                    AnalyticsParameterKeys.module: AnalyticsScreenNames.myPageScreen,
+                    AnalyticsParameterKeys.action: 'tap_evaluated_issues',
+                  },
                 );
                 widget.toManageIssueEvaluation();
               },
@@ -128,10 +147,12 @@ class _MyPageViewState extends State<MyPageView> {
               title: '평가한 언론',
               count: '',
               onTap: () {
-                UnifiedAnalyticsHelper.logButtonTap(
-                  module: 'my_page',
-                  buttonName: 'evaluated_media',
-                  parameters: {'action': 'tap_evaluated_media'},
+                UnifiedAnalyticsHelper.logEvent(
+                  name: AnalyticsEventNames.buttonTap('my_page', 'evaluated_media'),
+                  parameters: {
+                    AnalyticsParameterKeys.module: AnalyticsScreenNames.myPageScreen,
+                    AnalyticsParameterKeys.action: 'tap_evaluated_media',
+                  },
                 );
                 widget.toManageSourceEvaluation();
               },
@@ -200,11 +221,34 @@ class _MyPageViewState extends State<MyPageView> {
         showAlert(context: context, msg: event.toString());
       }
     });
+    
+    // Firebase Auth 상태 변경 리스너 추가
+    _authStateSubscription = getIt<FirebaseAuth>().authStateChanges().listen((User? user) {
+      if (mounted) {
+        // 로그인 상태가 변경되었을 때 (로그인/로그아웃)
+        viewModel.refresh();
+      }
+    });
+    
+    // 탭 재선택 이벤트 리스닝
+    _tabReselectionSubscription = TabReselectionEvent.stream.listen((tabIndex) {
+      // 마이페이지 탭(4)이 재선택되었을 때
+      if (tabIndex == 4) {
+        scrollController.animateTo(
+          0,
+          duration: Duration(milliseconds: 300),
+          curve: Curves.easeOut,
+        );
+      }
+    });
   }
 
   @override
   void dispose() {
     eventSubscription?.cancel();
+    _authStateSubscription?.cancel();
+    _tabReselectionSubscription?.cancel();
+    scrollController.dispose();
     viewModel.dispose();
     super.dispose();
   }
@@ -212,13 +256,14 @@ class _MyPageViewState extends State<MyPageView> {
   @override
   Widget build(BuildContext context) {
 
-    return Stack(
-      children: [
-        RefreshIndicator(
-          onRefresh: () async {
-            viewModel.refresh();
-          },
-          child: SingleChildScrollView(
+    return RefreshIndicator(
+      onRefresh: () async {
+        viewModel.refresh();
+      },
+      child: Stack(
+        children: [
+          SingleChildScrollView(
+            controller: scrollController,
             child: Column(
               children: [
                 RegAppBar(
@@ -234,10 +279,32 @@ class _MyPageViewState extends State<MyPageView> {
                   ],
                 ),
                 SizedBox(height: MyPaddings.extraLarge),
-                MyPageHeader(viewModel: viewModel),
-
+                InkWell(
+                  onTap: () {
+                    context.push(RouteNames.onboarding);
+                  },
+                  child: Ink(
+                    padding: EdgeInsets.all(MyPaddings.large),
+                    // margin: EdgeInsets.symmetric(horizontal: MyPaddings.large),
+                    decoration: BoxDecoration(
+                      color: AppColors.white,
+                      borderRadius: BorderRadius.circular(20),
+                      boxShadow: [
+                        BoxShadow(
+                          color: AppColors.gray3.withOpacity(0.05),
+                          blurRadius: 10,
+                          offset: Offset(0, 4),
+                        ),
+                      ],
+                    ),
+                    child: Text('온보딩'),
+                  ),
+                ),
                 SizedBox(height: MyPaddings.extraLarge),
-
+                MyPageHeader(viewModel: viewModel),
+                SizedBox(height: MyPaddings.extraLarge),
+                if(viewModel.state.isGuestLogin) LoginPopUp(isMyPage: true,) ,
+                if(viewModel.state.isGuestLogin) SizedBox(height: MyPaddings.extraLarge),
                 Padding(
                   padding: EdgeInsets.symmetric(
                     horizontal: MyPaddings.large,
@@ -264,32 +331,32 @@ class _MyPageViewState extends State<MyPageView> {
               ],
             ),
           ),
-        ),
-        ListenableBuilder(
-          listenable: viewModel,
-          builder: (context, _) {
-            if (viewModel.state.isGuestLogin) {
-              return Center(
-                child: Container(
-                  width: double.infinity,
-                  height: double.infinity,
-                  decoration: BoxDecoration(
-                    color: AppColors.black.withAlpha(180),
-                  ),
-                  child: LoginView(
-                    onLoginSuccess: () {
-                      viewModel.checkIsGuestLogin();
-                      viewModel.refresh();
-                    },
-                  ),
-                ),
-              );
-            } else {
-              return const SizedBox.shrink();
-            }
-          },
-        ),
-      ],
+          // ListenableBuilder(
+          //   listenable: viewModel,
+          //   builder: (context, _) {
+          //     if (viewModel.state.isGuestLogin) {
+          //       return Center(
+          //         child: Container(
+          //           width: double.infinity,
+          //           height: double.infinity,
+          //           decoration: BoxDecoration(
+          //             color: AppColors.black.withAlpha(180),
+          //           ),
+          //           child: LoginView(
+          //             onLoginSuccess: () {
+          //               viewModel.checkIsGuestLogin();
+          //               viewModel.refresh();
+          //             },
+          //           ),
+          //         ),
+          //       );
+          //     } else {
+          //       return const SizedBox.shrink();
+          //     }
+          //   },
+          // ),
+        ],
+      ),
     );
   }
 }

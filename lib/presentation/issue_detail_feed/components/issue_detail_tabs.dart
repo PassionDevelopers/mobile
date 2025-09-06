@@ -1,18 +1,10 @@
 
-import 'dart:developer';
-import 'dart:math' hide log;
-
-import 'package:autoscale_tabbarview/autoscale_tabbarview.dart';
-import 'package:could_be/core/components/cards/issue_detail_title_card.dart';
-import 'package:could_be/core/components/cards/text_card.dart';
 import 'package:could_be/core/components/layouts/text_helper.dart';
 import 'package:could_be/core/components/loading/not_found.dart';
-import 'package:could_be/core/components/title/big_title.dart';
-import 'package:could_be/presentation/issue_detail_feed/components/move_to_next_button.dart';
 import 'package:flutter/material.dart';
 
-import '../../../core/method/bias/bias_enum.dart';
 import '../../../core/components/chips/key_word_chip_component.dart';
+import '../../../core/method/bias/bias_enum.dart';
 import '../../../core/method/bias/bias_method.dart';
 import '../../../core/method/text_parsing.dart';
 import '../../../core/themes/margins_paddings.dart';
@@ -24,14 +16,16 @@ class IssueDetailTabs extends StatefulWidget {
   const IssueDetailTabs({super.key,
     required this.fontSize,
     required this.issue,
-    required this.moveToNextPage,
     required this.postDasiScore,
+    required this.isSpread,
+    required this.spreadCallback,
   });
 
   final IssueDetail issue;
-  final VoidCallback moveToNextPage;
   final double fontSize;
   final VoidCallback postDasiScore;
+  final bool isSpread;
+  final VoidCallback spreadCallback;
 
   @override
   State<IssueDetailTabs> createState() => _IssueDetailTabsState();
@@ -98,6 +92,7 @@ class _IssueDetailTabsState extends State<IssueDetailTabs>
   }) {
     return text == null? bias == Bias.center?
         Row(
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
             IconButton(
               icon: Icon(Icons.keyboard_arrow_left_outlined, color: AppColors.gray2),
@@ -195,74 +190,82 @@ class _IssueDetailTabsState extends State<IssueDetailTabs>
       ),
       child: Column(
         children: [
-          Container(
-            padding: EdgeInsets.all(MyPaddings.large),
-            decoration: BoxDecoration(
-              border: Border(
-                bottom: BorderSide(
-                  color: AppColors.gray5,
-                  width: 1,
+          GestureDetector(
+            onTap: widget.spreadCallback,
+            child: Container(
+              padding: EdgeInsets.all(MyPaddings.large),
+              decoration: BoxDecoration(
+                border: Border(
+                  bottom: BorderSide(
+                    color: AppColors.gray5,
+                    width: 1,
+                  ),
                 ),
               ),
-            ),
-            child: Row(
-              children: [
-                Icon(
-                  Icons.balance,
-                  color: AppColors.primary,
-                  size: 24,
-                ),
-                SizedBox(width: MyPaddings.medium),
-                Text(
-                  '성향별 관점 요약',
-                  style: MyFontStyle.h2.copyWith(
+              child: Row(
+                children: [
+                  Icon(
+                    Icons.balance,
                     color: AppColors.primary,
-                    fontWeight: FontWeight.w600,
+                    size: 24,
                   ),
-                ),
-              ],
+                  SizedBox(width: MyPaddings.medium),
+                  Text(
+                    '성향별 관점 요약',
+                    style: MyFontStyle.h2.copyWith(
+                      color: AppColors.primary,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                  Spacer(),
+                  Icon(
+                    widget.isSpread ? Icons.keyboard_arrow_up : Icons.keyboard_arrow_down,
+                  ),
+                ],
+              ),
             ),
           ),
-          Padding(
-            padding: EdgeInsets.all(MyPaddings.large),
-            child: Column(
-              children: [
-                Container(
-                  padding: EdgeInsets.all(4),
-                  decoration: BoxDecoration(
-                    color: AppColors.gray5,
-                    borderRadius: BorderRadius.circular(12),
+          if(widget.isSpread)
+            Padding(
+              padding: EdgeInsets.all(MyPaddings.large),
+              child: Column(
+                children: [
+                  Container(
+                    padding: EdgeInsets.all(4),
+                    decoration: BoxDecoration(
+                      color: AppColors.gray5,
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                    child: Row(
+                      children: List.generate(3, (index) {
+                        return _buildTab(index);
+                      }),
+                    ),
                   ),
-                  child: Row(
-                    children: List.generate(3, (index) {
-                      return _buildTab(index);
-                    }),
+                  SizedBox(height: MyPaddings.large),
+                  AutoSizedTabBarView(
+                    tabController: _tabController,
+                    children: [
+                      _buildTabViewPage(
+                        bias: Bias.left,
+                        text: issue.leftSummary,
+                        keywords: issue.leftKeywords,
+                      ),
+                      _buildTabViewPage(
+                        bias: Bias.center,
+                        text: issue.centerSummary,
+                        keywords: issue.centerKeywords,
+                      ),
+                      _buildTabViewPage(
+                        bias: Bias.right,
+                        text: issue.rightSummary,
+                        keywords: issue.rightKeywords,
+                      ),
+                    ],
                   ),
-                ),
-                SizedBox(height: MyPaddings.large),
-                AutoSizedTabBarView(
-                  tabController: _tabController,
-                  children: [
-                    _buildTabViewPage(
-                      bias: Bias.left,
-                      text: issue.leftSummary,
-                      keywords: issue.leftKeywords,
-                    ),
-                    _buildTabViewPage(
-                      bias: Bias.center,
-                      text: issue.centerSummary,
-                      keywords: issue.centerKeywords,
-                    ),
-                    _buildTabViewPage(
-                      bias: Bias.right,
-                      text: issue.rightSummary,
-                      keywords: issue.rightKeywords,
-                    ),
-                  ],
-                ),
-              ],
+                ],
+              ),
             ),
-          ),
         ],
       ),
     );

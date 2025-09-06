@@ -1,6 +1,7 @@
 import 'package:could_be/core/components/alert/toast.dart';
 import 'package:could_be/core/events/topic_subscription_events.dart';
 import 'package:could_be/domain/entities/topic.dart';
+import 'package:could_be/domain/useCases/firebase_login_use_case.dart';
 import 'package:could_be/domain/useCases/search_topics_use_case.dart';
 import 'package:could_be/presentation/topic/whole_topics/whole_topic_state.dart';
 import 'package:flutter/cupertino.dart';
@@ -12,14 +13,17 @@ class WholeTopicViewModel extends ChangeNotifier {
   final FetchTopicsUseCase _fetchTopicsUseCase;
   final SearchTopicsUseCase _searchTopicsUseCase;
   final ManageTopicSubscriptionUseCase _manageTopicSubscriptionUseCase;
+  final FirebaseLoginUseCase _firebaseLoginUseCase;
 
   WholeTopicViewModel({
     required FetchTopicsUseCase fetchTopicsUseCase,
     required SearchTopicsUseCase searchTopicsUseCase,
+    required FirebaseLoginUseCase firebaseLoginUseCase,
     required ManageTopicSubscriptionUseCase manageTopicSubscriptionUseCase,
     required String category,
   }) : _fetchTopicsUseCase = fetchTopicsUseCase,
         _searchTopicsUseCase = searchTopicsUseCase,
+        _firebaseLoginUseCase = firebaseLoginUseCase,
        _manageTopicSubscriptionUseCase = manageTopicSubscriptionUseCase {
     for(final category in Categories.values) {
       _fetchSpecificCategoryTopics(category);
@@ -87,20 +91,20 @@ class WholeTopicViewModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> manageTopicSubscription(String topicId) async {
-    final topic = state.topics!.topics.firstWhere(
-      (topic) => topic.id == topicId,
-    );
+  Future<void> manageTopicSubscription({required String topicId, required BuildContext context}) async {
+    if( !_firebaseLoginUseCase.isNeedLoginPopUp(context)) {
+      final topic = state.topics!.topics.firstWhere((topic) => topic.id == topicId);
 
-    if (topic.isSubscribed) {
-      await unsubscribeTopicByTopicId(topicId);
-    } else {
-      await subscribeTopicByTopicId(topicId);
+      if (topic.isSubscribed) {
+        await unsubscribeTopicByTopicId(topicId);
+      } else {
+        await subscribeTopicByTopicId(topicId);
+      }
+      showMyToast(
+        msg: topic.isSubscribed ? "관심 토픽에서 해제하였습니다." : "관심 토픽으로 등록하였습니다.",
+      );
+      notifyListeners();
     }
-    showMyToast(
-      msg: topic.isSubscribed ? "관심 토픽에서 해제하였습니다." : "관심 토픽으로 등록하였습니다.",
-    );
-    notifyListeners();
   }
 
   Future<void> subscribeTopicByTopicId(String topicId) async {

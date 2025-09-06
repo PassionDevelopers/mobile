@@ -9,6 +9,8 @@ abstract class WholeBiasScoreRepository{
 
   Future<WholeBiasScore> fetchWholeBiasScore();
 
-  Future<BiasScoreHistory> fetchBiasScoreHistory({required int year, int? month, int? week});
+  Future<BiasScoreHistory> fetchBiasScoreHistory({required BiasScorePeriod period});
+
+  void updateWholeBiasScore(WholeBiasScore wholeBiasScore);
 
 }

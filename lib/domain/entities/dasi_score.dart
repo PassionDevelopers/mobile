@@ -1,6 +1,6 @@
 class DasiScore{
   final double score;
-  final DateTime createdAt;
+  final DateTime? createdAt;
   final String userId;
 
   const DasiScore({

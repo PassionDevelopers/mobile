@@ -13,9 +13,9 @@ class FeedbackViewModel extends ChangeNotifier {
 
   Future<void> submitFeedback({
     required String category,
-    required String name,
-    required String email,
-    required String title,
+    // required String name,
+    required String? email,
+    required String? title,
     required String content,
   }) async {
     _state = _state.copyWith(isSubmitting: true, errorMessage: null);
@@ -24,7 +24,7 @@ class FeedbackViewModel extends ChangeNotifier {
     try {
       await _submitFeedbackUseCase.execute(
         category: category,
-        name: name,
+        // name: name,
         email: email,
         title: title,
         content: content,

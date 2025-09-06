@@ -1,4 +1,7 @@
+import 'package:could_be/data/dto/whole_bias_score_dto.dart';
 import 'package:could_be/domain/entities/bias_score.dart';
+
+import '../../data/dto/bias_score_dto.dart';
 
 class WholeBiasScore {
   final BiasScore politics;
@@ -29,5 +32,18 @@ class WholeBiasScore {
   }
   double getRightTotal() {
     return politics.right + economy.right + society.right + culture.right + technology.right + international.right;
+  }
+
+  WholeBiasScoreDto toDto() {
+    return WholeBiasScoreDto(
+      politics: politics.toDto(),
+      economy: economy.toDto(),
+      society: society.toDto(),
+      culture: culture.toDto(),
+      technology: technology.toDto(),
+      international: international.toDto(),
+      createdAt: createdAt,
+      userId: userId,
+    );
   }
 }

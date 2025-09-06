@@ -228,7 +228,6 @@ class _BiasHexagonState extends State<BiasHexagon> {
               tickBorderData: BorderSide(color: AppColors.gray4, width: 0.5),
               gridBorderData: BorderSide(color: AppColors.gray4, width: 0.5),
             ),
-            swapAnimationDuration: const Duration(milliseconds: 500),
           ),
         ),
       ],
@@ -239,8 +238,8 @@ class _BiasHexagonState extends State<BiasHexagon> {
     final isSelected = bias == widget.biasNow;
     final color = getBiasColor(bias);
     return RadarDataSet(
-      fillColor: color.withOpacity(isSelected ? 0.25 : 0.15),
-      borderColor: isSelected ? color : color.withOpacity(0.8),
+      fillColor: color.withOpacity(isSelected ? 0.5 : 0.1),
+      borderColor: isSelected ? color : color.withOpacity(0.3),
       entryRadius: isSelected ? 4 : 3,
       dataEntries: values.map((e) => RadarEntry(value: e*1.0)).toList(),
       borderWidth: isSelected ? 3 : 2.5,

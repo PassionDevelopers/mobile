@@ -1,4 +1,5 @@
 import 'package:firebase_analytics/firebase_analytics.dart';
+import 'package:could_be/core/analytics/analytics_event_names.dart';
 import 'package:could_be/core/di/di_setup.dart';
 
 class FirebaseAnalyticsHelper {
@@ -11,7 +12,7 @@ class FirebaseAnalyticsHelper {
     Map<String, dynamic>? parameters,
   }) async {
     await _analytics.logEvent(
-      name: 'navigate_to_screen',
+      name: AnalyticsEventNames.navigateToScreen,
       parameters: {
         'from_screen': fromScreen,
         'to_screen': toScreen,
@@ -26,7 +27,7 @@ class FirebaseAnalyticsHelper {
     required String tabName,
   }) async {
     await _analytics.logEvent(
-      name: 'home_tap_navigation_tab',
+      name: AnalyticsEventNames.homeTabNavigation,
       parameters: {
         'tab_index': tabIndex,
         'tab_name': tabName,
@@ -40,7 +41,7 @@ class FirebaseAnalyticsHelper {
     required String success,
   }) async {
     await _analytics.logEvent(
-      name: 'auth_tap_${method}_login',
+      name: AnalyticsEventNames.authLogin(method),
       parameters: {
         'method': method,
         'success': success,
@@ -55,7 +56,7 @@ class FirebaseAnalyticsHelper {
     Map<String, dynamic>? additionalParams,
   }) async {
     await _analytics.logEvent(
-      name: 'issue_${action}_item',
+      name: AnalyticsEventNames.issueAction(action),
       parameters: {
         'issue_id': issueId,
         ...?additionalParams,
@@ -70,7 +71,7 @@ class FirebaseAnalyticsHelper {
     String? mediaName,
   }) async {
     await _analytics.logEvent(
-      name: 'media_${action}_item',
+      name: AnalyticsEventNames.mediaAction(action),
       parameters: {
         'media_id': mediaId,
         if (mediaName != null) 'media_name': mediaName,
@@ -85,7 +86,7 @@ class FirebaseAnalyticsHelper {
     String? topicName,
   }) async {
     await _analytics.logEvent(
-      name: 'topic_${action}_item',
+      name: AnalyticsEventNames.topicAction(action),
       parameters: {
         'topic_id': topicId,
         if (topicName != null) 'topic_name': topicName,
@@ -100,7 +101,7 @@ class FirebaseAnalyticsHelper {
     Map<String, String>? parameters,
   }) async {
     await _analytics.logEvent(
-      name: '${module}_tap_${buttonName}_button',
+      name: AnalyticsEventNames.buttonTap(module, buttonName),
       parameters: parameters,
     );
   }
@@ -112,7 +113,7 @@ class FirebaseAnalyticsHelper {
     Map<String, dynamic>? parameters,
   }) async {
     await _analytics.logEvent(
-      name: 'form_submit_${formName}',
+      name: AnalyticsEventNames.formSubmit(formName),
       parameters: {
         'success': success,
         ...?parameters,
@@ -127,7 +128,7 @@ class FirebaseAnalyticsHelper {
     required int index,
   }) async {
     await _analytics.logEvent(
-      name: '${module}_swipe_${itemType}',
+      name: AnalyticsEventNames.swipe(module, itemType),
       parameters: {
         'index': index,
       },
@@ -139,7 +140,7 @@ class FirebaseAnalyticsHelper {
     required String screenName,
   }) async {
     await _analytics.logEvent(
-      name: 'pull_to_refresh',
+      name: AnalyticsEventNames.pullToRefresh,
       parameters: {
         'screen': screenName,
       },
@@ -152,7 +153,7 @@ class FirebaseAnalyticsHelper {
     required String dialogName,
   }) async {
     await _analytics.logEvent(
-      name: 'dialog_${action}_${dialogName}',
+      name: AnalyticsEventNames.dialog(action, dialogName),
     );
   }
 
@@ -162,7 +163,7 @@ class FirebaseAnalyticsHelper {
     String? searchType,
   }) async {
     await _analytics.logEvent(
-      name: 'search',
+      name: AnalyticsEventNames.search,
       parameters: {
         'search_term': searchTerm,
         if (searchType != null) 'search_type': searchType,

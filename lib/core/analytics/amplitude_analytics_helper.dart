@@ -1,6 +1,7 @@
 import 'package:amplitude_flutter/amplitude.dart';
 import 'package:amplitude_flutter/events/base_event.dart';
 import 'package:amplitude_flutter/events/identify.dart';
+import 'package:could_be/core/analytics/analytics_event_names.dart';
 import 'package:could_be/core/di/di_setup.dart';
 
 class AmplitudeAnalyticsHelper {
@@ -14,7 +15,7 @@ class AmplitudeAnalyticsHelper {
   }) async {
     await _amplitude.track(
       BaseEvent(
-        'navigate_to_screen',
+        AnalyticsEventNames.navigateToScreen,
         eventProperties: {
           'from_screen': fromScreen,
           'to_screen': toScreen,
@@ -31,7 +32,7 @@ class AmplitudeAnalyticsHelper {
   }) async {
     await _amplitude.track(
       BaseEvent(
-        'home_tap_navigation_tab',
+        AnalyticsEventNames.homeTabNavigation,
         eventProperties: {
           'tab_index': tabIndex,
           'tab_name': tabName,
@@ -47,7 +48,7 @@ class AmplitudeAnalyticsHelper {
   }) async {
     await _amplitude.track(
       BaseEvent(
-        'auth_tap_${method}_login',
+        AnalyticsEventNames.authLogin(method),
         eventProperties: {
           'method': method,
           'success': success,
@@ -64,7 +65,7 @@ class AmplitudeAnalyticsHelper {
   }) async {
     await _amplitude.track(
       BaseEvent(
-        'issue_${action}_item',
+        AnalyticsEventNames.issueAction(action),
         eventProperties: {
           'issue_id': issueId,
           ...?additionalParams,
@@ -81,7 +82,7 @@ class AmplitudeAnalyticsHelper {
   }) async {
     await _amplitude.track(
       BaseEvent(
-        'media_${action}_item',
+        AnalyticsEventNames.mediaAction(action),
         eventProperties: {
           'media_id': mediaId,
           if (mediaName != null) 'media_name': mediaName,
@@ -98,7 +99,7 @@ class AmplitudeAnalyticsHelper {
   }) async {
     await _amplitude.track(
       BaseEvent(
-        'topic_${action}_item',
+        AnalyticsEventNames.topicAction(action),
         eventProperties: {
           'topic_id': topicId,
           if (topicName != null) 'topic_name': topicName,
@@ -115,7 +116,7 @@ class AmplitudeAnalyticsHelper {
   }) async {
     await _amplitude.track(
       BaseEvent(
-        '${module}_tap_${buttonName}_button',
+        AnalyticsEventNames.buttonTap(module, buttonName),
         eventProperties: parameters,
       ),
     );
@@ -129,7 +130,7 @@ class AmplitudeAnalyticsHelper {
   }) async {
     await _amplitude.track(
       BaseEvent(
-        'form_submit_${formName}',
+        AnalyticsEventNames.formSubmit(formName),
         eventProperties: {
           'success': success,
           ...?parameters,
@@ -146,7 +147,7 @@ class AmplitudeAnalyticsHelper {
   }) async {
     await _amplitude.track(
       BaseEvent(
-        '${module}_swipe_${itemType}',
+        AnalyticsEventNames.swipe(module, itemType),
         eventProperties: {
           'index': index,
         },
@@ -160,7 +161,7 @@ class AmplitudeAnalyticsHelper {
   }) async {
     await _amplitude.track(
       BaseEvent(
-        'pull_to_refresh',
+        AnalyticsEventNames.pullToRefresh,
         eventProperties: {
           'screen': screenName,
         },
@@ -175,7 +176,7 @@ class AmplitudeAnalyticsHelper {
   }) async {
     await _amplitude.track(
       BaseEvent(
-        'dialog_${action}_${dialogName}',
+        AnalyticsEventNames.dialog(action, dialogName),
       ),
     );
   }
@@ -187,7 +188,7 @@ class AmplitudeAnalyticsHelper {
   }) async {
     await _amplitude.track(
       BaseEvent(
-        'search',
+        AnalyticsEventNames.search,
         eventProperties: {
           'search_term': searchTerm,
           if (searchType != null) 'search_type': searchType,
@@ -216,7 +217,7 @@ class AmplitudeAnalyticsHelper {
   }) async {
     await _amplitude.track(
       BaseEvent(
-        'screen_view',
+        AnalyticsEventNames.screenView,
         eventProperties: {
           'screen_name': screenName,
           if (screenClass != null) 'screen_class': screenClass,

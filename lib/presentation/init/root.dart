@@ -1,25 +1,25 @@
 import 'dart:async';
 import 'dart:developer';
 import 'dart:io';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:could_be/core/components/layouts/scaffold_layout.dart';
+import 'package:could_be/core/permission/permission_management.dart';
 import 'package:could_be/core/routes/route_names.dart';
 import 'package:could_be/core/routes/router.dart';
 import 'package:could_be/domain/repositoryInterfaces/track_user_activity_interface.dart';
+import 'package:could_be/domain/useCases/fcm_use_case.dart';
 import 'package:could_be/domain/useCases/manage_user_status_use_case.dart';
 import 'package:could_be/presentation/log_in/login_view_model.dart';
 import 'package:could_be/presentation/update_management/check_update_field.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:go_router/go_router.dart';
 import 'package:package_info_plus/package_info_plus.dart';
+import '../../core/analytics/analytics_event_names.dart';
+import '../../core/analytics/unified_analytics_helper.dart';
 import '../../core/di/di_setup.dart';
 import '../../data/data_source/local/user_preferences.dart';
 import '../../domain/repositoryInterfaces/token_storage_interface.dart';
-import '../../core/analytics/unified_analytics_helper.dart';
 
 StreamSubscription? fireSubscription;
 
@@ -31,7 +31,7 @@ class Root extends StatefulWidget {
 }
 
 class _RootState extends State<Root> {
-  final _flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
+
   bool isRoutedToUpdate = false;
 
   Future startListenUpdateStatus() async {
@@ -83,7 +83,7 @@ class _RootState extends State<Root> {
     usersStream.listen((snapshot) {
       log('check update status ${snapshot.data()}');
       UnifiedAnalyticsHelper.logEvent(
-        name: 'check_for_update',
+        name: AnalyticsEventNames.checkForUpdate,
       );
       
       if (Platform.isAndroid) {
@@ -91,21 +91,21 @@ class _RootState extends State<Root> {
           log('서버 점검으로 가자');
           isRoutedToUpdate = true;
           UnifiedAnalyticsHelper.logEvent(
-            name: 'network_error',
+            name: AnalyticsEventNames.networkError,
             parameters: {'error_type': 'server_maintenance'},
           );
           router.go(RouteNames.serverCheck);
         } else if (isNeedUpdate(snapshot.data()![CheckUpdateField.androidVersionForce], version)) {
           isRoutedToUpdate = true;
           UnifiedAnalyticsHelper.logEvent(
-            name: 'start_update',
+            name: AnalyticsEventNames.startUpdate,
             parameters: {'update_type': 'force_update', 'platform': 'android'},
           );
           router.go(RouteNames.needUpdate);
         } else if (isHaveUpdate(snapshot.data()![CheckUpdateField.androidVersionLatest], version)) {
           isRoutedToUpdate = true;
           UnifiedAnalyticsHelper.logEvent(
-            name: 'start_update',
+            name: AnalyticsEventNames.startUpdate,
             parameters: {'update_type': 'optional_update', 'platform': 'android'},
           );
           router.go(RouteNames.haveUpdate, extra: snapshot.data()![CheckUpdateField.androidVersionLatest]);
@@ -114,21 +114,21 @@ class _RootState extends State<Root> {
         if (snapshot.data()![CheckUpdateField.iosServerCheck]) {
           isRoutedToUpdate = true;
           UnifiedAnalyticsHelper.logEvent(
-            name: 'network_error',
+            name: AnalyticsEventNames.networkError,
             parameters: {'error_type': 'server_maintenance'},
           );
           router.go(RouteNames.serverCheck);
         } else if (isNeedUpdate(snapshot.data()![CheckUpdateField.iosVersionForce], version)) {
           isRoutedToUpdate = true;
           UnifiedAnalyticsHelper.logEvent(
-            name: 'start_update',
+            name: AnalyticsEventNames.startUpdate,
             parameters: {'update_type': 'force_update', 'platform': 'ios'},
           );
           router.go(RouteNames.needUpdate);
         } else if (isHaveUpdate(snapshot.data()![CheckUpdateField.iosVersionLatest], version)) {
           isRoutedToUpdate = true;
           UnifiedAnalyticsHelper.logEvent(
-            name: 'start_update',
+            name: AnalyticsEventNames.startUpdate,
             parameters: {'update_type': 'optional_update', 'platform': 'ios'},
           );
           router.go(RouteNames.haveUpdate, extra: snapshot.data()![CheckUpdateField.iosVersionLatest]);
@@ -152,21 +152,16 @@ class _RootState extends State<Root> {
     ManageUserStatusUseCase manageUserStatusUseCase = getIt<ManageUserStatusUseCase>();
     var result = await manageUserStatusUseCase.checkUserRegisterStatus();
     if (!result.exists) {
-      await manageUserStatusUseCase.registerIdToken(idToken);
-      log('if mounted: ${mounted}');
+      String? guestUid = await tokenRepo.getGuestUid();
+      await manageUserStatusUseCase.registerIdToken(guestUid: guestUid);
       if(mounted && !isRoutedToUpdate) {
         UnifiedAnalyticsHelper.logAuthEvent(
           method: 'first_time_user',
           success: true,
         );
-        UnifiedAnalyticsHelper.logNavigationEvent(
-          fromScreen: 'root',
-          toScreen: 'home',
-        );
         context.go(RouteNames.home);
       }
     } else {
-      log('if mounted2: ${mounted}');
       if(mounted && !isRoutedToUpdate) {
         UnifiedAnalyticsHelper.logAuthEvent(
           method: 'returning_user',
@@ -181,82 +176,17 @@ class _RootState extends State<Root> {
     }
   }
 
-  Future<void> initializeNotification() async {
-    // await Firebase.initializeApp();
-    FirebaseMessaging messaging = FirebaseMessaging.instance;
-
-    final channel = const AndroidNotificationChannel(
-      'Dasi Stand', // id
-      'High Importance Notifications', // title// description
-      importance: Importance.high,
-    );
-
-    await _flutterLocalNotificationsPlugin
-        .resolvePlatformSpecificImplementation<
-        AndroidFlutterLocalNotificationsPlugin>()
-        ?.createNotificationChannel(channel);
-
-    FirebaseMessaging.onMessage.listen((RemoteMessage message) {
-      RemoteNotification? notification = message.notification;
-      AndroidNotification? android = message.notification?.android;
-
-      if (notification != null && android != null) {
-        _flutterLocalNotificationsPlugin.show(
-            notification.hashCode,
-            notification.title,
-            notification.body,
-            NotificationDetails(
-              android: AndroidNotificationDetails(
-                channel.id,
-                channel.name,
-                // icon: 'app_icon2',
-              ),
-            ));
-      }
-    });
-
-    await messaging.setAutoInitEnabled(true);
-
-    await messaging.setForegroundNotificationPresentationOptions(
-      alert: true,
-      badge: true,
-      sound: true,
-    );
-  }
-
-  Future<void> _requestPermission() async {
-    final settings = await FirebaseMessaging.instance.requestPermission(
-      alert: true,
-      announcement: false,
-      badge: true,
-      carPlay: false,
-      criticalAlert: false,
-      provisional: false,
-      sound: true,
-    );
-    
-    UnifiedAnalyticsHelper.logEvent(
-      name: 'request_permission',
-      parameters: {
-        'permission_type': 'notifications',
-        'result': settings.authorizationStatus.name
-      }
-    );
-  }
-
   @override
   void initState(){
     super.initState();
     UnifiedAnalyticsHelper.logEvent(
-      name: 'app_open',
-    );
-    UnifiedAnalyticsHelper.logScreenView(
-      screenName: 'root',
-      screenClass: 'Root',
+      name: AnalyticsEventNames.appOpen,
     );
     
     final firebaseAuth = getIt<FirebaseAuth>();
     final viewModel = getIt<LoginViewModel>();
+    final fcmUseCase = getIt<FcmUseCase>();
+    fcmUseCase.updateFcmToken();
     fireSubscription = firebaseAuth.authStateChanges().listen((User? user)async{
       log('Auth state changed: ${user?.uid}');
       if (user == null) {
@@ -277,7 +207,7 @@ class _RootState extends State<Root> {
             name: 'user_type',
             value: user.isAnonymous ? 'anonymous' : 'registered',
           );
-          _requestPermission();
+          requestFCMPermission(true);
           await userLogined(token);
         }
       } catch (e) {
@@ -285,7 +215,7 @@ class _RootState extends State<Root> {
         // 게스트 로그인 사용자이면
         if (user.isAnonymous) {
           UnifiedAnalyticsHelper.logEvent(
-            name: 'authentication_error',
+            name: AnalyticsEventNames.authenticationError,
             parameters: {'error_message': 'Anonymous user token error'},
           );
           await firebaseAuth.signOut();
@@ -303,6 +233,7 @@ class _RootState extends State<Root> {
 
   @override
   Widget build(BuildContext context) {
+
     return RegScaffold(
       isScrollPage: false,
       backgroundColor: Colors.white,

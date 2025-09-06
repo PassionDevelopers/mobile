@@ -6,6 +6,7 @@ import '../../../ui/fonts.dart';
 import '../../themes/margins_paddings.dart';
 import '../../responsive/responsive_utils.dart';
 import '../../analytics/unified_analytics_helper.dart';
+import '../../events/tab_reselection_event.dart';
 
 class CustomBottomNavigationBar extends StatefulWidget {
   final int currentIndex;
@@ -112,6 +113,10 @@ class _CustomBottomNavigationBarState extends State<CustomBottomNavigationBar>
       );
       
       widget.onTap(index);
+    } else {
+      // 같은 탭을 다시 눌렀을 때
+      HapticFeedback.lightImpact();
+      TabReselectionEvent.notifyTabReselected(index);
     }
   }
 

@@ -4,7 +4,7 @@ import '../../core/components/home_components.dart';
 import '../../core/components/layouts/scaffold_layout.dart';
 import '../media/media_components.dart';
 import '../../ui/color.dart';
-import '../community/major_user_opinion_view.dart';
+import '../issue_detail_feed/components/major_user_opinion_view.dart';
 
 class IssueView extends StatefulWidget {
   const IssueView({Key? key}) : super(key: key);
@@ -498,8 +498,7 @@ class _IssueViewState extends State<IssueView> with SingleTickerProviderStateMix
                 //     ),
                 //   ),
                 // ),
-                //커뮤니티
-                MajorUserOpinionView(),
+
                 // 서비스 소개 섹션
                 // Container(
                 //   width: double.infinity,

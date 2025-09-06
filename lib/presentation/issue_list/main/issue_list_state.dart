@@ -37,6 +37,7 @@ class IssueListState{
     bool? isLoadingMore,
     IssueQueryParam? issueQueryParam,
     String? topicId,
+    bool clearTopicId = false,
     bool? isEvaluating,
   }) {
     return IssueListState(
@@ -46,7 +47,7 @@ class IssueListState{
       lastIssueId: lastIssueId ?? this.lastIssueId,
       isLoading: isLoading ?? this.isLoading,
       isLoadingMore: isLoadingMore ?? this.isLoadingMore,
-      topicId: topicId ?? this.topicId,
+      topicId: clearTopicId ? null : (topicId ?? this.topicId),
       query: query,
       isEvaluating: isEvaluating ?? this.isEvaluating,
     );

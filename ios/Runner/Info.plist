@@ -40,7 +40,14 @@
 				<string>kakao3af3ede3773c2db3782152f2e673395f</string>
 			</array>
 		</dict>
-		<dict/>
+		<dict>
+			<key>CFBundleTypeRole</key>
+			<string>Editor</string>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>dasi-stand</string>
+			</array>
+		</dict>
 		<dict>
 			<key>CFBundleTypeRole</key>
 			<string>Editor</string>
@@ -48,6 +55,13 @@
 			<array/>
 		</dict>
 	</array>
+   
+   <key>NSPhotoLibraryUsageDescription</key>
+   <string>사용자가 선택한 이미지를 업로드하기 위해 사진 라이브러리에 접근합니다.</string>
+
+   <key>NSCameraUsageDescription</key>
+   <string>프로필 사진을 촬영하기 위해 카메라를 사용합니다.</string>
+    
 	<key>CFBundleVersion</key>
 	<string>$(FLUTTER_BUILD_NUMBER)</string>
 	<key>FlutterDeepLinkingEnabled</key>

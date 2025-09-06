@@ -282,4 +282,247 @@ class UnifiedAnalyticsHelper {
       AmplitudeAnalyticsHelper.setUserId(userId),
     ]);
   }
+
+  // Scroll Events
+  static Future<void> logScrollEvent({
+    required String screenName,
+    required String direction,
+    double? scrollPosition,
+    String? contentType,
+  }) async {
+    await Future.wait([
+      FirebaseAnalyticsHelper.logEvent(
+        name: 'scroll',
+        parameters: {
+          'screen_name': screenName,
+          'direction': direction,
+          'scroll_position': scrollPosition?.toString() ?? '0',
+          'content_type': contentType ?? 'unknown',
+        },
+      ),
+      AmplitudeAnalyticsHelper.logEvent(
+        name: 'scroll',
+        parameters: {
+          'screen_name': screenName,
+          'direction': direction,
+          'scroll_position': scrollPosition?.toString() ?? '0',
+          'content_type': contentType ?? 'unknown',
+        },
+      ),
+    ]);
+  }
+
+  // Long Press Events
+  static Future<void> logLongPressEvent({
+    required String itemType,
+    required String itemId,
+    String? screenName,
+  }) async {
+    await Future.wait([
+      FirebaseAnalyticsHelper.logEvent(
+        name: 'long_press',
+        parameters: {
+          'item_type': itemType,
+          'item_id': itemId,
+          'screen_name': screenName ?? 'unknown',
+        },
+      ),
+      AmplitudeAnalyticsHelper.logEvent(
+        name: 'long_press',
+        parameters: {
+          'item_type': itemType,
+          'item_id': itemId,
+          'screen_name': screenName ?? 'unknown',
+        },
+      ),
+    ]);
+  }
+
+  // Share Events
+  static Future<void> logShareEvent({
+    required String contentType,
+    required String contentId,
+    required String method,
+  }) async {
+    await Future.wait([
+      FirebaseAnalyticsHelper.logEvent(
+        name: 'share',
+        parameters: {
+          'content_type': contentType,
+          'content_id': contentId,
+          'method': method,
+        },
+      ),
+      AmplitudeAnalyticsHelper.logEvent(
+        name: 'share',
+        parameters: {
+          'content_type': contentType,
+          'content_id': contentId,
+          'method': method,
+        },
+      ),
+    ]);
+  }
+
+  // Subscription Events
+  static Future<void> logSubscriptionEvent({
+    required String action,
+    required String contentType,
+    required String contentId,
+    String? contentName,
+  }) async {
+    await Future.wait([
+      FirebaseAnalyticsHelper.logEvent(
+        name: 'subscription',
+        parameters: {
+          'action': action,
+          'content_type': contentType,
+          'content_id': contentId,
+          'content_name': contentName ?? 'unknown',
+        },
+      ),
+      AmplitudeAnalyticsHelper.logEvent(
+        name: 'subscription',
+        parameters: {
+          'action': action,
+          'content_type': contentType,
+          'content_id': contentId,
+          'content_name': contentName ?? 'unknown',
+        },
+      ),
+    ]);
+  }
+
+  // Evaluation Events
+  static Future<void> logEvaluationEvent({
+    required String contentType,
+    required String contentId,
+    required String rating,
+    String? comment,
+  }) async {
+    await Future.wait([
+      FirebaseAnalyticsHelper.logEvent(
+        name: 'evaluation',
+        parameters: {
+          'content_type': contentType,
+          'content_id': contentId,
+          'rating': rating,
+          'has_comment': (comment != null).toString(),
+        },
+      ),
+      AmplitudeAnalyticsHelper.logEvent(
+        name: 'evaluation',
+        parameters: {
+          'content_type': contentType,
+          'content_id': contentId,
+          'rating': rating,
+          'has_comment': (comment != null).toString(),
+        },
+      ),
+    ]);
+  }
+
+  // Filter Events
+  static Future<void> logFilterEvent({
+    required String screenName,
+    required String filterType,
+    required String filterValue,
+  }) async {
+    await Future.wait([
+      FirebaseAnalyticsHelper.logEvent(
+        name: 'filter_applied',
+        parameters: {
+          'screen_name': screenName,
+          'filter_type': filterType,
+          'filter_value': filterValue,
+        },
+      ),
+      AmplitudeAnalyticsHelper.logEvent(
+        name: 'filter_applied',
+        parameters: {
+          'screen_name': screenName,
+          'filter_type': filterType,
+          'filter_value': filterValue,
+        },
+      ),
+    ]);
+  }
+
+  // App Lifecycle Events
+  static Future<void> logAppLifecycleEvent({
+    required String state,
+    Map<String, String>? additionalParams,
+  }) async {
+    await Future.wait([
+      FirebaseAnalyticsHelper.logEvent(
+        name: 'app_lifecycle',
+        parameters: {
+          'state': state,
+          ...?additionalParams,
+        },
+      ),
+      AmplitudeAnalyticsHelper.logEvent(
+        name: 'app_lifecycle',
+        parameters: {
+          'state': state,
+          ...?additionalParams,
+        },
+      ),
+    ]);
+  }
+
+  // Permission Events
+  static Future<void> logPermissionEvent({
+    required String permissionType,
+    required String action,
+    required bool granted,
+  }) async {
+    await Future.wait([
+      FirebaseAnalyticsHelper.logEvent(
+        name: 'permission',
+        parameters: {
+          'permission_type': permissionType,
+          'action': action,
+          'granted': granted.toString(),
+        },
+      ),
+      AmplitudeAnalyticsHelper.logEvent(
+        name: 'permission',
+        parameters: {
+          'permission_type': permissionType,
+          'action': action,
+          'granted': granted.toString(),
+        },
+      ),
+    ]);
+  }
+
+  // Error Events
+  static Future<void> logErrorEvent({
+    required String errorType,
+    required String errorMessage,
+    String? screenName,
+    Map<String, String>? additionalParams,
+  }) async {
+    await Future.wait([
+      FirebaseAnalyticsHelper.logEvent(
+        name: 'error_occurred',
+        parameters: {
+          'error_type': errorType,
+          'error_message': errorMessage,
+          'screen_name': screenName ?? 'unknown',
+          ...?additionalParams,
+        },
+      ),
+      AmplitudeAnalyticsHelper.logEvent(
+        name: 'error_occurred',
+        parameters: {
+          'error_type': errorType,
+          'error_message': errorMessage,
+          'screen_name': screenName ?? 'unknown',
+          ...?additionalParams,
+        },
+      ),
+    ]);
+  }
 }

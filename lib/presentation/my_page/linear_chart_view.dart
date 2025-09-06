@@ -32,8 +32,9 @@ class _DailyUserDataChartState extends State<DailyUserDataChart> {
       final dailyClearData = widget.viewModel.state.biasScoreHistoryLeftScores ?? [1,1,1,1,1,1,1];
 
       double getHorizontalInterval(){
-        // return widget.viewModel.state.maxBiasScore == 0? 5: ((maxTotal/3).ceil()) * 1.0;
-        return 50;
+        double interval = widget.viewModel.state.maxBiasScore - widget.viewModel.state.minBiasScore;
+        return interval == 0?
+          5: ((interval/5).ceil()) * 1.0;
       }
       LineTouchData lineTouchData()=>LineTouchData(
         handleBuiltInTouches: true,
@@ -47,17 +48,19 @@ class _DailyUserDataChartState extends State<DailyUserDataChart> {
       );
 
       Widget title(int groupNum){
-        List<String> weekDays = ['일', '월', '화', '수', '목', '금', '토'];
-        List<String> weeks = ['1주차', '2주차', '3주차', '4주차', '5주차', '6주차', '7주차'];
-        List<String> months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+        List<String> weekDays = ['월', '화', '수', '목', '금', '토', '일'];
+        List<String> weeks = ['4주 전', '3주 전', '2주 전', '1주 전', '이번 주'];
         Color textColor = AppColors.primary;
         String t = '';
-        if(widget.viewModel.state.biasScorePeriod == BiasScorePeriod.weekly){
+        int weekDayNum = DateTime.now().weekday;
+        int monthNum = DateTime.now().month;
+        weekDays = List.generate(7, (index) => weekDays[(index + weekDayNum) % 7]);
+        if(widget.viewModel.state.biasScorePeriod == BiasScorePeriod.week){
           t = weekDays[groupNum];
-        } else if(widget.viewModel.state.biasScorePeriod == BiasScorePeriod.monthly){
+        } else if(widget.viewModel.state.biasScorePeriod == BiasScorePeriod.month){
           t = weeks[groupNum];
-        } else if(widget.viewModel.state.biasScorePeriod == BiasScorePeriod.yearly){
-          t = months[groupNum];
+        } else if(widget.viewModel.state.biasScorePeriod == BiasScorePeriod.year){
+          t = List.generate(12, (i) => '${(monthNum + i)%12 + 1}월')[groupNum];
         } else {
           t = weekDays[groupNum];
         }
@@ -130,7 +133,8 @@ class _DailyUserDataChartState extends State<DailyUserDataChart> {
                           chartBarData(Bias.center),
                           chartBarData(Bias.right),
                         ],
-                        minX: 0, maxX: (dailyClearData.length-1)*1.0, maxY: widget.viewModel.state.maxBiasScore*1.0, minY: 300,
+                        minX: 0, maxX: (dailyClearData.length-1)*1.0, maxY: widget.viewModel.state.maxBiasScore,
+                        minY: widget.viewModel.state.minBiasScore
                       ),
                       duration: const Duration(milliseconds: 250),
                     )
@@ -177,10 +181,11 @@ class _DailyUserDataChartState extends State<DailyUserDataChart> {
         barWidth: 3,
         isStrokeCapRound: true,
         dotData: const FlDotData(show: true),
-        belowBarData: BarAreaData(
-          show: isSelected,
-          color: color.withOpacity(isSelected? 0.2 : 0.1),
-        ),
+        isCurved: true,
+        // belowBarData: BarAreaData(
+        //   show: isSelected,
+        //   color: color.withOpacity(isSelected? 0.2 : 0.1),
+        // ),
         spots: spots
     );
   }

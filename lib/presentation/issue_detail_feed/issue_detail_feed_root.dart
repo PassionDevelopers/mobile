@@ -1,13 +1,21 @@
 import 'dart:developer';
 
+import 'package:could_be/core/components/bias/bias_check_button.dart';
 import 'package:could_be/core/components/layouts/bottom_safe_padding.dart';
 import 'package:could_be/core/di/di_setup.dart';
+import 'package:could_be/core/method/bias/bias_enum.dart';
 import 'package:could_be/core/themes/margins_paddings.dart';
 import 'package:could_be/domain/entities/articles.dart';
+import 'package:could_be/presentation/community/comment_input/comment_input_view.dart';
+import 'package:could_be/presentation/community/comment/comment_view.dart';
+import 'package:could_be/presentation/community/comment_root.dart';
+import 'package:could_be/presentation/issue_detail_feed/components/major_user_opinion_view.dart';
+import 'package:could_be/presentation/issue_detail_feed/components/background_description.dart';
 import 'package:could_be/presentation/issue_detail_feed/components/issue_detail_common_summary.dart';
 import 'package:could_be/presentation/issue_detail_feed/components/scroll_gage.dart';
 import 'package:could_be/presentation/issue_detail_feed/issue_detail_loading_view.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import '../../core/components/layouts/scaffold_layout.dart';
 import '../../core/responsive/responsive_utils.dart';
 import '../../ui/color.dart';
@@ -42,7 +50,8 @@ class _IssueDetailFeedRootState extends State<IssueDetailFeedRoot> {
     if (controller.hasClients) {
       final maxScroll = controller.position.maxScrollExtent;
       final currentScroll = controller.position.pixels;
-      scrollProgressNotifier.value = maxScroll > 0 ? (currentScroll / maxScroll).clamp(0.0, 1.0) : 0.0;
+      scrollProgressNotifier.value =
+          maxScroll > 0 ? (currentScroll / maxScroll).clamp(0.0, 1.0) : 0.0;
     }
   }
 
@@ -58,46 +67,34 @@ class _IssueDetailFeedRootState extends State<IssueDetailFeedRoot> {
   Widget floatingButton({
     required VoidCallback onPressed,
     required IconData icon,
+    int? badgeCount,
   }) {
     return Padding(
-      padding: EdgeInsets.all(
-        ResponsiveUtils.isMobile(context)
-            ? MyPaddings.large.toDouble()
-            : MyPaddings.extraLarge.toDouble(),
+      padding: EdgeInsets.only(
+        right:
+            ResponsiveUtils.isMobile(context)
+                ? MyPaddings.large.toDouble()
+                : MyPaddings.extraLarge.toDouble(),
+        bottom: MyPaddings.large.toDouble(),
       ),
-      child: Container(
-        decoration: BoxDecoration(
-          boxShadow: [
-            BoxShadow(
-              color: AppColors.primary.withOpacity(0.1),
-              blurRadius: 10,
-              offset: Offset(0, 4),
-            ),
-          ],
-        ),
-        child: FloatingActionButton(
-          onPressed: onPressed,
-          elevation: 0,
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-          backgroundColor: AppColors.white,
+      child: FloatingActionButton(
+        onPressed: onPressed,
+        elevation: 0,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+        backgroundColor: AppColors.white.withAlpha(1000),
+        child: Badge(
+          isLabelVisible: badgeCount != null && badgeCount > 0,
+          label: Text(badgeCount.toString()),
           child: Icon(
             icon,
             size: 28,
             color: viewModel.state.issueDetail!.isSubscribed
-                ? AppColors.primary
-                : AppColors.gray2,
+                    ? AppColors.primary
+                    : AppColors.gray2,
           ),
         ),
       ),
     );
-  }
-
-  void moveToNextPage(int page) {
-    // controller.animateToPage(
-    //   page,
-    //   duration: const Duration(milliseconds: 300),
-    //   curve: Curves.easeInOut,
-    // );
   }
 
   @override
@@ -118,16 +115,15 @@ class _IssueDetailFeedRootState extends State<IssueDetailFeedRoot> {
         child: Column(
           children: [
             ValueListenableBuilder(
-                valueListenable: scrollProgressNotifier,
-                builder: (context, scrollProgress, _) {
-                  return AnimatedContainer(
-                    duration: Duration(milliseconds: 300),
-                    height: scrollProgress > 0 ? 3 : 0,
-                    child: ScrollGage(
-                      scrollProgress: scrollProgress,
-                    ),
-                  );
-            }),
+              valueListenable: scrollProgressNotifier,
+              builder: (context, scrollProgress, _) {
+                return AnimatedContainer(
+                  duration: Duration(milliseconds: 300),
+                  height: scrollProgress > 0 ? 3 : 0,
+                  child: ScrollGage(scrollProgress: scrollProgress),
+                );
+              },
+            ),
             Expanded(
               child: ListenableBuilder(
                 listenable: viewModel,
@@ -142,140 +138,285 @@ class _IssueDetailFeedRootState extends State<IssueDetailFeedRoot> {
                       final issue = state.issueDetail!;
                       return Stack(
                         children: [
-                          Row(
-                            children: [
-                              Expanded(
-                                child: SingleChildScrollView(
-                                  scrollDirection: Axis.vertical,
-                                  controller: controller,
-                                  child: Column(
-                                    children: [
-                                      IssueDetailSummary(
-                                        issue: issue,
-                                        fontSize: state.fontSize,
-                                      ),
-                                      if (issue.commonSummary != null) SizedBox(height: MyPaddings.extraLarge),
+                          SingleChildScrollView(
+                            scrollDirection: Axis.vertical,
+                            controller: controller,
+                            child: Column(
+                              children: [
+                                IssueDetailSummary(
+                                  issue: issue,
+                                  fontSize: state.fontSize,
+                                  isSubscribed:
+                                      state.issueDetail!.isSubscribed,
+                                  onSubscribe: () {
+                                    viewModel.manageIssueSubscription(
+                                      context,
+                                    );
+                                  },
+                                  isSpread: state.isSummarySpread,
+                                  spreadCallback: viewModel.spreadSummary,
+                                ),
+                                // if (issue.commonSummary != null)
+                                //   SizedBox(height: MyPaddings.large),
+                                //
+                                // if (issue.commonSummary != null)
+                                //   IssueDetailCommonSummary(
+                                //     commonSummary: issue.commonSummary!,
+                                //     fontSize: state.fontSize,
+                                //     isSpread: state.isCommonSummarySpread,
+                                //     spreadCallback:
+                                //         viewModel.spreadCommonSummary,
+                                //   ),
+                                if (issue.leftComparison != null ||
+                                    issue.centerComparison != null ||
+                                    issue.rightComparison != null)
+                                  SizedBox(height: MyPaddings.large),
 
-                                      if (issue.commonSummary != null)
-                                        IssueDetailCommonSummary(
-                                          commonSummary: issue.commonSummary!,
-                                          fontSize: state.fontSize,
-                                        ),
-                                      if (issue.leftComparison != null ||
-                                          issue.centerComparison != null ||
-                                          issue.rightComparison != null)
-                                        SizedBox(height: MyPaddings.large),
-
-                                      if (issue.leftComparison != null ||
-                                          issue.centerComparison != null ||
-                                          issue.rightComparison != null)
-                                        ListenableBuilder(
-                                          listenable: ValueNotifier(
-                                            state.isEvaluating,
-                                          ),
-                                          builder: (context, listenable) {
-                                            return IssueDetailBiasComparison(
-                                              fontSize: state.fontSize,
-                                              moveToNextPage: () {
-                                                moveToNextPage(
-                                                  issue.commonSummary != null
-                                                      ? 4
-                                                      : 3,
-                                                );
-                                              },
-                                              existCenter: issue.centerComparison != null,
-                                              existLeft: issue.leftComparison != null,
-                                              existRight: issue.rightComparison != null,
-                                              isEvaluating: state.isEvaluating,
-                                              onBiasSelected:
+                                if (issue.leftComparison != null ||
+                                    issue.centerComparison != null ||
+                                    issue.rightComparison != null)
+                                  ListenableBuilder(
+                                    listenable: ValueNotifier(
+                                      state.isEvaluating,
+                                    ),
+                                    builder: (context, listenable) {
+                                      return Column(
+                                        children: [
+                                          IssueDetailBiasComparison(
+                                            fontSize: state.fontSize,
+                                            existCenter:
+                                                issue.centerComparison !=
+                                                null,
+                                            existLeft:
+                                                issue.leftComparison !=
+                                                null,
+                                            existRight:
+                                                issue.rightComparison !=
+                                                null,
+                                            isEvaluating:
+                                                state.isEvaluating,
+                                            onBiasSelected: (Bias bias) {
                                               viewModel
-                                                  .manageIssueEvaluation,
-                                              leftLikeCount:
-                                              issue.leftLikeCount,
-                                              centerLikeCount:
-                                              issue.centerLikeCount,
-                                              rightLikeCount:
-                                              issue.rightLikeCount,
-                                              userEvaluation:
-                                              issue.userEvaluation,
-                                              leftComparison: issue.leftComparison,
-                                              centerComparison:
-                                              issue.centerComparison,
-                                              rightComparison:
-                                              issue.rightComparison,
-                                            );
+                                                  .manageIssueEvaluation(
+                                                    context: context,
+                                                    bias: bias,
+                                                  );
+                                            },
+                                            leftLikeCount:
+                                                issue.leftLikeCount,
+                                            centerLikeCount:
+                                                issue.centerLikeCount,
+                                            rightLikeCount:
+                                                issue.rightLikeCount,
+                                            userEvaluation:
+                                                issue.userEvaluation,
+                                            leftComparison:
+                                                issue.leftComparison,
+                                            centerComparison:
+                                                issue.centerComparison,
+                                            rightComparison:
+                                                issue.rightComparison,
+                                            isSpread:
+                                                state
+                                                    .isBiasComparisonSpread,
+                                            spreadCallback:
+                                                viewModel
+                                                    .spreadBiasComparison,
+                                          ),
+
+                                          SizedBox(
+                                            height: MyPaddings.large,
+                                          ),
+
+                                          BiasCheckButton(
+                                            existCenter:
+                                                issue.centerComparison !=
+                                                null,
+                                            existLeft:
+                                                issue.leftComparison !=
+                                                null,
+                                            existRight:
+                                                issue.rightComparison !=
+                                                null,
+                                            isEvaluating:
+                                                state.isEvaluating,
+                                            onBiasSelected: (Bias bias) {
+                                              viewModel
+                                                  .manageIssueEvaluation(
+                                                    context: context,
+                                                    bias: bias,
+                                                  );
+                                            },
+                                            leftLikeCount:
+                                                issue.leftLikeCount,
+                                            centerLikeCount:
+                                                issue.centerLikeCount,
+                                            rightLikeCount:
+                                                issue.rightLikeCount,
+                                            userEvaluation:
+                                                issue.userEvaluation,
+                                          ),
+                                        ],
+                                      );
+                                    },
+                                  ),
+
+                                // SizedBox(height: MyPaddings.large),
+                                // IssueDetailTabs(
+                                //   fontSize: state.fontSize,
+                                //   issue: issue,
+                                //   postDasiScore: viewModel.postDasiScore,
+                                //   isSpread: state.isTabsSpread,
+                                //   spreadCallback: viewModel.spreadTabs,
+                                // ),
+
+                                SizedBox(height: MyPaddings.large),
+
+                                MajorUserOpinionView(
+                                  fontSize: state.fontSize,
+                                  isSpread: true,
+                                  spreadCallback:(){}, postDasiScore: () {  },
+                                  viewModel: viewModel,
+                                ),
+
+                                SizedBox(height: MyPaddings.large),
+
+                                SourceListPage(
+                                  articlesGBBAS:
+                                      issue.articles
+                                          .toGroupByBiasAndSource(),
+                                  hasNextIssue:
+                                      issue.nextIssueIds.isNotEmpty,
+                                  toNextIssue: () {
+                                    viewModel.fetchIssueDetailById(
+                                      issue.nextIssueIds.first,
+                                    );
+                                  },
+                                  isSpread: state.isSourceListSpread,
+                                  spreadCallback:
+                                      viewModel.spreadSourceList,
+                                ),
+                                SizedBox(height: MyPaddings.large),
+                                Container(
+                                  width: double.infinity,
+                                  padding: EdgeInsets.symmetric(
+                                    horizontal: MyPaddings.medium,
+                                  ),
+                                  height: 48,
+                                  child: Row(
+                                    children: [
+                                      if (issue.nextIssueIds.isNotEmpty)
+                                        ElevatedButton(
+                                          onPressed: () {
+                                            context.pop();
                                           },
+                                          style: ElevatedButton.styleFrom(
+                                            backgroundColor:
+                                                AppColors.primary,
+                                            shape: RoundedRectangleBorder(
+                                              borderRadius:
+                                                  BorderRadius.circular(
+                                                    12,
+                                                  ),
+                                            ),
+                                            elevation: 0,
+                                          ),
+                                          child: Row(
+                                            children: [
+                                              Icon(
+                                                Icons.home,
+                                                color: Colors.white,
+                                                size: 25,
+                                              ),
+                                              SizedBox(
+                                                width: MyPaddings.small,
+                                              ),
+                                              Text(
+                                                '홈으로',
+                                                style: TextStyle(
+                                                  color: Colors.white,
+                                                  fontSize: 16,
+                                                  fontWeight:
+                                                      FontWeight.w600,
+                                                ),
+                                              ),
+                                            ],
+                                          ),
                                         ),
-
-                                      SizedBox(height: MyPaddings.extraLarge),
-                                      IssueDetailTabs(
-                                        fontSize: state.fontSize,
-                                        issue: issue,
-                                        moveToNextPage: () {
-                                          moveToNextPage(
-                                            issue.commonSummary != null ? 3 : 2,
-                                          );
-                                        },
-                                        postDasiScore: viewModel.postDasiScore,
+                                      SizedBox(width: MyPaddings.large),
+                                      Expanded(
+                                        child: ElevatedButton(
+                                          onPressed:
+                                              issue
+                                                      .nextIssueIds
+                                                      .isNotEmpty
+                                                  ? () {
+                                                    viewModel
+                                                        .fetchIssueDetailById(
+                                                          issue
+                                                              .nextIssueIds
+                                                              .first,
+                                                        );
+                                                  }
+                                                  : () {
+                                                    context.pop();
+                                                  },
+                                          style: ElevatedButton.styleFrom(
+                                            backgroundColor:
+                                                AppColors.primary,
+                                            shape: RoundedRectangleBorder(
+                                              borderRadius:
+                                                  BorderRadius.circular(
+                                                    12,
+                                                  ),
+                                            ),
+                                            elevation: 0,
+                                          ),
+                                          child: Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.center,
+                                            children: [
+                                              Text(
+                                                issue
+                                                        .nextIssueIds
+                                                        .isNotEmpty
+                                                    ? '다음 이슈 보기'
+                                                    : '홈으로 돌아가기',
+                                                style: TextStyle(
+                                                  color: Colors.white,
+                                                  fontSize: 16,
+                                                  fontWeight:
+                                                      FontWeight.w600,
+                                                ),
+                                              ),
+                                              SizedBox(
+                                                width: MyPaddings.small,
+                                              ),
+                                              Icon(
+                                                Icons
+                                                    .keyboard_arrow_right_rounded,
+                                                color: Colors.white,
+                                                size: 25,
+                                              ),
+                                            ],
+                                          ),
+                                        ),
                                       ),
-
-                                      SizedBox(height: MyPaddings.extraLarge),
-
-                                      SourceListPage(
-                                        articlesGBBAS:
-                                            issue.articles
-                                                .toGroupByBiasAndSource(),
-                                        hasNextIssue:
-                                            issue.nextIssueIds.isNotEmpty,
-                                        toNextIssue: () {
-                                          viewModel.fetchIssueDetailById(
-                                            issue.nextIssueIds.first,
-                                          );
-                                        },
-                                      ),
-                                      SizedBox(height: MyPaddings.extraLarge),
-                                      // Padding(
-                                      //   padding: EdgeInsets.symmetric(horizontal: MyPaddings.large),
-                                      //   child: CustomReportPage(),
-                                      // ),
-                                      BottomSafePadding()
                                     ],
                                   ),
                                 ),
-                              ),
-                              // if (!ResponsiveUtils.isDesktop(context))
-                              //   SmoothPageIndicator(
-                              //     controller: controller,
-                              //     count: state.pageCount,
-                              //     axisDirection: Axis.vertical,
-                              //     onDotClicked: (index) {
-                              //       controller.animateToPage(
-                              //         index,
-                              //         duration: const Duration(milliseconds: 300),
-                              //         curve: Curves.easeInOut,
-                              //       );
-                              //     },
-                              //     effect: SlideEffect(
-                              //       spacing: 0,
-                              //       radius: 0,
-                              //       dotWidth: safeAreaHeight / state.pageCount,
-                              //       dotHeight: 5,
-                              //       paintStyle: PaintingStyle.stroke,
-                              //       strokeWidth: 1.5,
-                              //       dotColor: Colors.grey,
-                              //       activeDotColor: AppColors.primary,
-                              //       type: SlideType.slideUnder,
-                              //     ),
-                              //   ),
-                            ],
+                                SizedBox(height: MyPaddings.large),
+                                BottomSafePadding(),
+                              ],
+                            ),
                           ),
                           Positioned(
-                            bottom: 32,
+                            bottom: 40,
                             right: 0,
                             child: AnimatedScale(
                               duration: Duration(milliseconds: 200),
                               scale: 1.0,
-                              child: Row(
+                              child: Column(
                                 mainAxisAlignment: MainAxisAlignment.end,
                                 children: [
                                   // floatingButton(
@@ -288,11 +429,24 @@ class _IssueDetailFeedRootState extends State<IssueDetailFeedRoot> {
                                   //           : Icons.format_size,
                                   // ),
                                   floatingButton(
-                                    onPressed: viewModel.manageIssueSubscription,
-                                    icon:
-                                        viewModel.state.issueDetail!.isSubscribed
-                                            ? Icons.bookmark
-                                            : Icons.bookmark_add_outlined,
+                                    onPressed: viewModel.share,
+                                    icon: Icons.share,
+                                  ),
+
+                                  floatingButton(
+                                    onPressed: () {
+                                      showModalBottomSheet(
+                                        useSafeArea: true,
+                                        backgroundColor: AppColors.primaryLight,
+                                        isScrollControlled: true,
+                                        showDragHandle: true,
+                                        context: context,
+                                        builder: (context) {
+                                          return CommentRoot(issueId: widget.issueId,);
+                                        });
+                                    },
+                                    icon: Icons.comment,
+                                    badgeCount: state.issueDetail?.commentsCount,
                                   ),
                                 ],
                               ),

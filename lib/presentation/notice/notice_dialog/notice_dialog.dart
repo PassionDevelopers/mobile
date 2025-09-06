@@ -16,9 +16,9 @@ class NoticeDialog extends StatelessWidget {
   final Notice notice;
 
   Widget htmlBuilder(Notice notice) {
-    log('NoticeDialog: htmlBuilder called with content: ${notice.content}');
     return Html(
       data: notice.content ?? '',
+
       // style: {
       //   "body": Style(
       //     fontSize: FontSize(MyFontSizes.medium),

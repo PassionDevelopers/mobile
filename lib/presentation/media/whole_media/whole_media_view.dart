@@ -172,7 +172,10 @@ class _WholeMediaViewState extends State<WholeMediaView> {
                         isFirst: false,
                         isShowingArticles: source.isSubscribed,
                         onShowArticles: (){
-                          viewModel.manageSourceSubscriptionBySourceId(source.id);
+                          viewModel.manageSourceSubscriptionBySourceId(
+                            sourceId: source.id,
+                            context: context,
+                          );
                         },
                       );
                     },

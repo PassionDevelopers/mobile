@@ -261,7 +261,7 @@ class CategoryPartSliver extends StatelessWidget {
             );
           }
           slivers.add(
-            BottomSafePadding()
+            SliverToBoxAdapter(child:  BottomSafePadding())
           );
           return SliverPadding(
             padding: EdgeInsets.all(MyPaddings.small),
@@ -289,7 +289,7 @@ class CategoryPartSliver extends StatelessWidget {
                   topics: topics,
                   manageTopicSubscription: viewModel.manageTopicSubscription,
                 ),
-                BottomSafePadding()
+                SliverToBoxAdapter(child:  BottomSafePadding())
               ],
             ),
           );
@@ -307,7 +307,7 @@ class TopicListView extends StatelessWidget {
   });
 
   final List<Topic> topics;
-  final void Function(String topicId) manageTopicSubscription;
+  final void Function({required String topicId, required BuildContext context}) manageTopicSubscription;
 
   @override
   Widget build(BuildContext context) {
@@ -324,7 +324,10 @@ class TopicListView extends StatelessWidget {
           isSelected: topic.isSubscribed,
           topic: topic,
           onTap: () {
-            manageTopicSubscription(topic.id);
+            manageTopicSubscription(
+              topicId: topic.id,
+              context: context,
+            );
           },
         );
       }, childCount: topics.length),

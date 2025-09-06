@@ -33,6 +33,8 @@ class IssueDetailDTO {
   final String? centerSummary;
   final String? rightSummary;
 
+  final int commentsCount;
+
   final String? leftComparison;
   final String? centerComparison;
   final String? rightComparison;
@@ -64,6 +66,7 @@ class IssueDetailDTO {
     required this.leftLikeCount,
     required this.centerLikeCount,
     required this.rightLikeCount,
+    required this.commentsCount,
     this.leftComparison,
     this.centerComparison,
     this.rightComparison,
@@ -86,7 +89,6 @@ class IssueDetailDTO {
 extension IssueDetailDtx on IssueDetailDTO {
   // Converts the DTO to a domain entity
   IssueDetail toDomain() {
-    log('Converting IssueDetailDTO to IssueDetail ${leftComparison}');
     return IssueDetail(
       tags: tags.map((tag) => tag.toDomain()).toList(),
       leftLikeCount: leftLikeCount,
@@ -102,6 +104,7 @@ extension IssueDetailDtx on IssueDetailDTO {
       keywords: keywords,
       createdAt: DateTime.parse(createdAt),
       view: view,
+      commentsCount: commentsCount,
       coverageSpectrum: coverageSpectrum.toDomain(),
       updatedAt: updatedAt != null? DateTime.parse(updatedAt!) : null,
       leftSummary: leftSummary != null && leftSummary!.isEmpty ? null : leftSummary,

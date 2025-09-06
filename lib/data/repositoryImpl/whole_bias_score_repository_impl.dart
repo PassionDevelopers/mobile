@@ -32,15 +32,28 @@ class WholeBiasScoreRepositoryImpl extends WholeBiasScoreRepository {
   }
 
   @override
+  void updateWholeBiasScore(WholeBiasScore wholeBiasScore) {
+    final updatedDto = wholeBiasScore.toDto();
+    final response = dio.post(
+      '${ApiVersions.v1}/user/onboarding',
+      data: {
+        'score': updatedDto.toJson(),
+      }
+    );
+  }
+
+  @override
   Future<BiasScoreHistory> fetchBiasScoreHistory({
-    required int year, int? month, int? week,
+    required BiasScorePeriod period,
   }) async {
+
     final response = await dio.get(
       '${ApiVersions.v1}/user/political-score-history',
       queryParameters: {
-        'year': year,
-        if (month != null) 'month': month,
-        if (week != null) 'week': week,
+        'recent': period.name,
+        // 'year': year,
+        // if (month != null) 'month': month,
+        // if (week != null) 'week': week,
       },
     );
     final biasScoreHistoryDto = BiasScoreHistoryDto.fromJson(response.data);

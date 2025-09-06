@@ -1,9 +1,12 @@
 
-import 'package:could_be/core/components/alert/dialog.dart';
 import 'package:could_be/core/components/alert/toast.dart';
 import 'package:could_be/core/themes/margins_paddings.dart';
 import 'package:could_be/ui/color.dart';
 import 'package:flutter/material.dart';
+
+import '../../analytics/analytics_event_names.dart';
+import '../../analytics/analytics_parameter_keys.dart';
+import '../../analytics/analytics_screen_names.dart';
 import '../../analytics/unified_analytics_helper.dart';
 
 class SearchAppBar extends StatefulWidget {
@@ -39,7 +42,7 @@ class _SearchAppBarState extends State<SearchAppBar> {
         if(_searchController.text.isNotEmpty){
           _searchController.clear();
           UnifiedAnalyticsHelper.logEvent(
-            name: 'clear_search',
+            name: AnalyticsEventNames.clearSearch,
           );
         }else{
           closeSearch();
@@ -47,7 +50,7 @@ class _SearchAppBarState extends State<SearchAppBar> {
       } else {
         _isSearchActive = true;
         UnifiedAnalyticsHelper.logEvent(
-          name: 'tap_search_bar',
+          name: AnalyticsEventNames.tapSearchBar,
         );
       }
     });
@@ -59,9 +62,12 @@ class _SearchAppBarState extends State<SearchAppBar> {
     }else if(query.trim().length >20){
       showMyToast(msg: '검색어는 20자 이내로 입력해주세요');
     }else{
-      UnifiedAnalyticsHelper.logSearchEvent(
-        searchTerm: query.trim(),
-        searchType: 'issue_search',
+      UnifiedAnalyticsHelper.logEvent(
+        name: AnalyticsEventNames.search,
+        parameters: {
+          AnalyticsParameterKeys.searchTerm: query.trim(),
+          AnalyticsParameterKeys.searchType: AnalyticsParameterKeys.searchTypeIssue,
+        },
       );
       widget.onSearchSubmitted(query);
     }
@@ -131,8 +137,8 @@ class _SearchAppBarState extends State<SearchAppBar> {
           if(widget.onNoticePressed != null && !_isSearchActive) GestureDetector(
             onTap: () {
               UnifiedAnalyticsHelper.logNavigationEvent(
-                fromScreen: 'search_bar',
-                toScreen: 'notice',
+                fromScreen: AnalyticsScreenNames.searchBarScreen,
+                toScreen: AnalyticsScreenNames.noticeScreen,
               );
               widget.onNoticePressed?.call();
             },

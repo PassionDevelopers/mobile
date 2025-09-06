@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:could_be/core/components/app_bar/search_field.dart';
 import 'package:could_be/core/routes/route_names.dart';
 import 'package:could_be/ui/fonts.dart';
@@ -7,9 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../ui/color.dart';
-import '../../themes/margins_paddings.dart';
 import '../../responsive/responsive_utils.dart';
-import '../../responsive/responsive_layout.dart';
+import '../../themes/margins_paddings.dart';
 
 class MainAppBar extends StatelessWidget {
   const MainAppBar({super.key, required this.onSearchSubmitted});

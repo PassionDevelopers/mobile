@@ -1,7 +1,7 @@
 import 'package:could_be/data/dto/bias_score_dto.dart';
-import 'package:could_be/domain/entities/whole_bias_score.dart';
 import 'package:could_be/domain/entities/whole_bias_score_only.dart';
 import 'package:json_annotation/json_annotation.dart';
+
 part 'whole_bias_score_only_dto.g.dart';
 
 @JsonSerializable()

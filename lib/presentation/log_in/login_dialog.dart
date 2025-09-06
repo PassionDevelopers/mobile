@@ -27,7 +27,7 @@ class LoginDialog extends StatelessWidget {
                     maxLines: 3),
                   )),
               const SizedBox(height: 10,),
-              BigButton('계정 삭제', backgroundColor: AppColors.warning,
+              BigButton(text: '계정 삭제', backgroundColor: AppColors.warning,
                   onPressed: (){
                 onDeleteAccount(context);
               })

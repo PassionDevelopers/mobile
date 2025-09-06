@@ -2,6 +2,7 @@ import 'dart:developer';
 
 import 'package:could_be/core/components/alert/toast.dart';
 import 'package:could_be/domain/useCases/fetch_source_detail_use_case.dart';
+import 'package:could_be/domain/useCases/firebase_login_use_case.dart';
 import 'package:could_be/domain/useCases/manage_media_subscription_use_case.dart';
 import 'package:could_be/domain/useCases/manage_source_evaluation_use_case.dart';
 import 'package:could_be/presentation/media/media_detail/media_detail_state.dart';
@@ -15,14 +16,17 @@ class MediaDetailViewModel with ChangeNotifier {
   final FetchSourceDetailUseCase _fetchSourceDetailUseCase;
   final ManageMediaSubscriptionUseCase _manageMediaSubscriptionUseCase;
   final ManageSourceEvaluationUseCase _manageSourceEvaluationUseCase;
+  final FirebaseLoginUseCase _firebaseLoginUseCase;
 
   MediaDetailViewModel({
     required String sourceId,
     required FetchSourceDetailUseCase fetchSourceDetailUseCase,
     required ManageMediaSubscriptionUseCase manageMediaSubscriptionUseCase,
     required ManageSourceEvaluationUseCase manageSourceEvaluationUseCase,
+    required FirebaseLoginUseCase firebaseLoginUseCase,
   }) : _fetchSourceDetailUseCase = fetchSourceDetailUseCase,
-        _manageSourceEvaluationUseCase = manageSourceEvaluationUseCase,
+      _firebaseLoginUseCase = firebaseLoginUseCase,
+      _manageSourceEvaluationUseCase = manageSourceEvaluationUseCase,
       _manageMediaSubscriptionUseCase = manageMediaSubscriptionUseCase{
     _fetchSourceDetail(sourceId);
   }
@@ -45,19 +49,21 @@ class MediaDetailViewModel with ChangeNotifier {
     notifyListeners();
   }
 
-  void manageSourceEvaluation(String perspective) async {
-    if(state.sourceDetail == null) return;
-    await _manageSourceEvaluationUseCase.manageSourceEvaluation(
-      sourceId: state.sourceDetail!.id,
-      perspective: perspective,
-    );
-    _state = state.copyWith(
-      sourceDetail: state.sourceDetail!.copyWith(
-        userEvaluatedPerspective: perspective,
-      ),
-    );
-    notifyListeners();
-    showMyToast(msg: '언론 평가가 완료되었습니다.');
+  void manageSourceEvaluation({required String perspective, required BuildContext context}) async {
+    if(!_firebaseLoginUseCase.isNeedLoginPopUp(context)) {
+      if (state.sourceDetail == null) return;
+      await _manageSourceEvaluationUseCase.manageSourceEvaluation(
+        sourceId: state.sourceDetail!.id,
+        perspective: perspective,
+      );
+      _state = state.copyWith(
+        sourceDetail: state.sourceDetail!.copyWith(
+          userEvaluatedPerspective: perspective,
+        ),
+      );
+      notifyListeners();
+      showMyToast(msg: '언론 평가가 완료되었습니다.');
+    }
   }
 
   void manageSourceSubscriptionBySourceId() async {

@@ -6,7 +6,7 @@ part 'dasi_score_dto.g.dart';
 @JsonSerializable()
 class DasiScoreDto {
   final double score;
-  final DateTime createdAt;
+  final DateTime? createdAt;
   final String userId;
 
   DasiScoreDto(this.score, this.createdAt, this.userId);

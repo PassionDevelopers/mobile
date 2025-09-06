@@ -143,9 +143,9 @@ class MyPageTrendChart extends StatelessWidget {
                 ),
                 child: Row(
                   children: [
-                    changePeriodButton(period: BiasScorePeriod.weekly),
-                    changePeriodButton(period: BiasScorePeriod.monthly),
-                    changePeriodButton(period: BiasScorePeriod.yearly),
+                    changePeriodButton(period: BiasScorePeriod.week),
+                    changePeriodButton(period: BiasScorePeriod.month),
+                    changePeriodButton(period: BiasScorePeriod.year),
                   ],
                 ),
               ),

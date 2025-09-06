@@ -1,9 +1,11 @@
 import 'package:amplitude_flutter/amplitude.dart';
 import 'package:amplitude_flutter/configuration.dart';
+import 'package:app_links/app_links.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:could_be/core/di/di_repository.dart';
 import 'package:could_be/core/di/di_use_case.dart';
 import 'package:could_be/core/di/di_view_model.dart';
+import 'package:could_be/data/data_source/cache/deep_link_storage.dart';
 import 'package:could_be/data/repositoryImpl/kakao_register_uuid_repository_impl.dart';
 import 'package:could_be/data/repositoryImpl/token_storage_repository_impl.dart';
 import 'package:could_be/domain/repositoryInterfaces/kakao_register_uuid_interface.dart';
@@ -23,7 +25,8 @@ final getIt = GetIt.instance;
 Future<void> diSetupToken() async {
 
   getIt.registerSingleton<Amplitude>(Amplitude(Configuration(
-          apiKey: "f7b82ddae07365f5aa64dc2496a44dc8"
+    apiKey: "ffa5222c804a8bac6ca8dea208d6d27f"
+
         ))
   );
 
@@ -33,11 +36,13 @@ Future<void> diSetupToken() async {
   //
   // Firebase instances
   //
-  // getIt.registerSingleton<AppLinks>(AppLinks());
+  getIt.registerSingleton<AppLinks>(AppLinks());
+  getIt.registerSingleton<DeepLinkStorage>(DeepLinkStorage());
   getIt.registerSingleton<KakaoRegisterUuidRepository>(KakaoRegisterUuidRepositoryImpl(getIt<Dio>()));
   getIt.registerSingleton<FirebaseFirestore>(FirebaseFirestore.instance);
   getIt.registerSingleton<FirebaseAuth>(FirebaseAuth.instance);
   getIt.registerSingleton<FirebaseAnalytics>(FirebaseAnalytics.instance);
+
   getIt.registerSingleton<FirebaseLoginUseCase>(
     FirebaseLoginUseCase(
       tokenStorageRepository: getIt(),

@@ -1,10 +1,9 @@
-import 'package:could_be/core/components/image/image_container.dart';
 import 'package:could_be/domain/entities/topic.dart';
 import 'package:flutter/material.dart';
+
 import '../../../ui/color.dart';
 import '../../../ui/fonts.dart';
 import '../../themes/margins_paddings.dart';
-import '../../responsive/responsive_utils.dart';
 
 
 class TopicCard extends StatelessWidget {
@@ -40,7 +39,18 @@ class TopicCard extends StatelessWidget {
             width: isSelected ? 2 : 1,
           ),
         ),
-        child: Row(
+        child: topic.issuesCount == null ? Center(
+          child: MyText.reg(
+            topic.name,
+            color: isSelected
+                ? AppColors.primary
+                : AppColors.gray1,
+            fontWeight: isSelected
+                ? FontWeight.w600
+                : FontWeight.w500,
+          ),
+        ) :
+          Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             // 토픽 이름

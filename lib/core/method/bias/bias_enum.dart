@@ -22,17 +22,17 @@ enum Bias{
 }
 
 enum BiasScorePeriod {
-  weekly,
-  monthly,
-  yearly;
+  week,
+  month,
+  year;
 
   String get displayName {
     switch (this) {
-      case BiasScorePeriod.weekly:
+      case BiasScorePeriod.week:
         return '일주일';
-      case BiasScorePeriod.monthly:
+      case BiasScorePeriod.month:
         return '한달';
-      case BiasScorePeriod.yearly:
+      case BiasScorePeriod.year:
         return '일년';
     }
   }

@@ -4,6 +4,7 @@ import 'package:could_be/core/components/layouts/text_helper.dart';
 import 'package:could_be/core/components/loading/not_found.dart';
 import 'package:could_be/domain/entities/articles_group_by_bias.dart';
 import 'package:could_be/presentation/media/media_components.dart';
+import 'package:could_be/ui/fonts.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
@@ -18,11 +19,16 @@ class SourceListPage extends StatefulWidget {
     required this.articlesGBBAS,
     required this.toNextIssue,
     required this.hasNextIssue,
+    required this.isSpread,
+    required this.spreadCallback,
   });
 
   final ArticlesGroupByBiasAndSource articlesGBBAS;
   final VoidCallback toNextIssue;
   final bool hasNextIssue;
+  final bool isSpread;
+  final VoidCallback spreadCallback;
+
 
   @override
   State<SourceListPage> createState() => _SourceListPageState();
@@ -122,16 +128,18 @@ class _SourceListPageState extends State<SourceListPage>
     _tabController.addListener(() {
       setState(() {});
     });
-    log('SourceListPage initState');
-    log('Left Articles: ${widget.articlesGBBAS.allArticles.length}');
-    log('Left Articles: ${leftArticles?.length}');
-    log('Center Articles: ${centerArticles?.length}');
-    log('Right Articles: ${rightArticles?.length}');
+  }
+
+  @override
+  void dispose() {
+    _tabController.dispose();
+    super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     return Container(
+      margin: EdgeInsets.symmetric(horizontal: MyPaddings.medium),
       decoration: BoxDecoration(
         color: AppColors.white,
         borderRadius: BorderRadius.circular(16),
@@ -145,134 +153,69 @@ class _SourceListPageState extends State<SourceListPage>
       ),
       child: Column(
         children: [
-          Container(
-            padding: EdgeInsets.all(MyPaddings.large),
-            decoration: BoxDecoration(
-              border: Border(
-                bottom: BorderSide(color: AppColors.gray5, width: 1),
+          GestureDetector(
+            onTap: widget.spreadCallback,
+            child: Container(
+              padding: EdgeInsets.all(MyPaddings.large),
+              decoration: BoxDecoration(
+                border: Border(
+                  bottom: BorderSide(color: AppColors.gray5, width: 1),
+                ),
               ),
-            ),
-            child: Row(
-              children: [
-                Icon(Icons.newspaper, color: AppColors.primary, size: 24),
-                SizedBox(width: MyPaddings.medium),
-                Text(
-                  '원문 기사 보기',
-                  style: TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.w600,
+              child: Row(
+                children: [
+                  Icon(Icons.newspaper, color: AppColors.primary, size: 24),
+                  SizedBox(width: MyPaddings.medium),
+                  MyText.h2(
+                    '원문 기사 보기',
                     color: AppColors.primary,
                   ),
-                ),
-              ],
+                  Spacer(),
+                  Icon(
+                    widget.isSpread ? Icons.keyboard_arrow_up : Icons.keyboard_arrow_down,
+                  ),
+                ],
+              ),
             ),
           ),
-          Padding(
-            padding: EdgeInsets.all(MyPaddings.large),
-            child: Column(
-              children: [
-                Container(
-                  padding: EdgeInsets.all(4),
-                  decoration: BoxDecoration(
-                    color: AppColors.gray5,
-                    borderRadius: BorderRadius.circular(12),
+          if(widget.isSpread)
+            Padding(
+              padding: EdgeInsets.all(MyPaddings.large),
+              child: Column(
+                children: [
+                  Container(
+                    padding: EdgeInsets.all(4),
+                    decoration: BoxDecoration(
+                      color: AppColors.gray5,
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                    child: Row(
+                      children: List.generate(3, (index) {
+                        return _buildTab(index);
+                      }),
+                    ),
                   ),
-                  child: Row(
-                    children: List.generate(3, (index) {
-                      return _buildTab(index);
-                    }),
-                  ),
-                ),
-                SizedBox(height: MyPaddings.large),
-                AutoSizedTabBarView(
-                  tabController: _tabController,
-                  children: [
-                    _buildTabViewPage(
-                      bias: Bias.left,
-                      oneSourceArticles: leftArticles ?? [],
-                    ),
-                    _buildTabViewPage(
-                      bias: Bias.center,
-                      oneSourceArticles: centerArticles ?? [],
-                    ),
-                    _buildTabViewPage(
-                      bias: Bias.right,
-                      oneSourceArticles: rightArticles ?? [],
-                    ),
-                  ],
-                ),
-
-                SizedBox(height: MyPaddings.large),
-                Container(
-                  width: double.infinity,
-                  height: 48,
-                  child: Row(
+                  SizedBox(height: MyPaddings.large),
+                  AutoSizedTabBarView(
+                    tabController: _tabController,
                     children: [
-                      if(widget.hasNextIssue)ElevatedButton(
-                        onPressed: () {
-                          context.pop();
-                        },
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: AppColors.primary,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(12),
-                          ),
-                          elevation: 0,
-                        ),
-                        child: Row(
-                          children: [
-                            Icon(Icons.home, color: Colors.white, size: 25),
-                            SizedBox(width: MyPaddings.small),
-                            Text(
-                              '홈으로',
-                              style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 16,
-                                fontWeight: FontWeight.w600,
-                              ),
-                            ),
-                          ],
-                        ),
+                      _buildTabViewPage(
+                        bias: Bias.left,
+                        oneSourceArticles: leftArticles ?? [],
                       ),
-                      SizedBox(width: MyPaddings.large),
-                      Expanded(
-                        child: ElevatedButton(
-                          onPressed:
-                              widget.hasNextIssue
-                                  ? widget.toNextIssue
-                                  : () {
-                                    context.pop();
-                                  },
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: AppColors.primary,
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(12),
-                            ),
-                            elevation: 0,
-                          ),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Text(
-                                widget.hasNextIssue ? '다음 이슈 보기' : '홈으로 돌아가기',
-                                style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.w600,
-                                ),
-                              ),
-                              SizedBox(width: MyPaddings.small),
-                              Icon(Icons.keyboard_arrow_right_rounded, color: Colors.white, size: 25),
-                            ],
-                          ),
-                        ),
+                      _buildTabViewPage(
+                        bias: Bias.center,
+                        oneSourceArticles: centerArticles ?? [],
+                      ),
+                      _buildTabViewPage(
+                        bias: Bias.right,
+                        oneSourceArticles: rightArticles ?? [],
                       ),
                     ],
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
-          ),
         ],
       ),
     );

@@ -1,3 +1,5 @@
+import 'package:could_be/core/analytics/analytics_event_names.dart';
+import 'package:could_be/core/analytics/unified_analytics_helper.dart';
 import 'package:could_be/core/method/date_time_parsing.dart';
 import 'package:could_be/core/routes/route_names.dart';
 import 'package:could_be/core/themes/margins_paddings.dart';
@@ -67,6 +69,7 @@ class _HotIssueCardState extends State<HotIssueCard>
                 borderRadius: BorderRadius.circular(20),
                 onTap: () {
                   context.push(RouteNames.hotIssueFeed, extra: widget.hotIssues);
+                  UnifiedAnalyticsHelper.logEvent(name: AnalyticsEventNames.openHotIssues);
                 },
                 child: ClipRRect(
                   borderRadius: BorderRadius.circular(20),

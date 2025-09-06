@@ -1,4 +1,3 @@
-import 'package:could_be/ui/fonts.dart';
 import 'package:flutter/material.dart';
 
 import '../../../ui/color.dart';

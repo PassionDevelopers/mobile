@@ -9,10 +9,16 @@ enum NotFoundType {
   topic,
   source,
   user,
+  majorComment,
+  comment,
   notice;
 
   String get name {
     switch (this) {
+      case NotFoundType.comment:
+        return '등록된 댓글이';
+      case NotFoundType.majorComment:
+        return '등록된 대표 의견이';
       case NotFoundType.issue:
         return '발견된 이슈가';
       case NotFoundType.article:
