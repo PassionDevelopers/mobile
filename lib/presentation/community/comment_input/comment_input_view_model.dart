@@ -1,35 +1,48 @@
+import 'dart:developer';
+
+import 'package:could_be/core/components/alert/toast.dart';
+import 'package:could_be/core/domain/comment_error.dart';
+import 'package:could_be/core/domain/result.dart';
+import 'package:could_be/domain/entities/comment.dart';
+import 'package:could_be/domain/entities/reply.dart';
+import 'package:could_be/domain/entities/user_profile.dart';
 import 'package:could_be/domain/useCases/comment_use_case.dart';
 import 'package:could_be/domain/useCases/manage_user_profile_use_case.dart';
 import 'package:flutter/material.dart';
-import 'package:could_be/core/method/bias/bias_enum.dart';
-import 'package:could_be/domain/entities/user_profile.dart';
-import 'package:could_be/domain/entities/comment.dart';
 
 class CommentInputViewModel extends ChangeNotifier {
   final ManageUserProfileUseCase manageUserProfileUseCase;
   final CommentUseCase commentUseCase;
-  
+
   final TextEditingController commentController = TextEditingController();
-  final TextEditingController sourceContoller = TextEditingController();
+  final formKey = GlobalKey<FormState>();
+  final TextEditingController sourceController = TextEditingController();
   final FocusNode commentFocusNode = FocusNode();
-  
+
+  int currentSourceLength = 1;
   bool _isCommentExpanded = false;
   String? _replyToCommentId;
   String? _replyToUserName;
   UserProfile? userProfile;
 
   final String issueId;
-  String? parentId;
 
-  CommentInputViewModel({required this.manageUserProfileUseCase, required this.commentUseCase, required this.issueId}) {
+  CommentInputViewModel({
+    required this.manageUserProfileUseCase,
+    required this.commentUseCase,
+    required this.issueId,
+  }) {
     setUserProfile();
     commentFocusNode.addListener(_onFocusChanged);
     commentController.addListener(_onTextChanged);
   }
 
   bool get isCommentExpanded => _isCommentExpanded;
+
   String? get replyToCommentId => _replyToCommentId;
+
   String? get replyToUserName => _replyToUserName;
+
   bool get hasCommentText => commentController.text.trim().isNotEmpty;
 
   @override
@@ -39,7 +52,7 @@ class CommentInputViewModel extends ChangeNotifier {
     super.dispose();
   }
 
-  void setUserProfile()async{
+  void setUserProfile() async {
     userProfile = await manageUserProfileUseCase.fetchUserProfile();
     notifyListeners();
   }
@@ -66,25 +79,65 @@ class CommentInputViewModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  void sendComment()async{
+  void sendComment({
+    required void Function(Comment comment) onSuccessComment,
+    required void Function(String parentId, Reply reply) onSuccessReply,
+  }) async {
     final content = commentController.text.trim();
+    final source = sourceController.text.trim();
     if (content.isEmpty || userProfile == null) return;
 
-    final newComment = Comment(
-      id: DateTime.now().millisecondsSinceEpoch.toString(),
-      content: content,
-      createdAt: DateTime.now(),
-      likeCount: 0,
-      isLiked: false,
-      userProfile: userProfile!
-      // parentId: _replyToCommentId,
-    );
-
-    await commentUseCase.addComment(issueId: issueId, content: content, parentCommentId: parentId, source: []);
+    if(source.isNotEmpty && (formKey.currentState ==null || !formKey.currentState!.validate())) return;
 
     commentController.clear();
-    cancelReply();
+    sourceController.clear();
     commentFocusNode.unfocus();
+
+    final result = await commentUseCase.addComment(
+      issueId: issueId,
+      content: content,
+      parentCommentId: _replyToCommentId,
+      source: [if(source.isNotEmpty)source],
+    );
+    switch (result) {
+      case ResultSuccess<bool, CommentError> success:
+        if(_replyToCommentId != null) {
+          log('Reply added successfully: ${userProfile?.userId}');
+          onSuccessReply(
+            _replyToCommentId!,
+            Reply(
+              id: 'temp_${DateTime.now().millisecondsSinceEpoch}',
+              content: content,
+              createdAt: DateTime.now(),
+              likeCount: 0,
+              userProfile: userProfile!,
+              source: [if(source.isNotEmpty)source],
+              isLiked: false,
+              isDeleted: false,
+            ),
+          );
+          return;
+        }else{
+          onSuccessComment(
+            Comment(
+              id: 'temp_${DateTime.now().millisecondsSinceEpoch}',
+              content: content,
+              createdAt: DateTime.now(),
+              likeCount: 0,
+              userProfile: userProfile!,
+              isLiked: false,
+              replies: [],
+              isShowReplies: false,
+              source: [if(source.isNotEmpty)source],
+              isDeleted: false,
+            ),
+          );
+        }
+      case ResultError<bool, CommentError> error:
+        showMyToast(msg: error.error.toString());
+    }
+
+    cancelReply();
   }
 
   void cancelComment() {

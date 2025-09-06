@@ -23,7 +23,7 @@ class FcmUseCase{
     final channel = const AndroidNotificationChannel(
       'Dasi Stand', // id
       'High Importance Notifications', // title// description
-      importance: Importance.high,
+      importance: Importance.defaultImportance,
     );
 
     await _flutterLocalNotificationsPlugin
@@ -52,11 +52,11 @@ class FcmUseCase{
 
     await messaging.setAutoInitEnabled(true);
 
-    await messaging.setForegroundNotificationPresentationOptions(
-      alert: true,
-      badge: true,
-      sound: false,
-    );
+    // await messaging.setForegroundNotificationPresentationOptions(
+    //   alert: true,
+    //   badge: true,
+    //   sound: false,
+    // );
   }
 
   Future<void> updateFcmToken() async {
@@ -72,15 +72,15 @@ class FcmUseCase{
     final permission = await _messaging.requestPermission();
     if (permission.authorizationStatus == AuthorizationStatus.denied) return;
 
-    // //1. 어플이 열려있을 때 Push 알림(Foreground)
-    FirebaseMessaging.onMessage.listen((RemoteMessage event) {
-      print("foreground message");
-      if(event.data.containsKey("issueId")){
-        String issueId = event.data["issueId"];
-        context.push('${RouteNames.issueDetailFeed}/$issueId');
-        return;
-      }
-    });
+    // // //1. 어플이 열려있을 때 Push 알림(Foreground)
+    // FirebaseMessaging.onMessage.listen((RemoteMessage event) {
+    //   print("foreground message");
+    //   if(event.data.containsKey("issueId")){
+    //     String issueId = event.data["issueId"];
+    //     context.push('${RouteNames.issueDetailFeed}/$issueId');
+    //     return;
+    //   }
+    // });
 
     //2. 어플이 닫혀있을 때 Push 알림(Background)
     FirebaseMessaging.onMessageOpenedApp.listen((event) {

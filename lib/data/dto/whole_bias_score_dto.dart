@@ -15,16 +15,16 @@ class WholeBiasScoreDto {
   final DateTime createdAt;
   final String userId;
 
-  WholeBiasScoreDto(
-    this.politics,
-    this.economy,
-    this.society,
-    this.culture,
-    this.technology,
-    this.international,
-    this.createdAt,
-    this.userId,
-  );
+  WholeBiasScoreDto({
+    required this.politics,
+    required this.economy,
+    required this.society,
+    required this.culture,
+    required this.technology,
+    required this.international,
+    required this.createdAt,
+    required this.userId,
+  });
 
   factory WholeBiasScoreDto.fromJson(Map<String, dynamic> json) =>
       _$WholeBiasScoreDtoFromJson(json);

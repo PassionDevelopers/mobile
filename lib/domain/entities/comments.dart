@@ -6,11 +6,13 @@ class Comments {
   final List<Comment> comments;
   final bool hasMore;
   final String? lastCommentId;
+  final int commentsCount;
 
   Comments({
     required this.perspective,
     required this.comments,
     this.hasMore = false,
     this.lastCommentId,
+    required this.commentsCount,
   });
 }

@@ -7,10 +7,10 @@ import 'package:could_be/domain/entities/dasi_score.dart';
 import 'package:could_be/domain/entities/whole_bias_score.dart';
 import 'package:could_be/domain/repositoryInterfaces/whole_bias_score_interface.dart';
 
-class FetchWholeBiasScoreUseCase {
+class WholeBiasScoreUseCase {
   final WholeBiasScoreRepository _biasScoreRepository;
 
-  FetchWholeBiasScoreUseCase(this._biasScoreRepository);
+  WholeBiasScoreUseCase(this._biasScoreRepository);
 
   Future<DasiScore> fetchDasiScore() async {
     UnifiedAnalyticsHelper.logEvent(
@@ -26,27 +26,35 @@ class FetchWholeBiasScoreUseCase {
     return await _biasScoreRepository.fetchWholeBiasScore();
   }
 
+  void updateWholeBiasScore(WholeBiasScore wholeBiasScore) {
+    UnifiedAnalyticsHelper.logEvent(
+      name: AnalyticsEventNames.updateWholeBiasScore,
+    );
+    _biasScoreRepository.updateWholeBiasScore(wholeBiasScore);
+  }
+
   Future<BiasScoreHistory> fetchBiasScoreHistory({
     required BiasScorePeriod period,
   }) async {
 
     final DateTime now = DateTime.now();
 
-    final int year = now.year;
-    final int? month = period == BiasScorePeriod.yearly ? null : now.month;
-    final int? week =
-        period == BiasScorePeriod.monthly ? null : getWeekOfMonth(now);
+    // final int year = now.year;
+    // final int? month = period == BiasScorePeriod.year ? null : now.month;
+    // final int? week =
+    //     period == BiasScorePeriod.monthly ? null : getWeekOfMonth(now);
     
     UnifiedAnalyticsHelper.logEvent(
       name: AnalyticsEventNames.fetchBiasScoreHistory,
       parameters: {
-        'period': period.toString(),
-        'year': year.toString(),
-        if (month != null) 'month': month.toString(),
-        if (week != null) 'week': week.toString(),
+        'recent' : period.toString()
+        // 'period': period.toString(),
+        // 'year': year.toString(),
+        // if (month != null) 'month': month.toString(),
+        // if (week != null) 'week': week.toString(),
       },
     );
     
-    return await _biasScoreRepository.fetchBiasScoreHistory(year: year, month: month, week: week,);
+    return await _biasScoreRepository.fetchBiasScoreHistory(period: period);
   }
 }

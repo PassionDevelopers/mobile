@@ -139,6 +139,7 @@ class _SourceListPageState extends State<SourceListPage>
   @override
   Widget build(BuildContext context) {
     return Container(
+      margin: EdgeInsets.symmetric(horizontal: MyPaddings.medium),
       decoration: BoxDecoration(
         color: AppColors.white,
         borderRadius: BorderRadius.circular(16),

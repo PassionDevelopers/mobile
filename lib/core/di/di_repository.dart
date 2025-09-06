@@ -10,6 +10,8 @@ import 'package:could_be/data/repositoryImpl/manage_topic_subscription_repositor
 import 'package:could_be/data/repositoryImpl/manage_user_profile_repository_impl.dart';
 import 'package:could_be/data/repositoryImpl/manage_user_status_repository_impl.dart';
 import 'package:could_be/data/repositoryImpl/notice_repository_impl.dart';
+import 'package:could_be/data/repositoryImpl/notifications_repository_impl.dart';
+import 'package:could_be/data/repositoryImpl/report_repository_impl.dart';
 import 'package:could_be/data/repositoryImpl/source_detail_impl.dart';
 import 'package:could_be/data/repositoryImpl/topic_detail_repository_impl.dart';
 import 'package:could_be/data/repositoryImpl/track_user_activity_repository_impl.dart';
@@ -28,6 +30,8 @@ import 'package:could_be/domain/repositoryInterfaces/manage_user_profile_interfa
 import 'package:could_be/domain/repositoryInterfaces/manage_user_status_interface.dart';
 import 'package:could_be/domain/repositoryInterfaces/mange_source_evalutaion_interface.dart';
 import 'package:could_be/domain/repositoryInterfaces/notice_interface.dart';
+import 'package:could_be/domain/repositoryInterfaces/notifications_interface.dart';
+import 'package:could_be/domain/repositoryInterfaces/report_interface.dart';
 import 'package:could_be/domain/repositoryInterfaces/source_detail_interface.dart';
 import 'package:could_be/domain/repositoryInterfaces/topic_detail_interface.dart';
 import 'package:could_be/domain/repositoryInterfaces/topics_interface.dart';
@@ -35,7 +39,6 @@ import 'package:could_be/domain/repositoryInterfaces/track_user_activity_interfa
 import 'package:could_be/domain/repositoryInterfaces/whole_bias_score_interface.dart';
 import 'package:dio/dio.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-
 import '../../data/repositoryImpl/articles_repository_impl.dart';
 import '../../data/repositoryImpl/feedback_repository_impl.dart';
 import '../../data/repositoryImpl/issue_detail_repository_impl.dart';
@@ -94,9 +97,15 @@ Future<void> diRepoSetup()async {
   getIt.registerSingleton<ManageFcmRepository>(
     ManageFcmRepositoryImpl(getIt<Dio>()),
   );
+  getIt.registerSingleton<NotificationsRepository>(
+    NotificationsRepositoryImpl(getIt<Dio>()),
+  );
 
   //community
   getIt.registerSingleton<CommentRepository>(CommentRepositoryImpl(getIt<Dio>()));
+  getIt.registerSingleton<ReportRepository>(
+    ReportRepositoryImpl(getIt<Dio>()),
+  );
 
   //source
   getIt.registerSingleton<ManageMediaSubscriptionRepository>(

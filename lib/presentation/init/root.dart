@@ -1,29 +1,25 @@
 import 'dart:async';
 import 'dart:developer';
 import 'dart:io';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:could_be/core/components/layouts/scaffold_layout.dart';
 import 'package:could_be/core/permission/permission_management.dart';
 import 'package:could_be/core/routes/route_names.dart';
 import 'package:could_be/core/routes/router.dart';
-import 'package:could_be/domain/repositoryInterfaces/manage_fcm_interface.dart';
 import 'package:could_be/domain/repositoryInterfaces/track_user_activity_interface.dart';
 import 'package:could_be/domain/useCases/fcm_use_case.dart';
 import 'package:could_be/domain/useCases/manage_user_status_use_case.dart';
 import 'package:could_be/presentation/log_in/login_view_model.dart';
 import 'package:could_be/presentation/update_management/check_update_field.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:go_router/go_router.dart';
 import 'package:package_info_plus/package_info_plus.dart';
+import '../../core/analytics/analytics_event_names.dart';
+import '../../core/analytics/unified_analytics_helper.dart';
 import '../../core/di/di_setup.dart';
 import '../../data/data_source/local/user_preferences.dart';
 import '../../domain/repositoryInterfaces/token_storage_interface.dart';
-import '../../core/analytics/unified_analytics_helper.dart';
-import '../../core/analytics/analytics_event_names.dart';
 
 StreamSubscription? fireSubscription;
 

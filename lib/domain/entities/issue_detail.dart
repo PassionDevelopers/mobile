@@ -33,6 +33,7 @@ class IssueDetail {
   final List<String> nextIssueIds;
   final bool isSubscribed;
   final Articles articles;
+  final int commentsCount;
 
   IssueDetail({
     required this.id,
@@ -64,6 +65,7 @@ class IssueDetail {
     required this.centerLikeCount,
     required this.rightLikeCount,
     required this.tags,
+    required this.commentsCount,
   });
 
   IssueDetail copyWith({
@@ -97,6 +99,7 @@ class IssueDetail {
     int? leftLikeCount,
     int? centerLikeCount,
     int? rightLikeCount,
+    int? commentsCount,
   }) {
     return IssueDetail(
       id: id ?? this.id,
@@ -128,6 +131,7 @@ class IssueDetail {
       leftLikeCount: leftLikeCount ?? this.leftLikeCount,
       centerLikeCount: centerLikeCount ?? this.centerLikeCount,
       rightLikeCount: rightLikeCount ?? this.rightLikeCount,
+      commentsCount: commentsCount ?? this.commentsCount,
     );
   }
 } 

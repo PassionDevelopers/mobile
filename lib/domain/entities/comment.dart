@@ -38,6 +38,7 @@ class Comment {
     List<String>? source,
     UserProfile? userProfile,
     bool? isLiked,
+    bool? isMyComment,
     List<Reply>? replies,
     bool? isShowReplies,
   }) {

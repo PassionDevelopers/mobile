@@ -10,7 +10,7 @@ Future<void> requestFCMPermission(bool isFirst) async {
   final bool isPermissionRequested = UserPreferences.getNotificationPermissionRequested() ?? false;
 
   if(!isFirst || !isPermissionRequested) {
-    final settings = await getIt<FirebaseMessaging>().requestPermission(
+    final settings = await FirebaseMessaging.instance.requestPermission(
       alert: true,
       announcement: false,
       badge: true,
@@ -36,7 +36,7 @@ Future<void> requestFCMPermission(bool isFirst) async {
 }
 
 Future<bool> checkFCMPermissionStatus() async {
-  final status = await getIt<FirebaseMessaging>().getNotificationSettings();
+  final status = await FirebaseMessaging.instance.getNotificationSettings();
   if (status.authorizationStatus == AuthorizationStatus.authorized ||
       status.authorizationStatus == AuthorizationStatus.provisional) {
     return true;

@@ -11,12 +11,14 @@ class CommentsDto {
   final List<CommentDto> comments;
   final bool hasMore;
   final String? lastCommentId;
+  final int commentsCount;
 
   CommentsDto(
     this.perspective,
     this.comments,
     this.hasMore,
     this.lastCommentId,
+    this.commentsCount,
   );
 
   factory CommentsDto.fromJson(Map<String, dynamic> json) =>
@@ -33,6 +35,7 @@ extension CommentsDtx on CommentsDto {
       comments: comments.map((e) => e.toDomain(bias: bias)).toList(),
       hasMore: hasMore,
       lastCommentId: lastCommentId,
+      commentsCount: commentsCount,
     );
   }
 }

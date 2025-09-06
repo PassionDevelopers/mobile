@@ -8,14 +8,18 @@ part of 'whole_bias_score_dto.dart';
 
 WholeBiasScoreDto _$WholeBiasScoreDtoFromJson(Map<String, dynamic> json) =>
     WholeBiasScoreDto(
-      BiasScoreDto.fromJson(json['politics'] as Map<String, dynamic>),
-      BiasScoreDto.fromJson(json['economy'] as Map<String, dynamic>),
-      BiasScoreDto.fromJson(json['society'] as Map<String, dynamic>),
-      BiasScoreDto.fromJson(json['culture'] as Map<String, dynamic>),
-      BiasScoreDto.fromJson(json['technology'] as Map<String, dynamic>),
-      BiasScoreDto.fromJson(json['international'] as Map<String, dynamic>),
-      DateTime.parse(json['createdAt'] as String),
-      json['userId'] as String,
+      politics: BiasScoreDto.fromJson(json['politics'] as Map<String, dynamic>),
+      economy: BiasScoreDto.fromJson(json['economy'] as Map<String, dynamic>),
+      society: BiasScoreDto.fromJson(json['society'] as Map<String, dynamic>),
+      culture: BiasScoreDto.fromJson(json['culture'] as Map<String, dynamic>),
+      technology: BiasScoreDto.fromJson(
+        json['technology'] as Map<String, dynamic>,
+      ),
+      international: BiasScoreDto.fromJson(
+        json['international'] as Map<String, dynamic>,
+      ),
+      createdAt: DateTime.parse(json['createdAt'] as String),
+      userId: json['userId'] as String,
     );
 
 Map<String, dynamic> _$WholeBiasScoreDtoToJson(WholeBiasScoreDto instance) =>

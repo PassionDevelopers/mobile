@@ -1,79 +1,84 @@
+import 'package:could_be/core/components/comments/comment_actions.dart';
+import 'package:could_be/core/components/comments/comment_link.dart';
+import 'package:could_be/core/components/popup_menu/popup_menu.dart';
 import 'package:could_be/core/components/profile/profile_frame.dart';
 import 'package:could_be/domain/entities/reply.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import '../../../domain/entities/reply.dart';
 import '../../../ui/color.dart';
 import '../../../ui/fonts.dart';
 import '../../method/date_time_parsing.dart';
 import '../../themes/margins_paddings.dart';
-import 'user_profile_widget.dart';
 
 class ReplyCard extends StatelessWidget {
   final Reply reply;
-  final VoidCallback? onLikePressed;
-  final VoidCallback? onReplyPressed;
-  final VoidCallback? onReportPressed;
-  final bool showReplies;
-  final VoidCallback? onToggleReplies;
+  final String commentId;
+  final void Function({required String commentId, String? replyId}) onLikePressed;
+  final void Function(BuildContext context, String commentId) onReportPressed;
+  final void Function(BuildContext context, String commentId, {String? replyId}) onDeletePressed;
 
   const ReplyCard({
     super.key,
     required this.reply,
-    this.onLikePressed,
-    this.onReplyPressed,
-    this.onReportPressed,
-    this.showReplies = true,
-    this.onToggleReplies,
+    required this.commentId,
+    required this.onLikePressed,
+    required this.onReportPressed,
+    required this.onDeletePressed,
   });
 
   @override
   Widget build(BuildContext context) {
+    final isMine = reply.userProfile.userId == FirebaseAuth.instance.currentUser?.uid;
     return Container(
       padding: EdgeInsets.only(bottom: MyPaddings.medium, top: MyPaddings.medium, right: MyPaddings.medium),
-      child: Row(
+      child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Align(
-              alignment: Alignment.topCenter,
-              child: Profile(width: 32, userProfile: reply.userProfile)),
-          SizedBox(width: MyPaddings.medium),
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
+          Row(
             children: [
-              Row(
-                children: [
-                  MyText.reg(
-                    reply.userProfile.nickname,
-                    fontWeight: FontWeight.bold,
-                    color: AppColors.textPrimary,
-                  ),
-                  Text(
-                    '•',
-                    style: TextStyle(color: AppColors.gray3),
-                  ),
-                  SizedBox(width: 8),
-                  MyText.reg(
-                    getTimeAgo(reply.createdAt),
-                    color: AppColors.gray2,
-                  ),
-                ],
+              Profile(width: 32, userProfile: reply.userProfile),
+              SizedBox(width: MyPaddings.medium),
+              MyText.reg(
+                reply.userProfile.nickname,
+                fontWeight: FontWeight.bold,
+                color: AppColors.textPrimary,
               ),
-              SizedBox(height: MyPaddings.small),
+              MyText.reg(' • ', color: AppColors.gray3),
+              MyText.reg(
+                getTimeAgo(reply.createdAt),
+                color: AppColors.gray2,
+              ),
+              Spacer(),
+              Expanded(
+                child: MyPopupMenu(isMine: isMine,
+                  onDeletePressed: (){onDeletePressed(context, commentId, replyId: reply.id);},
+                  onReportPressed: (){onReportPressed(context, reply.id);},
+                ),
+              )
+            ],
+          ),
+
+          Row(
+            children: [
+              SizedBox(width: 32,),
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   MyText.articleSmall(
-                    reply.content,
-                    color: AppColors.textPrimary,
+                    reply.isDeleted? '삭제된 댓글입니다.' : reply.content,
+                    color: reply.isDeleted? AppColors.gray3 : AppColors.textPrimary,
                   ),
-                  SizedBox(height: MyPaddings.small),
-                  // CommentActions(
-                  //   likeCount: reply.likeCount,
-                  //   isLiked: reply.isLiked,
-                  //   onLikePressed: onLikePressed ?? () {},
-                  //   onReplyPressed: onReplyPressed ?? () {},
-                  //   onReportPressed: onReportPressed ?? () {},
-                  // ),
+                  SizedBox(height: MyPaddings.medium),
+                  CommentLink(source: reply.source),
+                  SizedBox(height: MyPaddings.medium),
+                  CommentActions(
+                    commentId: commentId,
+                    replyId: reply.id,
+                    bias: reply.userProfile.bias,
+                    onLikePressed: onLikePressed,
+                    likeCount: reply.likeCount,
+                    isLiked: reply.isLiked
+                  )
                 ],
               ),
             ],

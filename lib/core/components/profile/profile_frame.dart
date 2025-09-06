@@ -3,6 +3,7 @@ import 'package:could_be/core/method/bias/bias_method.dart';
 import 'package:could_be/domain/entities/user_profile.dart';
 import 'package:could_be/ui/color.dart';
 import 'package:flutter/material.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 
 class ProfileFrame extends StatelessWidget {
   const ProfileFrame({
@@ -49,7 +50,7 @@ class Profile extends StatelessWidget {
           userProfile == null
               ? const SizedBox()
               : userProfile!.imageUrl != null
-              ? Image.network(userProfile!.imageUrl!, fit: BoxFit.cover)
+              ? CachedNetworkImage(imageUrl: userProfile!.imageUrl!, fit: BoxFit.cover)
               : Icon(Icons.person, size: width * 0.6, color: AppColors.gray3),
     );
   }

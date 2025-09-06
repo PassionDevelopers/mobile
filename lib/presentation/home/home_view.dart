@@ -46,6 +46,7 @@ class _HomeViewState extends State<HomeView> with WidgetsBindingObserver{
       debugPrint('onAppLink: $uri');
       openAppLink(uri);
     });
+
   }
 
   void openAppLink(Uri uri) {
@@ -67,19 +68,6 @@ class _HomeViewState extends State<HomeView> with WidgetsBindingObserver{
         context.push('${RouteNames.issueDetailFeed}/$issueId');
       }
     }
-
-    // if(queryParameters.containsKey('utm')) {
-    //   String? utm = queryParameters['utm'];
-    //   if(utm != null && utm.isNotEmpty){
-    //     UnifiedAnalyticsHelper.logEvent(
-    //       name: AnalyticsEventNames.utmLinkClicked,
-    //       parameters: {
-    //         AnalyticsParameterKeys.utm : utm,
-    //       },
-    //     );
-    //   }
-    // }
-
   }
 
   @override
@@ -94,18 +82,6 @@ class _HomeViewState extends State<HomeView> with WidgetsBindingObserver{
     });
 
     initDeepLinks();
-    // final deeplinkStorage = getIt<DeepLinkStorage>();
-    // final String? deepLink = deeplinkStorage.getDeepLink();
-    // if(deepLink != null){
-    //   deeplinkStorage.clearDeepLink();
-    //   Future.delayed(Duration.zero, (){
-    //     if(deepLink.contains(RouteNames.issueDetailFeed)){
-    //       context.push(
-    //         deepLink,
-    //       );
-    //     }
-    //   });
-    // }
   }
 
   @override

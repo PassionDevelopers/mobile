@@ -1,64 +1,46 @@
 import 'dart:developer';
 import 'package:could_be/domain/entities/comment.dart';
 import 'package:could_be/domain/entities/reply.dart';
-import 'package:could_be/domain/entities/user_profile.dart';
 import 'package:could_be/domain/useCases/comment_use_case.dart';
 import 'package:could_be/domain/useCases/manage_user_profile_use_case.dart';
+import 'package:could_be/presentation/community/comment/comment_state.dart';
+import 'package:could_be/presentation/community/report/report_bottom_sheet.dart';
 import 'package:flutter/material.dart';
-
-enum CommentSortType {
-  newest('최신순'),
-  popular('인기순');
-
-  const CommentSortType(this.displayName);
-  final String displayName;
-}
 
 class CommentViewModel extends ChangeNotifier{
 
   final CommentUseCase commentUseCase;
   final ManageUserProfileUseCase manageUserProfileUseCase;
-  CommentViewModel({required this.commentUseCase, required this.manageUserProfileUseCase, required this.issueId});
-
-  String? parentId;
   final String issueId;
-  UserProfile? userProfile;
-
-  // State variables
-  List<Comment> _comments = [];
-  bool hasMore = false;
-  String? lastCommentId;
-  CommentSortType _selectedSortType = CommentSortType.newest;
-
-  // Getters
-  bool isLoading = false;
-  List<Comment> get comments => _comments;
-  CommentSortType get selectedSortType => _selectedSortType;
-
-  void initialize() {
+  CommentViewModel({required this.commentUseCase, required this.manageUserProfileUseCase, required this.issueId}){
     fetchComments();
     setUserProfile();
   }
 
-  // 비즈니스 로직 메서드들
+  late CommentState _state = CommentState(issueId: issueId);
+  CommentState get state => _state;
 
   void setUserProfile()async{
-    userProfile = await manageUserProfileUseCase.fetchUserProfile();
+    final profile = await manageUserProfileUseCase.fetchUserProfile();
+    _state = state.copyWith(userProfile: profile);
     notifyListeners();
   }
 
   void fetchComments() async {
     try {
-      isLoading = true;
+      _state = state.copyWith(isLoading: true);
       notifyListeners();
 
-      final fetchedComments = await commentUseCase.fetchComments(issueId);
-      log('Fetched Comments: ${fetchedComments.comments.length}, Has More: ${fetchedComments.hasMore}');
-      _comments = fetchedComments.comments;
-      hasMore = fetchedComments.hasMore;
-      lastCommentId = fetchedComments.lastCommentId;
-      sortComments();
-      isLoading = false;
+      final fetchedComments = await commentUseCase.fetchComments(issueId: issueId, sortType: state.selectedSortType);
+      _state = state.copyWith(
+        commentsCount: fetchedComments.commentsCount,
+        comments: fetchedComments.comments,
+        hasMore: fetchedComments.hasMore,
+        lastCommentId: fetchedComments.lastCommentId,
+      );
+      _state = state.copyWith(
+        isLoading: false,
+      );
       notifyListeners();
     } catch (e) {
       // 에러 처리 로직
@@ -66,96 +48,54 @@ class CommentViewModel extends ChangeNotifier{
     }
   }
 
-  void setSortType(CommentSortType sortType) {
-    _selectedSortType = sortType;
-    sortComments();
-  }
+  void fetchMoreComments()async{
+    log('hasmore: ${state.hasMore}, isLoadingMore: ${state.isLoadingMore}, isLoading: ${state.isLoading}, commentsLength: ${state.comments.length}');
+    if(state.isLoadingMore || state.isLoading || !state.hasMore || state.comments.length >= 300) return;
 
-  void sortComments() {
-    if (_selectedSortType == CommentSortType.newest) {
-      _comments.sort((a, b) => b.createdAt.compareTo(a.createdAt));
-    } else {
-      _comments.sort((a, b) => b.likeCount.compareTo(a.likeCount));
-    }
+    _state = state.copyWith(isLoadingMore: true);
+    notifyListeners();
+
+    final fetchedComments = await commentUseCase.fetchComments(issueId: issueId, lastCommentId: state.lastCommentId, sortType: state.selectedSortType);
+    _state = state.copyWith(
+      comments: state.comments + fetchedComments.comments,
+      hasMore: fetchedComments.hasMore,
+      lastCommentId: fetchedComments.lastCommentId,
+    );
+    _state = state.copyWith(isLoadingMore: false);
     notifyListeners();
   }
 
-  void toggleReplies(String commentId) {
-    final commentIndex = _comments.indexWhere((c) => c.id == commentId);
-    if (commentIndex != -1) {
-      final comment = _comments[commentIndex];
-      _comments[commentIndex] = comment.copyWith(
-        isShowReplies: !comment.isShowReplies,
-      );
-      notifyListeners();
-    }
+  void deleteComment(String commentId)async{
+    state.comments.removeWhere((c) => c.id == commentId);
+    await commentUseCase.deleteComment(commentId);
+    notifyListeners();
   }
 
-  void toggleLike(String commentId) {
-    final commentIndex = _comments.indexWhere((c) => c.id == commentId);
+  void deleteReply(String commentId, String replyId) async {
+    final commentIndex = state.comments.indexWhere((c) => c.id == commentId);
     if (commentIndex != -1) {
-      final comment = _comments[commentIndex];
-      
-      // 답글에서 좋아요 토글 처리
-      for (int i = 0; i < _comments.length; i++) {
-        final parentComment = _comments[i];
-        if (parentComment.replies != null) {
-          final replyIndex = parentComment.replies.indexWhere((r) => r.id == commentId);
-          if (replyIndex != -1) {
-            final reply = parentComment.replies[replyIndex];
-            final updatedReplies = List<Reply>.from(parentComment.replies);
-            updatedReplies[replyIndex] = reply.copyWith(
-              isLiked: !reply.isLiked,
-              likeCount: reply.isLiked ? reply.likeCount - 1 : reply.likeCount + 1,
-            );
-            
-            _comments[i] = parentComment.copyWith(
-              replies: updatedReplies,
-            );
-            notifyListeners();
-            return;
-          }
-        }
-      }
-      
-      // 메인 댓글에서 좋아요 토글
-      _comments[commentIndex] = comment.copyWith(
-        isLiked: !comment.isLiked,
-        likeCount: comment.isLiked ? comment.likeCount - 1 : comment.likeCount + 1,
-      );
-      notifyListeners();
-    }
-  }
-
-  void addComment(Reply reply) {
-    final parentIndex = _comments.indexWhere((c) => c.id == parentId);
-    if (parentIndex != -1) {
-      final parent = _comments[parentIndex];
-      final updatedReplies = List<Reply>.from(parent.replies ?? []);
-      updatedReplies.add(reply);
-
-      _comments[parentIndex] = parent.copyWith(
+      final comment = state.comments[commentIndex];
+      final updatedReplies = List<Reply>.from(comment.replies)..removeWhere((r) => r.id == replyId);
+      state.comments[commentIndex] = comment.copyWith(
         replies: updatedReplies,
       );
+      notifyListeners();
+      await commentUseCase.deleteComment(replyId);
     }
+  }
+
+  void onReportSuccess(String commentId) {
+    state.comments.removeWhere((c) => c.id == commentId);
     notifyListeners();
   }
 
-  int getTotalCommentCount() {
-    int total = _comments.length;
-    for (final comment in _comments) {
-      total += comment.replies.length;
-    }
-    return total;
-  }
-
-  void showReportDialog(BuildContext context) {
+  void showDeleteConfirmDialog(BuildContext context, String commentId, {String? replyId}) {
     showDialog(
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text('댓글 신고'),
-          content: Text('이 댓글을 신고하시겠습니까?'),
+          title: Text('댓글 삭제'),
+          content: Text('이 댓글을 삭제하시겠습니까?'),
           actions: [
             TextButton(
               onPressed: () => Navigator.of(context).pop(),
@@ -164,13 +104,128 @@ class CommentViewModel extends ChangeNotifier{
             TextButton(
               onPressed: () {
                 Navigator.of(context).pop();
-                ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(content: Text('신고가 접수되었습니다.')),
-                );
+                if(replyId != null) {
+                  deleteReply(commentId, replyId);
+                }else{
+                  deleteComment(commentId);
+                }
               },
-              child: Text('신고'),
+              child: Text('삭제', style: TextStyle(color: Colors.red)),
             ),
           ],
+        );
+      },
+    );
+  }
+
+  void checkIsMyComment() {
+    // final commentIndex = _comments.indexWhere((c) => c.id == commentId);
+    // if (commentIndex != -1) {
+    //   final comment = _comments[commentIndex];
+    //   _comments[commentIndex] = comment.copyWith(
+    //     isMyComment: true,
+    //   );
+    //   notifyListeners();
+    // }
+  }
+
+  void setSortType(CommentSortType sortType) {
+    _state = state.copyWith(selectedSortType: sortType);
+    fetchComments();
+  }
+
+  void toggleReplies(String commentId) {
+    final commentIndex = state.comments.indexWhere((c) => c.id == commentId);
+    if (commentIndex != -1) {
+      final comment = state.comments[commentIndex];
+      state.comments[commentIndex] = comment.copyWith(
+        isShowReplies: !comment.isShowReplies,
+      );
+      notifyListeners();
+    }
+  }
+
+  void toggleLike({required String commentId, String? replyId}) {
+    final commentIndex = state.comments.indexWhere((c) => c.id == commentId);
+    if (commentIndex != -1) {
+      final comment = state.comments[commentIndex];
+
+      if(replyId != null){
+        // 답글에서 좋아요 토글 처리
+        for (int i = 0; i < state.comments.length; i++) {
+          final parentComment = state.comments[i];
+          final replyIndex = parentComment.replies.indexWhere((r) => r.id == replyId);
+          if (replyIndex != -1) {
+            final reply = parentComment.replies[replyIndex];
+            final updatedReplies = List<Reply>.from(parentComment.replies);
+            updatedReplies[replyIndex] = reply.copyWith(
+              isLiked: !reply.isLiked,
+              likeCount: reply.isLiked ? reply.likeCount - 1 : reply.likeCount + 1,
+            );
+            state.comments[i] = parentComment.copyWith(
+              replies: updatedReplies,
+            );
+            notifyListeners();
+            commentUseCase.toggleLikeComment(replyId);
+          }
+        }
+      }else{
+        // 메인 댓글에서 좋아요 토글
+        state.comments[commentIndex] = comment.copyWith(
+          isLiked: !comment.isLiked,
+          likeCount: comment.isLiked ? comment.likeCount - 1 : comment.likeCount + 1,
+        );
+        commentUseCase.toggleLikeComment(commentId);
+        notifyListeners();
+      }
+    }
+  }
+
+  void addReply(String commentId, Reply reply) {
+    final commentIndex = state.comments.indexWhere((c) => c.id == commentId);
+    if (commentIndex != -1) {
+      final comment = state.comments[commentIndex];
+      final updatedReplies = List<Reply>.from(comment.replies);
+      final comments = List<Comment>.from(state.comments);
+      comments[commentIndex] = comment.copyWith(
+        replies: updatedReplies,
+        isShowReplies: true, // 답글이 추가되면 답글 목록을 보여줌
+      );
+
+      updatedReplies.add(reply);
+      _state = state.copyWith(
+        comments: comments
+      );
+      notifyListeners();
+    }
+  }
+
+
+  void addComment(Comment comment) {
+    state.comments.insert(0, comment);
+    notifyListeners();
+  }
+
+  int getTotalCommentCount() {
+    int total = state.comments.length;
+    for (final comment in state.comments) {
+      total += comment.replies.length;
+    }
+    return total;
+  }
+
+  void showReportDialog(BuildContext context, String commentId) {
+    showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      useSafeArea: true,
+      backgroundColor: Colors.transparent,
+      builder: (BuildContext context) {
+        return ReportBottomSheet(
+          commentId: commentId,
+          onReportSuccess: () {
+            onReportSuccess(commentId);
+          },
         );
       },
     );

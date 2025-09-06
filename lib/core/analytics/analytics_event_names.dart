@@ -132,6 +132,7 @@ class AnalyticsEventNames {
   static const String fetchTopics = 'fetch_topics';
   static const String fetchUserBias = 'fetch_user_bias';
   static const String fetchWholeBiasScore = 'fetch_whole_bias_score';
+  static const String updateWholeBiasScore = 'update_whole_bias_score';
   
   // Search Events
   static const String searchIssues = 'search_issues';

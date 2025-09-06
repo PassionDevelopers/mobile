@@ -12,6 +12,7 @@ import 'package:could_be/core/routes/route_names.dart';
 import 'package:could_be/core/themes/margins_paddings.dart';
 import 'package:could_be/presentation/log_in/login_dialog.dart';
 import 'package:could_be/presentation/my_page/main/my_page_view_model.dart';
+import 'package:could_be/presentation/setting/notification_setting_view.dart';
 import 'package:could_be/ui/color.dart';
 import 'package:could_be/ui/fonts.dart';
 import 'package:flutter/material.dart';
@@ -79,35 +80,19 @@ class SettingView extends StatelessWidget {
                     },
                   ),
                   SizedBox(height: MyPaddings.medium),
-                  FutureBuilder<bool>(
-                    future: checkFCMPermissionStatus(),
-                    builder: (
-                      BuildContext context,
-                      AsyncSnapshot<bool> snapshot,
-                    ) {
-                      if (snapshot.connectionState == ConnectionState.done) {
-                        if (snapshot.hasData) {
-                          final bool isPermissionGranted = snapshot.data!;
-                          return BigButton(
-                            widget : Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                MyText.h3('알림 설정',),
-                                const SizedBox(width: 10),
-                                Icon(
-                                  isPermissionGranted
-                                      ? Icons.notifications_rounded : Icons.notifications_off,
-                                  color: AppColors.gray1,
-                                ),
-                              ],
-                            ),
-                            onPressed: ()async{
-                              requestFCMPermission(false);
-                            },
-                          );
-                        }
-                      }
-                      return BigButtonSkeleton();
+                  BigButton(
+                    widget: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [MyText.h3('알림 설정')],
+                    ),
+                    onPressed: () async {
+                      showDialog(
+                        context: context,
+                        builder: (context) {
+                          return NotificationSettingView();
+                        },
+                      );
+                      // requestFCMPermission(false);
                     },
                   ),
                   SizedBox(height: MyPaddings.medium),
@@ -119,7 +104,10 @@ class SettingView extends StatelessWidget {
                     ) {
                       if (snapshot.connectionState == ConnectionState.done) {
                         if (snapshot.hasData) {
-                          return BigButton(text: snapshot.data!, onPressed: () {});
+                          return BigButton(
+                            text: snapshot.data!,
+                            onPressed: () {},
+                          );
                         }
                       }
                       return BigButtonSkeleton();

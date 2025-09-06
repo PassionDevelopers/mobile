@@ -19,7 +19,7 @@ DateTime _getKoreaTime(DateTime dateTime) {
 
 String formatDateTimeToMinute(DateTime dateTime) {
   final koreaTime = _getKoreaTime(dateTime);
-  final String formattedDate = '${koreaTime.month}월 ${koreaTime.day}일 ${koreaTime.hour}:${koreaTime.minute}';
+  final String formattedDate = '${koreaTime.month}월 ${koreaTime.day}일 ${koreaTime.hour}:${koreaTime.minute.toString().padLeft(2, '0')}';
   return formattedDate;
 }
 

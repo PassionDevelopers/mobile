@@ -11,7 +11,6 @@ MajorCommentDto _$MajorCommentDtoFromJson(Map<String, dynamic> json) =>
       json['_id'] as String,
       json['content'] as String,
       DateTime.parse(json['createdAt'] as String),
-      (json['likeCount'] as num).toInt(),
       json['isDeleted'] as bool,
       (json['source'] as List<dynamic>).map((e) => e as String).toList(),
       json['perspective'] as String,
@@ -21,6 +20,7 @@ MajorCommentDto _$MajorCommentDtoFromJson(Map<String, dynamic> json) =>
       json['nickname'] as String?,
       json['imageUrl'] as String?,
       json['isLiked'] as bool,
+      json['userId'] as String?,
     );
 
 Map<String, dynamic> _$MajorCommentDtoToJson(MajorCommentDto instance) =>
@@ -28,7 +28,6 @@ Map<String, dynamic> _$MajorCommentDtoToJson(MajorCommentDto instance) =>
       '_id': instance.id,
       'content': instance.content,
       'createdAt': instance.createdAt.toIso8601String(),
-      'likeCount': instance.likeCount,
       'isDeleted': instance.isDeleted,
       'source': instance.source,
       'perspective': instance.perspective,
@@ -37,5 +36,6 @@ Map<String, dynamic> _$MajorCommentDtoToJson(MajorCommentDto instance) =>
       'rightLikeCount': instance.rightLikeCount,
       'nickname': instance.nickname,
       'imageUrl': instance.imageUrl,
+      'userId': instance.userId,
       'isLiked': instance.isLiked,
     };

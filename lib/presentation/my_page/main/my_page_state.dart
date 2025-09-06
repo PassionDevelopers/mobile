@@ -50,7 +50,7 @@ class MyPageState{
     this.wholeBiasScore,
     this.isEditMode = false,
     this.biasNow = Bias.center,
-    this.biasScorePeriod = BiasScorePeriod.weekly,
+    this.biasScorePeriod = BiasScorePeriod.week,
     this.biasScoreHistory,
     this.biasScoreHistoryLeftScores,
     this.biasScoreHistoryRightScores,

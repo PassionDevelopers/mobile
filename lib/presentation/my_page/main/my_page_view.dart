@@ -281,7 +281,7 @@ class _MyPageViewState extends State<MyPageView> {
                 SizedBox(height: MyPaddings.extraLarge),
                 InkWell(
                   onTap: () {
-                    context.push(RouteNames.biasTest);
+                    context.push(RouteNames.onboarding);
                   },
                   child: Ink(
                     padding: EdgeInsets.all(MyPaddings.large),
@@ -297,7 +297,7 @@ class _MyPageViewState extends State<MyPageView> {
                         ),
                       ],
                     ),
-                    child: Text('정치성향 테스트'),
+                    child: Text('온보딩'),
                   ),
                 ),
                 SizedBox(height: MyPaddings.extraLarge),

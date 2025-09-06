@@ -5,11 +5,11 @@ import 'package:could_be/core/domain/result.dart';
 import 'package:could_be/core/events/profile_events.dart';
 import 'package:could_be/core/method/bias/bias_enum.dart';
 import 'package:could_be/domain/entities/user_profile.dart';
-import 'package:could_be/domain/useCases/fetch_whole_bias_score_use_case.dart';
 import 'package:could_be/domain/useCases/firebase_login_use_case.dart';
 import 'package:could_be/domain/useCases/manage_user_profile_use_case.dart';
 import 'package:could_be/domain/useCases/manage_user_status_use_case.dart';
 import 'package:could_be/domain/useCases/track_user_activity_use_case.dart';
+import 'package:could_be/domain/useCases/whole_bias_score_use_case.dart';
 import 'package:could_be/presentation/my_page/main/my_page_state.dart';
 import 'package:flutter/material.dart';
 
@@ -18,7 +18,7 @@ class MyPageViewModel extends ChangeNotifier {
   final ManageUserStatusUseCase _manageUserStatusUseCase;
   final FirebaseLoginUseCase _firebaseLoginUseCase;
   final ManageUserProfileUseCase _manageUserProfileUseCase;
-  final FetchWholeBiasScoreUseCase _fetchWholeBiasScoreUseCase;
+  final WholeBiasScoreUseCase _fetchWholeBiasScoreUseCase;
   final TrackUserActivityUseCase _trackUserActivityUseCase;
 
   final _eventController = StreamController<NickNameError>();
@@ -33,7 +33,7 @@ class MyPageViewModel extends ChangeNotifier {
     required ManageUserStatusUseCase manageUserStatusUseCase,
     required FirebaseLoginUseCase firebaseLoginUseCase,
     required ManageUserProfileUseCase manageUserProfileUseCase,
-    required FetchWholeBiasScoreUseCase fetchWholeBiasUseCase,
+    required WholeBiasScoreUseCase fetchWholeBiasUseCase,
     required TrackUserActivityUseCase trackUserActivityUseCase,
   }) : _firebaseLoginUseCase = firebaseLoginUseCase,
       _manageUserProfileUseCase = manageUserProfileUseCase,
@@ -50,7 +50,6 @@ class MyPageViewModel extends ChangeNotifier {
 
   void _setupProfileListener(){
     _profileStreamSubscription = ProfileEvents.profileStream.listen((imageUrl) {
-        log('Profile image updated: $imageUrl');
         _state = state.copyWith(
           userProfile: state.userProfile?.copyWith(clearImage : imageUrl == null, imageUrl: imageUrl),
         );
@@ -113,7 +112,7 @@ class MyPageViewModel extends ChangeNotifier {
 
       for (var list in [a, b, c]) {
         for (var value in list) {
-          if (value < minValue) minValue = value;
+          if (value < minValue && value > 0) minValue = value;
         }
       }
       return minValue;
@@ -125,16 +124,21 @@ class MyPageViewModel extends ChangeNotifier {
     final List<double> leftBiasScores = result.leftBiasScores;
     final List<double> centerBiasScores = result.centerBiasScores;
     final List<double> rightBiasScores = result.rightBiasScores;
+
+    log("Bias Score History fetched: Left - $leftBiasScores, Center - $centerBiasScores, Right - $rightBiasScores");
+
     final double maxBiasScore = findMax(
       leftBiasScores,
       centerBiasScores,
       rightBiasScores
     );
+
     final double minBiasScore = findMin(
       leftBiasScores,
       centerBiasScores,
       rightBiasScores
     );
+
     _state = state.copyWith(
       biasScoreHistory: result,
       isBiasScoreHistoryLoading: false,
@@ -152,7 +156,7 @@ class MyPageViewModel extends ChangeNotifier {
     notifyListeners();
     _trackUserActivityUseCase.postUserWatchedArticles();
     final result = await _fetchWholeBiasScoreUseCase.fetchWholeBiasScore();
-    log('fetchWholeBiasScore: $result');
+
     _state = state.copyWith(
       wholeBiasScore: result,
       isWholeBiasScoreLoading: false
@@ -194,7 +198,6 @@ class MyPageViewModel extends ChangeNotifier {
     if(state.isEditMode) {
       // _state.nicknameController.clear();
     } else {
-      log('setEditMode: ${state.userProfile?.nickname}');
       _state.nicknameController.text = state.userProfile?.nickname ?? '';
     }
     _state = state.copyWith(isEditMode: !state.isEditMode);

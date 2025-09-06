@@ -14,11 +14,11 @@ class Reply{
     required this.id,
     required this.content,
     required this.createdAt,
-    this.likeCount = 0,
-    this.isDeleted = false,
-    this.source = const [],
+    required this.likeCount,
+    required this.isDeleted,
+    required this.source,
     required this.userProfile,
-    this.isLiked = false,
+    required this.isLiked,
   });
 
   Reply copyWith({

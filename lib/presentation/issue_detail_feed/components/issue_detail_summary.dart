@@ -40,8 +40,7 @@ class _IssueDetailSummaryState extends State<IssueDetailSummary> {
 
     return Column(
       children: [
-        widget.issue.imageUrl != null
-            ? SizedBox(
+        SizedBox(
           height: 260,
           child: Stack(
             children: [
@@ -157,36 +156,7 @@ class _IssueDetailSummaryState extends State<IssueDetailSummary> {
               ),
             ],
           ),
-        )
-            : Container(
-                height: 180,
-                decoration: BoxDecoration(
-                  gradient: LinearGradient(
-                    begin: Alignment.topLeft,
-                    end: Alignment.bottomRight,
-                    colors: [
-                      AppColors.primary.withOpacity(0.8),
-                      AppColors.primary,
-                    ],
-                  ),
-                ),
-                child: Align(
-                  alignment: Alignment.bottomLeft,
-                  child: Padding(
-                    padding: EdgeInsets.all(MyPaddings.large),
-                    child: Text(
-                      widget.issue.title,
-                      style: MyFontStyle.h0.copyWith(
-                        color: Colors.white,
-                        fontWeight: FontWeight.w700,
-                      ),
-                      maxLines: 3,
-                      overflow: TextOverflow.ellipsis,
-                    ),
-                  ),
-                ),
-              ),
-        // SizedBox(height: MyPaddings.small),
+        ),
         Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -224,22 +194,23 @@ class _IssueDetailSummaryState extends State<IssueDetailSummary> {
                 isDailyIssue: true,
               ),
             ),
-            SizedBox(height: MyPaddings.large),
-            BackgroundDescription(
-              issue: widget.issue,
-              fontSize: widget.fontSize,
-              isSubscribed:
-              widget.issue.isSubscribed,
-              onSubscribe: () {
-
-              },
-              isSpread: widget.isSpread,
-              spreadCallback: (){
-
-              },
-            ),
+            // SizedBox(height: MyPaddings.large),
+            // BackgroundDescription(
+            //   issue: widget.issue,
+            //   fontSize: widget.fontSize,
+            //   isSubscribed:
+            //   widget.issue.isSubscribed,
+            //   onSubscribe: () {
+            //
+            //   },
+            //   isSpread: widget.isSpread,
+            //   spreadCallback: (){
+            //
+            //   },
+            // ),
             SizedBox(height: MyPaddings.large),
             AnimatedContainer(
+              margin: EdgeInsets.symmetric(horizontal: MyPaddings.medium),
               duration: Duration(milliseconds: 300),
               curve: Curves.easeOutCubic,
               decoration: BoxDecoration(

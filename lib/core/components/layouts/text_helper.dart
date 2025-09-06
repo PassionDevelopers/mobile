@@ -1,18 +1,21 @@
+import 'dart:async';
 import 'dart:developer';
 import 'dart:math' hide log;
-
 import 'package:flutter/material.dart';
+
 
 class AutoSizedTabBarView extends StatefulWidget {
   final List<Widget> children;
   final TabController tabController;
   final VoidCallback? onHeightChanged;
+  final Stream? heightChangeStream;
 
   const AutoSizedTabBarView({
     super.key,
     required this.children,
     required this.tabController,
     this.onHeightChanged,
+    this.heightChangeStream,
   });
 
   @override
@@ -30,8 +33,9 @@ class _AutoSizedTabBarViewState extends State<AutoSizedTabBarView> {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _calculateMaxHeight();
     });
-    log('this is AutoSizedTabBarView didUpdateWidget');
   }
+
+  StreamSubscription? heightChangeSubscription;
 
   @override
   void initState() {
@@ -41,7 +45,9 @@ class _AutoSizedTabBarViewState extends State<AutoSizedTabBarView> {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _calculateMaxHeight();
     });
-    log('this is AutoSizedTabBarView initState');
+    heightChangeSubscription = widget.heightChangeStream?.listen((_){
+      forceRebuild();
+    });
   }
 
   @override

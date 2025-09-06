@@ -13,6 +13,7 @@ CommentsDto _$CommentsDtoFromJson(Map<String, dynamic> json) => CommentsDto(
       .toList(),
   json['hasMore'] as bool,
   json['lastCommentId'] as String?,
+  (json['commentsCount'] as num).toInt(),
 );
 
 Map<String, dynamic> _$CommentsDtoToJson(CommentsDto instance) =>
@@ -21,4 +22,5 @@ Map<String, dynamic> _$CommentsDtoToJson(CommentsDto instance) =>
       'comments': instance.comments,
       'hasMore': instance.hasMore,
       'lastCommentId': instance.lastCommentId,
+      'commentsCount': instance.commentsCount,
     };

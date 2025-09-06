@@ -5,6 +5,9 @@ abstract class RouteNames{
   home = '/home',
   // login = '/login',
 
+  //onboarding
+  onboarding = '/onboarding',
+
   //notice
   notice = '/notice',
 
@@ -39,6 +42,7 @@ abstract class RouteNames{
   settings = '$myPage/settings',
   profileManage = '$myPage/profileManage',
   biasTest = '$myPage/biasTest',
+  biasTestResult = '$myPage/biasTestResult',
 
   //customer services
   feedback = '/feedback',
