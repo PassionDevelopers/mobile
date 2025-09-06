@@ -3,7 +3,7 @@ import 'package:could_be/core/analytics/analytics_event_names.dart';
 import 'package:could_be/core/analytics/analytics_parameter_keys.dart';
 
 import '../entities/source_detail.dart';
-import '../repositoryInterfaces/source_detail_interface.dart';
+import '../repositoryInterfaces/source/source_detail_interface.dart';
 
 class FetchSourceDetailUseCase {
   final SourceDetailRepository _sourceDetailRepository;

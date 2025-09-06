@@ -2,8 +2,8 @@ import 'dart:developer';
 
 import 'package:could_be/core/di/api_versions.dart';
 import 'package:could_be/domain/entities/issue_query_params.dart';
+import 'package:could_be/domain/repositoryInterfaces/issue/issues_interface.dart';
 import '../../domain/entities/issues.dart';
-import '../../domain/repositoryInterfaces/issues_interface.dart';
 import 'package:dio/dio.dart';
 import '../dto/issues_dto.dart';
 

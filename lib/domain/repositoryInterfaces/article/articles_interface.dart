@@ -1,5 +1,5 @@
 
-import '../entities/articles.dart';
+import '../../entities/articles.dart';
 
 abstract class ArticlesRepository{
 

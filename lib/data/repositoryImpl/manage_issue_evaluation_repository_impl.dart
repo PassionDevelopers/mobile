@@ -1,5 +1,5 @@
 import 'package:could_be/core/di/api_versions.dart';
-import 'package:could_be/domain/repositoryInterfaces/manage_issue_evaluation_interface.dart';
+import 'package:could_be/domain/repositoryInterfaces/issue/manage_issue_evaluation_interface.dart';
 import 'package:dio/dio.dart';
 
 class ManageIssueEvaluationRepositoryImpl extends ManageIssueEvaluationRepository{

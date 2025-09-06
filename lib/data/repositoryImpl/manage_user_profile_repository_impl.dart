@@ -5,7 +5,7 @@ import 'package:could_be/data/dto/s3_upload_url_dto.dart';
 import 'package:could_be/data/dto/user_profile_dto.dart';
 import 'package:could_be/domain/entities/s3_upload_url.dart';
 import 'package:could_be/domain/entities/user_profile.dart';
-import 'package:could_be/domain/repositoryInterfaces/manage_user_profile_interface.dart';
+import 'package:could_be/domain/repositoryInterfaces/user/manage_user_profile_interface.dart';
 import 'package:dio/dio.dart';
 
 class ManageUserProfileRepositoryImpl extends ManageUserProfileRepository {

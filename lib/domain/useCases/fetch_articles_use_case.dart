@@ -8,7 +8,7 @@ import 'package:could_be/core/analytics/analytics_event_names.dart';
 import 'package:could_be/core/analytics/analytics_parameter_keys.dart';
 
 import '../entities/articles.dart';
-import '../repositoryInterfaces/articles_interface.dart';
+import '../repositoryInterfaces/article/articles_interface.dart';
 
 class FetchArticlesUseCase {
   final ArticlesRepository _articlesRepository;

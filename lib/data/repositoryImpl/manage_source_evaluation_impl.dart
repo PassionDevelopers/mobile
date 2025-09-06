@@ -1,5 +1,5 @@
 import 'package:could_be/core/di/api_versions.dart';
-import 'package:could_be/domain/repositoryInterfaces/mange_source_evalutaion_interface.dart';
+import 'package:could_be/domain/repositoryInterfaces/source/mange_source_evalutaion_interface.dart';
 import 'package:dio/dio.dart';
 
 class ManageSourceEvaluationRepositoryImpl extends ManageSourceEvaluationRepository {

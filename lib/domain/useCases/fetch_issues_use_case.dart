@@ -2,9 +2,8 @@ import 'package:could_be/core/analytics/unified_analytics_helper.dart';
 import 'package:could_be/core/analytics/analytics_event_names.dart';
 import 'package:could_be/core/analytics/analytics_parameter_keys.dart';
 import 'package:could_be/domain/entities/issue_query_params.dart';
-
+import 'package:could_be/domain/repositoryInterfaces/issue/issues_interface.dart';
 import '../entities/issues.dart';
-import '../repositoryInterfaces/issues_interface.dart';
 
 class FetchIssuesUseCase{
   final IssuesRepository _issuesRepository;

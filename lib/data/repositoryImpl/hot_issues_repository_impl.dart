@@ -1,7 +1,7 @@
 import 'package:could_be/core/di/api_versions.dart';
 import 'package:could_be/data/dto/hot_issues_dto.dart';
 import 'package:could_be/domain/entities/hot_issues.dart';
-import 'package:could_be/domain/repositoryInterfaces/hot_issues_interface.dart';
+import 'package:could_be/domain/repositoryInterfaces/issue/hot_issues_interface.dart';
 import 'package:dio/dio.dart';
 
 class HotIssuesRepositoryImpl implements HotIssuesRepository {

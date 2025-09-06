@@ -1,9 +1,12 @@
 import 'dart:async';
 import 'dart:developer';
 import 'package:could_be/core/events/media_subscription_events.dart';
+import 'package:could_be/core/routes/route_names.dart';
+import 'package:could_be/core/routes/router.dart';
 import 'package:could_be/domain/entities/article.dart' show Article;
 import 'package:could_be/domain/useCases/fetch_articles_use_case.dart';
 import 'package:could_be/domain/useCases/fetch_sources_use_case.dart';
+import 'package:could_be/presentation/media/subscribed_media/subscribed_media_action.dart';
 import 'package:flutter/cupertino.dart';
 import '../../../core/domain/network_error.dart';
 import '../../../core/domain/result.dart';
@@ -37,7 +40,22 @@ class SubscribedMediaViewModel with ChangeNotifier {
     _setupSubscriptionListeners();
   }
 
-  void refreshArticles() {
+  void onAction(SubscribedMediaAction action) async {
+    switch (action) {
+      case OnRefresh():
+        _refreshArticles();
+      case OnTapWholeMedia():
+        router.push(RouteNames.wholeMedia);
+      case OnTapSpecificMediaArticles():
+        // TODO: Handle this case.
+        throw UnimplementedError();
+      case OnTapMediaDetail():
+        // TODO: Handle this case.
+        throw UnimplementedError();
+    }
+  }
+
+  void _refreshArticles() {
     if (state.selectedSourceId == null) {
       fetchCommonArticles();
     } else {

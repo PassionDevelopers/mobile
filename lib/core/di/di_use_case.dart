@@ -11,6 +11,7 @@ import 'package:could_be/domain/useCases/manage_source_evaluation_use_case.dart'
 import 'package:could_be/domain/useCases/manage_user_profile_use_case.dart';
 import 'package:could_be/domain/useCases/manage_user_status_use_case.dart';
 import 'package:could_be/domain/useCases/notifications_use_case.dart';
+import 'package:could_be/domain/useCases/onboarding_use_case.dart';
 import 'package:could_be/domain/useCases/report_use_case.dart';
 import 'package:could_be/domain/useCases/search_issues_use_case.dart';
 import 'package:could_be/domain/useCases/search_topics_use_case.dart';
@@ -27,6 +28,9 @@ import '../../domain/useCases/submit_feedback_use_case.dart';
 import '../../domain/useCases/whole_bias_score_use_case.dart';
 import 'di_setup.dart';
 Future<void> diUseCaseSetup() async {
+  //bias test
+  getIt.registerSingleton(OnboardingUseCase(getIt()));
+
   //notice
   getIt.registerSingleton(FetchNoticeUseCase(getIt()));
 

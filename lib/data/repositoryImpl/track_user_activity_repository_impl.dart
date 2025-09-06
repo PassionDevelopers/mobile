@@ -1,6 +1,6 @@
 import 'package:could_be/core/di/api_versions.dart';
 import 'package:could_be/data/data_source/local/user_preferences.dart';
-import 'package:could_be/domain/repositoryInterfaces/track_user_activity_interface.dart';
+import 'package:could_be/domain/repositoryInterfaces/logging/track_user_activity_interface.dart';
 import 'package:dio/dio.dart';
 
 class TrackUserActivityRepositoryImpl implements TrackUserActivityRepository {
