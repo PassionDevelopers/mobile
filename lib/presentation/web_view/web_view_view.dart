@@ -1,9 +1,8 @@
 import 'package:could_be/core/components/cards/news_card.dart';
-import 'package:could_be/core/components/layouts/bottom_safe_padding.dart';
 import 'package:could_be/core/components/layouts/scaffold_layout.dart';
 import 'package:could_be/core/di/di_setup.dart';
 import 'package:could_be/core/themes/margins_paddings.dart';
-import 'package:could_be/presentation/media/media_profile_component.dart';
+import 'package:could_be/presentation/media/components/media_profile_component.dart';
 import 'package:could_be/presentation/web_view/web_view_view_model.dart';
 import 'package:could_be/ui/color.dart';
 import 'package:flutter/material.dart';
@@ -11,8 +10,6 @@ import 'package:sliding_up_panel/sliding_up_panel.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 import '../../core/method/bias/bias_enum.dart';
 import '../../domain/entities/article.dart';
-import '../../core/responsive/responsive_layout.dart';
-import '../../core/responsive/responsive_utils.dart';
 
 class WebViewView extends StatelessWidget {
   const WebViewView({

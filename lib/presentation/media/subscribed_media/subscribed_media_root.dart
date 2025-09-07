@@ -1,4 +1,5 @@
 import 'dart:async';
+
 import 'package:could_be/core/components/app_bar/app_bar.dart';
 import 'package:could_be/core/components/loading/media_loading_view.dart';
 import 'package:could_be/core/components/loading/news_list_loading_view.dart';
@@ -6,18 +7,16 @@ import 'package:could_be/core/components/loading/not_found.dart';
 import 'package:could_be/core/di/di_setup.dart';
 import 'package:could_be/core/events/tab_reselection_event.dart';
 import 'package:could_be/core/routes/route_names.dart';
+import 'package:could_be/presentation/media/components/media_profile_component.dart';
+import 'package:could_be/presentation/media/subscribed_media/subscribed_media_action.dart';
 import 'package:could_be/ui/color.dart';
 import 'package:could_be/ui/fonts.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import '../../../core/components/cards/news_card.dart';
-import '../../../core/components/title/big_title_icon.dart';
-import '../../../core/themes/margins_paddings.dart';
-import '../media_profile_component.dart';
-import 'subscribed_media_view_model.dart';
 import '../../../core/responsive/responsive_layout.dart';
-import '../../../core/responsive/responsive_utils.dart';
-import '../../../core/components/layouts/responsive_grid.dart';
+import '../../../core/themes/margins_paddings.dart';
+import 'subscribed_media_view_model.dart';
 
 class SubscribedMediaRoot extends StatefulWidget {
   const SubscribedMediaRoot({super.key});
@@ -51,7 +50,7 @@ class _SubscribedMediaRootState extends State<SubscribedMediaRoot> {
         );
       }
     });
-    
+
     // 탭 재선택 이벤트 리스닝
     _tabReselectionSubscription = TabReselectionEvent.stream.listen((tabIndex) {
       // 언론 탭(3)이 재선택되었을 때
@@ -78,7 +77,7 @@ class _SubscribedMediaRootState extends State<SubscribedMediaRoot> {
   Widget build(BuildContext context) {
     return RefreshIndicator(
       onRefresh: () async {
-        viewModel.refreshArticles();
+        viewModel.onAction(SubscribedMediaAction.onRefresh());
       },
       color: Colors.black,
       backgroundColor: Colors.white,
@@ -128,7 +127,9 @@ class _SubscribedMediaRootState extends State<SubscribedMediaRoot> {
                             SizedBox(height: MyPaddings.extraLarge),
                             InkWell(
                               onTap: () {
-                                context.push(RouteNames.wholeMedia);
+                                viewModel.onAction(
+                                  SubscribedMediaAction.onTapWholeMedia(),
+                                );
                               },
                               borderRadius: BorderRadius.circular(20),
                               child: Ink(
@@ -292,12 +293,20 @@ class _SubscribedMediaRootState extends State<SubscribedMediaRoot> {
                             )
                             : state.articles == null ||
                                 state.articles!.articles.isEmpty
-                            ? Center(child: NotFound(notFoundType: NotFoundType.article))
+                            ? Center(
+                              child: NotFound(
+                                notFoundType: NotFoundType.article,
+                              ),
+                            )
                             : ResponsiveBuilder(
                               builder: (context, deviceType) {
                                 return Column(
                                   children: [
-                                    for (int i = 0; i < state.articles!.articles.length; i++)
+                                    for (
+                                      int i = 0;
+                                      i < state.articles!.articles.length;
+                                      i++
+                                    )
                                       NewsCard(
                                         article: state.articles!.articles[i],
                                       ),

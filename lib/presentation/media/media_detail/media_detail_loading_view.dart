@@ -1,19 +1,10 @@
-import 'package:could_be/core/components/layouts/scaffold_layout.dart';
-import 'package:could_be/core/di/di_setup.dart';
-import 'package:could_be/core/method/bias/bias_method.dart';
-import 'package:could_be/presentation/media/media_profile_component.dart';
+
 import 'package:could_be/ui/fonts.dart';
 import 'package:could_be/ui/color.dart';
 import 'package:flutter/material.dart';
 import 'package:shimmer/shimmer.dart';
-
-import '../../../core/method/bias/bias_enum.dart';
-import '../../../core/components/cards/news_card.dart';
 import '../../../core/themes/margins_paddings.dart';
-import '../../../core/responsive/responsive_layout.dart';
-import '../../../core/responsive/responsive_utils.dart';
-import '../../../core/components/layouts/responsive_grid.dart';
-import 'media_detail_view_model.dart';
+
 
 class MediaDetailLoadingView extends StatelessWidget {
   const MediaDetailLoadingView({super.key});

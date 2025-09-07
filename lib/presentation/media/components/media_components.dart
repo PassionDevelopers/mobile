@@ -4,13 +4,12 @@ import 'package:could_be/core/routes/route_names.dart';
 import 'package:could_be/core/themes/margins_paddings.dart';
 import 'package:could_be/domain/entities/article.dart';
 import 'package:could_be/domain/entities/source.dart';
+import 'package:could_be/presentation/media/components/media_profile_component.dart';
 import 'package:could_be/ui/color.dart';
 import 'package:could_be/ui/fonts.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-
-import '../../core/method/bias/bias_enum.dart';
-import 'media_profile_component.dart';
+import '../../../core/method/bias/bias_enum.dart';
 
 class MediaChatBubble extends StatefulWidget {
   const MediaChatBubble({

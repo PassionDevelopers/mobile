@@ -8,7 +8,7 @@ import 'package:could_be/core/domain/result.dart';
 import 'package:could_be/data/data_source/local/user_preferences.dart';
 import 'package:could_be/domain/entities/s3_upload_url.dart';
 import 'package:could_be/domain/entities/user_profile.dart';
-import 'package:could_be/domain/repositoryInterfaces/manage_user_profile_interface.dart';
+import 'package:could_be/domain/repositoryInterfaces/user/manage_user_profile_interface.dart';
 import 'package:http/http.dart' as http;
 
 class ManageUserProfileUseCase {

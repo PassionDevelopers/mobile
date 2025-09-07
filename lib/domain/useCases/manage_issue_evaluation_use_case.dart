@@ -2,7 +2,7 @@ import 'package:could_be/core/analytics/unified_analytics_helper.dart';
 import 'package:could_be/core/analytics/analytics_event_names.dart';
 import 'package:could_be/core/analytics/analytics_parameter_keys.dart';
 import 'package:could_be/core/method/bias/bias_enum.dart';
-import 'package:could_be/domain/repositoryInterfaces/manage_issue_evaluation_interface.dart';
+import 'package:could_be/domain/repositoryInterfaces/issue/manage_issue_evaluation_interface.dart';
 
 class ManageIssueEvaluationUseCase {
   final ManageIssueEvaluationRepository _manageIssueEvaluationRepository;

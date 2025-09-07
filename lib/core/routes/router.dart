@@ -1,4 +1,5 @@
 import 'package:could_be/core/routes/route_names.dart';
+import 'package:could_be/domain/entities/bias_quiz_answer_vo.dart';
 import 'package:could_be/domain/entities/hot_issues.dart';
 import 'package:could_be/domain/entities/whole_bias_score.dart';
 import 'package:could_be/presentation/customer_services/feedback_root.dart';
@@ -10,8 +11,8 @@ import 'package:could_be/presentation/my_page/manage_issue_evaluation_view.dart'
 import 'package:could_be/presentation/my_page/manage_source_evaluation/manage_source_evaluation_view.dart';
 import 'package:could_be/presentation/my_page/profile_manage/profile_manage_view.dart';
 import 'package:could_be/presentation/notice/notice_view.dart';
+import 'package:could_be/presentation/onboarding/bias_test/bias_test_result/bias_test_result_view.dart';
 import 'package:could_be/presentation/onboarding/bias_test/bias_test_view.dart';
-import 'package:could_be/presentation/onboarding/bias_test/political_result_view.dart';
 import 'package:could_be/presentation/onboarding/onboarding_view.dart';
 import 'package:could_be/presentation/setting/setting_view.dart';
 import 'package:could_be/presentation/topic/whole_topics/whole_topic_view.dart';
@@ -253,8 +254,8 @@ final router = GoRouter(
     GoRoute(
       path: RouteNames.biasTestResult,
       builder: (context, state) {
-        final extra = state.extra as WholeBiasScore;
-        return PoliticalResultPage(wholeBiasScore: extra,);
+        final answers = state.extra as List<BiasQuizAnswerVo>;
+        return BiasTestResultView(answers: answers,);
       },
     ),
     //customer services

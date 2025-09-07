@@ -6,7 +6,7 @@ import 'package:could_be/core/components/layouts/scaffold_layout.dart';
 import 'package:could_be/core/permission/permission_management.dart';
 import 'package:could_be/core/routes/route_names.dart';
 import 'package:could_be/core/routes/router.dart';
-import 'package:could_be/domain/repositoryInterfaces/track_user_activity_interface.dart';
+import 'package:could_be/domain/repositoryInterfaces/logging/track_user_activity_interface.dart';
 import 'package:could_be/domain/useCases/fcm_use_case.dart';
 import 'package:could_be/domain/useCases/manage_user_status_use_case.dart';
 import 'package:could_be/presentation/log_in/login_view_model.dart';
@@ -151,15 +151,25 @@ class _RootState extends State<Root> {
 
     ManageUserStatusUseCase manageUserStatusUseCase = getIt<ManageUserStatusUseCase>();
     var result = await manageUserStatusUseCase.checkUserRegisterStatus();
+    bool isFirstLaunch = UserPreferences.getIsFirstLaunchApp() ?? true;
     if (!result.exists) {
       String? guestUid = await tokenRepo.getGuestUid();
       await manageUserStatusUseCase.registerIdToken(guestUid: guestUid);
-      if(mounted && !isRoutedToUpdate) {
+      if (mounted && !isRoutedToUpdate) {
         UnifiedAnalyticsHelper.logAuthEvent(
           method: 'first_time_user',
           success: true,
         );
-        context.go(RouteNames.home);
+        context.go(RouteNames.onboarding);
+      }
+    }else if(isFirstLaunch) {
+      if (mounted && !isRoutedToUpdate) {
+        UnifiedAnalyticsHelper.logAuthEvent(
+          method: '기존 사용자 첫 온보딩',
+          success: true,
+        );
+        UserPreferences.setIsFirstLaunchApp(false);
+        context.go(RouteNames.onboarding);
       }
     } else {
       if(mounted && !isRoutedToUpdate) {

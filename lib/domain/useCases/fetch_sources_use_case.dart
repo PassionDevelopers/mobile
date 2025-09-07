@@ -6,7 +6,7 @@ import 'package:could_be/core/di/di_setup.dart';
 import 'package:could_be/core/analytics/unified_analytics_helper.dart';
 import 'package:could_be/core/analytics/analytics_event_names.dart';
 import '../entities/sources.dart';
-import '../repositoryInterfaces/sources_interface.dart';
+import '../repositoryInterfaces/source/sources_interface.dart';
 
 class FetchSourcesUseCase {
   final SourcesRepository _sourcesRepository;

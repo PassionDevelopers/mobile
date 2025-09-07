@@ -3,7 +3,7 @@ import 'dart:developer';
 import 'package:could_be/core/components/layouts/text_helper.dart';
 import 'package:could_be/core/components/loading/not_found.dart';
 import 'package:could_be/domain/entities/articles_group_by_bias.dart';
-import 'package:could_be/presentation/media/media_components.dart';
+import 'package:could_be/presentation/media/components/media_components.dart';
 import 'package:could_be/ui/fonts.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
