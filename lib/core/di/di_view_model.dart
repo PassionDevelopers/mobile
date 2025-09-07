@@ -1,5 +1,6 @@
 import 'package:could_be/core/method/bias/bias_enum.dart';
 import 'package:could_be/domain/entities/article.dart';
+import 'package:could_be/domain/entities/bias_quiz_answer_vo.dart';
 import 'package:could_be/domain/entities/comment.dart';
 import 'package:could_be/domain/entities/notice.dart';
 import 'package:could_be/presentation/community/comment/comment_view_model.dart';
@@ -12,6 +13,8 @@ import 'package:could_be/presentation/my_page/manage_source_evaluation/manage_so
 import 'package:could_be/presentation/my_page/profile_manage/profile_manage_view_model.dart';
 import 'package:could_be/presentation/notice/notice_dialog/notice_dialog_view_model.dart';
 import 'package:could_be/presentation/notice/notice_view_model.dart';
+import 'package:could_be/presentation/onboarding/bias_test/bias_test_result/bias_test_result_view_model.dart';
+import 'package:could_be/presentation/onboarding/bias_test/bias_test_view_model.dart';
 import 'package:could_be/presentation/setting/notification_setting_view_model.dart';
 import 'package:could_be/presentation/topic/topic_detail_view/topic_detail_view_model.dart';
 import 'package:could_be/presentation/topic/whole_topics/whole_topic_view_model.dart';
@@ -28,6 +31,14 @@ import '../../presentation/topic/subscribed_topic/subscribed_topic_view_model.da
 import 'di_setup.dart';
 
 Future<void> diViewModelSetup() async {
+  //bias test
+  getIt.registerFactory<BiasTestViewModel>(
+        () => BiasTestViewModel(onboardingUseCase: getIt()),
+  );
+  getIt.registerFactoryParam<BiasTestResultViewModel, List<BiasQuizAnswerVo>, void>(
+        (answers, _) => BiasTestResultViewModel(onboardingUseCase: getIt(), answers: answers),
+  );
+
   //notice
   getIt.registerFactory<NoticeViewModel>(
         () => NoticeViewModel(getIt()),

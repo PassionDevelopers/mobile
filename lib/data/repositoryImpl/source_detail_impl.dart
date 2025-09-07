@@ -3,7 +3,7 @@ import 'package:could_be/core/di/api_versions.dart';
 import 'package:dio/dio.dart';
 import '../../core/base_url.dart';
 import '../../domain/entities/source_detail.dart';
-import '../../domain/repositoryInterfaces/source_detail_interface.dart';
+import '../../domain/repositoryInterfaces/source/source_detail_interface.dart';
 import '../dto/source_detail_dto.dart';
 
 class SourceDetailRepositoryImpl implements SourceDetailRepository {

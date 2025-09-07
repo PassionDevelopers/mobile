@@ -1,7 +1,7 @@
 import 'package:could_be/core/analytics/unified_analytics_helper.dart';
 import 'package:could_be/core/analytics/analytics_event_names.dart';
 import 'package:could_be/domain/entities/hot_issues.dart';
-import 'package:could_be/domain/repositoryInterfaces/hot_issues_interface.dart';
+import 'package:could_be/domain/repositoryInterfaces/issue/hot_issues_interface.dart';
 
 class FetchHotIssuesUseCase {
   final HotIssuesRepository _repository;

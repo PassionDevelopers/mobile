@@ -3,7 +3,7 @@ import 'dart:developer';
 import 'package:could_be/core/analytics/unified_analytics_helper.dart';
 import 'package:could_be/core/analytics/analytics_event_names.dart';
 import 'package:could_be/domain/entities/user_register_status.dart';
-import '../repositoryInterfaces/manage_user_status_interface.dart';
+import '../repositoryInterfaces/user/manage_user_status_interface.dart';
 
 class ManageUserStatusUseCase{
 

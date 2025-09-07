@@ -3,7 +3,7 @@ import 'package:could_be/core/di/api_versions.dart';
 import 'package:could_be/core/di/di_setup.dart';
 import 'package:could_be/data/dto/user_register_status_dto.dart';
 import 'package:could_be/domain/entities/user_register_status.dart';
-import 'package:could_be/domain/repositoryInterfaces/manage_user_status_interface.dart';
+import 'package:could_be/domain/repositoryInterfaces/user/manage_user_status_interface.dart';
 import 'package:could_be/domain/repositoryInterfaces/token_storage_interface.dart';
 import 'package:dio/dio.dart';
 

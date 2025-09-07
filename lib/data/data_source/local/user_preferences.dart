@@ -41,4 +41,9 @@ class UserPreferences{
   static Future<bool?> setUserProfileImageUrl(String imageUrl) async => await _preferences?.setString(_keyUserProfileImageUrl, imageUrl);
   static String? getUserProfileImageUrl() => _preferences?.getString(_keyUserProfileImageUrl);
 
+  // 온보딩을 만든 후에 그 전 사용자들에게 온보딩을 띄우기 위한 플래그
+  static const _keyIsFirstLaunchApp = 'IsFirstLaunchApp';
+  static Future<bool?> setIsFirstLaunchApp(bool isFirst) async => await _preferences?.setBool(_keyIsFirstLaunchApp, isFirst);
+  static bool? getIsFirstLaunchApp() => _preferences?.getBool(_keyIsFirstLaunchApp);
+
 }

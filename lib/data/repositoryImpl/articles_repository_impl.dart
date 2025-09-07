@@ -2,7 +2,7 @@ import 'package:could_be/core/di/api_versions.dart';
 import 'package:dio/dio.dart';
 
 import '../../domain/entities/articles.dart';
-import '../../domain/repositoryInterfaces/articles_interface.dart';
+import '../../domain/repositoryInterfaces/article/articles_interface.dart';
 import '../dto/articles_dto.dart';
 
 class ArticlesRepositoryImpl implements ArticlesRepository {

@@ -2,7 +2,7 @@
 import 'package:flutter/material.dart';
 import '../../core/components/home_components.dart';
 import '../../core/components/layouts/scaffold_layout.dart';
-import '../media/media_components.dart';
+import '../media/components/media_components.dart';
 import '../../ui/color.dart';
 import '../issue_detail_feed/components/major_user_opinion_view.dart';
 

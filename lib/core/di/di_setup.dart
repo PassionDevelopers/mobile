@@ -5,6 +5,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:could_be/core/di/di_repository.dart';
 import 'package:could_be/core/di/di_use_case.dart';
 import 'package:could_be/core/di/di_view_model.dart';
+import 'package:could_be/core/routes/route_service.dart';
+import 'package:could_be/core/routes/router.dart';
 import 'package:could_be/data/data_source/cache/deep_link_storage.dart';
 import 'package:could_be/data/repositoryImpl/kakao_register_uuid_repository_impl.dart';
 import 'package:could_be/data/repositoryImpl/token_storage_repository_impl.dart';
@@ -29,6 +31,8 @@ Future<void> diSetupToken() async {
 
         ))
   );
+
+  getIt.registerSingleton<RouteService>(RouteService(router));
 
   getIt.registerSingleton<TokenStorageRepository>(TokenStorageRepositoryImpl());
   // dio with token interceptor

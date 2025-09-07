@@ -1,6 +1,6 @@
 import 'package:could_be/domain/entities/issue_query_params.dart';
 
-import '../entities/issues.dart';
+import '../../entities/issues.dart';
 
 abstract class IssuesRepository{
   Future<Issues> fetchQueryParamIssues(IssueQueryParam issueQueryParam, {String? lastIssueId});
