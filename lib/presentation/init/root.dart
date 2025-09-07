@@ -151,15 +151,25 @@ class _RootState extends State<Root> {
 
     ManageUserStatusUseCase manageUserStatusUseCase = getIt<ManageUserStatusUseCase>();
     var result = await manageUserStatusUseCase.checkUserRegisterStatus();
+    bool isFirstLaunch = UserPreferences.getIsFirstLaunchApp() ?? true;
     if (!result.exists) {
       String? guestUid = await tokenRepo.getGuestUid();
       await manageUserStatusUseCase.registerIdToken(guestUid: guestUid);
-      if(mounted && !isRoutedToUpdate) {
+      if (mounted && !isRoutedToUpdate) {
         UnifiedAnalyticsHelper.logAuthEvent(
           method: 'first_time_user',
           success: true,
         );
-        context.go(RouteNames.home);
+        context.go(RouteNames.onboarding);
+      }
+    }else if(isFirstLaunch) {
+      if (mounted && !isRoutedToUpdate) {
+        UnifiedAnalyticsHelper.logAuthEvent(
+          method: '기존 사용자 첫 온보딩',
+          success: true,
+        );
+        UserPreferences.setIsFirstLaunchApp(false);
+        context.go(RouteNames.onboarding);
       }
     } else {
       if(mounted && !isRoutedToUpdate) {

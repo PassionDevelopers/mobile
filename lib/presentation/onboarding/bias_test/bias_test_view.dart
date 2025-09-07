@@ -196,16 +196,6 @@ class _PoliticalTestPageState extends State<PoliticalTestPage> {
             );
           }),
         ),
-        const SizedBox(height: 8),
-        // 숫자 설명
-        Text(
-          '1: 매우 반대  2: 반대  3: 보통  4: 찬성  5: 매우 찬성',
-          style: TextStyle(
-            fontSize: 11,
-            color: Colors.grey[500],
-          ),
-          textAlign: TextAlign.center,
-        ),
       ],
     );
   }

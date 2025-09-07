@@ -173,7 +173,7 @@ class _BiasTestResultViewState extends State<BiasTestResultView> {
               borderRadius: BorderRadius.circular(20),
             ),
             child: Text(
-              '가장 관심이 높은 영역: ${viewModel.state.quizResultVo!.dominantCategory}',
+              '가장 관심이 높은 영역: ${_getCategoryDisplayName(viewModel.state.quizResultVo!.dominantCategory)}',
               style: const TextStyle(
                 color: Colors.white,
                 fontWeight: FontWeight.w500,
@@ -183,6 +183,18 @@ class _BiasTestResultViewState extends State<BiasTestResultView> {
         ],
       ),
     );
+  }
+
+  String _getCategoryDisplayName(String category) {
+    return switch(category) {
+      'politics' => '정치',
+      'economy' => '경제',
+      'society' => '사회',
+      'culture' => '문화',
+      'international' => '세계',
+      'technology' => '기술',
+      _ => category,
+    };
   }
 
   Widget _buildDetailedAnalysis(BuildContext context, String analysis) {

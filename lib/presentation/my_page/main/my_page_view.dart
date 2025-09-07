@@ -279,28 +279,6 @@ class _MyPageViewState extends State<MyPageView> {
                   ],
                 ),
                 SizedBox(height: MyPaddings.extraLarge),
-                InkWell(
-                  onTap: () {
-                    context.push(RouteNames.onboarding);
-                  },
-                  child: Ink(
-                    padding: EdgeInsets.all(MyPaddings.large),
-                    // margin: EdgeInsets.symmetric(horizontal: MyPaddings.large),
-                    decoration: BoxDecoration(
-                      color: AppColors.white,
-                      borderRadius: BorderRadius.circular(20),
-                      boxShadow: [
-                        BoxShadow(
-                          color: AppColors.gray3.withOpacity(0.05),
-                          blurRadius: 10,
-                          offset: Offset(0, 4),
-                        ),
-                      ],
-                    ),
-                    child: Text('온보딩'),
-                  ),
-                ),
-                SizedBox(height: MyPaddings.extraLarge),
                 MyPageHeader(viewModel: viewModel),
                 SizedBox(height: MyPaddings.extraLarge),
                 if(viewModel.state.isGuestLogin) LoginPopUp(isMyPage: true,) ,
