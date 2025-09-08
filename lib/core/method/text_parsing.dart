@@ -3,46 +3,54 @@ import 'dart:developer';
 import 'package:could_be/ui/color.dart';
 import 'package:flutter/material.dart';
 
-Text parseAiTextSummary(String text, double fontSize, Color boldColor) {
-  final List<String> paras = text.split('(sep)');
-  List<TextSpan> spans = [];
-  for (int p = 0; p < paras.length; p++) {
-    // paras[p] = paras[p].replaceAll(r"\n\n", '\n\n  lm');
-
-    List<String> boldParts = paras[p].split('**');
-    for(int i = 0; i < boldParts.length; i++) {
-      spans.add(TextSpan(
-        text: boldParts[i],
-        style: TextStyle(
-            fontSize: fontSize,
-            // fontFamily: i % 2 == 1 ? 'esamanru' : null,
-            letterSpacing: 0.8,
-            height: 1.5,
-            fontWeight: i % 2 == 1 ? FontWeight.w800 : FontWeight.normal,
-            // color: i % 2 == 1 ? boldColor : AppColors.textPrimary,
-            color: AppColors.gray5,
-            // fontStyle: FontStyle.italic
-            // decoration: i % 2 == 1 ? TextDecoration.lineThrough : null,
-            // decorationThickness: 8,
-            // decorationColor: Colors.amberAccent.withOpacity(0.3)
-        ),
-      ));
-    }
-  }
-  return Text.rich(
-    maxLines: 2,
-    TextSpan(
-      children: spans,
-    ),
-    textAlign: TextAlign.start,
-  );
-}
+// Text parseAiTextSummary(String text, double fontSize, Color boldColor) {
+//   final List<String> paras = text.split('(sep)');
+//   List<TextSpan> spans = [];
+//   for (int p = 0; p < paras.length; p++) {
+//     // paras[p] = paras[p].replaceAll(r"\n\n", '\n\n  lm');
+//
+//     List<String> boldParts = paras[p].split('**');
+//     for(int i = 0; i < boldParts.length; i++) {
+//       spans.add(TextSpan(
+//         text: boldParts[i],
+//         style: TextStyle(
+//             fontSize: fontSize,
+//             // fontFamily: i % 2 == 1 ? 'esamanru' : null,
+//             letterSpacing: 0.8,
+//             height: 1.5,
+//             fontWeight: i % 2 == 1 ? FontWeight.w800 : FontWeight.normal,
+//             // color: i % 2 == 1 ? boldColor : AppColors.textPrimary,
+//             color: AppColors.gray5,
+//             // fontStyle: FontStyle.italic
+//             // decoration: i % 2 == 1 ? TextDecoration.lineThrough : null,
+//             // decorationThickness: 8,
+//             // decorationColor: Colors.amberAccent.withOpacity(0.3)
+//         ),
+//       ));
+//     }
+//   }
+//   return Text.rich(
+//     maxLines: 2,
+//     TextSpan(
+//       children: spans,
+//     ),
+//     textAlign: TextAlign.start,
+//   );
+// }
 
 Text parseAiText(String text, double fontSize, Color boldColor, Color highlightColor) {
 
+  String removeHttpBrackets(String input) {
+    final regex = RegExp(r'\[http.*?\]');
+    return input.replaceAll(regex, '');
+  }
+
   log('parseAiText: $text');
 
-  final List<String> paras = text.split('(sep)');
+  final linkRemovedText = removeHttpBrackets(text);
+  log('linkRemovedText: $linkRemovedText');
+
+  final List<String> paras = linkRemovedText.split('(sep)');
   List<TextSpan> spans = [];
   for (int p = 0; p < paras.length; p++) {
 

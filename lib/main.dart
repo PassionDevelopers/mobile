@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:clarity_flutter/clarity_flutter.dart';
+import 'package:could_be/constants.dart';
 import 'package:could_be/core/di/di_setup.dart';
 import 'package:could_be/core/routes/router.dart';
 import 'package:could_be/data/data_source/local/user_preferences.dart';
@@ -21,7 +22,8 @@ Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  // KakaoSdk.init(nativeAppKey: 'c0f1b2d3e4f5g6h7i8j9k0l1m2n3o4p5'); // 카카오 SDK 초기화
+
+  EnvConstants.initialize(Environment.prod);
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   // SystemChrome.setEnabledSystemUIMode(
   //     SystemUiMode.manual,
@@ -59,10 +61,10 @@ void main() async {
   // });
 
   await UserPreferences.init();
-  KakaoSdk.init(nativeAppKey: '3af3ede3773c2db3782152f2e673395f');
+  KakaoSdk.init(nativeAppKey: EnvConstants.kakaoNativeAppKey);
 
   final config = ClarityConfig(
-    projectId: "sbiwi1dz8s",
+    projectId: EnvConstants.clarityApiKey,
     logLevel: LogLevel.None, // Note: Use "LogLevel.Verbose" value while testing to debug initialization issues.
   );
 

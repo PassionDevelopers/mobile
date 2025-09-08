@@ -1,7 +1,5 @@
 import 'package:could_be/core/di/api_versions.dart';
 import 'package:dio/dio.dart';
-
-import '../../core/base_url.dart';
 import '../../domain/repositoryInterfaces/manage_topic_subscription_interface.dart';
 
 class ManageTopicSubscriptionRepositoryImpl

@@ -2,6 +2,7 @@ import 'package:amplitude_flutter/amplitude.dart';
 import 'package:amplitude_flutter/configuration.dart';
 import 'package:app_links/app_links.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:could_be/constants.dart';
 import 'package:could_be/core/di/di_repository.dart';
 import 'package:could_be/core/di/di_use_case.dart';
 import 'package:could_be/core/di/di_view_model.dart';
@@ -27,9 +28,8 @@ final getIt = GetIt.instance;
 Future<void> diSetupToken() async {
 
   getIt.registerSingleton<Amplitude>(Amplitude(Configuration(
-    apiKey: "ffa5222c804a8bac6ca8dea208d6d27f"
-
-        ))
+    apiKey: EnvConstants.amplitudeApiKey
+    ))
   );
 
   getIt.registerSingleton<RouteService>(RouteService(router));
