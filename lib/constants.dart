@@ -7,6 +7,7 @@ abstract class EnvConstants {
   static Future<void> initialize(Environment env) async {
     await dotenv.load(fileName: ".env");
     switch (env) {
+
       case Environment.dev:
         _config = {
           _ConfigKeys.api: dotenv.get('DEV'),
