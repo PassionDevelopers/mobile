@@ -2,6 +2,7 @@
 import 'package:could_be/core/components/chips/blind_chip.dart';
 import 'package:could_be/core/components/image/image_container.dart';
 import 'package:could_be/core/components/text/interactive_text.dart';
+import 'package:could_be/core/method/text_parsing.dart';
 import 'package:could_be/ui/color.dart';
 import 'package:could_be/ui/fonts.dart';
 import 'package:flutter/material.dart';
@@ -268,12 +269,7 @@ class _IssueDetailSummaryState extends State<IssueDetailSummary> {
                   if(widget.isSpread)
                     Padding(
                       padding: EdgeInsets.all(MyPaddings.large),
-                      child: InteractiveText(
-                        text: widget.issue.summary,
-                        fontSize: widget.fontSize,
-                        textColor: AppColors.gray1,
-                        highlightColor: Colors.amberAccent,
-                      ),
+                      child: parseAiText(widget.issue.summary, widget.fontSize, AppColors.gray1, Colors.amberAccent)
                     ),
                 ],
               ),

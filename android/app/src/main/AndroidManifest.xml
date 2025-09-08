@@ -26,7 +26,6 @@
             </intent-filter>
         </activity>
 
-        <!-- 카카오톡 공유, 카카오톡 메시지 커스텀 URL 스킴 설정 -->
         <activity android:name=".MainActivity"
             android:exported="true"
             android:launchMode="singleTask"
@@ -49,8 +48,7 @@
 
                 <!-- "kakao${YOUR_NATIVE_APP_KEY}://${PRODUCT_NAME}" 형식의 앱 실행 스킴 설정 -->
                 <!-- 카카오톡 공유, 카카오톡 메시지 -->
-                <data android:host="kakaolink"
-                    android:scheme="kakao3af3ede3773c2db3782152f2e673395f" />
+                <data android:host="kakaolink" android:scheme="kakao3af3ede3773c2db3782152f2e673395f" />
             </intent-filter>
 
             <!-- App Link sample -->

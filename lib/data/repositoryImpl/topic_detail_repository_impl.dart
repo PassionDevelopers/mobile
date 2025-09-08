@@ -1,4 +1,3 @@
-import 'package:could_be/core/base_url.dart';
 import 'package:dio/dio.dart';
 import '../../domain/entities/topic_detail.dart';
 import '../../domain/repositoryInterfaces/topic_detail_interface.dart';

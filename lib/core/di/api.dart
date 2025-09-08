@@ -1,9 +1,9 @@
 import 'dart:developer';
+import 'package:could_be/constants.dart';
 import 'package:could_be/core/di/di_setup.dart';
 import 'package:dio/dio.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import '../../domain/repositoryInterfaces/token_storage_interface.dart';
-import '../base_url.dart';
 
 class AuthInterceptor extends Interceptor {
   final TokenStorageRepository tokenStorageRepository;
@@ -93,7 +93,7 @@ class AuthInterceptor extends Interceptor {
 Dio createDio(TokenStorageRepository tokenStorageRepository) {
   final dio = Dio(
     BaseOptions(
-      baseUrl: dev,
+      baseUrl: EnvConstants.api,
       connectTimeout: const Duration(seconds: 10),
       receiveTimeout: const Duration(seconds: 10),
       sendTimeout: const Duration(seconds: 10),
