@@ -1,10 +1,10 @@
 import 'package:could_be/core/components/layouts/scaffold_layout.dart';
 import 'package:could_be/core/di/di_setup.dart';
 import 'package:could_be/core/routes/route_names.dart';
-import 'package:could_be/domain/entities/bias_score.dart';
-import 'package:could_be/domain/entities/whole_bias_score.dart';
+import 'package:could_be/domain/entities/bias_score/bias_score.dart';
+import 'package:could_be/domain/entities/bias_score/whole_bias_score.dart';
 import 'package:could_be/presentation/onboarding/bias_test/bias_test_view_model.dart';
-import 'package:could_be/ui/color.dart';
+import 'package:could_be/core/themes/color.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 

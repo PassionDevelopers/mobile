@@ -1,7 +1,7 @@
-import 'package:could_be/domain/entities/topic.dart';
+import 'package:could_be/domain/entities/topic/topic.dart';
 import 'package:could_be/presentation/topic/whole_topics/whole_topic_view.dart';
 
-import '../../../domain/entities/topics.dart';
+import '../../../domain/entities/topic/topics.dart';
 
 enum Categories {
   politics,

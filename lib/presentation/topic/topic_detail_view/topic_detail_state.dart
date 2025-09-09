@@ -1,4 +1,4 @@
-import '../../../domain/entities/topic_detail.dart';
+import '../../../domain/entities/topic/topic_detail.dart';
 
 class TopicDetailState {
   final bool isLoading;

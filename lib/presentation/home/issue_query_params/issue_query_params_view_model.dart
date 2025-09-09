@@ -1,4 +1,4 @@
-import 'package:could_be/domain/useCases/fetch_issue_query_params_use_case.dart';
+import 'package:could_be/domain/useCases/issue/fetch_issue_query_params_use_case.dart';
 import 'package:could_be/presentation/home/issue_query_params/issue_query_params_state.dart';
 import 'package:flutter/material.dart';
 

@@ -4,12 +4,13 @@ import 'package:app_links/app_links.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:could_be/constants.dart';
 import 'package:could_be/core/di/di_repository.dart';
+import 'package:could_be/core/di/di_service.dart';
 import 'package:could_be/core/di/di_use_case.dart';
 import 'package:could_be/core/di/di_view_model.dart';
 import 'package:could_be/core/routes/route_service.dart';
 import 'package:could_be/core/routes/router.dart';
 import 'package:could_be/data/data_source/cache/deep_link_storage.dart';
-import 'package:could_be/data/repositoryImpl/kakao_register_uuid_repository_impl.dart';
+import 'package:could_be/data/repositoryImpl/user/kakao_register_uuid_repository_impl.dart';
 import 'package:could_be/data/repositoryImpl/token_storage_repository_impl.dart';
 import 'package:could_be/domain/repositoryInterfaces/kakao_register_uuid_interface.dart';
 import 'package:could_be/domain/repositoryInterfaces/token_storage_interface.dart';
@@ -31,8 +32,6 @@ Future<void> diSetupToken() async {
     apiKey: EnvConstants.amplitudeApiKey
     ))
   );
-
-  getIt.registerSingleton<RouteService>(RouteService(router));
 
   getIt.registerSingleton<TokenStorageRepository>(TokenStorageRepositoryImpl());
   // dio with token interceptor
@@ -61,6 +60,8 @@ Future<void> diSetupToken() async {
 }
 
 Future<void> diSetup() async{
+  //service
+  diServiceSetUp();
   // repository
   diRepoSetup();
   // useCase

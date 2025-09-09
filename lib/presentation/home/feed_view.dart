@@ -14,28 +14,6 @@ class FeedView extends StatelessWidget {
       isFeedView: true,
       isTopicView: false,
       upperWidget: SizedBox(height: MyPaddings.medium),
-      // upperWidget: Padding(
-      //   padding: EdgeInsets.symmetric(horizontal: MyPaddings.largeMedium,
-      //   vertical: MyPaddings.mediumLarge),
-      //   child: InkWell(
-      //     onTap: () {
-      //
-      //     },
-      //     child: Ink(
-      //       height: 100,
-      //       width: double.infinity,
-      //       padding: EdgeInsets.symmetric(
-      //         vertical: MyPaddings.mediumLarge,
-      //       ),
-      //       decoration: BoxDecoration(
-      //         color: AppColors.primaryLight,
-      //         borderRadius: BorderRadius.circular(16.0),
-      //         boxShadow: myShadow
-      //       ),
-      //       child: MyText.h3('오늘의 이슈'),
-      //     )
-      //   )
-      // )
     );
   }
 }

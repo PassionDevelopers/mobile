@@ -4,10 +4,10 @@ import 'package:could_be/core/components/image/image_container.dart';
 import 'package:could_be/core/method/text_parsing.dart';
 import 'package:could_be/core/routes/route_names.dart';
 import 'package:could_be/core/themes/margins_paddings.dart';
-import 'package:could_be/domain/entities/issue.dart';
+import 'package:could_be/domain/entities/issue/issue.dart';
 import 'package:could_be/presentation/issue_detail_feed/components/header.dart';
-import 'package:could_be/ui/color.dart';
-import 'package:could_be/ui/fonts.dart';
+import 'package:could_be/core/themes/color.dart';
+import 'package:could_be/core/themes/fonts.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 

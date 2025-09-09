@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../../ui/color.dart';
+import '../../themes/color.dart';
 
 class ImageContainer extends StatelessWidget {
   const ImageContainer({super.key, required this.height, required this.imageUrl, this.borderRadius, this.imageSource});

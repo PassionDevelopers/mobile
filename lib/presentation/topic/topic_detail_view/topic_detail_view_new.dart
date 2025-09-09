@@ -2,7 +2,7 @@ import 'package:could_be/core/components/layouts/bottom_safe_padding.dart';
 import 'package:could_be/core/components/layouts/scaffold_layout.dart';
 import 'package:could_be/core/components/title/big_title.dart';
 import 'package:could_be/core/di/di_setup.dart';
-import 'package:could_be/ui/fonts.dart';
+import 'package:could_be/core/themes/fonts.dart';
 import 'package:flutter/material.dart';
 
 import '../../../core/components/cards/issue_card.dart';

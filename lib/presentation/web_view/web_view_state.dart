@@ -1,7 +1,7 @@
 import 'package:webview_flutter/webview_flutter.dart';
 
-import '../../domain/entities/articles.dart';
-import '../../domain/entities/articles_group_by_source.dart';
+import '../../domain/entities/article/articles.dart';
+import '../../domain/entities/article/articles_group_by_source.dart';
 
 class WebViewState{
   final bool isLoading;

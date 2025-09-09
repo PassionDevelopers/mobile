@@ -1,11 +1,11 @@
 import 'package:could_be/core/components/layouts/text_helper.dart';
 import 'package:could_be/core/components/loading/not_found.dart';
 import 'package:could_be/core/method/bias/bias_enum.dart';
-import 'package:could_be/domain/entities/major_comment.dart';
+import 'package:could_be/domain/entities/comment/major_comment.dart';
 import 'package:could_be/core/components/comments/major_user_opinion_component.dart';
 import 'package:could_be/presentation/issue_detail_feed/issue_detail_view_model.dart';
-import 'package:could_be/ui/color.dart';
-import 'package:could_be/ui/fonts.dart';
+import 'package:could_be/core/themes/color.dart';
+import 'package:could_be/core/themes/fonts.dart';
 import 'package:flutter/material.dart';
 import '../../../../core/themes/margins_paddings.dart';
 

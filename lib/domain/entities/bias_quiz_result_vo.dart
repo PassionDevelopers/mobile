@@ -1,5 +1,5 @@
 import 'package:could_be/core/method/bias/bias_enum.dart';
-import 'package:could_be/domain/entities/whole_bias_score.dart';
+import 'package:could_be/domain/entities/bias_score/whole_bias_score.dart';
 
 class BiasQuizResultVo{
   final Bias bias;

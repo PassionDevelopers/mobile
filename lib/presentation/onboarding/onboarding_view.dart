@@ -10,8 +10,8 @@ import 'package:could_be/core/method/bias/bias_method.dart';
 import 'package:could_be/core/routes/route_names.dart';
 import 'package:could_be/core/themes/margins_paddings.dart';
 import 'package:could_be/domain/useCases/onboarding_use_case.dart';
-import 'package:could_be/ui/color.dart';
-import 'package:could_be/ui/fonts.dart';
+import 'package:could_be/core/themes/color.dart';
+import 'package:could_be/core/themes/fonts.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 

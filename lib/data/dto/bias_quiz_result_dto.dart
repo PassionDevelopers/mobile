@@ -1,9 +1,9 @@
 import 'package:could_be/core/method/bias/bias_method.dart';
 import 'package:could_be/data/dto/bias_quiz_whole_bias_score_dto.dart';
-import 'package:could_be/data/dto/bias_score_dto.dart';
-import 'package:could_be/data/dto/whole_bias_score_dto.dart';
+import 'package:could_be/data/dto/bias_score/bias_score_dto.dart';
+import 'package:could_be/data/dto/bias_score/whole_bias_score_dto.dart';
 import 'package:could_be/domain/entities/bias_quiz_result_vo.dart';
-import 'package:could_be/domain/entities/whole_bias_score.dart';
+import 'package:could_be/domain/entities/bias_score/whole_bias_score.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'bias_quiz_result_dto.g.dart';

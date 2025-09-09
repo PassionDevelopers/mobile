@@ -1,8 +1,8 @@
 import 'dart:developer';
-import 'package:could_be/domain/entities/comment.dart';
-import 'package:could_be/domain/entities/reply.dart';
+import 'package:could_be/domain/entities/comment/comment.dart';
+import 'package:could_be/domain/entities/comment/reply.dart';
 import 'package:could_be/domain/useCases/comment_use_case.dart';
-import 'package:could_be/domain/useCases/manage_user_profile_use_case.dart';
+import 'package:could_be/domain/useCases/user/manage_user_profile_use_case.dart';
 import 'package:could_be/presentation/community/comment/comment_state.dart';
 import 'package:could_be/presentation/community/report/report_bottom_sheet.dart';
 import 'package:flutter/material.dart';

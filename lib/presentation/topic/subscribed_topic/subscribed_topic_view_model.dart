@@ -2,8 +2,8 @@ import 'dart:async';
 import 'package:could_be/core/events/topic_subscription_events.dart';
 import 'package:could_be/presentation/topic/subscribed_topic/subscribed_topic_state.dart';
 import 'package:flutter/cupertino.dart';
-import '../../../domain/useCases/fetch_issues_use_case.dart';
-import '../../../domain/useCases/fetch_topics_use_case.dart';
+import '../../../domain/useCases/issue/fetch_issues_use_case.dart';
+import '../../../domain/useCases/topic/fetch_topics_use_case.dart';
 
 class SubscribedTopicViewModel with ChangeNotifier {
   final FetchTopicsUseCase _fetchTopicsUseCase;

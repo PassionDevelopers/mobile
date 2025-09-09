@@ -1,6 +1,6 @@
 import 'package:could_be/core/components/title/big_title.dart';
 import 'package:could_be/core/themes/margins_paddings.dart';
-import 'package:could_be/ui/fonts.dart';
+import 'package:could_be/core/themes/fonts.dart';
 import 'package:flutter/material.dart';
 
 class CustomReportPage extends StatelessWidget {

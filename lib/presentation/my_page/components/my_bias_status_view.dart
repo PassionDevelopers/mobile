@@ -2,10 +2,10 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:could_be/core/method/bias/bias_enum.dart';
 import 'package:could_be/core/method/bias/bias_method.dart';
 import 'package:could_be/core/themes/margins_paddings.dart';
-import 'package:could_be/domain/entities/whole_bias_score.dart';
+import 'package:could_be/domain/entities/bias_score/whole_bias_score.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
-import '../../../ui/color.dart';
+import '../../../core/themes/color.dart';
 
 class BiasSwitchButtons extends StatelessWidget {
   const BiasSwitchButtons({super.key, required this.biasNow, required this.onBiasChanged});

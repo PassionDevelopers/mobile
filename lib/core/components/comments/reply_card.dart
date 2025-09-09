@@ -2,11 +2,11 @@ import 'package:could_be/core/components/comments/comment_actions.dart';
 import 'package:could_be/core/components/comments/comment_link.dart';
 import 'package:could_be/core/components/popup_menu/popup_menu.dart';
 import 'package:could_be/core/components/profile/profile_frame.dart';
-import 'package:could_be/domain/entities/reply.dart';
+import 'package:could_be/domain/entities/comment/reply.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import '../../../ui/color.dart';
-import '../../../ui/fonts.dart';
+import '../../themes/color.dart';
+import '../../themes/fonts.dart';
 import '../../method/date_time_parsing.dart';
 import '../../themes/margins_paddings.dart';
 

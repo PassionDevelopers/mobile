@@ -6,8 +6,8 @@ import 'package:could_be/core/di/di_setup.dart';
 import 'package:could_be/core/themes/margins_paddings.dart';
 import 'package:could_be/presentation/notice/components/notice_card.dart';
 import 'package:could_be/presentation/notice/notice_view_model.dart';
-import 'package:could_be/ui/color.dart';
-import 'package:could_be/ui/fonts.dart';
+import 'package:could_be/core/themes/color.dart';
+import 'package:could_be/core/themes/fonts.dart';
 import 'package:flutter/material.dart';
 import 'package:shimmer/shimmer.dart';
 

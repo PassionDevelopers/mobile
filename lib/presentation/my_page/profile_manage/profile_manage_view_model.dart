@@ -2,7 +2,7 @@ import 'dart:io';
 
 import 'package:could_be/core/components/alert/snack_bar.dart';
 import 'package:could_be/core/events/profile_events.dart';
-import 'package:could_be/domain/useCases/manage_user_profile_use_case.dart';
+import 'package:could_be/domain/useCases/user/manage_user_profile_use_case.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_image_compress/flutter_image_compress.dart';

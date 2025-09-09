@@ -1,13 +1,12 @@
 
 import 'dart:io';
-
-import 'package:could_be/core/domain/network_error.dart';
-import 'package:could_be/core/domain/result.dart';
 import 'package:could_be/core/analytics/unified_analytics_helper.dart';
 import 'package:could_be/core/analytics/analytics_event_names.dart';
 import 'package:could_be/core/analytics/analytics_parameter_keys.dart';
+import 'package:could_be/core/error/network_error.dart';
+import 'package:could_be/core/error/result.dart';
 
-import '../entities/articles.dart';
+import '../entities/article/articles.dart';
 import '../repositoryInterfaces/article/articles_interface.dart';
 
 class FetchArticlesUseCase {

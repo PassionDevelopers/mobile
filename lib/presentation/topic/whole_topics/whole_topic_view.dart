@@ -1,12 +1,12 @@
 import 'package:could_be/core/components/app_bar/search_field.dart';
 import 'package:could_be/core/components/layouts/bottom_safe_padding.dart';
 import 'package:could_be/core/di/di_setup.dart';
-import 'package:could_be/domain/entities/topic.dart';
+import 'package:could_be/domain/entities/topic/topic.dart';
 import 'package:could_be/presentation/topic/whole_topics/whole_topic_loading_view.dart';
 import 'package:could_be/presentation/topic/whole_topics/whole_topic_state.dart';
 import 'package:could_be/presentation/topic/whole_topics/whole_topic_view_model.dart';
-import 'package:could_be/ui/color.dart';
-import 'package:could_be/ui/fonts.dart';
+import 'package:could_be/core/themes/color.dart';
+import 'package:could_be/core/themes/fonts.dart';
 import 'package:flutter/material.dart';
 import '../../../core/components/cards/topic_card.dart';
 import '../../../core/components/layouts/scaffold_layout.dart';

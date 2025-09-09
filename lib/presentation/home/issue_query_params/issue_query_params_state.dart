@@ -1,4 +1,4 @@
-import 'package:could_be/domain/entities/issue_query_params.dart';
+import 'package:could_be/domain/entities/issue/issue_query_params.dart';
 
 class IssueQueryParamsState {
   bool isLoading;

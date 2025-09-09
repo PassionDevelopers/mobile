@@ -1,4 +1,4 @@
-import 'package:could_be/ui/color.dart';
+import 'package:could_be/core/themes/color.dart';
 import 'package:flutter/material.dart';
 import 'package:sign_button/constants.dart';
 import 'package:sign_button/create_button.dart';

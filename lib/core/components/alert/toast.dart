@@ -1,6 +1,6 @@
 import 'package:fluttertoast/fluttertoast.dart';
 
-import '../../../ui/color.dart';
+import '../../themes/color.dart';
 
 void showMyToast({required String msg}) {
   Fluttertoast.cancel();

@@ -1,7 +1,7 @@
 import 'package:could_be/core/themes/margins_paddings.dart';
-import 'package:could_be/ui/color.dart';
+import 'package:could_be/core/themes/color.dart';
 import 'package:flutter/material.dart';
-import '../../../ui/fonts.dart';
+import '../../themes/fonts.dart';
 
 class BigTitleAdd extends StatelessWidget {
   const BigTitleAdd({super.key, required this.title, required this.onTap});

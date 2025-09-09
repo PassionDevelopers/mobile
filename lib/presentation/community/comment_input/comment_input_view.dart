@@ -4,9 +4,9 @@ import 'package:could_be/core/components/profile/profile_frame.dart';
 import 'package:could_be/core/themes/margins_paddings.dart';
 import 'package:could_be/presentation/community/comment/comment_view_model.dart';
 import 'package:could_be/presentation/community/comment_input/comment_input_view_model.dart';
-import 'package:could_be/ui/fonts.dart';
+import 'package:could_be/core/themes/fonts.dart';
 import 'package:flutter/material.dart';
-import 'package:could_be/ui/color.dart';
+import 'package:could_be/core/themes/color.dart';
 
 class CommentInputView extends StatelessWidget {
   const CommentInputView({super.key, required this.issueId, required this.viewModel, required this.commentViewModel});

@@ -4,7 +4,7 @@ import 'package:could_be/core/components/alert/dialog.dart';
 import 'package:could_be/core/components/layouts/scaffold_layout.dart';
 import 'package:could_be/core/routes/route_names.dart';
 import 'package:could_be/data/data_source/local/user_preferences.dart';
-import 'package:could_be/ui/color.dart';
+import 'package:could_be/core/themes/color.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:language_code/language_code.dart';

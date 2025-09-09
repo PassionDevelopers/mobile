@@ -2,10 +2,10 @@ import 'package:card_swiper/card_swiper.dart';
 import 'package:could_be/core/components/layouts/scaffold_layout.dart';
 import 'package:could_be/core/components/loading/not_found.dart';
 import 'package:could_be/core/method/date_time_parsing.dart';
-import 'package:could_be/domain/entities/hot_issues.dart';
+import 'package:could_be/domain/entities/issue/hot_issues.dart';
 import 'package:could_be/presentation/hot_issue/hot_issue_last_page_card.dart';
 import 'package:could_be/presentation/hot_issue/hot_issue_page_card.dart';
-import 'package:could_be/ui/color.dart';
+import 'package:could_be/core/themes/color.dart';
 import 'package:flutter/material.dart';
 
 class HotIssueView extends StatefulWidget {

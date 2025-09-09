@@ -1,8 +1,8 @@
 import 'package:could_be/core/method/bias/bias_enum.dart';
 import 'package:could_be/core/method/bias/bias_method.dart';
 import 'package:flutter/material.dart';
-import '../../../ui/color.dart';
-import '../../../ui/fonts.dart';
+import '../../themes/color.dart';
+import '../../themes/fonts.dart';
 
 class CommentActions extends StatelessWidget {
   final int likeCount;

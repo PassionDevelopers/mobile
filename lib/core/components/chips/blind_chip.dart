@@ -1,8 +1,8 @@
 import 'package:could_be/core/themes/margins_paddings.dart';
-import 'package:could_be/domain/entities/issue_tag.dart';
+import 'package:could_be/domain/entities/issue/issue_tag.dart';
+import 'package:could_be/core/themes/fonts.dart';
 import 'package:flutter/cupertino.dart';
-import '../../../ui/color.dart';
-import '../../many_use.dart';
+import '../../themes/color.dart';
 
 class BlindChip extends StatelessWidget {
   const BlindChip({super.key, required this.tag, this.topPadding, this.insetPadding});
@@ -23,9 +23,8 @@ class BlindChip extends StatelessWidget {
         borderRadius: BorderRadius.circular(12),
         border: Border.all(color: primary),
       ),
-      child: autoSizeText(tag.name,
+      child: MyText.reg(tag.name,
         color: AppColors.primaryLight,
-        fontSize: 12,
         fontWeight: FontWeight.bold,
       ),
     );

@@ -1,7 +1,7 @@
 import 'package:could_be/core/themes/margins_paddings.dart';
 import 'package:flutter/material.dart';
-import '../../../ui/color.dart';
-import '../../../ui/fonts.dart';
+import '../../themes/color.dart';
+import '../../themes/fonts.dart';
 
 class IssueChip extends StatelessWidget {
   const IssueChip({super.key, required this.title, required this.isActive, required this.onTap, this.padding});

@@ -1,8 +1,8 @@
 
 import 'package:could_be/core/method/text_parsing.dart';
 import 'package:could_be/core/themes/margins_paddings.dart';
-import 'package:could_be/ui/color.dart';
-import 'package:could_be/ui/fonts.dart';
+import 'package:could_be/core/themes/color.dart';
+import 'package:could_be/core/themes/fonts.dart';
 import 'package:flutter/material.dart';
 
 class IssueDetailCommonSummary extends StatelessWidget {

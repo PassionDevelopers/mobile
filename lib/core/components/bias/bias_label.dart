@@ -1,8 +1,8 @@
 import 'package:auto_size_text/auto_size_text.dart';
-import 'package:could_be/ui/color.dart';
+import 'package:could_be/core/themes/color.dart';
 import 'package:flutter/material.dart';
 
-import '../../../ui/fonts.dart';
+import '../../themes/fonts.dart';
 
 class BiasLabel extends StatelessWidget {
   const BiasLabel({

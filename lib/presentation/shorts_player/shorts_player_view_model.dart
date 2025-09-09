@@ -1,7 +1,7 @@
 import 'dart:async';
 import 'dart:developer';
-import 'package:could_be/domain/entities/issue_detail.dart';
-import 'package:could_be/domain/useCases/fetch_whole_issue_use_case.dart';
+import 'package:could_be/domain/entities/issue/issue_detail.dart';
+import 'package:could_be/domain/useCases/issue/fetch_whole_issue_use_case.dart';
 import 'package:flutter/material.dart';
 import 'shorts_player_state.dart';
 

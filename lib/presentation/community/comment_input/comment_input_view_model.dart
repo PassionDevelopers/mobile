@@ -1,13 +1,12 @@
 import 'dart:developer';
-
 import 'package:could_be/core/components/alert/toast.dart';
-import 'package:could_be/core/domain/comment_error.dart';
-import 'package:could_be/core/domain/result.dart';
-import 'package:could_be/domain/entities/comment.dart';
-import 'package:could_be/domain/entities/reply.dart';
-import 'package:could_be/domain/entities/user_profile.dart';
+import 'package:could_be/core/error/comment_error.dart';
+import 'package:could_be/core/error/result.dart';
+import 'package:could_be/domain/entities/comment/comment.dart';
+import 'package:could_be/domain/entities/comment/reply.dart';
+import 'package:could_be/domain/entities/user/user_profile.dart';
 import 'package:could_be/domain/useCases/comment_use_case.dart';
-import 'package:could_be/domain/useCases/manage_user_profile_use_case.dart';
+import 'package:could_be/domain/useCases/user/manage_user_profile_use_case.dart';
 import 'package:flutter/material.dart';
 
 class CommentInputViewModel extends ChangeNotifier {

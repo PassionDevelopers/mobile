@@ -1,4 +1,4 @@
-import 'package:could_be/domain/entities/sources.dart';
+import 'package:could_be/domain/entities/source/sources.dart';
 
 abstract class SourcesRepository {
 

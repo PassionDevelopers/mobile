@@ -1,5 +1,5 @@
-import 'package:could_be/domain/entities/comment.dart';
-import 'package:could_be/domain/entities/user_profile.dart';
+import 'package:could_be/domain/entities/comment/comment.dart';
+import 'package:could_be/domain/entities/user/user_profile.dart';
 import 'package:could_be/presentation/community/comment/comment_view_model.dart';
 
 enum CommentSortType {

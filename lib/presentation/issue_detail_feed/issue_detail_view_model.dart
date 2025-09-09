@@ -3,13 +3,13 @@ import 'dart:developer';
 import 'package:could_be/core/components/alert/dialog.dart';
 import 'package:could_be/core/components/layouts/bottom_safe_padding.dart';
 import 'package:could_be/core/method/share_dasi_stand.dart';
-import 'package:could_be/domain/entities/major_comment.dart';
-import 'package:could_be/domain/entities/user_profile.dart';
+import 'package:could_be/domain/entities/comment/major_comment.dart';
+import 'package:could_be/domain/entities/user/user_profile.dart';
 import 'package:could_be/domain/useCases/comment_use_case.dart';
 import 'package:could_be/domain/useCases/firebase_login_use_case.dart';
-import 'package:could_be/domain/useCases/manage_issue_evaluation_use_case.dart';
-import 'package:could_be/domain/useCases/manage_issue_subscription_use_case.dart';
-import 'package:could_be/domain/useCases/manage_user_profile_use_case.dart';
+import 'package:could_be/domain/useCases/issue/manage_issue_evaluation_use_case.dart';
+import 'package:could_be/domain/useCases/issue/manage_issue_subscription_use_case.dart';
+import 'package:could_be/domain/useCases/user/manage_user_profile_use_case.dart';
 import 'package:could_be/domain/useCases/track_user_activity_use_case.dart';
 import 'package:could_be/presentation/community/report/report_bottom_sheet.dart';
 import 'package:could_be/presentation/log_in/login_pop_up.dart';
@@ -18,7 +18,7 @@ import 'package:flutter/material.dart';
 import 'package:share_plus/share_plus.dart';
 import '../../core/components/alert/toast.dart';
 import '../../core/method/bias/bias_enum.dart';
-import '../../domain/useCases/fetch_whole_issue_use_case.dart';
+import '../../domain/useCases/issue/fetch_whole_issue_use_case.dart';
 import 'issue_detail_feed_state.dart';
 
 class IssueDetailViewModel with ChangeNotifier {

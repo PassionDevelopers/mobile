@@ -1,6 +1,6 @@
-import 'package:could_be/data/dto/source_dto.dart';
+import 'package:could_be/data/dto/source/source_dto.dart';
 import 'package:json_annotation/json_annotation.dart';
-import '../../domain/entities/article.dart';
+import '../../domain/entities/article/article.dart';
 part 'article_dto.g.dart';
 
 @JsonSerializable()

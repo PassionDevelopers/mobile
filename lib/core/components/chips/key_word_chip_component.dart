@@ -1,7 +1,7 @@
 
-import 'package:could_be/ui/fonts.dart';
+import 'package:could_be/core/themes/fonts.dart';
 import 'package:flutter/material.dart';
-import '../../../ui/color.dart';
+import '../../themes/color.dart';
 import 'my_chip.dart';
 
 class KeyWordChip extends StatelessWidget {

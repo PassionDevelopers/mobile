@@ -1,4 +1,4 @@
-import 'package:could_be/data/dto/bias_score_dto.dart';
+import 'package:could_be/data/dto/bias_score/bias_score_dto.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'bias_quiz_whole_bias_score_dto.g.dart';
