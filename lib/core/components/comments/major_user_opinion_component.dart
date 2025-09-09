@@ -4,9 +4,9 @@ import 'package:could_be/core/components/profile/profile_frame.dart';
 import 'package:could_be/core/method/bias/bias_enum.dart';
 import 'package:could_be/core/method/bias/bias_method.dart';
 import 'package:could_be/core/method/date_time_parsing.dart';
-import 'package:could_be/domain/entities/major_comment.dart';
-import 'package:could_be/ui/color.dart';
-import 'package:could_be/ui/fonts.dart';
+import 'package:could_be/domain/entities/comment/major_comment.dart';
+import 'package:could_be/core/themes/color.dart';
+import 'package:could_be/core/themes/fonts.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 

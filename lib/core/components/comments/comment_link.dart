@@ -1,6 +1,6 @@
 import 'package:could_be/core/components/alert/dialog.dart';
 import 'package:could_be/core/components/alert/toast.dart';
-import 'package:could_be/ui/fonts.dart';
+import 'package:could_be/core/themes/fonts.dart';
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:url_launcher/url_launcher_string.dart';

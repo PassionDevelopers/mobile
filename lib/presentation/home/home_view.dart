@@ -12,7 +12,7 @@ import 'package:could_be/core/analytics/analytics_event_names.dart';
 import 'package:could_be/core/analytics/analytics_parameter_keys.dart';
 import 'package:could_be/core/analytics/analytics_screen_names.dart';
 import '../../../core/components/layouts/scaffold_layout.dart';
-import '../../../ui/color.dart';
+import '../../core/themes/color.dart';
 import 'home_view_model.dart';
 
 class HomeView extends StatefulWidget {

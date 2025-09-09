@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import '../../../ui/color.dart';
-import '../../../ui/fonts.dart';
+import '../../themes/color.dart';
+import '../../themes/fonts.dart';
 import '../../themes/margins_paddings.dart';
 import '../../responsive/responsive_constants.dart';
 

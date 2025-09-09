@@ -1,6 +1,6 @@
-import 'package:could_be/domain/entities/topics.dart';
+import 'package:could_be/domain/entities/topic/topics.dart';
 
-import '../../../domain/entities/issues.dart';
+import '../../../domain/entities/issue/issues.dart';
 
 class SubscribedTopicState {
   final Topics? topics;

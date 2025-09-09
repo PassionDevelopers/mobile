@@ -2,7 +2,7 @@
 
 import 'package:flutter/material.dart';
 
-import '../../ui/color.dart';
+import 'color.dart';
 
 class MyAppBarTheme extends AppBarTheme {
   MyAppBarTheme()

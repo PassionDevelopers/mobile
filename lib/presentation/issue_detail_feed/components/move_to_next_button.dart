@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:shimmer/shimmer.dart';
 
 import '../../../core/themes/margins_paddings.dart';
-import '../../../ui/color.dart';
-import '../../../ui/fonts.dart';
+import '../../../core/themes/color.dart';
+import '../../../core/themes/fonts.dart';
 
 class MoveToNextButton extends StatelessWidget {
   const MoveToNextButton({super.key, required this.moveToNextPage, required this.buttonText});

@@ -1,8 +1,8 @@
 
-import 'package:could_be/domain/entities/user_profile.dart';
+import 'package:could_be/domain/entities/user/user_profile.dart';
 import 'package:flutter/material.dart';
-import '../../../ui/color.dart';
-import '../../../ui/fonts.dart';
+import '../../themes/color.dart';
+import '../../themes/fonts.dart';
 
 class UserProfileWidget extends StatelessWidget {
   final UserProfile userProfile;

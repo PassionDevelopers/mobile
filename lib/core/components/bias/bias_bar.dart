@@ -4,7 +4,7 @@ import 'package:could_be/core/method/bias/bias_method.dart';
 import 'package:flutter/material.dart';
 
 import '../../../domain/entities/coverage_spectrum.dart';
-import '../../../ui/color.dart';
+import '../../themes/color.dart';
 import 'bias_label.dart';
 
 class CardBiasBar extends StatelessWidget {

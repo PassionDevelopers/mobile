@@ -8,9 +8,9 @@ import '../../../core/method/bias/bias_enum.dart';
 import '../../../core/method/bias/bias_method.dart';
 import '../../../core/method/text_parsing.dart';
 import '../../../core/themes/margins_paddings.dart';
-import '../../../domain/entities/issue_detail.dart';
-import '../../../ui/color.dart';
-import '../../../ui/fonts.dart';
+import '../../../domain/entities/issue/issue_detail.dart';
+import '../../../core/themes/color.dart';
+import '../../../core/themes/fonts.dart';
 
 class IssueDetailTabs extends StatefulWidget {
   const IssueDetailTabs({super.key,

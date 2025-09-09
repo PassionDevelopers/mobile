@@ -1,4 +1,4 @@
-import '../../domain/entities/issue_detail.dart';
+import '../../domain/entities/issue/issue_detail.dart';
 import 'shorts_player_view_model.dart';
 
 class ShortsPlayerState {

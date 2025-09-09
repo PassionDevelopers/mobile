@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../../../ui/fonts.dart';
+import '../../themes/fonts.dart';
 
 class BigTitle extends StatelessWidget {
   const BigTitle({super.key, required this.title});

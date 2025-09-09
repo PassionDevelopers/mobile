@@ -1,6 +1,6 @@
 import 'package:could_be/core/method/bias/bias_enum.dart';
-import 'package:could_be/domain/entities/issue_detail.dart';
-import 'package:could_be/domain/entities/major_comment.dart';
+import 'package:could_be/domain/entities/issue/issue_detail.dart';
+import 'package:could_be/domain/entities/comment/major_comment.dart';
 import 'package:flutter/cupertino.dart';
 
 class IssueDetailFeedState{

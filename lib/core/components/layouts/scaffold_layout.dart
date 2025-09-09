@@ -1,8 +1,8 @@
 import 'package:could_be/core/components/navigation/custom_bottom_navigation_bar.dart';
 import 'package:could_be/core/responsive/responsive_constants.dart';
-import 'package:could_be/ui/fonts.dart';
+import 'package:could_be/core/themes/fonts.dart';
 import 'package:flutter/material.dart';
-import '../../../ui/color.dart';
+import '../../themes/color.dart';
 import '../../responsive/responsive_layout.dart';
 import '../navigation/side_navigation_bar.dart';
 

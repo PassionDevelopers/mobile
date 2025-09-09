@@ -5,12 +5,12 @@ import 'package:could_be/core/routes/route_names.dart';
 import 'package:could_be/core/themes/margins_paddings.dart';
 import 'package:could_be/presentation/log_in/login_view_model.dart';
 import 'package:could_be/presentation/my_page/main/my_page_view_model.dart';
-import 'package:could_be/ui/fonts.dart';
+import 'package:could_be/core/themes/fonts.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:sign_button/constants.dart';
-import '../../ui/color.dart';
+import '../../core/themes/color.dart';
 import '../../core/analytics/unified_analytics_helper.dart';
 
 class LoginPopUp extends StatelessWidget {

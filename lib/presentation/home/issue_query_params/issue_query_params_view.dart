@@ -1,5 +1,5 @@
 import 'package:could_be/core/components/loading/chip_loading_view.dart';
-import 'package:could_be/domain/entities/issue_query_params.dart';
+import 'package:could_be/domain/entities/issue/issue_query_params.dart';
 import 'package:flutter/material.dart';
 
 import '../../../core/components/chips/issue_chip.dart';

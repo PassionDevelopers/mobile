@@ -1,11 +1,11 @@
 import 'package:could_be/core/method/bias/bias_method.dart';
 import 'package:could_be/core/themes/margins_paddings.dart';
-import 'package:could_be/domain/entities/user_profile.dart';
-import 'package:could_be/domain/entities/whole_bias_score.dart';
+import 'package:could_be/domain/entities/user/user_profile.dart';
+import 'package:could_be/domain/entities/bias_score/whole_bias_score.dart';
 import 'package:could_be/presentation/my_page/main/my_page_view_model.dart';
 import 'package:could_be/presentation/my_page/components/my_bias_status_view.dart';
-import 'package:could_be/ui/color.dart';
-import 'package:could_be/ui/fonts.dart';
+import 'package:could_be/core/themes/color.dart';
+import 'package:could_be/core/themes/fonts.dart';
 import 'package:flutter/material.dart';
 
 class MyPageHexagon extends StatelessWidget {

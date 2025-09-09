@@ -14,8 +14,8 @@ import 'package:could_be/presentation/my_page/components/my_page_header.dart';
 import 'package:could_be/presentation/my_page/components/my_page_hexagon.dart';
 import 'package:could_be/presentation/my_page/components/my_page_trend_chart.dart';
 import 'package:could_be/presentation/my_page/main/my_page_view_model.dart';
-import 'package:could_be/ui/color.dart';
-import 'package:could_be/ui/fonts.dart';
+import 'package:could_be/core/themes/color.dart';
+import 'package:could_be/core/themes/fonts.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 

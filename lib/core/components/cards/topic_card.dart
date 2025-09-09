@@ -1,8 +1,8 @@
-import 'package:could_be/domain/entities/topic.dart';
+import 'package:could_be/domain/entities/topic/topic.dart';
 import 'package:flutter/material.dart';
 
-import '../../../ui/color.dart';
-import '../../../ui/fonts.dart';
+import '../../themes/color.dart';
+import '../../themes/fonts.dart';
 import '../../themes/margins_paddings.dart';
 
 

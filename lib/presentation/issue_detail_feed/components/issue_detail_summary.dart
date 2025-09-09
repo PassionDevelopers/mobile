@@ -3,12 +3,12 @@ import 'package:could_be/core/components/chips/blind_chip.dart';
 import 'package:could_be/core/components/image/image_container.dart';
 import 'package:could_be/core/components/text/interactive_text.dart';
 import 'package:could_be/core/method/text_parsing.dart';
-import 'package:could_be/ui/color.dart';
-import 'package:could_be/ui/fonts.dart';
+import 'package:could_be/core/themes/color.dart';
+import 'package:could_be/core/themes/fonts.dart';
 import 'package:flutter/material.dart';
 import '../../../core/components/bias/bias_bar.dart';
 import '../../../core/themes/margins_paddings.dart';
-import '../../../domain/entities/issue_detail.dart';
+import '../../../domain/entities/issue/issue_detail.dart';
 import 'background_description.dart' show BackgroundDescription;
 import 'header.dart';
 

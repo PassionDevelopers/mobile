@@ -1,7 +1,8 @@
 import 'package:auto_size_text/auto_size_text.dart';
+import 'package:could_be/core/themes/fonts.dart';
+import 'package:could_be/core/themes/text_styles.dart';
 import 'package:flutter/material.dart';
-import '../../many_use.dart';
-import '../../../ui/color.dart';
+import '../../themes/color.dart';
 
 class BiasTabView extends StatefulWidget {
   const BiasTabView({super.key, required this.leftContent,
@@ -157,7 +158,7 @@ class _BiasTabView5State extends State<BiasTabView5> with TickerProviderStateMix
           ),
           tabs: [
             for(int i = 0; i < widget.tabTitles.length; i++)
-              Tab(child: autoSizeText(widget.tabTitles[i], group: group) ),
+              Tab(child: MyText.h3(widget.tabTitles[i], group: group) ),
           ],
         ),
         Expanded(

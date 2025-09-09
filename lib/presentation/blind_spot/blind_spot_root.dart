@@ -1,7 +1,7 @@
 import 'package:could_be/core/components/app_bar/app_bar.dart';
 import 'package:could_be/core/themes/margins_paddings.dart';
-import 'package:could_be/ui/color.dart';
-import 'package:could_be/ui/fonts.dart';
+import 'package:could_be/core/themes/color.dart';
+import 'package:could_be/core/themes/fonts.dart';
 import 'package:flutter/material.dart';
 import '../issue_list/issue_type.dart';
 import '../issue_list/main/issue_list_root.dart';

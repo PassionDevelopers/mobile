@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
 
-import '../../../ui/fonts.dart';
+import '../../themes/fonts.dart';
 
 enum NotFoundType {
   issue,

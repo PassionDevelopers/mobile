@@ -1,4 +1,4 @@
-import 'package:could_be/domain/useCases/fetch_hot_issues_use_case.dart';
+import 'package:could_be/domain/useCases/issue/fetch_hot_issues_use_case.dart';
 import 'package:could_be/presentation/hot_issue/hot_issue_state.dart';
 import 'package:flutter/cupertino.dart';
 

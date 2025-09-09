@@ -9,8 +9,8 @@ import 'package:webview_flutter_android/webview_flutter_android.dart';
 import 'package:webview_flutter_wkwebview/webview_flutter_wkwebview.dart';
 
 import '../../core/method/bias/bias_enum.dart';
-import '../../domain/entities/article.dart';
-import '../../domain/entities/articles.dart';
+import '../../domain/entities/article/article.dart';
+import '../../domain/entities/article/articles.dart';
 
 class WebViewViewModel with ChangeNotifier {
   final FetchArticlesUseCase _fetchArticlesUseCase;

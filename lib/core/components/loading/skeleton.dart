@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:shimmer/shimmer.dart';
 
-import '../../../ui/color.dart';
+import '../../themes/color.dart';
 
 class TitleSkeleton extends StatelessWidget {
   final double width;

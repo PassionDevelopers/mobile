@@ -1,5 +1,5 @@
-import 'package:could_be/domain/entities/source.dart';
-import 'package:could_be/domain/entities/sources.dart';
+import 'package:could_be/domain/entities/source/source.dart';
+import 'package:could_be/domain/entities/source/sources.dart';
 
 class ManageSourceEvaluationState{
   final bool isLoading;

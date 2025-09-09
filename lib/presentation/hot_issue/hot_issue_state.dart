@@ -1,5 +1,5 @@
 
-import 'package:could_be/domain/entities/hot_issues.dart';
+import 'package:could_be/domain/entities/issue/hot_issues.dart';
 
 class HotIssuesState{
   final HotIssues? hotIssues;

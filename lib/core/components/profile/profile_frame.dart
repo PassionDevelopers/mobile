@@ -1,7 +1,7 @@
 import 'package:could_be/core/method/bias/bias_enum.dart';
 import 'package:could_be/core/method/bias/bias_method.dart';
-import 'package:could_be/domain/entities/user_profile.dart';
-import 'package:could_be/ui/color.dart';
+import 'package:could_be/domain/entities/user/user_profile.dart';
+import 'package:could_be/core/themes/color.dart';
 import 'package:flutter/material.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 

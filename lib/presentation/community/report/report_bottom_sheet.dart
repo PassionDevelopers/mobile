@@ -5,8 +5,8 @@ import 'package:could_be/domain/useCases/report_use_case.dart';
 import 'package:flutter/material.dart';
 import '../../../core/themes/margins_paddings.dart';
 import '../../../domain/repositoryInterfaces/report_interface.dart';
-import '../../../ui/color.dart';
-import '../../../ui/fonts.dart';
+import '../../../core/themes/color.dart';
+import '../../../core/themes/fonts.dart';
 
 class ReportBottomSheet extends StatefulWidget {
   final String? commentId;

@@ -1,8 +1,8 @@
 
 
-import 'package:could_be/domain/entities/issue_query_params.dart';
+import 'package:could_be/domain/entities/issue/issue_query_params.dart';
 
-import '../../../domain/entities/issue.dart';
+import '../../../domain/entities/issue/issue.dart';
 
 class IssueListState{
 

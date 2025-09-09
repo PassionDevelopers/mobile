@@ -1,7 +1,7 @@
 
 import 'package:flutter/material.dart';
-import '../../../ui/color.dart';
-import '../../../ui/fonts.dart';
+import '../../themes/color.dart';
+import '../../themes/fonts.dart';
 import '../../method/date_time_parsing.dart';
 
 class IssueInfoTitle extends StatelessWidget {

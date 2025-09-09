@@ -2,7 +2,7 @@ import 'package:could_be/core/components/layouts/bottom_safe_padding.dart';
 import 'package:could_be/core/method/bias/bias_enum.dart';
 import 'package:flutter/material.dart';
 import '../../../core/components/cards/issue_card.dart';
-import '../../../domain/entities/issue.dart';
+import '../../../domain/entities/issue/issue.dart';
 import '../../../core/components/layouts/responsive_grid.dart';
 import '../../../core/responsive/responsive_utils.dart';
 

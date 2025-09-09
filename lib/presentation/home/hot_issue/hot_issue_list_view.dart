@@ -2,8 +2,8 @@ import 'package:could_be/core/components/title/big_title.dart';
 import 'package:flutter/material.dart';
 import '../../../core/components/cards/issue_card.dart';
 import '../../../core/themes/margins_paddings.dart';
-import '../../../domain/entities/issue.dart';
-import '../../../ui/color.dart';
+import '../../../domain/entities/issue/issue.dart';
+import '../../../core/themes/color.dart';
 
 class HotIssueListView extends StatefulWidget {
   const HotIssueListView({super.key, required this.issueList});

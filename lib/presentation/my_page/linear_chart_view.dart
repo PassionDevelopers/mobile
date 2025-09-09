@@ -1,17 +1,14 @@
 
 
-import 'dart:developer';
-
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:could_be/core/method/bias/bias_method.dart';
-import 'package:could_be/domain/entities/whole_bias_score.dart';
 import 'package:could_be/presentation/my_page/components/my_bias_status_view.dart';
 import 'package:could_be/presentation/my_page/main/my_page_view_model.dart';
+import 'package:could_be/core/themes/fonts.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import '../../core/method/bias/bias_enum.dart';
-import '../../core/many_use.dart';
-import '../../ui/color.dart';
+import '../../core/themes/color.dart';
 
 class DailyUserDataChart extends StatefulWidget {
   const DailyUserDataChart({super.key, required this.viewModel});
@@ -27,7 +24,7 @@ class _DailyUserDataChartState extends State<DailyUserDataChart> {
     AutoSizeGroup titleSize = AutoSizeGroup();
     double maxTotal = 0;
 
-    loadingChart(){
+    Widget loadingChart(){
 
       final dailyClearData = widget.viewModel.state.biasScoreHistoryLeftScores ?? [1,1,1,1,1,1,1];
 
@@ -64,7 +61,7 @@ class _DailyUserDataChartState extends State<DailyUserDataChart> {
         } else {
           t = weekDays[groupNum];
         }
-        return autoSizeText(t, color: textColor, group: titleSize, textAlign: TextAlign.center);
+        return MyText.reg(t, color: textColor, group: titleSize, textAlign: TextAlign.center);
       }
 
       return Column(
@@ -118,7 +115,7 @@ class _DailyUserDataChartState extends State<DailyUserDataChart> {
                                 return Container(
                                     width: bottomWidth/(dailyClearData.length),
                                     padding: const EdgeInsets.all(1.0),
-                                    child: Center(child: autoSizeText(value>0 ? value.round().toString() : '', color: AppColors.white))
+                                    child: Center(child: MyText.reg(value>0 ? value.round().toString() : '', color: AppColors.white))
                                 );
                               },
                               showTitles: true,

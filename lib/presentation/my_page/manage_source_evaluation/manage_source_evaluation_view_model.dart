@@ -1,7 +1,7 @@
 import 'package:could_be/core/components/alert/toast.dart';
 import 'package:could_be/core/method/bias/bias_method.dart';
-import 'package:could_be/domain/useCases/fetch_sources_use_case.dart';
-import 'package:could_be/domain/useCases/manage_source_evaluation_use_case.dart';
+import 'package:could_be/domain/useCases/source/fetch_sources_use_case.dart';
+import 'package:could_be/domain/useCases/source/manage_source_evaluation_use_case.dart';
 import 'package:could_be/presentation/my_page/manage_source_evaluation/manage_source_evaluation_state.dart';
 import 'package:flutter/cupertino.dart';
 

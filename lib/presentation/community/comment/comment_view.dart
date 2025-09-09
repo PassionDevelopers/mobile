@@ -4,8 +4,8 @@ import 'package:could_be/presentation/community/comment/comment_state.dart';
 import 'package:could_be/presentation/community/comment/comment_view_model.dart';
 import 'package:could_be/presentation/community/comment_input/comment_input_view_model.dart';
 import 'package:could_be/presentation/core/issue_list/infinite_scroll.dart';
-import 'package:could_be/ui/color.dart';
-import 'package:could_be/ui/fonts.dart';
+import 'package:could_be/core/themes/color.dart';
+import 'package:could_be/core/themes/fonts.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 

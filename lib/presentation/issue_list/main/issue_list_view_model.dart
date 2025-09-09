@@ -1,12 +1,12 @@
 import 'dart:developer';
 
 import 'package:could_be/core/method/bias/bias_enum.dart';
-import 'package:could_be/domain/entities/issue.dart';
-import 'package:could_be/domain/entities/issue_query_params.dart';
-import 'package:could_be/domain/entities/issues.dart';
-import 'package:could_be/domain/useCases/fetch_issues_use_case.dart';
-import 'package:could_be/domain/useCases/manage_issue_evaluation_use_case.dart';
-import 'package:could_be/domain/useCases/search_issues_use_case.dart';
+import 'package:could_be/domain/entities/issue/issue.dart';
+import 'package:could_be/domain/entities/issue/issue_query_params.dart';
+import 'package:could_be/domain/entities/issue/issues.dart';
+import 'package:could_be/domain/useCases/issue/fetch_issues_use_case.dart';
+import 'package:could_be/domain/useCases/issue/manage_issue_evaluation_use_case.dart';
+import 'package:could_be/domain/useCases/issue/search_issues_use_case.dart';
 import 'package:could_be/presentation/issue_list/main/issue_list_state.dart';
 import 'package:flutter/cupertino.dart';
 import '../issue_type.dart';

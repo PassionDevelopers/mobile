@@ -4,7 +4,7 @@ import 'package:could_be/constants.dart';
 import 'package:could_be/core/di/di_setup.dart';
 import 'package:could_be/core/routes/router.dart';
 import 'package:could_be/data/data_source/local/user_preferences.dart';
-import 'package:could_be/ui/color.dart';
+import 'package:could_be/core/themes/color.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
@@ -23,7 +23,7 @@ Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  EnvConstants.initialize(Environment.prod);
+  EnvConstants.initialize(Environment.dev);
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   // SystemChrome.setEnabledSystemUIMode(
   //     SystemUiMode.manual,

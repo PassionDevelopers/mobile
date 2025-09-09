@@ -1,17 +1,16 @@
-import 'dart:developer';
 
 import 'package:could_be/core/components/layouts/text_helper.dart';
 import 'package:could_be/core/components/loading/not_found.dart';
-import 'package:could_be/domain/entities/articles_group_by_bias.dart';
-import 'package:could_be/presentation/media/components/media_components.dart';
-import 'package:could_be/ui/fonts.dart';
+import 'package:could_be/domain/entities/article/articles_group_by_bias.dart';
+import 'package:could_be/core/themes/fonts.dart';
+import 'package:could_be/presentation/source/components/media_components.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../core/method/bias/bias_enum.dart';
 import '../../../core/routes/route_names.dart';
 import '../../../core/themes/margins_paddings.dart';
-import '../../../ui/color.dart';
+import '../../../core/themes/color.dart';
 
 class SourceListPage extends StatefulWidget {
   const SourceListPage({

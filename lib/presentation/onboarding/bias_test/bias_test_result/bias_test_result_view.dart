@@ -5,12 +5,12 @@ import 'package:could_be/core/method/bias/bias_enum.dart';
 import 'package:could_be/core/method/bias/bias_method.dart';
 import 'package:could_be/core/routes/route_names.dart';
 import 'package:could_be/domain/entities/bias_quiz_answer_vo.dart';
-import 'package:could_be/domain/entities/whole_bias_score.dart';
+import 'package:could_be/domain/entities/bias_score/whole_bias_score.dart';
 import 'package:could_be/domain/useCases/whole_bias_score_use_case.dart';
 import 'package:could_be/presentation/my_page/components/my_bias_status_view.dart';
 import 'package:could_be/presentation/onboarding/bias_test/bias_test_result/bias_test_result_view_model.dart';
-import 'package:could_be/ui/color.dart';
-import 'package:could_be/ui/fonts.dart';
+import 'package:could_be/core/themes/color.dart';
+import 'package:could_be/core/themes/fonts.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 

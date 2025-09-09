@@ -2,9 +2,9 @@ import 'package:could_be/core/method/bias/bias_enum.dart';
 import 'package:could_be/core/method/date_time_parsing.dart';
 import 'package:could_be/core/analytics/unified_analytics_helper.dart';
 import 'package:could_be/core/analytics/analytics_event_names.dart';
-import 'package:could_be/domain/entities/bias_score_history.dart';
+import 'package:could_be/domain/entities/bias_score/bias_score_history.dart';
 import 'package:could_be/domain/entities/dasi_score.dart';
-import 'package:could_be/domain/entities/whole_bias_score.dart';
+import 'package:could_be/domain/entities/bias_score/whole_bias_score.dart';
 import 'package:could_be/domain/repositoryInterfaces/whole_bias_score_interface.dart';
 
 class WholeBiasScoreUseCase {
