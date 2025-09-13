@@ -29,7 +29,7 @@ class _CustomBottomNavigationBarState extends State<CustomBottomNavigationBar>
 
   final List<BottomNavItem> _items = [
     BottomNavItem(
-      icon: Icons.home_rounded,
+      icon: Icons.home_filled,
       label: '홈',
     ),
     BottomNavItem(
@@ -129,14 +129,13 @@ class _CustomBottomNavigationBarState extends State<CustomBottomNavigationBar>
     return Container(
       height: 80,
       decoration: BoxDecoration(
-        color:AppColors.primaryLight,
-        borderRadius: BorderRadius.only(
-          topLeft: Radius.circular(16),
-          topRight: Radius.circular(16),
-        ),
-        border: Border.all(
-          color: Colors.white.withOpacity(0.2),
-          width: 1,
+        color:AppColors.white,
+        // borderRadius: BorderRadius.only(
+        //   topLeft: Radius.circular(16),
+        //   topRight: Radius.circular(16),
+        // ),
+        border: Border(
+          top: BorderSide(color: AppColors.gray300, width: 1),
         ),
       ),
       child: Row(
@@ -160,27 +159,27 @@ class _CustomBottomNavigationBarState extends State<CustomBottomNavigationBar>
                         Container(
                           width: 40,
                           height: 40,
-                          decoration: BoxDecoration(
-                            color: isSelected? AppColors.primary : null,
-                            borderRadius: BorderRadius.circular(12),
-                            boxShadow: isSelected
-                                ? [
-                                    BoxShadow(
-                                      color: AppColors.primary.withOpacity(0.3),
-                                      blurRadius: 8,
-                                      offset: Offset(0, 4),
-                                    ),
-                                  ]
-                                : [],
-                          ),
+                          // decoration: BoxDecoration(
+                          //   color: isSelected? AppColors.primary : null,
+                          //   borderRadius: BorderRadius.circular(12),
+                          //   boxShadow: isSelected
+                          //       ? [
+                          //           BoxShadow(
+                          //             color: AppColors.primary.withOpacity(0.3),
+                          //             blurRadius: 8,
+                          //             offset: Offset(0, 4),
+                          //           ),
+                          //         ]
+                          //       : [],
+                          // ),
                           child: Transform.scale(
                             scale: _scaleAnimations[index].value,
                             child: Icon(
                               item.icon,
                               size: 24,
                               color: isSelected
-                                  ? Colors.white
-                                  : AppColors.textSecondary,
+                                  ? AppColors.black
+                                  : AppColors.gray400,
                             ),
                           ),
                         ),
@@ -190,7 +189,8 @@ class _CustomBottomNavigationBarState extends State<CustomBottomNavigationBar>
                           style: MyFontStyle.small.copyWith(
                             color: isSelected
                                 ? AppColors.primary
-                                : AppColors.textSecondary,
+                                : AppColors.gray600,
+
                             fontWeight: isSelected
                                 ? FontWeight.w600
                                 : FontWeight.w400,

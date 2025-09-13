@@ -9,8 +9,7 @@ class MediaLoadingView extends StatelessWidget {
     return ListView.builder(
       scrollDirection: Axis.horizontal,
       itemBuilder: (context, index) {
-        return MediaProfileSkeleton(
-          isFirst: index == 0,
+        return MediaProfileSkeletonVertical(
         );
       },
       itemCount: 10,

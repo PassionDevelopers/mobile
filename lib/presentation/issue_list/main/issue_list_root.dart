@@ -8,6 +8,7 @@ import 'package:could_be/core/components/app_bar/app_bar.dart';
 import 'package:could_be/core/components/cards/hot_issue_card.dart';
 import 'package:could_be/core/components/loading/not_found.dart';
 import 'package:could_be/core/events/tab_reselection_event.dart';
+import 'package:could_be/core/themes/color.dart';
 import 'package:could_be/presentation/core/issue_list/infinite_scroll.dart';
 import 'package:could_be/presentation/core/issue_list/refresh.dart';
 import 'package:could_be/presentation/home/issue_query_params/issue_query_params_view.dart';
@@ -119,72 +120,45 @@ class _IssueListRootState extends State<IssueListRoot> {
         );
         hotIssuesViewModel.fetchHotIssues();
       },
-      content: SingleChildScrollView(
-        controller: scrollController,
-        physics: ClampingScrollPhysics(),
-        child: Column(
-          children: [
-            widget.appBar ?? SizedBox.shrink(),
-            if (widget.isFeedView)
-              MainAppBar(onSearchSubmitted: viewModel.searchIssues),
-            if (widget.isFeedView)
-              IssueQueryParamsView(
-                changeQueryParam: viewModel.changeQueryParam,
-              ),
-            if (widget.isTopicView)
-              SubscribedTopicView(onTopicSelected: viewModel.changeTopicId),
-            widget.upperWidget ?? SizedBox.shrink(),
-            ListenableBuilder(
-              listenable: viewModel,
-              builder: (context, _) {
-                final state = viewModel.state;
-                log('IssueQueryParam: ${state.issueQueryParam?.queryParam}');
-                if (state.isLoading) {
-                  return IssueListLoadingView();
-                } else {
-                  if (state.issueList.isEmpty) {
-                    return NotFound(notFoundType: NotFoundType.issue);
+      content: Ink(
+        color: AppColors.white,
+        child: SingleChildScrollView(
+          controller: scrollController,
+          physics: ClampingScrollPhysics(),
+          child: Column(
+            children: [
+              widget.appBar ?? SizedBox.shrink(),
+              if (widget.isTopicView)
+                SubscribedTopicView(onTopicSelected: viewModel.changeTopicId),
+              widget.upperWidget ?? SizedBox.shrink(),
+              ListenableBuilder(
+                listenable: viewModel,
+                builder: (context, _) {
+                  final state = viewModel.state;
+                  log('IssueQueryParam: ${state.issueQueryParam?.queryParam}');
+                  if (state.isLoading) {
+                    return IssueListLoadingView();
                   } else {
-                    return Column(
-                      children: [
-                        ListenableBuilder(
-                          listenable: hotIssuesViewModel,
-                          builder: (context, _) {
-                            bool isDailyQueryParam =
-                                state.issueQueryParam != null &&
-                                state.issueQueryParam!.queryParam ==
-                                    IssueType.daily.name;
-                            bool isDailyIssueType =
-                                state.issueQueryParam == null &&
-                                widget.issueType == IssueType.daily;
-                            bool isSearching = state.query != null;
-                            if (widget.isFeedView &&
-                                (isDailyQueryParam || isDailyIssueType) &&
-                                !isSearching &&
-                                hotIssuesViewModel.state.hotIssues != null) {
-                              return HotIssueCard(
-                                updateTime:
-                                    hotIssuesViewModel.state.hotIssues!.hotTime,
-                                hotIssues: hotIssuesViewModel.state.hotIssues!,
-                              );
-                            }
-                            return SizedBox.shrink();
-                          },
-                        ),
-                        IssueListView(
-                          issueList: state.issueList,
-                          onBiasSelected: viewModel.manageIssueEvaluation,
-                          isEvaluating: state.isEvaluating,
-                          isEvaluatedView: widget.isEvaluatedView,
-                        ),
-                        if (state.isLoadingMore) IssueListLoadingView(),
-                      ],
-                    );
+                    if (state.issueList.isEmpty) {
+                      return NotFound(notFoundType: NotFoundType.issue);
+                    } else {
+                      return Column(
+                        children: [
+                          IssueListView(
+                            issueList: state.issueList,
+                            onBiasSelected: viewModel.manageIssueEvaluation,
+                            isEvaluating: state.isEvaluating,
+                            isEvaluatedView: widget.isEvaluatedView,
+                          ),
+                          if (state.isLoadingMore) IssueListLoadingView(),
+                        ],
+                      );
+                    }
                   }
-                }
-              },
-            ),
-          ],
+                },
+              ),
+            ],
+          ),
         ),
       ),
     );

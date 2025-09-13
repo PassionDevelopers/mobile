@@ -17,10 +17,10 @@ class IssueCardSkeleton extends StatelessWidget {
         ),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(16),
-          color: AppColors.primaryLight,
+          color: AppColors.white,
           boxShadow: [
             BoxShadow(
-              color: AppColors.gray4,
+              color: AppColors.gray400,
               spreadRadius: 1,
               blurRadius: 1,
               offset: Offset(0, 1), // changes position of shadow
@@ -43,7 +43,7 @@ class IssueCardSkeleton extends StatelessWidget {
                       borderRadius: BorderRadius.vertical(
                         top: Radius.circular(16),
                       ),
-                      color: AppColors.gray4,
+                      color: AppColors.gray400,
                     ),
                   ),
                   Align(
@@ -52,7 +52,7 @@ class IssueCardSkeleton extends StatelessWidget {
                       height: 50,
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(16),
-                        color: AppColors.gray3,
+                        color: AppColors.gray500,
                       ),
                     ),
                   ),
@@ -69,7 +69,7 @@ class IssueCardSkeleton extends StatelessWidget {
                     height: 16,
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(8),
-                      color: AppColors.gray3,
+                      color: AppColors.gray500,
                     ),
                   ),
                   SizedBox(height: 8),
@@ -78,7 +78,7 @@ class IssueCardSkeleton extends StatelessWidget {
                     height: 14,
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(8),
-                      color: AppColors.gray3,
+                      color: AppColors.gray500,
                     ),
                   ),
                 ],

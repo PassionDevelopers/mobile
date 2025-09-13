@@ -19,7 +19,7 @@ class BiasSwitchButtons extends StatelessWidget {
       height: 35,
       padding: EdgeInsets.all(3),
       decoration: BoxDecoration(
-        color: AppColors.gray5,
+        color: AppColors.gray300,
         borderRadius: BorderRadius.circular(20),
       ),
       child: Row(children: [
@@ -149,21 +149,6 @@ class _BiasHexagonState extends State<BiasHexagon> {
         Expanded(
           child: RadarChart(
             RadarChartData(
-              // radarTouchData:
-              // RadarTouchData(
-              //   touchCallback: (FlTouchEvent event, response) {
-              //     if (!event.isInterestedForInteractions) {
-              //       setState(() {
-              //         selectedDataSetIndex = -1;
-              //       });
-              //       return;
-              //     }
-              //     setState(() {
-              //       selectedDataSetIndex =
-              //           response?.touchedSpot?.touchedDataSetIndex ?? -1;
-              //     });
-              //   },
-              // ),
               dataSets: [
                 if(widget.isZoomed) gridDataSet([0,0,0,0,0,0]),
                 if(widget.isZoomed) gridDataSet(List<double>.generate(6, (int i)=> 100.0)),
@@ -225,8 +210,8 @@ class _BiasHexagonState extends State<BiasHexagon> {
               },
               tickCount: 4,
               ticksTextStyle: const TextStyle(color: Colors.transparent, fontSize: 0),
-              tickBorderData: BorderSide(color: AppColors.gray4, width: 0.5),
-              gridBorderData: BorderSide(color: AppColors.gray4, width: 0.5),
+              tickBorderData: BorderSide(color: AppColors.gray400, width: 0.5, ),
+              gridBorderData: BorderSide(color: AppColors.gray400, width: 0.5, ),
             ),
           ),
         ),
@@ -240,8 +225,8 @@ class _BiasHexagonState extends State<BiasHexagon> {
     return RadarDataSet(
       fillColor: color.withOpacity(isSelected ? 0.5 : 0.1),
       borderColor: isSelected ? color : color.withOpacity(0.3),
-      entryRadius: isSelected ? 4 : 3,
-      dataEntries: values.map((e) => RadarEntry(value: e*1.0)).toList(),
+      entryRadius: 0,
+      dataEntries: values.map((e) => RadarEntry(value: e* 1.0)).toList(),
       borderWidth: isSelected ? 3 : 2.5,
     );
   }
@@ -249,7 +234,7 @@ class _BiasHexagonState extends State<BiasHexagon> {
   RadarDataSet gridDataSet(List<double> values) {
     return RadarDataSet(
       fillColor: Colors.transparent,
-      borderColor: AppColors.gray4,
+      borderColor: AppColors.gray400,
       entryRadius: 0,
       dataEntries: values.map((e) => RadarEntry(value: e)).toList(),
       borderWidth: 0.5,

@@ -7,21 +7,23 @@ class WholeTopicLoadingView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SliverPadding(
+    return Padding(
       padding: EdgeInsets.symmetric(
         horizontal: MyPaddings.largeMedium,
         vertical: MyPaddings.medium,
       ),
-      sliver: SliverGrid(
+      child: GridView.builder(
         gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
           crossAxisCount: 3,
           childAspectRatio: 2.5,
           crossAxisSpacing: 8,
           mainAxisSpacing: 8,
         ),
-        delegate: SliverChildBuilderDelegate((context, index) {
+        itemCount: 30,
+        itemBuilder: (context, index) {
           return const TopicCardSkeleton();
-        }))
+        }
+      )
     );
   }
 }

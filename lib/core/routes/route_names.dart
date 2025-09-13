@@ -17,6 +17,8 @@ abstract class RouteNames{
   serverCheck = '/serverCheck',
   haveUpdate = '/haveUpdate',
 
+  search = '/search',
+
 
   blindSpot = '/blindSpot',
 

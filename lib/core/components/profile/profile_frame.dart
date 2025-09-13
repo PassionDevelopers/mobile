@@ -24,11 +24,11 @@ class ProfileFrame extends StatelessWidget {
       height: width,
       decoration: BoxDecoration(
         border: Border.all(
-          color: bias == null ? AppColors.gray3 : getBiasColor(bias!),
+          color: bias == null ? AppColors.gray500 : getBiasColor(bias!),
           width: 2,
         ),
         shape: BoxShape.circle,
-        color: AppColors.gray5,
+        color: AppColors.gray300,
       ),
       child: ClipOval(child: child),
     );
@@ -51,7 +51,7 @@ class Profile extends StatelessWidget {
               ? const SizedBox()
               : userProfile!.imageUrl != null
               ? CachedNetworkImage(imageUrl: userProfile!.imageUrl!, fit: BoxFit.cover)
-              : Icon(Icons.person, size: width * 0.6, color: AppColors.gray3),
+              : Icon(Icons.person, size: width * 0.6, color: AppColors.gray500),
     );
   }
 }

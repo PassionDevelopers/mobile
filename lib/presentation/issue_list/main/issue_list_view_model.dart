@@ -185,6 +185,7 @@ class IssueListViewModel with ChangeNotifier {
           return await _fetchIssuesUseCase.fetchIssuesByTopicId(topicId!, lastIssueId: lastIssueId);
         case IssueType.evaluated:
           return await _fetchIssuesUseCase.fetchIssuesEvaluated(lastIssueId: lastIssueId);
+        case _: return await _fetchIssuesUseCase.fetchDailyIssues(lastIssueId: lastIssueId);
       }
     }
   }

@@ -12,7 +12,7 @@ class MyPopupMenu extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return PopupMenuButton<String>(
-      color: AppColors.primaryLight,
+      color: AppColors.white,
       onSelected: (value) {
         switch (value) {
           case 'report':
@@ -31,7 +31,7 @@ class MyPopupMenu extends StatelessWidget {
               width: 100,
               child: Row(
                 children: [
-                  Icon(Icons.report_outlined, size: 16, color: AppColors.gray2),
+                  Icon(Icons.report_outlined, size: 16, color: AppColors.gray600),
                   SizedBox(width: 8),
                   MyText.reg('신고', color: AppColors.textPrimary),
                 ],
@@ -59,7 +59,7 @@ class MyPopupMenu extends StatelessWidget {
         }
         return items;
       },
-      icon: Icon(Icons.more_vert, color: AppColors.gray2, size: 16),
+      icon: Icon(Icons.more_vert, color: AppColors.gray600, size: 16),
       padding: EdgeInsets.zero,
     );
   }

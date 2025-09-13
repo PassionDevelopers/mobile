@@ -27,8 +27,8 @@ class LabelIconButton extends StatelessWidget {
           padding: EdgeInsets.all(MyPaddings.medium),
           child: Column(
             children: [
-              Icon(iconData, size: 24, color: color ?? AppColors.gray1),
-              MyText.reg(label, color: AppColors.gray1),
+              Icon(iconData, size: 24, color: color ?? AppColors.gray700),
+              MyText.reg(label, color: AppColors.gray700),
             ],
           ),
         ),

@@ -43,10 +43,10 @@ class ReplyCard extends StatelessWidget {
                 fontWeight: FontWeight.bold,
                 color: AppColors.textPrimary,
               ),
-              MyText.reg(' • ', color: AppColors.gray3),
+              MyText.reg(' • ', color: AppColors.gray500),
               MyText.reg(
                 getTimeAgo(reply.createdAt),
-                color: AppColors.gray2,
+                color: AppColors.gray600,
               ),
               Spacer(),
               Expanded(
@@ -66,7 +66,7 @@ class ReplyCard extends StatelessWidget {
                 children: [
                   MyText.articleSmall(
                     reply.isDeleted? '삭제된 댓글입니다.' : reply.content,
-                    color: reply.isDeleted? AppColors.gray3 : AppColors.textPrimary,
+                    color: reply.isDeleted? AppColors.gray500 : AppColors.textPrimary,
                   ),
                   SizedBox(height: MyPaddings.medium),
                   CommentLink(source: reply.source),

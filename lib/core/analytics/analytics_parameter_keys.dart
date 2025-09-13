@@ -6,6 +6,8 @@ class AnalyticsParameterKeys {
   //utm
   static const String utm = 'utm';
 
+  static const String category = 'category';
+
   // Navigation Parameters
   static const String fromScreen = 'from_screen';
   static const String toScreen = 'to_screen';

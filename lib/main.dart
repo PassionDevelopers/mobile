@@ -140,7 +140,7 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
           brightness: Brightness.light,
           primary: AppColors.primary,
         ),
-        scaffoldBackgroundColor: AppColors.background,
+        scaffoldBackgroundColor: AppColors.white,
         appBarTheme: MyAppBarTheme(),
         cardTheme: CardThemeData(color: Colors.white),
         tabBarTheme: TabBarThemeData(

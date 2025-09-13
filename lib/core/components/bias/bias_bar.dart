@@ -82,10 +82,10 @@ class CardBiasBar extends StatelessWidget {
       return Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          _buildBiasLabel(coverageSpectrum: coverageSpectrum),
-          SizedBox(height: 4),
+          // _buildBiasLabel(coverageSpectrum: coverageSpectrum),
+          // SizedBox(height: 4),
           Container(
-            height: 10,
+            height: 4,
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(24.0),
               color: Colors.grey.shade200,
@@ -98,10 +98,10 @@ class CardBiasBar extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        isDailyIssue? _buildBiasLabel(coverageSpectrum: coverageSpectrum) : SizedBox(),
-        SizedBox(height: isDailyIssue? 4 : 0),
+        // isDailyIssue? _buildBiasLabel(coverageSpectrum: coverageSpectrum) : SizedBox(),
+        // SizedBox(height: isDailyIssue? 4 : 0),
         Container(
-          height: 10,
+          height: 4,
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(24.0),
             gradient: _buildSmoothBiasGradient(total),

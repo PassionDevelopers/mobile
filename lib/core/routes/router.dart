@@ -14,11 +14,13 @@ import 'package:could_be/presentation/notice/notice_view.dart';
 import 'package:could_be/presentation/onboarding/bias_test/bias_test_result/bias_test_result_view.dart';
 import 'package:could_be/presentation/onboarding/bias_test/bias_test_view.dart';
 import 'package:could_be/presentation/onboarding/onboarding_view.dart';
+import 'package:could_be/presentation/search/main/search_view.dart';
 import 'package:could_be/presentation/setting/setting_view.dart';
 import 'package:could_be/presentation/source/media_detail/media_detail_view.dart';
 import 'package:could_be/presentation/source/subscribed_media/subscribed_media_root.dart';
 import 'package:could_be/presentation/source/whole_media/whole_media_view.dart';
 import 'package:could_be/presentation/topic/whole_topics/whole_topic_view.dart';
+import 'package:could_be/presentation/topic/whole_topics/whole_topic_view_model.dart';
 import 'package:could_be/presentation/update_management/have_update.dart';
 import 'package:could_be/presentation/update_management/need_update.dart';
 import 'package:could_be/presentation/update_management/unsupported_device.dart';
@@ -125,6 +127,11 @@ final router = GoRouter(
     ),
 
     GoRoute(path: RouteNames.onboarding, builder: (context, state) => const OnboardingView()),
+
+    GoRoute(path: RouteNames.search, builder: (context, state) {
+      final wholeTopicViewModel = state.extra as WholeTopicViewModel;
+      return SearchView(wholeTopicViewModel: wholeTopicViewModel);
+    }),
 
     GoRoute(path: RouteNames.notice, builder: (context, state) => NoticeView()),
     GoRoute(

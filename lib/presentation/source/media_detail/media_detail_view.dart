@@ -1,5 +1,7 @@
 import 'package:could_be/core/components/app_bar/app_bar.dart';
+import 'package:could_be/core/components/app_bar/reg_app_bar.dart';
 import 'package:could_be/core/components/cards/source_evaluate_card.dart';
+import 'package:could_be/core/components/image/image_container.dart';
 import 'package:could_be/core/components/layouts/bottom_safe_padding.dart';
 import 'package:could_be/core/components/layouts/scaffold_layout.dart';
 import 'package:could_be/core/di/di_setup.dart';
@@ -23,7 +25,6 @@ class MediaDetailView extends StatefulWidget {
 }
 
 class _MediaDetailViewState extends State<MediaDetailView> {
-
   late final viewModel = getIt<MediaDetailViewModel>(param1: widget.sourceId);
 
   @override
@@ -35,12 +36,13 @@ class _MediaDetailViewState extends State<MediaDetailView> {
   @override
   Widget build(BuildContext context) {
     return RegScaffold(
-        isScrollPage: true,
-        backgroundColor: AppColors.background,
-        body: SingleChildScrollView(
-          child: Column(children: [
-              RegAppBar(title: '언론사 상세보기'),
-          ListenableBuilder(
+      isScrollPage: true,
+      backgroundColor: AppColors.red600_7,
+      body: SingleChildScrollView(
+        child: Column(
+          children: [
+            RegAppBar(title: '언론사 상세보기'),
+            ListenableBuilder(
               listenable: viewModel,
               builder: (context, state) {
                 final state = viewModel.state;
@@ -53,71 +55,86 @@ class _MediaDetailViewState extends State<MediaDetailView> {
                   return Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      const SizedBox(height: MyPaddings.large),
-                      // 언론 정보 카드
-                      Padding(
-                        padding: EdgeInsets.symmetric(
-                            horizontal: MyPaddings.large),
-                        child: Ink(
-                          padding: EdgeInsets.all(MyPaddings.large),
-                          decoration: BoxDecoration(
-                            color: AppColors.white,
-                            borderRadius: BorderRadius.circular(16),
-                            boxShadow: myShadow,
-                          ),
-                          child: Row(
-                            children: [
-                              MediaProfileDetail(logoUrl: state.sourceDetail!
-                                  .logoUrl,),
-                              const SizedBox(width: MyPaddings.medium),
-                              Expanded(
-                                child: Column(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  crossAxisAlignment: CrossAxisAlignment.start,
+                      Ink(
+                        color: AppColors.white,
+                        padding: EdgeInsets.all(MyPaddings.large),
+                        child: Row(
+                          children: [
+                            SizedBox(
+                              width: 64,
+                              height: 64,
+                              child: Center(
+                                child: AspectRatio(
+                                  aspectRatio: 1,
+                                  child: ImageContainer(
+                                    height: 64,
+                                    imageUrl: state.sourceDetail?.logoUrl,
+                                    borderRadius: BorderRadius.circular(10),
+                                  ),
+                                ),
+                              ),
+                            ),
+                            const SizedBox(width: MyPaddings.medium),
+                            Expanded(
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  MyText.h2(
+                                    state.sourceDetail!.name,
+                                    color: AppColors.primary,
+                                  ),
+                                  const SizedBox(height: 4),
+                                  MyText.small(
+                                    '구독자 ${state.sourceDetail!.totalIssuesCount}명',
+                                    color: AppColors.gray600,
+                                  ),
+                                ],
+                              ),
+                            ),
+                            InkWell(
+                              onTap: () {
+                                viewModel.manageSourceSubscriptionBySourceId();
+                              },
+                              borderRadius: BorderRadius.circular(20),
+                              child: Ink(
+                                padding: EdgeInsets.symmetric(
+                                  horizontal: 20,
+                                  vertical: 10,
+                                ),
+                                decoration: BoxDecoration(
+                                  color:
+                                      state.sourceDetail!.isSubscribed
+                                          ? AppColors.gray300
+                                          : AppColors.black,
+                                  borderRadius: BorderRadius.circular(20),
+                                ),
+                                child: Row(
                                   children: [
-                                    MyText.h2(state.sourceDetail!.name,
-                                        color: AppColors.primary),
-                                    const SizedBox(height: 4),
-                                    MyText.small('구독자 ${state.sourceDetail!
-                                        .totalIssuesCount}명',
-                                        color: AppColors.gray2),
+                                    if(state.sourceDetail!.isSubscribed) Icon(Icons.check, size: 16),
+
+                                    MyText.small(
+                                      state.sourceDetail!.isSubscribed
+                                          ? '구독중'
+                                          : '구독하기',
+                                      color: state.sourceDetail!.isSubscribed
+                                          ?AppColors.black : AppColors.white,
+                                      fontWeight: FontWeight.w600,
+                                    ),
                                   ],
                                 ),
                               ),
-                              InkWell(
-                                onTap: () {
-                                  viewModel
-                                      .manageSourceSubscriptionBySourceId();
-                                },
-                                borderRadius: BorderRadius.circular(12),
-                                child: Ink(
-                                  padding: EdgeInsets.symmetric(
-                                      horizontal: 20, vertical: 10),
-                                  decoration: BoxDecoration(
-                                    color: state.sourceDetail!.isSubscribed
-                                        ? AppColors.gray3
-                                        : AppColors.primary,
-                                    borderRadius: BorderRadius.circular(12),
-                                  ),
-                                  child: MyText.small(
-                                      state.sourceDetail!.isSubscribed
-                                          ? '구독중'
-                                          : '구독',
-                                      color: AppColors.white,
-                                      fontWeight: FontWeight.w600),
-                                ),
-                              ),
-                            ],
-                          ),
+                            ),
+                          ],
                         ),
                       ),
 
-                      const SizedBox(height: MyPaddings.large),
+                      Container(height: 10, color: AppColors.gray50),
 
                       // 평가 결과 섹션
-                      Padding(
-                        padding: EdgeInsets.symmetric(
-                            horizontal: MyPaddings.large),
+                      Container(
+                        color: AppColors.white,
+                        padding: EdgeInsets.all(MyPaddings.large),
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
@@ -125,131 +142,130 @@ class _MediaDetailViewState extends State<MediaDetailView> {
                             const SizedBox(height: MyPaddings.medium),
                             _buildEvaluationItem(
                               '종합 성향 평가 결과',
-                              getBiasFromString(state.sourceDetail!.perspective),
+                              getBiasFromString(
+                                state.sourceDetail!.perspective,
+                              ),
                               Icons.assessment,
-                              isPrimary: true,
                             ),
                             _buildEvaluationItem(
                               '다시 스탠드 AI 평가',
-                              getBiasFromString(state.sourceDetail!.aiEvaluatedPerspective),
+                              getBiasFromString(
+                                state.sourceDetail!.aiEvaluatedPerspective,
+                              ),
                               Icons.psychology,
                             ),
-                            if(state.sourceDetail!.expertEvaluatedPerspective != null)
-                              _buildEvaluationItem(
-                                '전문가 평가',
-                                getBiasFromString(state.sourceDetail!
-                                    .expertEvaluatedPerspective!),
-                                Icons.verified_user,
-                              ),
-                            if(state.sourceDetail!.publicEvaluatedPerspective !=
+                            if (state
+                                    .sourceDetail!
+                                    .expertEvaluatedPerspective !=
                                 null)
                               _buildEvaluationItem(
-                                  '사용자 평가',
-                                  getBiasFromString(state.sourceDetail!
-                                      .publicEvaluatedPerspective!.toString()),
-                                  Icons.people_outline
+                                '전문가 평가',
+                                getBiasFromString(
+                                  state
+                                      .sourceDetail!
+                                      .expertEvaluatedPerspective!,
+                                ),
+                                Icons.verified_user,
+                              ),
+                            if (state
+                                    .sourceDetail!
+                                    .publicEvaluatedPerspective !=
+                                null)
+                              _buildEvaluationItem(
+                                '사용자 평가',
+                                getBiasFromString(
+                                  state
+                                      .sourceDetail!
+                                      .publicEvaluatedPerspective!
+                                      .toString(),
+                                ),
+                                Icons.people_outline,
                               ),
                           ],
                         ),
                       ),
 
-                      const SizedBox(height: MyPaddings.medium),
+                      Container(height: 10, color: AppColors.gray50),
 
                       // 사용자 평가 섹션
-                      Padding(
-                        padding: EdgeInsets.symmetric(
-                            horizontal: MyPaddings.large),
+                      Ink(
+                        color: AppColors.white,
+                        padding: EdgeInsets.all(MyPaddings.large),
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Row(
-                              children: [
-                                Icon(Icons.rate_review_outlined,
-                                    color: AppColors.primary, size: 24),
-                                const SizedBox(width: MyPaddings.small),
-                                MyText.h3('나의 평가', color: AppColors.primary),
-                              ],
-                            ),
-                            const SizedBox(height: MyPaddings.medium),
-                            Ink(
-                              padding: EdgeInsets.all(MyPaddings.large),
-                              decoration: BoxDecoration(
-                                color: AppColors.white,
-                                borderRadius: BorderRadius.circular(16),
-                                boxShadow: myShadow,
-                              ),
-                              child: Column(
-                                children: [
-                                  Center(
-                                    child: MyText.reg(
-                                        '*다시 스탠드는 사용자의 의견을 반영하여 언론의 성향을 측정합니다. \n\n이 언론사의 성향을 어떻게 평가하시나요?',
-                                        color: AppColors.gray1,
-                                        fontWeight: FontWeight.w500,
-                                        maxLines: 4
-                                    ),
-                                  ),
-                                  const SizedBox(height: MyPaddings.large),
-                                  SourceEvaluationRow(
-                                    userEvaluatedPerspective: state.sourceDetail!.userEvaluatedPerspective,
-                                    onBiasSelected: (bias) {
-                                      viewModel.manageSourceEvaluation(
-                                        perspective: bias,
-                                        context: context
-                                      );
-                                    },
-                                  ),
-                                  const SizedBox(height: MyPaddings.large),
-                                ],
+                            MyText.h3('나의 평가', color: AppColors.primary),
+                            const SizedBox(height: 20),
+                            Center(
+                              child: MyText.reg(
+                                '이 언론사의 성향을 어떻게 평가하시나요?',
+                                color: AppColors.gray700,
                               ),
                             ),
+                            const SizedBox(height: 20),
+                            SourceEvaluationRow(
+                              userEvaluatedPerspective:
+                              state
+                                  .sourceDetail!
+                                  .userEvaluatedPerspective,
+                              onBiasSelected: (bias) {
+                                viewModel.manageSourceEvaluation(
+                                  perspective: bias,
+                                  context: context,
+                                );
+                              },
+                            ),
+                            const SizedBox(height: 20),
+                            Container(
+                              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
+                              decoration: ShapeDecoration(
+                                color: AppColors.gray50,
+                                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(6)),
+                              ),
+                              child: Center(child: MyText.small('*다시 스탠드는 사용자의 의견을 반영하여 언론의 성향을 측정합니다.', color: AppColors.gray600))
+                            ),
+
+                            const SizedBox(height: MyPaddings.extraLarge),
+                            BottomSafePadding(),
                           ],
                         ),
                       ),
-                      const SizedBox(height: MyPaddings.extraLarge),
-                      BottomSafePadding()
                     ],
                   );
                 }
-              })
-            ]
-          )),
-        );
-    }
-  Widget _buildEvaluationItem(String title, Bias bias, IconData icon, {bool isPrimary = false}) {
-    return Container(
-      margin: EdgeInsets.only(bottom: MyPaddings.medium),
-      padding: EdgeInsets.all(MyPaddings.medium),
-      decoration: BoxDecoration(
-        color: isPrimary? AppColors.gray1 : AppColors.white,
-        borderRadius: BorderRadius.circular(12),
-        boxShadow: myShadow,
+              },
+            ),
+          ],
+        ),
       ),
+    );
+  }
+
+  Widget _buildEvaluationItem(String title, Bias bias, IconData icon) {
+    return Container(
+      padding: EdgeInsets.symmetric(vertical: 10),
       child: Row(
         children: [
           Container(
             padding: EdgeInsets.all(8),
             decoration: BoxDecoration(
-              color: AppColors.gray5,
+              color: AppColors.gray50,
               borderRadius: BorderRadius.circular(8),
             ),
-            child: Icon(
-              icon,
-              color: AppColors.gray2,
-              size: 20,
-            ),
+            child: Icon(icon, color: AppColors.gray700, size: 20),
           ),
           SizedBox(width: MyPaddings.medium),
           Expanded(
             child: MyText.reg(
               title,
-              color: isPrimary? AppColors.gray5 : AppColors.gray1,
-              fontWeight: FontWeight.w500,
+              color: AppColors.black,
+              fontWeight: FontWeight.w400,
             ),
           ),
           Container(
             padding: EdgeInsets.symmetric(horizontal: 12, vertical: 6),
             decoration: BoxDecoration(
-              color: getBiasColor(bias).withOpacity(0.1),
+              color: getBiasBackgroundColor(bias),
               borderRadius: BorderRadius.circular(8),
             ),
             child: MyText.small(

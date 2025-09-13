@@ -41,7 +41,7 @@ class EmptyTitleAdd extends StatelessWidget {
         child: Ink(
           height: 100,
           decoration: BoxDecoration(
-            color: AppColors.primaryLight,
+            color: AppColors.white,
             borderRadius: BorderRadius.circular(16.0),
             boxShadow: myShadow,
           ),

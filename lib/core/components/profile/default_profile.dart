@@ -9,7 +9,7 @@ class DefaultProfile extends StatelessWidget {
     return Icon(
       Icons.person,
       size: size,
-      color: AppColors.gray2,
+      color: AppColors.gray600,
     );
   }
 }

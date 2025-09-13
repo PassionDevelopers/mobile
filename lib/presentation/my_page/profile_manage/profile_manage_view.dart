@@ -111,10 +111,10 @@ class _ProfileManageViewState extends State<ProfileManageView> {
                               const SizedBox(width: MyPaddings.extraLarge),
                               Icon(
                                 Icons.delete_outline_rounded,
-                                color: AppColors.primaryLight,
+                                color: AppColors.white,
                               ),
                               const SizedBox(width: MyPaddings.large),
-                              MyText.h3('삭제', color: AppColors.primaryLight),
+                              MyText.h3('삭제', color: AppColors.white),
                             ],
                           ),
                         ),

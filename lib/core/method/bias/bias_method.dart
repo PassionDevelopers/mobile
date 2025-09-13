@@ -22,15 +22,30 @@ Icon getBiasIcon(Bias bias, {double size = 24.0}) {
  Color getBiasColor(Bias bias){
   switch (bias) {
     case Bias.left:
-      return AppColors.left;
+      return AppColors.blue600;
     case Bias.leftCenter:
-      return AppColors.leftCenter;
-    case Bias.right:
-      return AppColors.right;
+      return AppColors.blue500;
+    case Bias.center:
+      return AppColors.purple600;
     case Bias.rightCenter:
-      return AppColors.rightCenter;
-    default:
-      return AppColors.center;
+      return AppColors.red700;
+    case Bias.right:
+      return AppColors.red800;
+  }
+}
+
+Color getBiasBackgroundColor(Bias bias){
+  switch (bias) {
+    case Bias.right:
+      return AppColors.red800_10;
+    case Bias.rightCenter:
+      return AppColors.red600_7;
+    case Bias.center:
+      return AppColors.purple500_10;
+    case Bias.leftCenter:
+      return AppColors.blue500_10;
+    case Bias.left:
+      return AppColors.blue600_7;
   }
 }
 

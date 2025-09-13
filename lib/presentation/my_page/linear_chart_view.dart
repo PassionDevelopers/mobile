@@ -1,5 +1,9 @@
 
 
+
+
+import 'dart:developer';
+
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:could_be/core/method/bias/bias_method.dart';
 import 'package:could_be/presentation/my_page/components/my_bias_status_view.dart';
@@ -30,8 +34,9 @@ class _DailyUserDataChartState extends State<DailyUserDataChart> {
 
       double getHorizontalInterval(){
         double interval = widget.viewModel.state.maxBiasScore - widget.viewModel.state.minBiasScore;
+        log('interval: $interval, max: ${widget.viewModel.state.maxBiasScore}, min: ${widget.viewModel.state.minBiasScore}');
         return interval == 0?
-          5: ((interval/5).ceil()) * 1.0;
+          4: ((interval/4)) * 1.0;
       }
       LineTouchData lineTouchData()=>LineTouchData(
         handleBuiltInTouches: true,
@@ -83,7 +88,7 @@ class _DailyUserDataChartState extends State<DailyUserDataChart> {
                           horizontalInterval: getHorizontalInterval(),
                           getDrawingHorizontalLine: (double value) {
                             return FlLine(
-                              color: AppColors.gray5,
+                              color: AppColors.gray300,
                               strokeWidth: 1,
                               dashArray: [1,0],
                             );
@@ -115,7 +120,8 @@ class _DailyUserDataChartState extends State<DailyUserDataChart> {
                                 return Container(
                                     width: bottomWidth/(dailyClearData.length),
                                     padding: const EdgeInsets.all(1.0),
-                                    child: Center(child: MyText.reg(value>0 ? value.round().toString() : '', color: AppColors.white))
+                                    child: Center(child: MyText.reg(value>0 ? value.round().toString() : '',
+                                        color: AppColors.black))
                                 );
                               },
                               showTitles: true,

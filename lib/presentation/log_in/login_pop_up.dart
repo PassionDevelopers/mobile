@@ -33,7 +33,7 @@ class LoginPopUp extends StatelessWidget {
             BorderRadius.vertical(top: Radius.circular(16)),
           boxShadow: [
             BoxShadow(
-              color: AppColors.gray3.withOpacity(0.05),
+              color: AppColors.gray500.withOpacity(0.05),
               blurRadius: 10,
               offset: Offset(0, 4),
             ),

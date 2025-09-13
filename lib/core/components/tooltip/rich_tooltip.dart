@@ -67,7 +67,7 @@ class RichTooltip extends StatelessWidget {
                         termDefinition.term,
                         style: MyFontStyle.h3.copyWith(
                           fontWeight: FontWeight.w700,
-                          color: AppColors.gray1,
+                          color: AppColors.gray700,
                         ),
                       ),
                       Text(
@@ -86,13 +86,13 @@ class RichTooltip extends StatelessWidget {
                   child: Container(
                     padding: const EdgeInsets.all(4),
                     decoration: BoxDecoration(
-                      color: AppColors.gray4.withOpacity(0.3),
+                      color: AppColors.gray400.withOpacity(0.3),
                       borderRadius: BorderRadius.circular(12),
                     ),
                     child: Icon(
                       Icons.close,
                       size: 16,
-                      color: AppColors.gray2,
+                      color: AppColors.gray600,
                     ),
                   ),
                 ),
@@ -113,7 +113,7 @@ class RichTooltip extends StatelessWidget {
                       termDefinition.shortDef,
                       style: MyFontStyle.reg.copyWith(
                         fontWeight: FontWeight.w600,
-                        color: AppColors.gray1,
+                        color: AppColors.gray700,
                         height: 1.4,
                       ),
                     ),
@@ -123,7 +123,7 @@ class RichTooltip extends StatelessWidget {
                     Text(
                       termDefinition.detailedDef,
                       style: MyFontStyle.reg.copyWith(
-                        color: AppColors.gray2,
+                        color: AppColors.gray600,
                         height: 1.5,
                       ),
                     ),
@@ -136,14 +136,14 @@ class RichTooltip extends StatelessWidget {
                           Icon(
                             Icons.bar_chart,
                             size: 16,
-                            color: AppColors.gray3,
+                            color: AppColors.gray500,
                           ),
                           SizedBox(width: MyPaddings.small),
                           Text(
                             '주요 현황',
                             style: MyFontStyle.reg.copyWith(
                               fontWeight: FontWeight.w600,
-                              color: AppColors.gray1,
+                              color: AppColors.gray700,
                             ),
                           ),
                         ],
@@ -158,7 +158,7 @@ class RichTooltip extends StatelessWidget {
                               Text(
                                 '• ${entry.key}',
                                 style: MyFontStyle.reg.copyWith(
-                                  color: AppColors.gray2,
+                                  color: AppColors.gray600,
                                 ),
                               ),
                               Container(
@@ -192,14 +192,14 @@ class RichTooltip extends StatelessWidget {
                           Icon(
                             Icons.lightbulb_outline,
                             size: 16,
-                            color: AppColors.gray3,
+                            color: AppColors.gray500,
                           ),
                           SizedBox(width: MyPaddings.small),
                           Text(
                             '주요 사례',
                             style: MyFontStyle.small.copyWith(
                               fontWeight: FontWeight.w600,
-                              color: AppColors.gray1,
+                              color: AppColors.gray700,
                             ),
                           ),
                         ],
@@ -216,13 +216,13 @@ class RichTooltip extends StatelessWidget {
                                   vertical: 4,
                                 ),
                                 decoration: BoxDecoration(
-                                  color: AppColors.gray5,
+                                  color: AppColors.gray300,
                                   borderRadius: BorderRadius.circular(12),
                                 ),
                                 child: Text(
                                   example,
                                   style: MyFontStyle.small.copyWith(
-                                    color: AppColors.gray2,
+                                    color: AppColors.gray600,
                                   ),
                                 ),
                               ),
@@ -239,14 +239,14 @@ class RichTooltip extends StatelessWidget {
                           Icon(
                             Icons.link,
                             size: 16,
-                            color: AppColors.gray3,
+                            color: AppColors.gray500,
                           ),
                           SizedBox(width: MyPaddings.small),
                           Text(
                             '관련 용어',
                             style: MyFontStyle.small.copyWith(
                               fontWeight: FontWeight.w600,
-                              color: AppColors.gray1,
+                              color: AppColors.gray700,
                             ),
                           ),
                         ],
@@ -286,7 +286,7 @@ class RichTooltip extends StatelessWidget {
                     Container(
                       padding: EdgeInsets.all(MyPaddings.small),
                       decoration: BoxDecoration(
-                        color: AppColors.gray5.withOpacity(0.5),
+                        color: AppColors.gray300.withOpacity(0.5),
                         borderRadius: BorderRadius.circular(8),
                       ),
                       child: Row(
@@ -294,13 +294,13 @@ class RichTooltip extends StatelessWidget {
                           Icon(
                             Icons.info_outline,
                             size: 12,
-                            color: AppColors.gray3,
+                            color: AppColors.gray500,
                           ),
                           SizedBox(width: MyPaddings.small),
                           Text(
                             '출처: ${termDefinition.source}',
                             style: MyFontStyle.small.copyWith(
-                              color: AppColors.gray3,
+                              color: AppColors.gray500,
                               fontSize: 10,
                             ),
                           ),

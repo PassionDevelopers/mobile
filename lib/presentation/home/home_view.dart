@@ -105,7 +105,7 @@ class _HomeViewState extends State<HomeView> with WidgetsBindingObserver{
         );
         widget.setCurrentIndex(index);
       },
-      body: Ink(color: AppColors.background, child: widget.body),
+      body: Ink(color: AppColors.white, child: widget.body),
     );
   }
 }

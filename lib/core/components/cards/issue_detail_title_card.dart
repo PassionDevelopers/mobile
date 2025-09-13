@@ -21,7 +21,7 @@ class IssueDetailTitleCard extends StatelessWidget {
         height: 80,
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(12),
-          color: AppColors.gray5,
+          color: AppColors.gray300,
         ),
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.center,

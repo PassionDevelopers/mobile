@@ -51,7 +51,7 @@ class _CommentViewState extends State<CommentView> {
                   widget.viewModel.state.userProfile!.bias)} 댓글',
               fontWeight: FontWeight.bold,
               color: widget.viewModel.state.userProfile == null
-                  ? AppColors.gray2
+                  ? AppColors.gray600
                   : getBiasColor(widget.viewModel.state.userProfile!.bias),
             ),
             _buildCommentStats(),
@@ -108,7 +108,7 @@ class _CommentViewState extends State<CommentView> {
   Widget _buildSortButton() {
     return PopupMenuButton<CommentSortType>(
       onSelected: (CommentSortType value) => widget.viewModel.setSortType(value),
-      color: AppColors.primaryLight,
+      color: AppColors.white,
       itemBuilder:
           (BuildContext context) =>
           CommentSortType.values

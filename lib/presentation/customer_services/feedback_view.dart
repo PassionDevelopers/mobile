@@ -1,4 +1,5 @@
 import 'package:could_be/core/components/app_bar/app_bar.dart';
+import 'package:could_be/core/components/app_bar/reg_app_bar.dart';
 import 'package:could_be/core/components/buttons/big_button.dart';
 import 'package:could_be/core/components/layouts/bottom_safe_padding.dart';
 import 'package:could_be/core/components/layouts/scaffold_layout.dart';
@@ -232,7 +233,7 @@ class _FeedbackViewState extends State<FeedbackView> {
         borderRadius: BorderRadius.circular(8),
         boxShadow: [
           BoxShadow(
-            color: AppColors.gray4.withOpacity(0.3),
+            color: AppColors.gray400.withOpacity(0.3),
             blurRadius: 4,
             offset: Offset(0, 2),
           ),

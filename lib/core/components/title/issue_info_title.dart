@@ -31,9 +31,7 @@ class IssueInfoTitle extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MyText.reg(
-      '$mediaTotal개 언론 · 조회수 ${refineViewCount(viewCount)} · ${getTimeAgo(time)}${isRead ?? false? '· 읽음' : ''}',
-      color: AppColors.gray2,
-    );
+    final String content = '언론수 $mediaTotal·조회수 ${refineViewCount(viewCount)}·${getTimeAgo(time)}';
+    return MyText.small(content, color: AppColors.gray600);
   }
 }

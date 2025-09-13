@@ -294,7 +294,7 @@ class _HotIssueLastPageCardState extends State<HotIssueLastPageCard>
                         Icon(
                           Icons.home_rounded,
                           size: 20,
-                          color: AppColors.primaryLight,
+                          color: AppColors.white,
                         ),
                         SizedBox(width: MyPaddings.small),
                         Text(

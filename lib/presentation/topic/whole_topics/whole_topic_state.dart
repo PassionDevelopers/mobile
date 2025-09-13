@@ -51,34 +51,22 @@ class WholeTopicState{
   Categories categoryNow;
   Map<Categories, Topics>? allTopics;
   Topics? get topics => allTopics?[categoryNow];
-  Map<Categories, List<Topic>>? searchedTopics;
-  bool isShowSearchedTopics;
-  String? query;
 
   WholeTopicState({
     this.isLoading = false,
     this.categoryNow = Categories.politics,
     this.allTopics,
-    this.searchedTopics,
-    this.isShowSearchedTopics = false,
-    this.query,
   });
 
   WholeTopicState copyWith({
     bool? isLoading,
     Categories? categoryNow,
     Map<Categories, Topics>? allTopics,
-    Map<Categories, List<Topic>>? searchedTopics,
-    bool? isShowSearchedTopics,
-    String? query,
   }) {
     return WholeTopicState(
       isLoading: isLoading ?? this.isLoading,
       categoryNow: categoryNow ?? this.categoryNow,
       allTopics: allTopics ?? this.allTopics,
-      searchedTopics: searchedTopics ?? this.searchedTopics,
-      isShowSearchedTopics: isShowSearchedTopics ?? this.isShowSearchedTopics,
-      query: query ?? this.query,
     );
   }
 }

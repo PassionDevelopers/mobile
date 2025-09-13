@@ -32,7 +32,7 @@ class BiasLabel extends StatelessWidget {
           decoration: BoxDecoration(color: color, shape: BoxShape.circle),
         ),
         SizedBox(width: 4),
-        Expanded(child: MyText.reg(label, color: labelColor ?? AppColors.gray1, group: group)),
+        Expanded(child: MyText.reg(label, color: labelColor ?? AppColors.gray700, group: group)),
       ],
     );
   }

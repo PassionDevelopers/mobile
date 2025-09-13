@@ -1,8 +1,10 @@
 import 'dart:async';
 import 'dart:developer';
 import 'package:could_be/core/components/alert/dialog.dart';
+import 'package:could_be/core/components/bias/bias_check_button.dart';
 import 'package:could_be/core/components/layouts/bottom_safe_padding.dart';
 import 'package:could_be/core/method/share_dasi_stand.dart';
+import 'package:could_be/core/themes/color.dart';
 import 'package:could_be/domain/entities/comment/major_comment.dart';
 import 'package:could_be/domain/entities/user/user_profile.dart';
 import 'package:could_be/domain/useCases/comment_use_case.dart';
@@ -36,8 +38,8 @@ class IssueDetailViewModel with ChangeNotifier {
   IssueDetailFeedState get state => _state;
 
   String issueId;
-  final _majorCommentsController = StreamController();
-  Stream get majorCommentsStream => _majorCommentsController.stream;
+  StreamController? _majorCommentsController;
+  Stream? get majorCommentsStream => _majorCommentsController?.stream;
 
   IssueDetailViewModel({
     required this.issueId,
@@ -52,6 +54,39 @@ class IssueDetailViewModel with ChangeNotifier {
     fetchMyBias();
     fetchIssueDetailById(issueId);
     fetchMajorComments();
+  }
+
+  void showBiasButton(BuildContext context) {
+    if(state.issueDetail == null) {
+      log("Issue detail is null");
+      return;
+    }
+    _state = state.copyWith(hasShowedBiasButton: true, isBiasButtonSpread: true);
+    showBottomSheet(
+      shape: const RoundedRectangleBorder(),
+      context: context,
+      // isScrollControlled: false,
+      backgroundColor: AppColors.white,
+      builder: (BuildContext context) {
+        return BiasCheckButton(
+
+          existCenter: state.issueDetail!.centerComparison != null,
+          existLeft: state.issueDetail!.leftComparison != null,
+          existRight: state.issueDetail!.rightComparison != null,
+          isEvaluating: state.isEvaluating,
+          onBiasSelected: (Bias bias) {
+            manageIssueEvaluation(
+              context: context,
+              bias: bias,
+            );
+          },
+          leftLikeCount: state.issueDetail!.leftLikeCount,
+          centerLikeCount: state.issueDetail!.centerLikeCount,
+          rightLikeCount: state.issueDetail!.rightLikeCount,
+          userEvaluation: state.issueDetail!.userEvaluation,
+        );
+      },
+    );
   }
 
   void showReportDialog(BuildContext context, String commentId) {
@@ -120,7 +155,7 @@ class IssueDetailViewModel with ChangeNotifier {
     } catch (e) {
       log('주요 댓글 불러오기 실패: $e');
     }
-    _majorCommentsController.add(null);
+    _majorCommentsController?.add(null);
     _state = state.copyWith(isMajorCommentsLoading: false);
     notifyListeners();
   }
@@ -167,6 +202,11 @@ class IssueDetailViewModel with ChangeNotifier {
     notifyListeners();
   }
 
+  void spreadMajorComments() {
+    _state = state.copyWith(isMajorCommentsSpread: !state.isMajorCommentsSpread);
+    notifyListeners();
+  }
+
   void postDasiScore() async {
     await trackUserActivityUseCase.postDasiScore(
       issueId: issueId,
@@ -183,11 +223,13 @@ class IssueDetailViewModel with ChangeNotifier {
     this.issueId = issueId;
     _state = state.copyWith(isLoading: true);
     notifyListeners();
+
     final result = await _fetchIssueDetailUseCase.fetchIssueDetailById(issueId);
 
-    _state = state.copyWith(issueDetail: result, isLoading: false,
-        pageCount: result != null && (result.leftComparison == null && result.centerComparison == null && result.rightComparison == null)? 3 : 4
-    );
+    if(_majorCommentsController != null)await _majorCommentsController?.close();
+    _majorCommentsController = StreamController();
+
+    _state = state.copyWith(issueDetail: result, isLoading: false);
     notifyListeners();
   }
 
@@ -252,6 +294,12 @@ class IssueDetailViewModel with ChangeNotifier {
       _state = state.copyWith(isEvaluating: false);
       notifyListeners();
     }
+  }
+
+  @override
+  void dispose() {
+    _majorCommentsController?.close();
+    super.dispose();
   }
 
 }

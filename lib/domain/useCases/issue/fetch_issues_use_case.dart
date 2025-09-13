@@ -2,7 +2,10 @@ import 'package:could_be/core/analytics/unified_analytics_helper.dart';
 import 'package:could_be/core/analytics/analytics_event_names.dart';
 import 'package:could_be/core/analytics/analytics_parameter_keys.dart';
 import 'package:could_be/domain/entities/issue/issue_query_params.dart';
+import 'package:could_be/domain/entities/issue/issues_with_category.dart';
+import 'package:could_be/domain/entities/issue/issues_with_whole_categories.dart';
 import 'package:could_be/domain/repositoryInterfaces/issue/issues_interface.dart';
+import 'package:could_be/presentation/issue_list/issue_type.dart';
 import '../../entities/issue/issues.dart';
 
 class FetchIssuesUseCase{
@@ -115,5 +118,23 @@ class FetchIssuesUseCase{
       },
     );
     return await _issuesRepository.fetchIssuesEvaluated(lastIssueId: lastIssueId);
+  }
+
+  Future<IssuesWithWholeCategories> fetchIssuesWithWholeCategories({required String? issueType}) async {
+    UnifiedAnalyticsHelper.logEvent(
+      name: AnalyticsEventNames.fetchIssuesWithWholeCategories,
+    );
+    return await _issuesRepository.fetchIssuesWithWholeCategories(issueType: issueType);
+  }
+
+  Future<IssuesWithCategory> fetchIssuesWithCategory(String category, {String? lastIssueId}) async {
+    UnifiedAnalyticsHelper.logEvent(
+      name: AnalyticsEventNames.fetchIssuesWithCategory,
+      parameters: {
+        AnalyticsParameterKeys.category: category,
+        if (lastIssueId != null) 'last_issue_id': lastIssueId,
+      },
+    );
+    return await _issuesRepository.fetchIssuesWithCategory(category, lastIssueId: lastIssueId);
   }
 }

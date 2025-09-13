@@ -16,7 +16,7 @@ class LoginLoadingView extends StatelessWidget {
         backgroundColor:AppColors.primary.withOpacity(0.5),
         child: Center(
           child: CircularProgressIndicator(
-            color: AppColors.primaryLight,
+            color: AppColors.white,
             strokeWidth: 4.0,
           ),
         ),

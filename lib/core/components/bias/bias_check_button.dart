@@ -1,3 +1,6 @@
+import 'dart:developer';
+
+import 'package:could_be/core/components/alert/toast.dart';
 import 'package:could_be/core/method/bias/bias_enum.dart';
 import 'package:could_be/core/method/bias/bias_method.dart';
 import 'package:could_be/core/themes/margins_paddings.dart';
@@ -8,6 +11,7 @@ import 'package:flutter/material.dart';
 class BiasCheckButton extends StatefulWidget {
   const BiasCheckButton({
     super.key,
+    this.draggableScrollableController,
     required this.userEvaluation,
     required this.onBiasSelected,
     required this.leftLikeCount,
@@ -19,6 +23,7 @@ class BiasCheckButton extends StatefulWidget {
     required this.existRight,
   });
 
+  final DraggableScrollableController? draggableScrollableController;
   final String? userEvaluation;
   final int leftLikeCount;
   final int centerLikeCount;
@@ -33,147 +38,78 @@ class BiasCheckButton extends StatefulWidget {
   State<BiasCheckButton> createState() => _BiasCheckButtonState();
 }
 
-class _BiasCheckButtonState extends State<BiasCheckButton>
-    with SingleTickerProviderStateMixin {
-  late AnimationController _animationController;
-  late Animation<double> _scaleAnimation;
-
-  @override
-  void initState() {
-    super.initState();
-    _animationController = AnimationController(
-      duration: const Duration(milliseconds: 1000),
-      vsync: this,
-    );
-
-    _scaleAnimation = Tween<double>(begin: 0.9, end: 1.00).animate(
-      CurvedAnimation(parent: _animationController, curve: Curves.easeInOut),
-    );
-
-    // userEvaluation이 null일 때만 애니메이션 시작
-    if (widget.userEvaluation == null) {
-      _animationController.repeat(reverse: true);
-    }
-  }
-
-  @override
-  void didUpdateWidget(BiasCheckButton oldWidget) {
-    super.didUpdateWidget(oldWidget);
-    // userEvaluation 상태 변경 시 애니메이션 제어
-    if (widget.userEvaluation == null && oldWidget.userEvaluation != null) {
-      _animationController.repeat(reverse: true);
-    } else if (widget.userEvaluation != null &&
-        oldWidget.userEvaluation == null) {
-      _animationController.stop();
-      _animationController.animateTo(1.0);
-    }
-  }
-
-  @override
-  void dispose() {
-    _animationController.dispose();
-    super.dispose();
-  }
-
-  _buildBiasCircle(Bias bias) {
-    return Column(
-      children: [
-        MyText.reg(getBiasName(bias), color: getBiasColor(bias)),
-        Padding(
-          padding: EdgeInsets.symmetric(
-            horizontal: MyPaddings.small,
-            // vertical: MyPaddings.small,
-          ),
-          child: InkWell(
-            borderRadius: BorderRadius.circular(25),
-            onTap: () {
-              if (!widget.isEvaluating) widget.onBiasSelected(bias);
-            },
-            child: Ink(
-              height: 50,
-              width: 80,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(25),
-                border: Border.all(color: getBiasColor(bias)),
-              ),
-              child: Center(
-                child: Icon(Icons.check, color: getBiasColor(bias)),
-              ),
-            ),
-          ),
-        ),
-      ],
-    );
-  }
-
+class _BiasCheckButtonState extends State<BiasCheckButton> {
   _buildBiasRect(Bias bias) {
     int total =
         widget.leftLikeCount + widget.centerLikeCount + widget.rightLikeCount;
     bool isSelected = widget.userEvaluation == bias.toPerspective();
-    return Column(
-      children: [
-        MyText.reg(getBiasName(bias), color: getBiasColor(bias)),
-        Padding(
-          padding: EdgeInsets.symmetric(
-            horizontal: MyPaddings.small,
-            vertical: MyPaddings.small,
-          ),
-          child: InkWell(
-            borderRadius: BorderRadius.circular(25),
-            onTap: () {
-              if (!widget.isEvaluating) widget.onBiasSelected(bias);
-            },
-            child: Ink(
-              height: 50,
-              width: 80,
-              decoration: BoxDecoration(
-                gradient: LinearGradient(
-                  stops: [
-                    0,
-                    switch (bias) {
-                      Bias.left => widget.leftLikeCount / total,
-                      Bias.center => widget.centerLikeCount / total,
-                      _ => widget.rightLikeCount / total,
-                    },
-                    switch (bias) {
-                      Bias.left => widget.leftLikeCount / total,
-                      Bias.center => widget.centerLikeCount / total,
-                      _ => widget.rightLikeCount / total,
-                    },
-                    1.0,
-                  ],
-                  colors: [
-                    getBiasColor(bias).withOpacity(0.2),
-                    getBiasColor(bias).withOpacity(0.2),
-                    AppColors.primaryLight,
-                    AppColors.primaryLight,
-                  ],
-                  begin: Alignment.centerLeft,
-                  end: Alignment.centerRight,
-                ),
-                borderRadius: BorderRadius.circular(25),
-                border: Border.all(color: getBiasColor(bias)),
-              ),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Icon(
-                    Icons.check,
-                    color: isSelected ? getBiasColor(bias) : AppColors.gray3,
-                  ),
-                  SizedBox(width: MyPaddings.small),
-                  MyText.reg(switch (bias) {
-                    Bias.left => widget.leftLikeCount.toString(),
-                    Bias.right => widget.rightLikeCount.toString(),
-                    _ => widget.centerLikeCount.toString(),
-                  }, color: isSelected ? getBiasColor(bias) : AppColors.gray3),
-                ],
-              ),
+    return Expanded(
+      child: InkWell(
+        borderRadius: BorderRadius.circular(6),
+        onTap: () {
+          if (!widget.isEvaluating) widget.onBiasSelected(bias);
+        },
+        child: Ink(
+          height: 36,
+          width: double.infinity,
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              stops: [
+                0,
+                switch (bias) {
+                  Bias.left => widget.leftLikeCount / total,
+                  Bias.center => widget.centerLikeCount / total,
+                  _ => widget.rightLikeCount / total,
+                },
+                switch (bias) {
+                  Bias.left => widget.leftLikeCount / total,
+                  Bias.center => widget.centerLikeCount / total,
+                  _ => widget.rightLikeCount / total,
+                },
+                1.0,
+              ],
+              colors: [
+                getBiasColor(bias).withOpacity(0.2),
+                getBiasColor(bias).withOpacity(0.2),
+                AppColors.white,
+                AppColors.white,
+              ],
+              begin: Alignment.centerLeft,
+              end: Alignment.centerRight,
+            ),
+            borderRadius: BorderRadius.circular(6),
+            border: Border.all(
+              color: isSelected ? getBiasColor(bias) : AppColors.gray400,
             ),
           ),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              if (isSelected)
+                Icon(Icons.check, size: 16, color: getBiasColor(bias)),
+              MyText.reg(getBiasName(bias), color: getBiasColor(bias)),
+              SizedBox(width: MyPaddings.small),
+              MyText.reg(switch (bias) {
+                Bias.left => widget.leftLikeCount.toString(),
+                Bias.right => widget.rightLikeCount.toString(),
+                _ => widget.centerLikeCount.toString(),
+              }, color: isSelected ? getBiasColor(bias) : AppColors.gray500),
+            ],
+          ),
         ),
-      ],
+      ),
     );
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    if (widget.draggableScrollableController != null) {
+      widget.draggableScrollableController!.addListener(() {
+        setState(() {});
+      });
+    }
   }
 
   @override
@@ -181,59 +117,106 @@ class _BiasCheckButtonState extends State<BiasCheckButton>
     return ListenableBuilder(
       listenable: ValueNotifier(widget.userEvaluation),
       builder: (context, listenable) {
-        return AnimatedBuilder(
-          animation: _scaleAnimation,
-          builder: (context, child) {
-            return Transform.scale(
-              scale: _scaleAnimation.value,
-              child: Ink(
-                width: double.infinity,
-                decoration: BoxDecoration(
-                    color: AppColors.primaryLight,
-                    borderRadius: BorderRadius.circular(16),
-                    boxShadow: myShadow
+        return Material(
+          color: AppColors.white,
+          shadowColor: AppColors.black,
+          elevation: 30,
+          child: Ink(
+            width: double.infinity,
+            height: 100,
+            decoration: BoxDecoration(
+              color: AppColors.white,
+              border: Border(top: BorderSide(color: AppColors.gray300)),
+              boxShadow: [
+                BoxShadow(
+                  color: AppColors.black,
+                  blurRadius: 10,
+                  offset: Offset(0, -4),
+                  spreadRadius: 10,
                 ),
-                child: Padding(
-                  padding: EdgeInsets.symmetric(
-                    vertical: MyPaddings.medium,
-                  ),
-                  child: Column(
+              ],
+            ),
+            child: Padding(
+              padding: EdgeInsets.symmetric(vertical: MyPaddings.medium),
+              child: Column(
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      widget.userEvaluation == null
-                          ? MyText.h3('어떤 관점에 동의하시나요?')
-                          : Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          MyText.h3('내가 동의한 관점 : '),
-                          MyText.h3(
-                            getBiasName(
-                              getBiasFromString(widget.userEvaluation!),
-                            ),
-                            color: getBiasColor(
-                              getBiasFromString(widget.userEvaluation!),
-                            ),
-                          ),
-                        ],
-                      ),
-                      SizedBox(height: MyPaddings.medium),
+                      SizedBox(width: 40),
+                      Spacer(),
                       Row(
-                        mainAxisSize: MainAxisSize.min,
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          if (widget.existLeft)
-                            _buildBiasRect(Bias.left),
-                          if (widget.existCenter)
-                            _buildBiasRect(Bias.center),
-                          if (widget.existRight)
-                            _buildBiasRect(Bias.right),
-                        ],
+                        children:
+                            widget.userEvaluation == null
+                                ? [
+                                  MyText.reg(
+                                    '어떤 관점에 동의하시나요?',
+                                    color: AppColors.gray700,
+                                  ),
+                                ]
+                                : [
+                                  MyText.reg(
+                                    '내가 동의한 관점 : ',
+                                    color: AppColors.gray700,
+                                  ),
+                                  MyText.reg(
+                                    getBiasName(
+                                      getBiasFromString(widget.userEvaluation!),
+                                    ),
+                                    color: getBiasColor(
+                                      getBiasFromString(widget.userEvaluation!),
+                                    ),
+                                  ),
+                                ],
                       ),
+                      Spacer(),
+                      if (widget.draggableScrollableController != null)
+                        GestureDetector(
+                          onTap: () {
+                            if (widget.draggableScrollableController!.size <
+                                0.5) {
+                              widget.draggableScrollableController!.animateTo(
+                                1,
+                                duration: Duration(milliseconds: 200),
+                                curve: Curves.ease,
+                              );
+                            } else {
+                              widget.draggableScrollableController!.animateTo(
+                                0,
+                                duration: Duration(milliseconds: 200),
+                                curve: Curves.ease,
+                              );
+                            }
+                          },
+                          child: Icon(
+                            widget.draggableScrollableController!.size < 0.5
+                                ? Icons.keyboard_arrow_up_rounded
+                                : Icons.keyboard_arrow_down_rounded,
+                            size: 24,
+                            color: AppColors.gray400,
+                          ),
+                        ),
+                      SizedBox(width: 16),
                     ],
                   ),
-                ),
+                  SizedBox(height: 8),
+                  Row(
+                    mainAxisSize: MainAxisSize.min,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      SizedBox(width: 16),
+                      if (widget.existLeft) _buildBiasRect(Bias.left),
+                      if (widget.existLeft) SizedBox(width: 12),
+                      if (widget.existCenter) _buildBiasRect(Bias.center),
+                      if (widget.existCenter) SizedBox(width: 12),
+                      if (widget.existRight) _buildBiasRect(Bias.right),
+                      SizedBox(width: 16),
+                    ],
+                  ),
+                ],
               ),
-            );
-          }
+            ),
+          ),
         );
       },
     );

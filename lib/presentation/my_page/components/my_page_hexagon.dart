@@ -80,18 +80,12 @@ class MyPageHexagon extends StatelessWidget {
         final wholeBiasScore = state.wholeBiasScore;
         final UserProfile? bias = state.userProfile;
         return Ink(
-          padding: EdgeInsets.fromLTRB(
-              MyPaddings.extraLarge,
-              MyPaddings.extraLarge,
-              MyPaddings.extraLarge,
-              MyPaddings.extraLarge,
-          ),
           decoration: BoxDecoration(
             color: AppColors.white,
             borderRadius: BorderRadius.circular(20),
             boxShadow: [
               BoxShadow(
-                color: AppColors.gray3.withOpacity(0.05),
+                color: AppColors.gray500.withOpacity(0.05),
                 blurRadius: 10,
                 offset: Offset(0, 4),
               ),
@@ -109,7 +103,7 @@ class MyPageHexagon extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       mainAxisSize: MainAxisSize.min,
                       children: [
-                        MyText.reg('나의 성향', color: AppColors.gray2),
+                        MyText.reg('나의 성향', color: AppColors.gray600),
                         SizedBox(height: MyPaddings.small),
                         Row(
                           children: [
@@ -119,7 +113,7 @@ class MyPageHexagon extends StatelessWidget {
                               decoration: BoxDecoration(
                                 color:
                                     bias == null
-                                        ? AppColors.gray5
+                                        ? AppColors.gray300
                                         : getBiasColor(bias.bias),
                                 shape: BoxShape.circle,
                               ),
@@ -133,7 +127,7 @@ class MyPageHexagon extends StatelessWidget {
                               onTap: () {
                                 viewModel.fetchWholeBiasScore();
                               },
-                              child: Icon(Icons.refresh, size: 25, color: AppColors.gray2)),
+                              child: Icon(Icons.refresh, size: 25, color: AppColors.gray600)),
                           ],
                         ),
                       ],
@@ -143,7 +137,7 @@ class MyPageHexagon extends StatelessWidget {
                       decoration: BoxDecoration(
                         color:
                         bias == null
-                            ? AppColors.gray5
+                            ? AppColors.gray300
                             : getBiasColor(bias.bias).withOpacity(0.1),
                         borderRadius: BorderRadius.circular(12),
                       ),
@@ -178,7 +172,7 @@ class MyPageHexagon extends StatelessWidget {
                 height: 35,
                 padding: EdgeInsets.all(3),
                 decoration: BoxDecoration(
-                  color: AppColors.gray5,
+                  color: AppColors.gray300,
                   borderRadius: BorderRadius.circular(20),
                 ),
                 child: Row(

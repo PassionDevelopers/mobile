@@ -11,23 +11,20 @@ import '../../../domain/useCases/topic/manage_topic_subscription_use_case.dart';
 
 class WholeTopicViewModel extends ChangeNotifier {
   final FetchTopicsUseCase _fetchTopicsUseCase;
-  final SearchTopicsUseCase _searchTopicsUseCase;
+
   final ManageTopicSubscriptionUseCase _manageTopicSubscriptionUseCase;
   final FirebaseLoginUseCase _firebaseLoginUseCase;
 
   WholeTopicViewModel({
     required FetchTopicsUseCase fetchTopicsUseCase,
-    required SearchTopicsUseCase searchTopicsUseCase,
     required FirebaseLoginUseCase firebaseLoginUseCase,
     required ManageTopicSubscriptionUseCase manageTopicSubscriptionUseCase,
-    required String category,
+    required Categories category,
   }) : _fetchTopicsUseCase = fetchTopicsUseCase,
-        _searchTopicsUseCase = searchTopicsUseCase,
         _firebaseLoginUseCase = firebaseLoginUseCase,
        _manageTopicSubscriptionUseCase = manageTopicSubscriptionUseCase {
-    for(final category in Categories.values) {
+      setCategoryNow(category);
       _fetchSpecificCategoryTopics(category);
-    }
   }
 
   // 상태
@@ -35,38 +32,8 @@ class WholeTopicViewModel extends ChangeNotifier {
 
   WholeTopicState get state => _state;
 
-  void hideSearchedTopics() {
-    _state = state.copyWith(
-      isShowSearchedTopics: false,
-    );
-    notifyListeners();
-  }
-
   void setCategoryNow(Categories category) {
     _state = state.copyWith(categoryNow: category);
-    notifyListeners();
-  }
-
-  Future<void> searchTopics(String query) async {
-    _state = state.copyWith(
-        isShowSearchedTopics: true,
-        query: query,
-        isLoading: true);
-    notifyListeners();
-
-    final result = await _searchTopicsUseCase.searchTopics(query);
-    final Map<Categories, List<Topic>> searchedTopics = {};
-    for (final category in Categories.values) {
-      searchedTopics[category] = result.topics.where(
-            (topic) => topic.category == category.id,
-      ).toList();
-    }
-
-    _state = state.copyWith(searchedTopics: searchedTopics,
-        isShowSearchedTopics: true,
-        query: query,
-        isLoading: false);
-
     notifyListeners();
   }
 

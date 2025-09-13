@@ -128,7 +128,7 @@ class _HotIssueCardState extends State<HotIssueCard>
                                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  MyText.reg('${formatDateTimeToMinute(widget.hotIssues.hotTime)} 업데이트', color: AppColors.gray4),
+                                  MyText.reg('${formatDateTimeToMinute(widget.hotIssues.hotTime)} 업데이트', color: AppColors.gray400),
                                   // 화살표 버튼
                                   Container(
                                     width: 42,
@@ -157,8 +157,8 @@ class _HotIssueCardState extends State<HotIssueCard>
                               Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  MyText.h2('바쁘신가요?', color: AppColors.primaryLight),
-                                  MyText.h1('이것만 보세요.', color: AppColors.primaryLight),
+                                  MyText.h2('바쁘신가요?', color: AppColors.white),
+                                  MyText.h1('이것만 보세요.', color: AppColors.white),
                                 ],
                               ),
                             ],
@@ -170,7 +170,7 @@ class _HotIssueCardState extends State<HotIssueCard>
                         bottom: -17,
                         child: Transform.rotate(
                           angle: -0.2,
-                            child: Icon(Icons.alarm, color: AppColors.primaryLight, size: 100,)))
+                            child: Icon(Icons.alarm, color: AppColors.white, size: 100,)))
                     ],
                   ),
                 ),

@@ -1,5 +1,6 @@
 import 'package:could_be/core/analytics/unified_analytics_helper.dart';
 import 'package:could_be/core/components/app_bar/app_bar.dart';
+import 'package:could_be/core/components/app_bar/reg_app_bar.dart';
 import 'package:could_be/core/components/buttons/big_button.dart';
 import 'package:could_be/core/components/layouts/bottom_safe_padding.dart';
 import 'package:could_be/core/components/layouts/scaffold_layout.dart';

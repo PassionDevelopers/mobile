@@ -12,7 +12,7 @@ class ScrollGage extends StatelessWidget {
           height: 3,
           width: double.infinity,
           decoration: BoxDecoration(
-            color: AppColors.gray5,
+            color: AppColors.gray300,
           ),
         ),
         AnimatedContainer(

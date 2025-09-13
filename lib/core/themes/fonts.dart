@@ -109,13 +109,13 @@ abstract class MyFontStyle{
   static TextStyle reg = GoogleFonts.notoSansKr(textStyle: TextStyle(
     fontSize: MyFontSizes.small,
     fontWeight: FontWeight.w400,
-    color: AppColors.textPrimary,
+    color: AppColors.black,
   ));
 
   static TextStyle article = GoogleFonts.notoSansKr(textStyle: TextStyle(
     fontSize: MyFontSizes.article,
     fontWeight: FontWeight.w400,
-    color: AppColors.gray1,
+    color: AppColors.gray700,
     letterSpacing: 0.6,
     height: 1.5
   ));
@@ -148,12 +148,12 @@ abstract class MyFontStyle{
   static TextStyle h2w = GoogleFonts.notoSansKr(textStyle: TextStyle(
     fontSize: MyFontSizes.large,
     fontWeight: FontWeight.w600,
-    color: AppColors.primaryLight
+    color: AppColors.white
   ));
 
   static TextStyle h3 = GoogleFonts.notoSansKr(textStyle: TextStyle(
     fontSize: MyFontSizes.medium,
-    fontWeight: FontWeight.w500,
+    fontWeight: FontWeight.w600,
     color: AppColors.textPrimary
   ));
 
@@ -194,12 +194,21 @@ abstract class MyText {
   }
 
   static AutoSizeText reg(String text, {Color? color, AutoSizeGroup? group, int? maxLines, FontWeight? fontWeight, TextAlign? textAlign,
-    TextDecoration? decoration, Color? decorationColor, double? decorationThickness, TextDecorationStyle? decorationStyle}){
+    TextDecoration? decoration, Color? decorationColor, double? decorationThickness, TextDecorationStyle? decorationStyle, double? minFontSize}){
     return AutoSizeText(text, style: MyFontStyle.reg.copyWith(color: color, fontWeight: fontWeight,
+        decoration: decoration, decorationColor: decorationColor, decorationThickness: decorationThickness, decorationStyle: decorationStyle),
+        group: group, maxLines: maxLines ?? 1, minFontSize: minFontSize ?? MyFontStyle.reg.fontSize!,
+        overflow: TextOverflow.ellipsis);
+  }
+
+  static AutoSizeText smaller(String text, {Color? color, AutoSizeGroup? group, int? maxLines, FontWeight? fontWeight, TextAlign? textAlign,
+    TextDecoration? decoration, Color? decorationColor, double? decorationThickness, TextDecorationStyle? decorationStyle}){
+    return AutoSizeText(text, style: MyFontStyle.small.copyWith(color: color, fontWeight: fontWeight,
         decoration: decoration, decorationColor: decorationColor, decorationThickness: decorationThickness, decorationStyle: decorationStyle),
         group: group, maxLines: maxLines ?? 1, minFontSize: 1,
         overflow: TextOverflow.ellipsis);
   }
+
 
   static Text regSummary(String text, {Color? color, int? maxLines}){
     return Text(text, style: MyFontStyle.reg.copyWith(color: color, ), maxLines: maxLines ?? 1, overflow: TextOverflow.ellipsis);

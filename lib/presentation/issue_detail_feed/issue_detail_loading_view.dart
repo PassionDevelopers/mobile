@@ -1,5 +1,4 @@
 import 'package:could_be/core/themes/margins_paddings.dart';
-import 'package:could_be/presentation/issue_detail_feed/components/move_to_next_button.dart';
 import 'package:flutter/material.dart';
 import 'package:shimmer/shimmer.dart';
 

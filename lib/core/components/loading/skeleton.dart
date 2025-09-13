@@ -37,7 +37,7 @@ class BigButtonSkeleton extends StatelessWidget {
       height: 60,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(10),
-        color: AppColors.primaryLight,
+        color: AppColors.white,
       ),
       child: Row(mainAxisAlignment: MainAxisAlignment.center, children: [
         TitleSkeleton(width: 100)

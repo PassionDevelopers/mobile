@@ -1,4 +1,5 @@
 import 'package:could_be/core/components/app_bar/app_bar.dart';
+import 'package:could_be/core/components/app_bar/reg_app_bar.dart';
 import 'package:could_be/core/themes/margins_paddings.dart';
 import 'package:could_be/core/themes/color.dart';
 import 'package:could_be/core/themes/fonts.dart';
@@ -33,13 +34,14 @@ class _BlindSpotRootState extends State<BlindSpotRoot> with SingleTickerProvider
     super.dispose();
   }
 
+
   @override
   Widget build(BuildContext context) {
     return Column(
       children: [
         RegAppBar(
           title: '성향별 사각지대 이슈 보기',
-          iconData: Icons.visibility_off,
+          iconData: Icons.visibility_off_outlined,
         ),
         
         // 이슈 리스트 (탭바와 설명 박스가 내부에 포함됨)
@@ -66,11 +68,11 @@ class _BlindSpotRootState extends State<BlindSpotRoot> with SingleTickerProvider
                     margin: EdgeInsets.symmetric(horizontal: MyPaddings.extraLarge, vertical: MyPaddings.extraSmall),
                     padding: EdgeInsets.all(4),
                     decoration: BoxDecoration(
-                      color: AppColors.gray5,
+                      color: AppColors.gray300,
                       borderRadius: BorderRadius.circular(16),
                       boxShadow: [
                         BoxShadow(
-                          color: AppColors.gray2.withOpacity(0.1),
+                          color: AppColors.gray600.withOpacity(0.1),
                           blurRadius: 4,
                           offset: Offset(0, 2),
                         ),
@@ -162,7 +164,7 @@ class _BlindSpotRootState extends State<BlindSpotRoot> with SingleTickerProvider
                       ? '보수 언론에서 주로 다루는 이슈들을 확인하세요'
                       : '진보 언론에서 주로 다루는 이슈들을 확인하세요',
                   style: MyFontStyle.small.copyWith(
-                    color: AppColors.gray2,
+                    color: AppColors.gray600,
                   ),
                 ),
               ],
@@ -205,14 +207,14 @@ class _BlindSpotRootState extends State<BlindSpotRoot> with SingleTickerProvider
           children: [
             Icon(
               icon,
-              color: isSelected ? color : AppColors.gray3,
+              color: isSelected ? color : AppColors.gray500,
               size: 18,
             ),
             SizedBox(width: MyPaddings.small),
             Text(
               label,
               style: MyFontStyle.reg.copyWith(
-                color: isSelected ? color : AppColors.gray3,
+                color: isSelected ? color : AppColors.gray500,
                 fontWeight: isSelected ? FontWeight.w600 : FontWeight.w500,
               ),
             )

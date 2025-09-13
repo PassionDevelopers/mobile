@@ -1,46 +1,39 @@
-import 'package:could_be/core/themes/margins_paddings.dart';
+import 'package:could_be/core/components/loading/basic_skeleton.dart';
 import 'package:could_be/core/themes/color.dart';
 import 'package:flutter/material.dart';
 import 'package:shimmer/shimmer.dart';
 
-class MediaProfileSkeleton extends StatelessWidget {
-  const MediaProfileSkeleton({super.key, required this.isFirst});
-  final bool isFirst;
+class MediaProfileSkeletonVertical extends StatelessWidget {
+  const MediaProfileSkeletonVertical({super.key});
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.fromLTRB(isFirst? MyPaddings.largeMedium : 4, 4, 4, 4),
+      padding: EdgeInsets.symmetric(horizontal: 4),
       child: Shimmer.fromColors(
         baseColor: Colors.grey.shade300,
         highlightColor: Colors.grey.shade100,
         child: Container(
-          decoration: BoxDecoration(borderRadius: BorderRadius.circular(10)),
-          child: Stack(
+          width: 80,
+          padding: const EdgeInsets.symmetric(vertical: 10),
+          decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(12),
+              color: AppColors.gray300,
+          ),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            spacing: 10,
             children: [
+              BasicSkeleton(width: 40, height: 40,),
               Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
                 mainAxisSize: MainAxisSize.min,
-                mainAxisAlignment: MainAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                spacing: 4,
                 children: [
-                  Center(
-                    child: Container(
-                      height: 60,
-                      width: 60,
-                      decoration: BoxDecoration(
-                        color: AppColors.primaryLight,
-                        borderRadius: BorderRadius.circular(8),
-                      ),
-                    ),
-                  ),
-                  SizedBox(height: 2),
-                  Container(
-                    height: 30,
-                    width: 60,
-                    decoration: BoxDecoration(
-                      color: AppColors.primaryLight,
-                      borderRadius: BorderRadius.circular(8),
-                    ),
-                  ),
+                  BasicSkeleton(width: 36, height: 12,),
+                  BasicSkeleton(width: 28, height: 12,)
                 ],
               ),
             ],

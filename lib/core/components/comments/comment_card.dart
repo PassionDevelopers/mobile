@@ -49,10 +49,10 @@ class CommentCard extends StatelessWidget {
                 fontWeight: FontWeight.bold,
                 color: AppColors.textPrimary,
               ),
-              MyText.reg(' • ', color: AppColors.gray3),
+              MyText.reg(' • ', color: AppColors.gray500),
               MyText.reg(
                 getTimeAgo(comment.createdAt),
-                color: AppColors.gray2,
+                color: AppColors.gray600,
               ),
               Spacer(),
               MyPopupMenu(isMine: isMine, onReportPressed: (){
@@ -71,7 +71,7 @@ class CommentCard extends StatelessWidget {
                 children: [
                   MyText.articleSmall(
                     comment.isDeleted? '삭제된 댓글입니다.' : comment.content,
-                    color: comment.isDeleted? AppColors.gray3 : AppColors.textPrimary,
+                    color: comment.isDeleted? AppColors.gray500 : AppColors.textPrimary,
                   ),
                   SizedBox(height: MyPaddings.medium),
                   CommentLink(source: comment.source),
@@ -88,7 +88,7 @@ class CommentCard extends StatelessWidget {
                     SizedBox(height: MyPaddings.medium),
                     Row(
                       children: [
-                        Container(height: 0.5, color: AppColors.gray3, width: 25),
+                        Container(height: 0.5, color: AppColors.gray500, width: 25),
                         SizedBox(width: MyPaddings.medium),
                         GestureDetector(
                           onTap: onToggleReplies,
@@ -97,7 +97,7 @@ class CommentCard extends StatelessWidget {
                                 ? '답글 숨기기'
                                 : '답글 ${comment.replies.length}개 더 보기',
                             fontWeight: FontWeight.w800,
-                            color: AppColors.gray2,
+                            color: AppColors.gray600,
                           ),
                         ),
                       ],

@@ -122,7 +122,7 @@ class _ReportBottomSheetState extends State<ReportBottomSheet> {
             width: 40,
             height: 4,
             decoration: BoxDecoration(
-              color: AppColors.gray4,
+              color: AppColors.gray400,
               borderRadius: BorderRadius.circular(2),
             ),
           ),
@@ -143,7 +143,7 @@ class _ReportBottomSheetState extends State<ReportBottomSheet> {
                         ),
                         IconButton(
                           onPressed: () => Navigator.of(context).pop(),
-                          icon: Icon(Icons.close, color: AppColors.gray2),
+                          icon: Icon(Icons.close, color: AppColors.gray600),
                           padding: EdgeInsets.zero,
                           constraints: BoxConstraints(),
                         ),
@@ -176,7 +176,7 @@ class _ReportBottomSheetState extends State<ReportBottomSheet> {
                               color: isSelected ? AppColors.primary.withOpacity(0.05) : Colors.transparent,
                               borderRadius: BorderRadius.circular(8),
                               border: Border.all(
-                                color: isSelected ? AppColors.primary : AppColors.gray4,
+                                color: isSelected ? AppColors.primary : AppColors.gray400,
                               ),
                             ),
                             child: Row(
@@ -187,7 +187,7 @@ class _ReportBottomSheetState extends State<ReportBottomSheet> {
                                   decoration: BoxDecoration(
                                     shape: BoxShape.circle,
                                     border: Border.all(
-                                      color: isSelected ? AppColors.primary : AppColors.gray3,
+                                      color: isSelected ? AppColors.primary : AppColors.gray500,
                                       width: 2,
                                     ),
                                     color: isSelected ? AppColors.primary : Colors.transparent,
@@ -226,7 +226,7 @@ class _ReportBottomSheetState extends State<ReportBottomSheet> {
                       child: ElevatedButton(
                         onPressed: _canReport ? _onReport : null,
                         style: ElevatedButton.styleFrom(
-                          backgroundColor: _canReport ? AppColors.primary : AppColors.gray4,
+                          backgroundColor: _canReport ? AppColors.primary : AppColors.gray400,
                           foregroundColor: Colors.white,
                           padding: EdgeInsets.symmetric(vertical: MyPaddings.medium),
                           shape: RoundedRectangleBorder(

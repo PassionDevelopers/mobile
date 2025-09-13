@@ -14,7 +14,7 @@ class KeyWordChip extends StatelessWidget {
   Widget build(BuildContext context) {
     return MyChip(content: MyText.small(title,
       color: textColor,
-    ), color: color ?? AppColors.gray5,
-      borderColor: borderColor ?? AppColors.gray5,);
+    ), color: color ?? AppColors.gray300,
+      borderColor: borderColor ?? AppColors.gray300,);
   }
 }

@@ -1,18 +1,19 @@
 import 'dart:async';
 
 import 'package:could_be/core/components/app_bar/app_bar.dart';
+import 'package:could_be/core/components/app_bar/subscribe_app_bar.dart';
 import 'package:could_be/core/components/loading/media_loading_view.dart';
 import 'package:could_be/core/components/loading/news_list_loading_view.dart';
 import 'package:could_be/core/components/loading/not_found.dart';
 import 'package:could_be/core/di/di_setup.dart';
 import 'package:could_be/core/events/tab_reselection_event.dart';
-import 'package:could_be/core/routes/route_names.dart';
 import 'package:could_be/core/themes/color.dart';
 import 'package:could_be/core/themes/fonts.dart';
-import 'package:could_be/presentation/source/components/media_profile_component.dart';
+import 'package:could_be/presentation/source/components/source_bias_tag.dart';
+import 'package:could_be/presentation/source/components/source_profile_vertical.dart';
 import 'package:could_be/presentation/source/subscribed_media/subscribed_media_action.dart';
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
+
 import '../../../core/components/cards/news_card.dart';
 import '../../../core/responsive/responsive_layout.dart';
 import '../../../core/themes/margins_paddings.dart';
@@ -30,6 +31,62 @@ class _SubscribedMediaRootState extends State<SubscribedMediaRoot> {
   StreamSubscription? eventSubscription;
   StreamSubscription<int>? _tabReselectionSubscription;
   final ScrollController scrollController = ScrollController();
+
+  _buildSubscribeButton(){
+    return InkWell(
+      onTap: (){
+        viewModel.onAction(
+          SubscribedMediaAction.onTapWholeMedia(),
+        );
+      },
+      child: Ink(
+        width: 80,
+        padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 4),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          spacing: 10,
+          children: [
+            SizedBox(
+              width: double.infinity,
+              height: 40,
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Container(
+                    width: 40,
+                    height: 40,
+                    decoration: ShapeDecoration(
+                      shape: RoundedRectangleBorder(
+                        side: BorderSide(
+                          width: 1,
+                          color: AppColors.gray300,
+                        ),
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                    ),
+                    child: Icon(
+                      Icons.add, color: AppColors.gray400
+                    )
+                  ),
+                ],
+              ),
+            ),
+            SizedBox(
+              width: 42,
+              height: 34,
+              child: MyText.reg(
+                '구독하기',
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
 
   @override
   void initState() {
@@ -85,228 +142,210 @@ class _SubscribedMediaRootState extends State<SubscribedMediaRoot> {
         listenable: viewModel,
         builder: (context, _) {
           final state = viewModel.state;
-          bool isSourcesEmpty =
-              state.sources != null && state.sources!.sources.isEmpty;
-          return SingleChildScrollView(
-            controller: scrollController,
-            child: Column(
-              children: [
-                RegAppBar(
-                  title: '관심 언론의 기사 보기',
-                  iconData: Icons.article_rounded,
-                ),
-                isSourcesEmpty
-                    ? Container(
-                      height: 300,
-                      margin: EdgeInsets.all(MyPaddings.extraLarge),
-                      child: Center(
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Icon(
-                              Icons.newspaper_outlined,
-                              size: 80,
-                              color: AppColors.gray3,
-                            ),
-
-                            SizedBox(height: MyPaddings.large),
-                            Text(
-                              '아직 관심 언론이 없습니다',
-                              style: MyFontStyle.h1.copyWith(
-                                color: AppColors.gray2,
-                              ),
-                            ),
-                            SizedBox(height: MyPaddings.small),
-                            Text(
-                              '다양한 언론사를 구독해보세요',
-                              style: MyFontStyle.reg.copyWith(
-                                color: AppColors.gray3,
-                              ),
-                            ),
-
-                            SizedBox(height: MyPaddings.extraLarge),
-                            InkWell(
-                              onTap: () {
-                                viewModel.onAction(
-                                  SubscribedMediaAction.onTapWholeMedia(),
-                                );
-                              },
-                              borderRadius: BorderRadius.circular(20),
-                              child: Ink(
-                                padding: EdgeInsets.symmetric(
-                                  horizontal: MyPaddings.extraLarge,
-                                  vertical: MyPaddings.large,
-                                ),
-                                decoration: BoxDecoration(
-                                  color: AppColors.primary,
-                                  borderRadius: BorderRadius.circular(20),
-                                ),
-                                child: Row(
-                                  mainAxisSize: MainAxisSize.min,
-                                  children: [
-                                    Icon(Icons.add, color: AppColors.white),
-                                    SizedBox(width: MyPaddings.small),
-                                    Text(
-                                      '언론사 둘러보기',
-                                      style: MyFontStyle.h3.copyWith(
-                                        color: AppColors.white,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    )
-                    : Column(
-                      children: [
-                        // 헤더 섹션
-                        Container(
-                          padding: EdgeInsets.symmetric(
-                            horizontal: MyPaddings.large,
-                            vertical: MyPaddings.medium,
-                          ),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.start,
+          bool isSourcesEmpty = state.sources != null && state.sources!.sources.isEmpty;
+          return Ink(
+            color: AppColors.white,
+            child: SingleChildScrollView(
+              controller: scrollController,
+              child: Column(
+                children: [
+                  SubscribeAppBar(
+                    title: '관심 언론의 기사 보기',
+                    count: state.sources == null? 0 : state.sources!.sources.length,
+                    onPressed: () {
+                      viewModel.onAction(
+                        SubscribedMediaAction.onTapWholeMedia(),
+                      );
+                    },
+                    iconData: Icons.article_outlined,
+                  ),
+                  isSourcesEmpty
+                      ? Container(
+                        height: 300,
+                        margin: EdgeInsets.all(MyPaddings.extraLarge),
+                        child: Center(
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                              Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    '관심 언론',
-                                    style: MyFontStyle.h0.copyWith(
-                                      color: AppColors.primary,
-                                    ),
-                                  ),
-                                  SizedBox(height: MyPaddings.small),
-                                  if (!state.isSourcesLoading)
-                                    Text(
-                                      '${state.sources!.sources.length}개 언론사 구독 중',
-                                      style: MyFontStyle.reg.copyWith(
-                                        color: AppColors.gray2,
-                                      ),
-                                    ),
-                                ],
+                              Icon(
+                                Icons.newspaper_outlined,
+                                size: 80,
+                                color: AppColors.gray500,
                               ),
-                              SizedBox(width: MyPaddings.large),
+
+                              SizedBox(height: MyPaddings.large),
+                              Text(
+                                '아직 관심 언론이 없습니다',
+                                style: MyFontStyle.h1.copyWith(
+                                  color: AppColors.gray600,
+                                ),
+                              ),
+                              SizedBox(height: MyPaddings.small),
+                              Text(
+                                '다양한 언론사를 구독해보세요',
+                                style: MyFontStyle.reg.copyWith(
+                                  color: AppColors.gray500,
+                                ),
+                              ),
+
+                              SizedBox(height: MyPaddings.extraLarge),
                               InkWell(
                                 onTap: () {
-                                  viewModel.onAction(SubscribedMediaAction.onTapWholeMedia());
+                                  viewModel.onAction(
+                                    SubscribedMediaAction.onTapWholeMedia(),
+                                  );
                                 },
-                                borderRadius: BorderRadius.circular(16),
-                                child: Container(
-                                  padding: EdgeInsets.all(MyPaddings.medium),
-                                  decoration: BoxDecoration(
-                                    color: AppColors.primary.withOpacity(0.1),
-                                    borderRadius: BorderRadius.circular(16),
+                                borderRadius: BorderRadius.circular(20),
+                                child: Ink(
+                                  padding: EdgeInsets.symmetric(
+                                    horizontal: MyPaddings.extraLarge,
+                                    vertical: MyPaddings.large,
                                   ),
-                                  child: Icon(
-                                    Icons.add,
+                                  decoration: BoxDecoration(
                                     color: AppColors.primary,
+                                    borderRadius: BorderRadius.circular(20),
+                                  ),
+                                  child: Row(
+                                    mainAxisSize: MainAxisSize.min,
+                                    children: [
+                                      Icon(Icons.add, color: AppColors.white),
+                                      SizedBox(width: MyPaddings.small),
+                                      Text(
+                                        '언론사 둘러보기',
+                                        style: MyFontStyle.h3.copyWith(
+                                          color: AppColors.white,
+                                        ),
+                                      ),
+                                    ],
                                   ),
                                 ),
                               ),
                             ],
                           ),
                         ),
-                        // 언론사 리스트
-                        SizedBox(
-                          height: 120,
-                          child: state.isSourcesLoading
-                          ? MediaLoadingView()
-                          : ListView.builder(
-                            scrollDirection: Axis.horizontal,
-                            physics: BouncingScrollPhysics(),
-                            itemBuilder: (context, index) {
-                              final source = state.sources!.sources[index];
-                              return MediaProfile(
-                                isFirst: index == 0,
-                                source: source,
-                                isShowingArticles:
-                                    source.id == state.selectedSourceId,
-                                onShowArticles: () {
-                                  viewModel.onAction(SubscribedMediaAction.onSelectSource(sourceId: source.id));
-                                },
-                              );
-                            },
-                            itemCount: state.sources!.sources.length,
-                          ),
-                        ),
-                      ],
-                    ),
-                // 기사 섹션
-                if (!isSourcesEmpty)
-                  Container(
-                    margin: EdgeInsets.only(top: MyPaddings.small),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        // // 기사 헤더
-                        if (state.selectedSourceId != null)
-                          Container(
-                            padding: EdgeInsets.symmetric(
-                              horizontal: MyPaddings.large,
-                              vertical: MyPaddings.medium,
-                            ),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                MyText.h2('최신 기사'),
-                                if (state.selectedSourceId != null)
-                                  InkWell(
-                                    onTap: () {
-                                      viewModel.onAction(SubscribedMediaAction.onTapMediaDetail(sourceId: state.selectedSourceId!,));
-                                    },
-                                    child: Row(
-                                      children: [
-                                        MyText.reg(
-                                          '언론사 상세보기',
-                                          color: AppColors.gray2,
-                                        ),
-                                        Icon(
-                                          Icons.arrow_forward_ios,
-                                          size: 14,
-                                          color: AppColors.gray2,
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                              ],
-                            ),
-                          ),
-                        // 기사 리스트
-                        state.isArticlesLoading
-                            ? Container(
-                              margin: EdgeInsets.symmetric(
-                                horizontal: MyPaddings.large,
+                      )
+                      : SizedBox(
+                    height: 124,
+                    child:
+                    state.isSourcesLoading
+                        ? MediaLoadingView()
+                        : ListView.builder(
+                      scrollDirection: Axis.horizontal,
+                      physics: BouncingScrollPhysics(),
+                      padding: EdgeInsets.symmetric(
+                          horizontal: 6
+                      ),
+                      itemBuilder: (context, index) {
+                        if(index == state.sources!.sources.length){
+                          return _buildSubscribeButton();
+                        }
+                        final source = state.sources!.sources[index];
+                        return SourceProfileVertical(
+                          source: source,
+                          isSelected:
+                          source.id == state.selectedSourceId,
+                          onSelect: () {
+                            viewModel.onAction(
+                              SubscribedMediaAction.onSelectSource(
+                                sourceId: source.id,
                               ),
-                              child: NewsListLoadingView(),
-                            )
-                            : state.articles == null ||
-                                state.articles!.articles.isEmpty
-                            ? Center(
-                              child: NotFound(
-                                notFoundType: NotFoundType.article,
-                              ),
-                            )
-                            : ResponsiveBuilder(
-                              builder: (context, deviceType) {
-                                return Column(
-                                  children: [
-                                    for (int i = 0; i < state.articles!.articles.length; i++)
-                                      NewsCard(article: state.articles!.articles[i],),
-                                    if (state.isLoadingMore)
-                                      NewsListLoadingView(),
-                                  ],
-                                );
-                              },
-                            ),
-                      ],
+                            );
+                          },
+                        );
+                      },
+                      itemCount: state.sources!.sources.length + 1,
                     ),
                   ),
-              ],
+                  // 기사 섹션
+                  if (!isSourcesEmpty)
+                    Container(
+                      margin: EdgeInsets.only(top: MyPaddings.small),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          // // 기사 헤더
+                          if (state.selectedSourceId != null)
+                            Container(
+                              padding: EdgeInsets.symmetric(
+                                horizontal: MyPaddings.large,
+                                vertical: MyPaddings.medium,
+                              ),
+                              child: Row(
+                                children: [
+                                  MyText.h3(
+                                    state.sources!.sources.firstWhere(
+                                      (s) => s.id == state.selectedSourceId,
+                                    ).name,
+                                  ),
+                                  const SizedBox(width: 10),
+                                  SourceBiasTag(bias: state.sources!.sources.firstWhere(
+                                        (s) => s.id == state.selectedSourceId,
+                                  ).bias),
+                                  Spacer(),
+                                  if (state.selectedSourceId != null)
+                                    InkWell(
+                                      onTap: () {
+                                        viewModel.onAction(
+                                          SubscribedMediaAction.onTapMediaDetail(
+                                            sourceId: state.selectedSourceId!,
+                                          ),
+                                        );
+                                      },
+                                      child: Row(
+                                        children: [
+                                          MyText.reg(
+                                            '언론사 상세보기',
+                                            color: AppColors.gray600,
+                                          ),
+                                          Icon(
+                                            Icons.arrow_forward_ios,
+                                            size: 14,
+                                            color: AppColors.gray600,
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                ],
+                              ),
+                            ),
+                          // 기사 리스트
+                          state.isArticlesLoading
+                              ? Container(
+                                margin: EdgeInsets.symmetric(
+                                  horizontal: MyPaddings.large,
+                                ),
+                                child: NewsListLoadingView(),
+                              )
+                              : state.articles == null ||
+                                  state.articles!.articles.isEmpty
+                              ? Center(
+                                child: NotFound(
+                                  notFoundType: NotFoundType.article,
+                                ),
+                              )
+                              : ResponsiveBuilder(
+                                builder: (context, deviceType) {
+                                  return Column(
+                                    children: [
+                                      for (
+                                        int i = 0;
+                                        i < state.articles!.articles.length;
+                                        i++
+                                      )
+                                        NewsCard(
+                                          article: state.articles!.articles[i],
+                                        ),
+                                      if (state.isLoadingMore)
+                                        NewsListLoadingView(),
+                                    ],
+                                  );
+                                },
+                              ),
+                        ],
+                      ),
+                    ),
+                ],
+              ),
             ),
           );
         },

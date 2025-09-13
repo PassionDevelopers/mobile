@@ -11,7 +11,7 @@ class IssueListRefresher extends StatelessWidget {
   Widget build(BuildContext context) {
     return RefreshIndicator(
       onRefresh: onRefresh,
-      backgroundColor: AppColors.primaryLight,
+      backgroundColor: AppColors.white,
       color: AppColors.primary,
       child: content
     );

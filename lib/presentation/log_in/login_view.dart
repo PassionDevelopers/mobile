@@ -47,7 +47,7 @@ class LoginView extends StatelessWidget {
                           child: Icon(
                             Icons.settings,
                             size: 30,
-                            color: AppColors.primaryLight,
+                            color: AppColors.white,
                           ),
                         ),
                       ),
@@ -56,11 +56,11 @@ class LoginView extends StatelessWidget {
                       children: [
                         MyText.h2(
                           '정식 사용자로 로그인하고',
-                          color: AppColors.primaryLight,
+                          color: AppColors.white,
                         ),
                         MyText.h2(
                           '모든 기능을 이용해보세요!',
-                          color: AppColors.primaryLight,
+                          color: AppColors.white,
                         ),
                         SizedBox(height: MyPaddings.medium),
                         LoginButton(

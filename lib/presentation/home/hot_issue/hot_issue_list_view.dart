@@ -47,7 +47,7 @@ class _HotIssueListViewState extends State<HotIssueListView> with TickerProvider
             indicatorSize: 8,
             controller: tabController,
             selectedColor: AppColors.primary,
-            color: AppColors.gray4,
+            color: AppColors.gray400,
             borderStyle: BorderStyle.none,
           ),
         ],

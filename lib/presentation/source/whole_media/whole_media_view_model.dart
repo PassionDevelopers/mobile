@@ -49,7 +49,7 @@ class WholeMediaViewModel with ChangeNotifier{
           toastLength: Toast.LENGTH_SHORT,
           gravity: ToastGravity.BOTTOM,
           timeInSecForIosWeb: 1,
-          backgroundColor: AppColors.gray3,
+          backgroundColor: AppColors.gray500,
           textColor: AppColors.white,
           fontSize: 16.0
       );

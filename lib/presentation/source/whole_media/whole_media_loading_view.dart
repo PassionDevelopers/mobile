@@ -1,4 +1,5 @@
 import 'package:could_be/core/components/loading/media_profile_skeleton.dart';
+import 'package:could_be/core/components/loading/media_protile_skeleton_horizontal.dart';
 import 'package:could_be/core/themes/margins_paddings.dart';
 import 'package:flutter/cupertino.dart';
 
@@ -7,21 +8,22 @@ class WholeMediaLoadingView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SliverPadding(
-      padding: EdgeInsets.symmetric(
-        horizontal: MyPaddings.largeMedium,
-        vertical: MyPaddings.medium,
-      ),
-      sliver: SliverGrid(
-        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-          crossAxisCount: 4,
-          childAspectRatio: 0.75,
-          crossAxisSpacing: 0,
-          mainAxisSpacing: 0,
+    return Expanded(
+      child: Padding(
+        padding: EdgeInsets.all(10),
+        child: GridView.builder(
+          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+            crossAxisCount: 2,
+            childAspectRatio: 3,
+            crossAxisSpacing: 10,
+            mainAxisSpacing: 10,
+          ),
+          itemCount: 18,
+          itemBuilder:   (context, index) {
+            return MediaProfileSkeletonHorizontal();
+          },
         ),
-        delegate: SliverChildBuilderDelegate((context, index){
-          return MediaProfileSkeleton(isFirst: false);
-        })),
+      ),
     );
   }
 }

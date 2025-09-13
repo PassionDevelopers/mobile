@@ -25,7 +25,7 @@ class NeedUpdate extends StatelessWidget {
         body: Container(
           height: double.infinity,
           width: double.infinity,
-          color: AppColors.primaryLight,
+          color: AppColors.white,
           padding: const EdgeInsets.all(8.0),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -82,7 +82,7 @@ class NeedUpdate extends StatelessWidget {
                 ) : Dialog(
                     elevation:5,
                     backgroundColor: AppColors.white,
-                    shadowColor: AppColors.gray4,
+                    shadowColor: AppColors.gray400,
                     shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30),),
                     child : Column(
                       mainAxisSize: MainAxisSize.min,
@@ -94,7 +94,7 @@ class NeedUpdate extends StatelessWidget {
                           )),
                           Padding(
                             padding: const EdgeInsets.all(8.0),
-                            child: ElevatedButton(style: ElevatedButton.styleFrom(backgroundColor: AppColors.gray4), onPressed: (){
+                            child: ElevatedButton(style: ElevatedButton.styleFrom(backgroundColor: AppColors.gray400), onPressed: (){
                               if(Platform.isAndroid){
                                 SystemNavigator.pop();
                               }else if(Platform.isIOS){

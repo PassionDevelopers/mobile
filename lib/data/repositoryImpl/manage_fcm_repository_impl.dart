@@ -14,7 +14,6 @@ class ManageFcmRepositoryImpl extends ManageFcmRepository {
       '${ApiVersions.v1}/user/fcm',
       data: {'token': fcmToken},
     );
-    log(response.data.toString());
   }
 
 }

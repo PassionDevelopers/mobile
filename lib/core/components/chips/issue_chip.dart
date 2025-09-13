@@ -26,7 +26,7 @@ class IssueChip extends StatelessWidget {
               vertical: MyPaddings.extraSmall,
             ),
             decoration: BoxDecoration(
-              color: isActive ? AppColors.primary : AppColors.primaryLight,
+              color: isActive ? AppColors.primary : AppColors.white,
               borderRadius: BorderRadius.circular(25),
               border: Border.all(
                 color: isActive ? Colors.transparent : AppColors.border,

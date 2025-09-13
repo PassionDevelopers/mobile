@@ -39,20 +39,18 @@ class MediaProfileRef extends StatelessWidget {
       onTap: toDetailPage,
       child: Ink(
         decoration: BoxDecoration(borderRadius: BorderRadius.circular(10)),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          mainAxisSize: MainAxisSize.min,
-          mainAxisAlignment: MainAxisAlignment.center,
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.start,
           children: [
             SizedBox(
-              height: 60,
-              width: 60,
+              height: 40,
+              width: 40,
               child: Card(
                 // shape: RoundedRectangleBorder(
                 //   borderRadius: BorderRadius.circular(10),
                 // ),
                 child: ClipRRect(
-                  borderRadius: BorderRadius.circular(10),
+                  borderRadius: BorderRadius.circular(6),
                   child: Image(
                     fit: BoxFit.fill,
                     image: NetworkImage(source.logoUrl),
@@ -60,12 +58,8 @@ class MediaProfileRef extends StatelessWidget {
                 ),
               ),
             ),
-            SizedBox(height: 2),
-            SizedBox(
-              height: 20,
-              width: 60,
-              child: Center(child: MyText.reg(source.name)),
-            ),
+            SizedBox(width: 6),
+            Center(child: MyText.reg(source.name, fontWeight: FontWeight.w600))
           ],
         ),
       ),
@@ -77,60 +71,24 @@ class MediaProfile extends StatelessWidget {
   const MediaProfile({
     super.key,
     required this.source,
-    required this.isShowingArticles,
-    this.onSubscribe,
-    this.onShowArticles,
-    required this.isFirst,
+    required this.isSelected,
+    required this.onShowArticles,
   });
 
-  final bool isFirst;
-  final bool isShowingArticles;
-  final VoidCallback? onSubscribe;
-  final VoidCallback? onShowArticles;
+  final bool isSelected;
+  final VoidCallback onShowArticles;
   final Source source;
 
   @override
   Widget build(BuildContext context) {
     return AnimatedContainer(
       duration: Duration(milliseconds: 300),
-      padding: EdgeInsets.fromLTRB(
-        isFirst ? MyPaddings.large : MyPaddings.extraSmall,
-        MyPaddings.extraSmall,
-        MyPaddings.extraSmall,
-        MyPaddings.extraSmall,
-      ),
+      padding: EdgeInsets.symmetric(horizontal: MyPaddings.medium),
       child: InkWell(
         borderRadius: BorderRadius.circular(10),
-        onTap: () {
-          if (onSubscribe != null) {
-            onSubscribe!();
-          } else if (onShowArticles != null) {
-            onShowArticles!();
-          }
-        },
+        onTap: onShowArticles,
         child: Container(
           padding: EdgeInsets.all(4),
-          decoration: BoxDecoration(
-            color:
-                isShowingArticles
-                    ? getBiasColor(source.bias).withOpacity(0.1)
-                    : Colors.transparent,
-            borderRadius: BorderRadius.circular(10),
-            border: Border.all(
-              color: isShowingArticles? getBiasColor(source.bias) : Colors.transparent,
-              width: isShowingArticles ? 2 : 1,
-            ),
-            // boxShadow: [
-            //   BoxShadow(
-            //     color:
-            //         isShowingArticles
-            //             ? getBiasColor(source.bias).withOpacity(0.2)
-            //             : AppColors.gray3.withOpacity(0.1),
-            //     blurRadius: isShowingArticles ? 12 : 8,
-            //     offset: Offset(0, isShowingArticles ? 6 : 4),
-            //   ),
-            // ],
-          ),
           child: Stack(
             children: [
               Column(
@@ -155,7 +113,7 @@ class MediaProfile extends StatelessWidget {
                   ),
                   SizedBox(height: MyPaddings.extraSmall),
                   // 언론사 이름
-                  MyText.small(source.name, color: AppColors.primary,),
+                  MyText.small(source.name, color: isSelected? AppColors.black : AppColors.gray400),
                   // 성향 표시
                   SizedBox(height: 4),
                   Container(
@@ -275,7 +233,7 @@ class MediaProfileWebView extends StatelessWidget {
                               color:
                                   source.isSubscribed
                                       ? AppColors.check
-                                      : AppColors.gray3,
+                                      : AppColors.gray500,
                               shape: BoxShape.circle,
                             ),
                             child: FittedBox(
@@ -284,7 +242,7 @@ class MediaProfileWebView extends StatelessWidget {
                                 source.isSubscribed
                                     ? Icons.check_circle_outlined
                                     : Icons.add_circle_outline,
-                                color: AppColors.primaryLight,
+                                color: AppColors.white,
                               ),
                             ),
                           ),
@@ -309,3 +267,129 @@ class MediaProfileWebView extends StatelessWidget {
     );
   }
 }
+
+class MediaProfileHorizontal extends StatelessWidget {
+  const MediaProfileHorizontal({
+    super.key,
+    required this.source,
+    required this.isShowingArticles,
+    this.onSubscribe,
+    this.onShowArticles,
+    required this.isFirst,
+  });
+
+  final bool isFirst;
+  final bool isShowingArticles;
+  final VoidCallback? onSubscribe;
+  final VoidCallback? onShowArticles;
+  final Source source;
+
+  @override
+  Widget build(BuildContext context) {
+    return AnimatedContainer(
+      duration: Duration(milliseconds: 300),
+      padding: EdgeInsets.fromLTRB(
+        isFirst ? MyPaddings.large : MyPaddings.extraSmall,
+        MyPaddings.extraSmall,
+        MyPaddings.extraSmall,
+        MyPaddings.extraSmall,
+      ),
+      child: InkWell(
+        borderRadius: BorderRadius.circular(10),
+        onTap: () {
+          if (onSubscribe != null) {
+            onSubscribe!();
+          } else if (onShowArticles != null) {
+            onShowArticles!();
+          }
+        },
+        child: Container(
+          padding: EdgeInsets.all(4),
+          decoration: BoxDecoration(
+            color:
+            isShowingArticles
+                ? getBiasColor(source.bias).withOpacity(0.1)
+                : Colors.transparent,
+            borderRadius: BorderRadius.circular(10),
+            border: Border.all(
+              color: isShowingArticles? getBiasColor(source.bias) : Colors.transparent,
+              width: isShowingArticles ? 2 : 1,
+            ),
+          ),
+          child: Stack(
+            children: [
+              Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  // 로고
+                  Expanded(
+                    child: Center(
+                      child: SizedBox(
+                        height: 60,
+                        child: AspectRatio(
+                          aspectRatio: 1,
+                          child: ImageContainer(
+                            height: 60,
+                            imageUrl: source.logoUrl,
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                  SizedBox(height: MyPaddings.extraSmall),
+                  // 언론사 이름
+                  MyText.small(source.name, color: AppColors.primary,),
+                  // 성향 표시
+                  SizedBox(height: 4),
+                  Container(
+                    padding: EdgeInsets.symmetric(
+                      horizontal: MyPaddings.small,
+                      vertical: 1,
+                    ),
+                    decoration: BoxDecoration(
+                      color: getBiasColor(source.bias).withOpacity(0.1),
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                    child: Text(
+                      getBiasName(source.bias),
+                      style: TextStyle(
+                        color: getBiasColor(source.bias),
+                        fontSize: 9,
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              // // 구독 상태 표시
+              // if (onSubscribe != null)
+              //   Align(
+              //     alignment: Alignment.topRight,
+              //     child: Container(
+              //       height: 25,
+              //       width: 25,
+              //       decoration: BoxDecoration(
+              //         color:
+              //         source.isSubscribed
+              //             ? AppColors.check
+              //             : AppColors.gray4,
+              //         shape: BoxShape.circle,
+              //       ),
+              //       child: Icon(
+              //         source.isSubscribed ? Icons.check : Icons.add,
+              //         color: AppColors.white,
+              //         size: 12,
+              //       ),
+              //     ),
+              //   ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+

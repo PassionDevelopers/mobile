@@ -1,8 +1,13 @@
 import 'dart:developer';
 
 import 'package:could_be/core/di/api_versions.dart';
+import 'package:could_be/data/dto/issue/issues_with_category_dto.dart';
+import 'package:could_be/data/dto/issue/issues_with_whole_categories_dto.dart';
 import 'package:could_be/domain/entities/issue/issue_query_params.dart';
+import 'package:could_be/domain/entities/issue/issues_with_category.dart';
+import 'package:could_be/domain/entities/issue/issues_with_whole_categories.dart';
 import 'package:could_be/domain/repositoryInterfaces/issue/issues_interface.dart';
+import 'package:could_be/presentation/issue_list/issue_type.dart';
 import '../../../domain/entities/issue/issues.dart';
 import 'package:dio/dio.dart';
 import '../../dto/issue/issues_dto.dart';
@@ -134,5 +139,27 @@ class IssuesRepositoryImpl implements IssuesRepository {
     );
     final issuesDTO = IssuesDTO.fromJson(response.data);
     return issuesDTO.toDomain();
+  }
+
+  @override
+  Future<IssuesWithWholeCategories> fetchIssuesWithWholeCategories({required String? issueType}) async {
+    final response = await dio.get(
+      '/issues/category',
+      queryParameters: {
+        if(issueType != null) 'type': issueType,
+      },
+    );
+    final issuesWithWholeCategoriesDTO = IssuesWithWholeCategoriesDto.fromJson(response.data);
+    return issuesWithWholeCategoriesDTO.toDomain();
+  }
+
+  @override
+  Future<IssuesWithCategory> fetchIssuesWithCategory(String category, {String? lastIssueId}) async {
+    final response = await dio.get(
+      '/issues/category/$category',
+      queryParameters: {'lastIssueId': lastIssueId},
+    );
+    final issuesWithCategoryDto = IssuesWithCategoryDto.fromJson(response.data);
+    return issuesWithCategoryDto.toDomain();
   }
 }

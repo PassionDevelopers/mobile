@@ -1,6 +1,7 @@
 
 
 import 'package:could_be/core/components/app_bar/app_bar.dart';
+import 'package:could_be/core/components/app_bar/reg_app_bar.dart';
 import 'package:could_be/core/components/layouts/scaffold_layout.dart';
 import 'package:could_be/core/components/title/big_title.dart';
 import 'package:could_be/core/themes/margins_paddings.dart';

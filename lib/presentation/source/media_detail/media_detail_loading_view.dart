@@ -25,7 +25,7 @@ class MediaDetailLoadingView extends StatelessWidget {
               height: 100,
               decoration: BoxDecoration(
                 color: AppColors.white,
-                borderRadius: BorderRadius.circular(16),
+                borderRadius: BorderRadius.circular(10),
               ),
             ),
           ),
@@ -76,9 +76,9 @@ class MediaDetailLoadingView extends StatelessWidget {
                   height: 150,
                   padding: EdgeInsets.all(MyPaddings.large),
                   decoration: BoxDecoration(
-                    color: AppColors.gray4,
-                    borderRadius: BorderRadius.circular(16),
-                    border: Border.all(color: AppColors.gray5),
+                    color: AppColors.gray400,
+                    borderRadius: BorderRadius.circular(10),
+                    border: Border.all(color: AppColors.gray300),
                   ),
                 ),
               ),
@@ -100,7 +100,7 @@ class MediaDetailLoadingView extends StatelessWidget {
         width: double.infinity,
         margin: EdgeInsets.only(bottom: MyPaddings.medium),
         decoration: BoxDecoration(
-          color: AppColors.gray4,
+          color: AppColors.gray400,
             borderRadius: BorderRadius.circular(12)),
     ));
   }

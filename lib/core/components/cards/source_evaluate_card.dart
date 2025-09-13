@@ -77,10 +77,10 @@ class SourceEvaluationRow extends StatelessWidget {
             aspectRatio: 1,
             child: Ink(
               decoration: BoxDecoration(
-                color: isSelected ? getBiasColor(bias) : AppColors.white,
+                color: isSelected ? getBiasBackgroundColor(bias) : AppColors.white,
                 borderRadius: BorderRadius.circular(12),
                 border: Border.all(
-                  color: isSelected ? getBiasColor(bias) : AppColors.gray4,
+                  color: isSelected ? getBiasColor(bias) : AppColors.gray400,
                   width: isSelected ? 2 : 1,
                 ),
               ),
@@ -90,16 +90,15 @@ class SourceEvaluationRow extends StatelessWidget {
                   Center(
                     child: MyText.small(
                       getBiasName(bias),
-                      color: isSelected ? AppColors.white : AppColors.gray2,
-                      fontWeight: FontWeight.w600,
+                      color: isSelected ? getBiasColor(bias) : AppColors.gray700,
                     ),
                   ),
-                  const SizedBox(height: 2),
+                  const SizedBox(height: 6),
                   Container(
                     width: 6,
                     height: 6,
                     decoration: BoxDecoration(
-                      color: isSelected ? AppColors.white : getBiasColor(bias),
+                      color: getBiasColor(bias),
                       shape: BoxShape.circle,
                     ),
                   ),

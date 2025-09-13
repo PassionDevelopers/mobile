@@ -20,14 +20,14 @@ class UserProfileWidget extends StatelessWidget {
       children: [
         CircleAvatar(
           radius: size / 2,
-          backgroundColor: AppColors.gray4,
+          backgroundColor: AppColors.gray400,
           backgroundImage: userProfile.imageUrl != null
               ? NetworkImage(userProfile.imageUrl!)
               : null,
           child: userProfile.imageUrl == null
               ? Icon(
                   Icons.person,
-                  color: AppColors.gray2,
+                  color: AppColors.gray600,
                   size: size * 0.6,
                 )
               : null,

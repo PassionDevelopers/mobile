@@ -3,7 +3,7 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 
 List<BoxShadow> myShadow = [BoxShadow(
-  color: AppColors.gray4,
+  color: AppColors.gray400,
   spreadRadius: 1,
   blurRadius: 1,
   offset: Offset(0, 1), // changes position of shadow
@@ -18,24 +18,46 @@ abstract class AppColors {
   static Color center = Color(0xffA294F9);
   static Color left = Color.fromRGBO(53, 195, 243, 1);
   // 35C3F3
-  static Color background = Colors.grey.shade100;
   static Color primary = Color(0xff0A0A0B);
 
   static Color kakao = Color(0xffFEE500); // 카카오 색상
   static Color kakaoText = Color.fromRGBO(0, 0, 0, 0.85); // 카카오 텍스트 색상
 
   /////////////////////////////////////////////
-  static Color primaryLight = Colors.white; // 라이트 모드에서의 기본 색상
+
   static Color secondary = Colors.grey.shade600;
   static Color tertiary = Color(0xff2D2D30);// 라이
 
-  static const Color black = Color(0xFF000000);
-  static const Color gray1 = Color(0xFF484848);
-  static const Color gray2 = Color(0xFF797979);
-  static const Color gray3 = Color(0xFFA9A9A9);
-  static const Color gray4 = Color(0xFFD9D9D9);
-  static const Color gray5 = Color(0xFFF2F2F2);
+  static const Color black = Color(0xFF212121);
+  static const Color gray700 = Color(0xFF59616E);
+  static const Color gray600 = Color(0xFF6A7588);
+  static const Color gray500 = Color(0xFFA0A6B1);
+  static const Color gray400 = Color(0xFFB0B8C2);
+  static const Color gray300 = Color(0xFFE8EAED);
+  static const Color gray50 = Color(0xFFFAFAFA);
   static const Color white = Color(0xFFFFFFFF);
+
+  static const Color purple600 = Color(0xFF7962FD),
+      purple500 = Color(0xFFA293F8),
+      purple500_10 = Color(0x19A293F8),
+      purple300 = Color(0xFFD6CFFF),
+      purple300_10 = Color(0x19D6CFFF);
+
+  static const Color blue600 = Color(0xFF2782F2),
+      blue600_7 = Color(0x112782F2),
+      blue500 = Color(0xFF33C5F4),
+      blue500_10 = Color(0x1933C5F4),
+      blue400 = Color(0xFFBBDEFB),
+      blue400_10 = Color(0x19BBDEFB);
+
+  static const Color red800 = Color(0xFFE25D73),
+      red800_10 = Color(0x19E25D73),
+      red700 = Color(0xFFFE5050),
+      red600 = Color(0xFFF69793),
+      red600_7 = Color(0x11F69893),
+      red500 = Color(0xFFFFCDD1),
+      red500_10 = Color(0x19FFCDD1);
+
 
   static Color surface = Color(0xffFAFAFA);// 오프 화이트
 

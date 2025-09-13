@@ -21,22 +21,21 @@ class TopicCard extends StatelessWidget {
   Widget build(BuildContext context) {
 
     return InkWell(
-      borderRadius: BorderRadius.circular(16),
+      borderRadius: BorderRadius.circular(10),
       onTap: onTap,
-      child: Container(
-        padding: EdgeInsets.symmetric(
-          horizontal: MyPaddings.small,
-        ),
+      child: Ink(
+        height: 48,
+        padding: const EdgeInsets.symmetric(horizontal: 10),
         decoration: BoxDecoration(
           color: isSelected
               ? AppColors.primary.withOpacity(0.1)
               : AppColors.white,
-          borderRadius: BorderRadius.circular(16),
+          borderRadius: BorderRadius.circular(10),
           border: Border.all(
             color: isSelected
                 ? AppColors.primary
-                : AppColors.gray4,
-            width: isSelected ? 2 : 1,
+                : AppColors.gray400,
+            width: 1,
           ),
         ),
         child: topic.issuesCount == null ? Center(
@@ -44,10 +43,11 @@ class TopicCard extends StatelessWidget {
             topic.name,
             color: isSelected
                 ? AppColors.primary
-                : AppColors.gray1,
+                : AppColors.gray700,
             fontWeight: isSelected
                 ? FontWeight.w600
                 : FontWeight.w500,
+            maxLines: 2, minFontSize: 1
           ),
         ) :
           Row(
@@ -60,35 +60,21 @@ class TopicCard extends StatelessWidget {
                 topic.name,
                 color: isSelected
                     ? AppColors.primary
-                    : AppColors.gray1,
+                    : AppColors.gray700,
                 fontWeight: isSelected
                     ? FontWeight.w600
                     : FontWeight.w500,
+                maxLines: 2, minFontSize: 1
               ),
             ),
-            SizedBox(width: MyPaddings.extraSmall),
+            SizedBox(width: MyPaddings.small),
             // 이슈 수
-            Expanded(
-              flex: 1,
-              child: Container(
-                margin: EdgeInsets.symmetric(vertical: MyPaddings.extraSmall),
-                padding: EdgeInsets.all(MyPaddings.extraSmall),
-                decoration: BoxDecoration(
-                    color: isSelected
-                        ? AppColors.primary.withOpacity(0.2)
-                        : AppColors.gray5,
-                    shape: BoxShape.circle
-                ),
-                child: Center(
-                  child: MyText.reg(
-                    '${topic.issuesCount}',
-                    color: isSelected
-                        ? AppColors.primary
-                        : AppColors.gray2,
-                    fontWeight: FontWeight.w600,
-                  ),
-                ),
-              ),
+            MyText.small(
+              '${topic.issuesCount}',
+              color: isSelected
+                  ? AppColors.gray700
+                  : AppColors.gray400,
+              fontWeight: FontWeight.w600,
             ),
           ],
         ),

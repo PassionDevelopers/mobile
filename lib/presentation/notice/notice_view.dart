@@ -1,4 +1,5 @@
 import 'package:could_be/core/components/app_bar/app_bar.dart';
+import 'package:could_be/core/components/app_bar/reg_app_bar.dart';
 import 'package:could_be/core/components/layouts/bottom_safe_padding.dart';
 import 'package:could_be/core/components/layouts/scaffold_layout.dart';
 import 'package:could_be/core/components/loading/not_found.dart';
@@ -73,7 +74,7 @@ class _NoticeViewState extends State<NoticeView> {
               onRefresh: () async {
                 await viewModel.fetchNotices();
               },
-              backgroundColor: AppColors.primaryLight,
+              backgroundColor: AppColors.white,
               color: AppColors.primary,
               child: ListenableBuilder(
                 listenable: viewModel,

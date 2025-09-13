@@ -112,6 +112,10 @@ class AnalyticsEventNames {
   static const String fetchHotIssues = 'fetch_hot_issues';
   static const String fetchIssueQueryParams = 'fetch_issue_query_params';
   static const String fetchDailyIssues = 'fetch_daily_issues';
+
+  static const String fetchIssuesWithWholeCategories = 'fetch_issues_with_whole_categories';
+  static const String fetchIssuesWithCategory = 'fetch_issues_with_category';
+
   static const String fetchBlindSpotLeftIssues = 'fetch_blind_spot_left_issues';
   static const String fetchBlindSpotRightIssues = 'fetch_blind_spot_right_issues';
   static const String fetchForYouIssues = 'fetch_for_you_issues';

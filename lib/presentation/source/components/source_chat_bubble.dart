@@ -8,6 +8,7 @@ import 'package:could_be/core/themes/color.dart';
 import 'package:could_be/core/themes/fonts.dart';
 import 'package:could_be/presentation/source/components/media_profile_component.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:go_router/go_router.dart';
 import '../../../core/method/bias/bias_enum.dart';
 
@@ -43,23 +44,16 @@ class _MediaChatBubbleState extends State<MediaChatBubble> {
           child: Ink(
             padding: EdgeInsets.all(5),
             decoration: BoxDecoration(
-              color: AppColors.gray5,
               borderRadius: BorderRadius.circular(8),
             ),
             child: Row(
               mainAxisSize: MainAxisSize.min,
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
-                MyText.reg(
+                MyText.small(
                   isExpanded? '기사 접기' :
-                  '외 ${widget.articles.length - 1}개 기사',
-                  color: AppColors.gray2,
-                ),
-                Icon(
-                  isExpanded? Icons.keyboard_double_arrow_up_rounded :
-                  Icons.keyboard_double_arrow_down_rounded,
-                  color: AppColors.gray2,
-                  size: 16,
+                  '외 ${widget.articles.length - 1}개 기사 더보기',
+                  color: AppColors.gray400,
                 ),
               ],
             ),
@@ -67,26 +61,37 @@ class _MediaChatBubbleState extends State<MediaChatBubble> {
         ),
       ),
     );
+
   }
 
   Widget bubbleContent(Article article, Bias bias) {
-    return GestureDetector(
+    return InkWell(
       onTap: (){
         widget.toWebView(article.id);
       },
-      child: BubbleSpecialThree(
-        text: article.title,
-        isSender: false,
-        color: getBiasColor(bias).withAlpha(80),
-        // color: getBiasColor(bias),
-        textStyle: TextStyle(
-          fontSize: 14,
-          color: Colors.black,
-          // fontStyle: FontStyle.italic,
-          // fontWeight: FontWeight.bold,
-          // overflow: TextOverflow.ellipsis,
+      borderRadius: BorderRadius.circular(6),
+      child: Ink(
+        width: double.infinity,
+        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
+        decoration: BoxDecoration(
+          color: AppColors.gray50,
+          borderRadius: BorderRadius.circular(6)
         ),
-      ),
+        child: Row(
+          mainAxisSize: MainAxisSize.min,
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          spacing: 6,
+          children: [
+            SvgPicture.asset('assets/images/icon/Link.svg', width: 16, height: 16,),
+            Expanded(child: MyText.reg(
+              article.title,
+              color: AppColors.black,
+              maxLines: 2,
+            ))
+          ],
+        ),
+      )
     );
   }
 
@@ -98,28 +103,21 @@ class _MediaChatBubbleState extends State<MediaChatBubble> {
       padding: EdgeInsets.only(bottom: MyPaddings.medium),
       child: Column(
         children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              MediaProfileRef(source: source, toDetailPage: (){
-                context.push(RouteNames.mediaDetail, extra: source.id);
-              },),
-              Expanded(
-                child: bubbleContent(widget.articles.first, bias)
-              ),
-            ],
-          ),
+          MediaProfileRef(source: source, toDetailPage: (){
+            context.push(RouteNames.mediaDetail, extra: source.id);
+          },),
+          bubbleContent(widget.articles.first, bias),
           isExpanded
               ? Column(
                 children: [
                   Column(
                     children:
                         widget.articles.sublist(1).map((article) {
-                          return Padding(
-                            padding: EdgeInsets.only(left: 60, ),
-                            child: SizedBox(height: 82,
-                                child: bubbleContent(article, bias))
+                          return Column(
+                            children: [
+                              SizedBox(height: MyPaddings.small,),
+                              bubbleContent(article, bias),
+                            ],
                           );
                         }).toList(),
                   ),

@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:could_be/core/components/app_bar/reg_app_bar.dart';
 import 'package:could_be/presentation/log_in/login_pop_up.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:could_be/core/components/alert/dialog.dart';
@@ -176,9 +177,9 @@ class _MyPageViewState extends State<MyPageView> {
       child: Ink(
         padding: EdgeInsets.all(MyPaddings.medium),
         decoration: BoxDecoration(
-          color: isActive? AppColors.white : AppColors.gray4,
+          color: isActive? AppColors.white : AppColors.gray400,
           borderRadius: BorderRadius.circular(12),
-          border: Border.all(color: AppColors.gray5, width: 1),
+          border: Border.all(color: AppColors.gray300, width: 1),
         ),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -200,7 +201,7 @@ class _MyPageViewState extends State<MyPageView> {
               Text(
                 count,
                 style: MyFontStyle.small.copyWith(
-                  color: AppColors.gray2,
+                  color: AppColors.gray600,
                   fontSize: 11,
                 ),
               ),
@@ -268,7 +269,7 @@ class _MyPageViewState extends State<MyPageView> {
               children: [
                 RegAppBar(
                   title: '마이페이지',
-                  iconData: Icons.account_circle_rounded,
+                  iconData: Icons.account_circle_outlined,
                   actions: [
                     IconButton(
                       icon: Icon(Icons.settings, size: 30),
@@ -278,17 +279,14 @@ class _MyPageViewState extends State<MyPageView> {
                     ),
                   ],
                 ),
-                SizedBox(height: MyPaddings.extraLarge),
-                MyPageHeader(viewModel: viewModel),
-                SizedBox(height: MyPaddings.extraLarge),
-                if(viewModel.state.isGuestLogin) LoginPopUp(isMyPage: true,) ,
-                if(viewModel.state.isGuestLogin) SizedBox(height: MyPaddings.extraLarge),
                 Padding(
                   padding: EdgeInsets.symmetric(
                     horizontal: MyPaddings.large,
                   ),
                   child: Column(
                     children: [
+                      MyPageHeader(viewModel: viewModel),
+                      if(viewModel.state.isGuestLogin) LoginPopUp(isMyPage: true,) ,
                       // Bias Card
                       MyPageHexagon(viewModel: viewModel),
 

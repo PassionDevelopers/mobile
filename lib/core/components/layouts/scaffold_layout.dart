@@ -54,7 +54,7 @@ class RegScaffold extends StatelessWidget {
   Widget _buildMobileLayout(BuildContext context) {
     final safeBottomPadding = MediaQuery.of(context).padding.bottom;
     return Container(
-      color: AppColors.primaryLight,
+      color: AppColors.white,
       child: SafeArea(
         bottom: false,
         child: Scaffold(
@@ -62,7 +62,7 @@ class RegScaffold extends StatelessWidget {
           appBar: appBar ?? (appBarTitle != null
               ? AppBar(
             title: MyText.h2(appBarTitle!),
-            backgroundColor: AppColors.primaryLight,
+            backgroundColor: AppColors.white,
           )
               : null),
           drawer: drawer,
@@ -72,7 +72,7 @@ class RegScaffold extends StatelessWidget {
           body: Column(
             children: [
               Expanded(child: body),
-              if(!isScrollPage) Container(height: safeBottomPadding,  color: AppColors.primaryLight,)
+              if(!isScrollPage) Container(height: safeBottomPadding,  color: AppColors.white,)
             ],
           ),
         ),
@@ -85,7 +85,7 @@ class RegScaffold extends StatelessWidget {
       appBar: appBar ?? (appBarTitle != null
           ? AppBar(
         title: MyText.h2(appBarTitle!),
-        backgroundColor: AppColors.primaryLight,
+        backgroundColor: AppColors.white,
       )
           : null),
       drawer: drawer,
@@ -144,7 +144,7 @@ class HomeScaffold extends StatelessWidget {
 
   Widget _buildMobileLayout(BuildContext context) {
     return Container(
-      color: backgroundColor ?? AppColors.primaryLight,
+      color: backgroundColor ?? AppColors.white,
       child: SafeArea(
         child: Scaffold(
           drawer: drawer,

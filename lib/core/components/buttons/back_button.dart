@@ -10,7 +10,7 @@ class MyBackButton extends StatelessWidget {
     return Container(
       margin: EdgeInsets.only(left: MyPaddings.small, top: MyPaddings.small,),
       decoration: BoxDecoration(
-        color: AppColors.gray1.withAlpha(50),
+        color: AppColors.gray700.withAlpha(50),
         shape: BoxShape.circle,
       ),
       child: IconButton(

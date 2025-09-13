@@ -10,7 +10,7 @@ class MyAppBarTheme extends AppBarTheme {
     elevation: 0,
     scrolledUnderElevation: 0,
     centerTitle: true,
-    backgroundColor: AppColors.primaryLight,
+    backgroundColor: AppColors.white,
     foregroundColor: AppColors.primary,
   );
 }

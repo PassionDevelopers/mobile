@@ -44,13 +44,13 @@ class CommentActions extends StatelessWidget {
                 Icon(
                   isLiked ? Icons.thumb_up : Icons.thumb_up_outlined,
                   size: 16,
-                  color: isLiked ? getBiasColor(bias) : AppColors.gray2,
+                  color: isLiked ? getBiasColor(bias) : AppColors.gray600,
                 ),
                 if (likeCount > 0) ...[
                   SizedBox(width: 4),
                   MyText.reg(
                     likeCount.toString(),
-                    color: isLiked ? getBiasColor(bias) : AppColors.gray2,
+                    color: isLiked ? getBiasColor(bias) : AppColors.gray600,
                   ),
                 ],
               ],
@@ -65,7 +65,7 @@ class CommentActions extends StatelessWidget {
             padding: EdgeInsets.symmetric(horizontal: 4, vertical: 2),
             child: MyText.reg(
               '답글 달기',
-              color: AppColors.gray2,
+              color: AppColors.gray600,
             ),
           ),
         ),

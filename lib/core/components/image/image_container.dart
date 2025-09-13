@@ -3,8 +3,9 @@ import 'package:flutter/material.dart';
 import '../../themes/color.dart';
 
 class ImageContainer extends StatelessWidget {
-  const ImageContainer({super.key, required this.height, required this.imageUrl, this.borderRadius, this.imageSource});
+  const ImageContainer({super.key, required this.height, this.width, required this.imageUrl, this.borderRadius, this.imageSource});
   final double? height;
+  final double? width;
   final String? imageUrl;
   final String? imageSource;
   final BorderRadius? borderRadius;
@@ -14,9 +15,9 @@ class ImageContainer extends StatelessWidget {
       children: [
         Ink(
           height: height,
-          width: double.infinity,
+          width: width ?? double.infinity,
           decoration: BoxDecoration(
-            color: AppColors.gray4,
+            color: AppColors.gray300,
             borderRadius: borderRadius ?? BorderRadius.vertical(
               top: Radius.circular(16),
             ),
@@ -28,7 +29,7 @@ class ImageContainer extends StatelessWidget {
             child: imageUrl == null? Padding(
               padding: const EdgeInsets.all(8.0),
               child: Center(
-                child: Icon(Icons.image_not_supported, color: AppColors.gray2, size: 48),
+                child: Icon(Icons.image_not_supported, color: AppColors.gray400, size: 24),
               ),
             ) :
 
@@ -49,7 +50,7 @@ class ImageContainer extends StatelessWidget {
                 return Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: Center(
-                    child: Icon(Icons.image_not_supported, color: AppColors.gray2, size: 48),
+                    child: Icon(Icons.image_not_supported, color: AppColors.gray600, size: 48),
                   ),
                 );
               },

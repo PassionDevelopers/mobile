@@ -76,7 +76,7 @@ class MajorUserOpinionComponent extends StatelessWidget {
                       ),
                       MyText.reg(
                         ' • ${getTimeAgo(comment.createdAt)}',
-                        color: AppColors.gray2,
+                        color: AppColors.gray600,
                       ),
                     ],
                   ),
@@ -97,7 +97,7 @@ class MajorUserOpinionComponent extends StatelessWidget {
             SizedBox(height: MyPaddings.small),
             MyText.articleSmall(
               comment.isDeleted? '삭제된 댓글입니다.' : comment.content,
-              color: comment.isDeleted? AppColors.gray3 : AppColors.textPrimary,
+              color: comment.isDeleted? AppColors.gray500 : AppColors.textPrimary,
             ),
             SizedBox(height: MyPaddings.medium),
             CommentLink(source: comment.source),

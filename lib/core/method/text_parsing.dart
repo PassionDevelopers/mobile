@@ -69,7 +69,7 @@ Text parseAiText(String text, double fontSize, Color boldColor, Color highlightC
           height: 1.5,
 
           fontWeight: i % 2 == 1 ? FontWeight.w800 : FontWeight.normal,
-          color: i % 2 == 1 ? boldColor : AppColors.gray1,
+          color: i % 2 == 1 ? boldColor : AppColors.black,
           decoration: i % 2 == 1 ? TextDecoration.lineThrough : null,
           decorationThickness: fontSize,
           decorationColor: highlightColor.withOpacity(0.2)

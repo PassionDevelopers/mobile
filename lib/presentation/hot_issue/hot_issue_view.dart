@@ -36,9 +36,9 @@ class _HotIssueViewState extends State<HotIssueView> {
     return RegScaffold(
       isScrollPage: false,
       appBarTitle: '${formatDateTimeToDay(widget.hotIssues.hotTime)} 주요 이슈 모음',
-      backgroundColor: AppColors.background,
+      backgroundColor: AppColors.white,
       body: Ink(
-        color: AppColors.background,
+        color: AppColors.gray50,
         child: Column(
           children: [
             Expanded(
@@ -49,17 +49,17 @@ class _HotIssueViewState extends State<HotIssueView> {
                   controller: controller,
                   loop: false,
                   itemCount: cards.length,
-                  viewportFraction: 0.85,
+                  viewportFraction: 0.95,
                   pagination: SwiperPagination(
                     builder: DotSwiperPaginationBuilder(
-                      color: AppColors.gray4,
+                      color: AppColors.gray400,
                       activeColor: AppColors.primary,
                       size: 8.0,
                       activeSize: 10.0,
                     )
                   ),
                   scale: 0.9,
-                  control: SwiperControl(color: AppColors.gray3, size: 20, disableColor: Colors.transparent),
+                  // control: SwiperControl(color: AppColors.gray500, size: 20, disableColor: Colors.transparent),
                   // containerHeight: 100,
                   // itemHeight: 100,
                 )

@@ -16,9 +16,13 @@ class IssueDetailFeedState{
   final bool isBiasComparisonSpread;
   final bool isTabsSpread;
   final bool isSummarySpread;
+  final bool isMajorCommentsSpread;
   final bool isSourceListSpread;
 
   final Bias? myBias;
+
+  final bool hasShowedBiasButton;
+  final bool isBiasButtonSpread;
 
   IssueDetailFeedState({
     this.myBias,
@@ -27,12 +31,15 @@ class IssueDetailFeedState{
     this.isEvaluating = false,
     this.majorComments = const [],
     this.issueDetail,
-    this.fontSize = 18,
+    this.fontSize = 14,
     this.isCommonSummarySpread = false,
     this.isBiasComparisonSpread = true,
     this.isTabsSpread = false,
     this.isSummarySpread = true,
+    this.isMajorCommentsSpread = true,
     this.isSourceListSpread = true,
+    this.hasShowedBiasButton = false,
+    this.isBiasButtonSpread = false,
   });
 
   IssueDetailFeedState copyWith({
@@ -40,15 +47,17 @@ class IssueDetailFeedState{
     bool? isLoading,
     bool? isMajorCommentsLoading,
     bool? isEvaluating,
-    int? pageCount,
     double? fontSize,
     bool? isCommonSummarySpread,
     bool? isBiasComparisonSpread,
     bool? isTabsSpread,
     bool? isSummarySpread,
     bool? isSourceListSpread,
+    bool? isMajorCommentsSpread,
     List<MajorComment>? majorComments,
     Bias? myBias,
+    bool? hasShowedBiasButton,
+    bool? isBiasButtonSpread,
   }) {
     return IssueDetailFeedState(
       myBias: myBias ?? this.myBias,
@@ -62,7 +71,10 @@ class IssueDetailFeedState{
       isBiasComparisonSpread: isBiasComparisonSpread ?? this.isBiasComparisonSpread,
       isTabsSpread: isTabsSpread ?? this.isTabsSpread,
       isSummarySpread: isSummarySpread ?? this.isSummarySpread,
+      isMajorCommentsSpread: isMajorCommentsSpread ?? this.isMajorCommentsSpread,
       isSourceListSpread: isSourceListSpread ?? this.isSourceListSpread,
+      hasShowedBiasButton: hasShowedBiasButton ?? this.hasShowedBiasButton,
+      isBiasButtonSpread: isBiasButtonSpread ?? this.isBiasButtonSpread,
     );
   }
 }

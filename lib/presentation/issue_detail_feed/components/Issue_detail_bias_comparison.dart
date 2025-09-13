@@ -2,6 +2,7 @@
 import 'package:could_be/core/method/text_parsing.dart';
 import 'package:could_be/core/themes/color.dart';
 import 'package:could_be/core/themes/fonts.dart';
+import 'package:could_be/presentation/issue_detail_feed/components/sector_title.dart';
 import 'package:flutter/material.dart';
 
 import '../../../core/method/bias/bias_enum.dart';
@@ -46,94 +47,42 @@ class IssueDetailBiasComparison extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      margin: EdgeInsets.symmetric(horizontal: MyPaddings.medium),
-      decoration: BoxDecoration(
-        color: AppColors.white,
-        borderRadius: BorderRadius.circular(16),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withOpacity(0.05),
-            blurRadius: 10,
-            offset: Offset(0, 2),
-          ),
-        ],
-      ),
-      child: Column(
-        children: [
-          GestureDetector(
-            onTap: spreadCallback,
-            child: Container(
-              padding: EdgeInsets.all(MyPaddings.large),
-              decoration: BoxDecoration(
-                border: Border(
-                  bottom: BorderSide(
-                    color: AppColors.gray5,
-                    width: 1,
-                  ),
-                ),
-              ),
-              child: Row(
-                children: [
-                  Icon(
-                    Icons.troubleshoot,
-                    color: AppColors.primary,
-                    size: 24,
-                  ),
-                  SizedBox(width: MyPaddings.medium),
-                  MyText.h2(
-                    '보도 내용 차이점 정리',
-                  ),
-                  Spacer(),
-                  Icon(
-                    isSpread ? Icons.keyboard_arrow_up : Icons.keyboard_arrow_down,
-                  ),
-                ],
-              ),
-            ),
-          ),
-          if(isSpread)
-            Column(
+    return Column(
+      children: [
+        SectorTitle(title: '보도 내용 차이점 정리', icon: Icons.troubleshoot, onTap:spreadCallback, isSpread: isSpread),
+        if(isSpread) SizedBox(height: MyPaddings.large),
+        if(isSpread)
+          Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                if(leftComparison != null || centerComparison != null || rightComparison != null)
+                if(leftComparison != null) _buildComparisonItem(
+                  comparison: leftComparison!,
+                  bias: Bias.left,
+                  fontSize: fontSize,
+                ),
+                if(leftComparison != null && (centerComparison != null || rightComparison != null))
                   Padding(
-                    padding: const EdgeInsets.all(MyPaddings.large),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        if(leftComparison != null) _buildComparisonItem(
-                          comparison: leftComparison!,
-                          bias: Bias.left,
-                          fontSize: fontSize,
-                        ),
-                        if(leftComparison != null && (centerComparison != null || rightComparison != null))
-                          Padding(
-                            padding: EdgeInsets.symmetric(vertical: MyPaddings.medium),
-                            child: Divider(color: AppColors.gray4, height: 1),
-                          ),
-                        if(centerComparison != null) _buildComparisonItem(
-                          comparison: centerComparison!,
-                          bias: Bias.center,
-                          fontSize: fontSize,
-                        ),
-                        if(centerComparison != null && rightComparison != null)
-                          Padding(
-                            padding: EdgeInsets.symmetric(vertical: MyPaddings.medium),
-                            child: Divider(color: AppColors.gray4, height: 1),
-                          ),
-                        if(rightComparison != null) _buildComparisonItem(
-                          comparison: rightComparison!,
-                          bias: Bias.right,
-                          fontSize: fontSize,
-                        ),
-                      ],
-                    ),
+                    padding: EdgeInsets.symmetric(vertical: MyPaddings.medium),
+                    child: Divider(color: AppColors.gray300, height: 1),
                   ),
-                SizedBox(height: MyPaddings.large),
+                if(centerComparison != null) _buildComparisonItem(
+                  comparison: centerComparison!,
+                  bias: Bias.center,
+                  fontSize: fontSize,
+                ),
+                if(centerComparison != null && rightComparison != null)
+                  Padding(
+                    padding: EdgeInsets.symmetric(vertical: MyPaddings.medium),
+                    child: Divider(color: AppColors.gray300, height: 1),
+                  ),
+                if(rightComparison != null) _buildComparisonItem(
+                  comparison: rightComparison!,
+                  bias: Bias.right,
+                  fontSize: fontSize,
+                ),
               ],
             ),
-        ],
-      ),
+      ],
     );
   }
 
@@ -158,7 +107,7 @@ class IssueDetailBiasComparison extends StatelessWidget {
             ),
             Text(
               getBiasTitle(bias),
-              style: MyFontStyle.h1.copyWith(
+              style: MyFontStyle.h3.copyWith(
                 color: getBiasColor(bias),
                 fontWeight: FontWeight.w600,
               ),
@@ -166,7 +115,7 @@ class IssueDetailBiasComparison extends StatelessWidget {
           ],
         ),
         SizedBox(height: MyPaddings.small),
-        parseAiText(comparison, fontSize, AppColors.gray1, getBiasColor(bias)),
+        parseAiText(comparison, fontSize, AppColors.gray700, getBiasColor(bias)),
       ],
     );
   }

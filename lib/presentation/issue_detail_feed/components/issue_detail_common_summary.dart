@@ -40,7 +40,7 @@ class IssueDetailCommonSummary extends StatelessWidget {
             decoration: BoxDecoration(
               border: Border(
                 bottom: BorderSide(
-                  color: AppColors.gray5,
+                  color: AppColors.gray300,
                   width: 1,
                 ),
               ),
@@ -69,7 +69,7 @@ class IssueDetailCommonSummary extends StatelessWidget {
           ),
           isSpread? Padding(
             padding: EdgeInsets.all(MyPaddings.large),
-            child: parseAiText(commonSummary, fontSize, AppColors.gray1, Colors.amberAccent),
+            child: parseAiText(commonSummary, fontSize, AppColors.gray700, Colors.amberAccent),
           ) : SizedBox.shrink(),
         ],
       ),

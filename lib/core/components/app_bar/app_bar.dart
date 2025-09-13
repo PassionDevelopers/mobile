@@ -1,7 +1,8 @@
-import 'package:could_be/core/components/app_bar/search_field.dart';
+import 'package:could_be/presentation/search/search_field.dart';
 import 'package:could_be/core/routes/route_names.dart';
 import 'package:could_be/core/themes/fonts.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_html/flutter_html.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../themes/color.dart';
@@ -16,7 +17,7 @@ class MainAppBar extends StatelessWidget {
     final toolbarHeight = AppBar().preferredSize.height;
 
     return Ink(
-      color: AppColors.primaryLight,
+      color: AppColors.white,
       height: toolbarHeight,
       child: Align(
         alignment: Alignment.centerLeft,
@@ -32,58 +33,16 @@ class MainAppBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SearchAppBar(
-      appBar: _buildLogo(),
+    return MySearchField(
       onSearchSubmitted: onSearchSubmitted,
-      onNoticePressed: (){
-        context.push(RouteNames.notice);
-      },
+      // onNoticePressed: (){
+      //   context.push(RouteNames.notice);
+      // },
     );
   }
 }
 
-class RegAppBar extends StatelessWidget {
-  const RegAppBar({
-    super.key,
-    this.iconData,
-    required this.title,
-    this.actions,
-  });
 
-  final IconData? iconData;
-  final String title;
-  final List<Widget>? actions;
 
-  @override
-  Widget build(BuildContext context) {
-    final isDesktop = ResponsiveUtils.isDesktop(context);
-    final toolbarHeight = isDesktop ? 80.0 : AppBar().preferredSize.height;
 
-    return AppBar(
-      centerTitle: true,
-      scrolledUnderElevation: 0,
-      automaticallyImplyLeading: !isDesktop,
-      // 데스크탑에서는 back button 숨김
-      backgroundColor: AppColors.primaryLight,
-      toolbarHeight: toolbarHeight,
-      elevation: 0,
-      title: Ink(
-        color: AppColors.primaryLight,
-        height: toolbarHeight,
-        child: Row(
-          children: [
-            Icon(iconData, size: isDesktop ? 28 : 24),
-            SizedBox(
-              width:
-                  isDesktop
-                      ? MyPaddings.extraLarge.toDouble()
-                      : MyPaddings.large.toDouble(),
-            ),
-            Expanded(child: MyText.h2(title, fontSize: isDesktop ? 20 : null)),
-          ],
-        ),
-      ),
-      actions: actions,
-    );
-  }
-}
+

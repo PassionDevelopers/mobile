@@ -75,7 +75,7 @@ class _IssueDetailTabsState extends State<IssueDetailTabs>
             '${_biasLabels[index]} 언론',
             textAlign: TextAlign.center,
             style: TextStyle(
-              color: isSelected ? Colors.white : AppColors.gray2,
+              color: isSelected ? Colors.white : AppColors.gray600,
               fontWeight: isSelected ? FontWeight.w600 : FontWeight.w400,
               fontSize: 14,
             ),
@@ -95,14 +95,14 @@ class _IssueDetailTabsState extends State<IssueDetailTabs>
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             IconButton(
-              icon: Icon(Icons.keyboard_arrow_left_outlined, color: AppColors.gray2),
+              icon: Icon(Icons.keyboard_arrow_left_outlined, color: AppColors.gray600),
               onPressed: (){
                 _tabController.animateTo(0);
               }
             ),
             NotFound(notFoundType: NotFoundType.article,),
             IconButton(
-                icon: Icon(Icons.keyboard_arrow_right_outlined, color: AppColors.gray2),
+                icon: Icon(Icons.keyboard_arrow_right_outlined, color: AppColors.gray600),
                 onPressed: (){
                   _tabController.animateTo(2);
                 }
@@ -134,7 +134,7 @@ class _IssueDetailTabsState extends State<IssueDetailTabs>
               SizedBox(height: MyPaddings.large),
             ],
           ),
-          parseAiText(text, widget.fontSize, AppColors.gray1, getBiasColor(bias)),
+          parseAiText(text, widget.fontSize, AppColors.gray700, getBiasColor(bias)),
         ],
       );
   }
@@ -197,7 +197,7 @@ class _IssueDetailTabsState extends State<IssueDetailTabs>
               decoration: BoxDecoration(
                 border: Border(
                   bottom: BorderSide(
-                    color: AppColors.gray5,
+                    color: AppColors.gray300,
                     width: 1,
                   ),
                 ),
@@ -233,7 +233,7 @@ class _IssueDetailTabsState extends State<IssueDetailTabs>
                   Container(
                     padding: EdgeInsets.all(4),
                     decoration: BoxDecoration(
-                      color: AppColors.gray5,
+                      color: AppColors.gray300,
                       borderRadius: BorderRadius.circular(12),
                     ),
                     child: Row(

@@ -76,6 +76,7 @@ dependencies:
   lottie: ^3.3.1
   autoscale_tabbarview: ^1.0.2
   auto_size_text: ^3.0.0
+  flutter_svg: ^2.2.1
 
   #signin
   sign_button: ^2.0.6
@@ -107,7 +108,6 @@ dependencies:
   cupertino_icons: ^1.0.8
   intl: ^0.20.1
   table_calendar: ^3.0.9
-  flutter_svg: ^2.0.9
   carousel_slider: ^5.0.0
   flutter_sliding_up_panel: ^2.1.1
   glass_kit: ^4.0.1
@@ -175,6 +175,7 @@ flutter:
     - assets/images/login/
     - assets/images/logo/
     - assets/images/gif/
+    - assets/images/icon/
     - assets/lottie/
     - shorebird.yaml
     - .env

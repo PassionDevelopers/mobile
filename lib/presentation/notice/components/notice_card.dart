@@ -82,7 +82,7 @@ class _NoticeCardState extends State<NoticeCard> with TickerProviderStateMixin {
               onTapCancel: () => _animationController.reverse(),
               child: Container(
                 decoration: BoxDecoration(
-                  color: AppColors.primaryLight,
+                  color: AppColors.white,
                   borderRadius: BorderRadius.circular(16),
                   border: widget.notice.isImportant
                       ? Border.all(
@@ -92,7 +92,7 @@ class _NoticeCardState extends State<NoticeCard> with TickerProviderStateMixin {
                       : null,
                   boxShadow: [
                     BoxShadow(
-                      color: AppColors.gray4,
+                      color: AppColors.gray400,
                       spreadRadius: 1,
                       blurRadius: 2,
                       offset: Offset(0, 1),
@@ -119,7 +119,7 @@ class _NoticeCardState extends State<NoticeCard> with TickerProviderStateMixin {
                               ),
                               child: MyText.small(
                                 '중요',
-                                color: AppColors.primaryLight,
+                                color: AppColors.white,
                                 fontWeight: FontWeight.w600,
                               ),
                             ),

@@ -9,7 +9,7 @@ class LoginDialog extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Dialog(
-      backgroundColor: AppColors.primaryLight,
+      backgroundColor: AppColors.white,
       insetPadding: const EdgeInsets.all(15),
       elevation: 0,
       child: Padding(

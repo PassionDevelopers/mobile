@@ -17,14 +17,14 @@ class BlindChip extends StatelessWidget {
     return Container(
       margin: EdgeInsets.only(
         top: topPadding ?? MyPaddings.small, right: MyPaddings.small),
-      padding: insetPadding ?? EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+      padding: insetPadding ?? EdgeInsets.symmetric(horizontal: 5, vertical: 3),
       decoration: BoxDecoration(
         color: primary,
-        borderRadius: BorderRadius.circular(12),
+        borderRadius: BorderRadius.circular(4),
         border: Border.all(color: primary),
       ),
-      child: MyText.reg(tag.name,
-        color: AppColors.primaryLight,
+      child: MyText.smaller(tag.name,
+        color: AppColors.white,
         fontWeight: FontWeight.bold,
       ),
     );

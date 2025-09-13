@@ -3,6 +3,7 @@ import 'package:could_be/core/components/layouts/scaffold_layout.dart';
 import 'package:could_be/core/di/di_setup.dart';
 import 'package:could_be/core/method/bias/bias_enum.dart';
 import 'package:could_be/core/method/bias/bias_method.dart';
+import 'package:could_be/core/method/category_method.dart';
 import 'package:could_be/core/routes/route_names.dart';
 import 'package:could_be/domain/entities/bias_quiz_answer_vo.dart';
 import 'package:could_be/domain/entities/bias_score/whole_bias_score.dart';
@@ -62,7 +63,7 @@ class _BiasTestResultViewState extends State<BiasTestResultView> {
                 _buildDetailedAnalysis(context, viewModel.state.quizResultVo!.summary),
                 const SizedBox(height: 30),
                 BigButton(
-                  backgroundColor: AppColors.primaryLight,
+                  backgroundColor: AppColors.white,
                     textColor: AppColors.primary,
                     text: '다시 테스트 하기',
                     onPressed: (){
@@ -71,7 +72,7 @@ class _BiasTestResultViewState extends State<BiasTestResultView> {
                 const SizedBox(height: 20),
                 BigButton(
                   backgroundColor: AppColors.primary,
-                  textColor: AppColors.primaryLight,
+                  textColor: AppColors.white,
                   text: '시작하기',
                   onPressed: (){
                     context.go(RouteNames.home);
@@ -173,7 +174,7 @@ class _BiasTestResultViewState extends State<BiasTestResultView> {
               borderRadius: BorderRadius.circular(20),
             ),
             child: Text(
-              '가장 관심이 높은 영역: ${_getCategoryDisplayName(viewModel.state.quizResultVo!.dominantCategory)}',
+              '가장 관심이 높은 영역: ${getCategoryDisplayName(viewModel.state.quizResultVo!.dominantCategory)}',
               style: const TextStyle(
                 color: Colors.white,
                 fontWeight: FontWeight.w500,
@@ -183,18 +184,6 @@ class _BiasTestResultViewState extends State<BiasTestResultView> {
         ],
       ),
     );
-  }
-
-  String _getCategoryDisplayName(String category) {
-    return switch(category) {
-      'politics' => '정치',
-      'economy' => '경제',
-      'society' => '사회',
-      'culture' => '문화',
-      'international' => '세계',
-      'technology' => '기술',
-      _ => category,
-    };
   }
 
   Widget _buildDetailedAnalysis(BuildContext context, String analysis) {

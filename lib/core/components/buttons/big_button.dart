@@ -28,10 +28,10 @@ class BigButton extends StatelessWidget {
         height: 60,
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(10),
-          color: backgroundColor ?? AppColors.primaryLight,
+          color: backgroundColor ?? AppColors.white,
           boxShadow: [
             BoxShadow(
-              color: AppColors.gray4,
+              color: AppColors.gray400,
               spreadRadius: 1,
               blurRadius: 1,
               offset: Offset(0, 1), // changes position of shadow

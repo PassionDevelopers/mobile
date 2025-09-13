@@ -20,7 +20,7 @@ class ChipSkeleton extends StatelessWidget {
           vertical: MyPaddings.extraSmall,
         ),
         decoration: BoxDecoration(
-          color: AppColors.primaryLight,
+          color: AppColors.white,
           borderRadius: BorderRadius.circular(25),
         ),
       ),

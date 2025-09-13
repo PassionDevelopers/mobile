@@ -1,4 +1,6 @@
 import 'package:could_be/domain/entities/issue/issue_query_params.dart';
+import 'package:could_be/domain/entities/issue/issues_with_category.dart';
+import 'package:could_be/domain/entities/issue/issues_with_whole_categories.dart';
 
 import '../../entities/issue/issues.dart';
 
@@ -18,4 +20,8 @@ abstract class IssuesRepository{
   Future<Issues> fetchIssuesEvaluated({String? lastIssueId});
 
   Future<Issues> searchIssues(String query);
+
+  Future<IssuesWithCategory> fetchIssuesWithCategory(String category, {String? lastIssueId});
+
+  Future<IssuesWithWholeCategories> fetchIssuesWithWholeCategories({required String? issueType});
 }

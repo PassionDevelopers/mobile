@@ -24,7 +24,7 @@ class NotificationSettingView extends StatelessWidget {
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(12.0),
       ),
-      backgroundColor: AppColors.primaryLight,
+      backgroundColor: AppColors.white,
       insetPadding: EdgeInsets.fromLTRB(10, 30, 10, 30),
       child: SingleChildScrollView(
         child: Padding(

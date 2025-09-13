@@ -1,5 +1,6 @@
 import 'package:could_be/core/components/app_bar/app_bar.dart';
 import 'package:could_be/core/themes/margins_paddings.dart';
+import 'package:could_be/presentation/main_feed/main_feed_view.dart';
 import 'package:flutter/material.dart';
 
 import '../issue_list/issue_type.dart';
@@ -9,11 +10,12 @@ class FeedView extends StatelessWidget {
   const FeedView({super.key});
   @override
   Widget build(BuildContext context) {
-    return IssueListRoot(
-      issueType: IssueType.daily,
-      isFeedView: true,
-      isTopicView: false,
-      upperWidget: SizedBox(height: MyPaddings.medium),
-    );
+    return MainFeedView();
+    // return IssueListRoot(
+    //   issueType: IssueType.daily,
+    //   isFeedView: true,
+    //   isTopicView: false,
+    //   upperWidget: SizedBox(height: MyPaddings.medium),
+    // );
   }
 }

@@ -70,7 +70,7 @@ class CommentInputView extends StatelessWidget {
                             decoration: InputDecoration(
                               hintText: viewModel.replyToCommentId != null ? '답글 추가...' : '내 의견 공유하기...',
                               hintStyle: TextStyle(
-                                color: AppColors.gray3,
+                                color: AppColors.gray500,
                                 fontSize: 14,
                               ),
                               border: InputBorder.none,
@@ -85,7 +85,7 @@ class CommentInputView extends StatelessWidget {
                             ),
                             style: TextStyle(
                               fontSize: 14,
-                              color: AppColors.gray1,
+                              color: AppColors.gray700,
                             ),
                           ),
                         ),
@@ -129,7 +129,7 @@ class CommentInputView extends StatelessWidget {
               decoration: InputDecoration(
                 hintText: '근거 자료 URL 추가 (선택)',
                 hintStyle: TextStyle(
-                  color: AppColors.gray3,
+                  color: AppColors.gray500,
                   fontSize: 14,
                 ),
                 border: InputBorder.none,
@@ -145,7 +145,7 @@ class CommentInputView extends StatelessWidget {
               ),
               style: TextStyle(
                 fontSize: 14,
-                color: AppColors.gray1,
+                color: AppColors.gray700,
               ),
             ),
           )

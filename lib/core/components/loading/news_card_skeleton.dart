@@ -3,73 +3,34 @@ import 'package:could_be/core/themes/color.dart';
 import 'package:flutter/material.dart';
 import 'package:shimmer/shimmer.dart';
 
+import 'basic_skeleton.dart';
+
 class NewsCardSkeleton extends StatelessWidget {
   const NewsCardSkeleton({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.symmetric(vertical: MyPaddings.small),
-      decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(16),
-          color: AppColors.primaryLight,
-          boxShadow: myShadow
-      ),
-      padding: EdgeInsets.symmetric(
-        horizontal: MyPaddings.medium,
-        vertical: MyPaddings.small,
-      ),
+      height: 103,
+      padding: EdgeInsets.symmetric(vertical: 20),
       child: Shimmer.fromColors(
         baseColor: Colors.grey.shade300,
         highlightColor: Colors.grey.shade100,
         child: Row(
-          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            Container(
-              height: 100,
-              width: 100,
-              padding: EdgeInsets.all(MyPaddings.extraSmall),
-              decoration: BoxDecoration(
-                color: AppColors.primaryLight,
-                borderRadius: BorderRadius.circular(16),
-              ),
-            ),
+            BasicSkeleton(height: double.infinity, width: 83, borderRadius: BorderRadius.circular(6),),
+            const SizedBox(width: MyPaddings.large,),
             Expanded(
-              child: Padding(
-                padding: EdgeInsets.all(MyPaddings.small),
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Container(
-                      height: 20,
-                      width: double.infinity,
-                      decoration: BoxDecoration(
-                        color: AppColors.primaryLight,
-                        borderRadius: BorderRadius.circular(8),
-                      ),
-                    ),
-                    SizedBox(height: MyPaddings.small),
-                    Container(
-                      height: 20,
-                      width: double.infinity,
-                      decoration: BoxDecoration(
-                        color: AppColors.primaryLight,
-                        borderRadius: BorderRadius.circular(8),
-                      ),
-                    ),
-                    SizedBox(height: MyPaddings.small),
-
-                    Container(
-                      height: 16,
-                      width: 100,
-                      decoration: BoxDecoration(
-                        color: AppColors.primaryLight,
-                        borderRadius: BorderRadius.circular(8),
-                      ),
-                    ),
-                  ],
-                ),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  BasicSkeleton(height: 14, width: 300, borderRadius: BorderRadius.circular(6),),
+                  const SizedBox(height: 8,),
+                  BasicSkeleton(height: 14, width: 100, borderRadius: BorderRadius.circular(6),),
+                  Spacer(),
+                  BasicSkeleton(height: 10, width: 100, borderRadius: BorderRadius.circular(6),),
+                ],
               ),
             ),
           ],

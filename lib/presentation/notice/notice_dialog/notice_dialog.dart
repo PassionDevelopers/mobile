@@ -60,7 +60,7 @@ class NoticeDialog extends StatelessWidget {
     final NoticeDialogViewModel viewModel = getIt<NoticeDialogViewModel>(param1: notice);
     return Dialog(
       insetPadding: EdgeInsets.symmetric(horizontal: 16, vertical: 24),
-      backgroundColor: AppColors.primaryLight,
+      backgroundColor: AppColors.white,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(16),
       ),
@@ -94,7 +94,7 @@ class NoticeDialog extends StatelessWidget {
                         ),
                         child: MyText.small(
                           '중요',
-                          color: AppColors.primaryLight,
+                          color: AppColors.white,
                           fontWeight: FontWeight.w600,
                         ),
                       ),

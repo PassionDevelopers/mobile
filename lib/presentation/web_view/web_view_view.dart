@@ -61,7 +61,7 @@ class WebViewView extends StatelessWidget {
             panel: Ink(
               padding: EdgeInsets.fromLTRB(MyPaddings.medium, 0, MyPaddings.medium, 0),
               decoration: BoxDecoration(
-                color: AppColors.background,
+                color: AppColors.white,
                 borderRadius: radius,
               ),
               child: Column(
@@ -90,7 +90,7 @@ class WebViewView extends StatelessWidget {
                     ),
                   ),
                   SizedBox(height: 4),
-                  Divider(color: AppColors.gray5, height: 1),
+                  Divider(color: AppColors.gray300, height: 1),
                   SizedBox(height: 4),
                   Expanded(
                     child: ListView.builder(

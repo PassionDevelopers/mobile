@@ -74,7 +74,7 @@ class _OnboardingViewState extends State<OnboardingView> {
               onPressed: (){
                 context.go(RouteNames.home);
               },
-              child: MyText.h2('둘러보기', fontWeight: FontWeight.w100, color: AppColors.gray2),
+              child: MyText.h2('둘러보기', fontWeight: FontWeight.w100, color: AppColors.gray600),
             ) : const SizedBox(),
       ],
     );
@@ -92,8 +92,8 @@ class _OnboardingViewState extends State<OnboardingView> {
         children: [
           MyText.h0(mainTitle),
           const SizedBox(height: MyPaddings.large),
-          MyText.h2(subTitle1, maxLines: 1, color: AppColors.gray2),
-          MyText.h2(subTitle2, maxLines: 1, color: AppColors.gray2),
+          MyText.h2(subTitle1, maxLines: 1, color: AppColors.gray600),
+          MyText.h2(subTitle2, maxLines: 1, color: AppColors.gray600),
 
         ],
       ),
@@ -136,7 +136,7 @@ class _OnboardingViewState extends State<OnboardingView> {
   Widget _buildIndicator() {
     return PageIndicator(
       size: 10,
-      color: AppColors.gray4,
+      color: AppColors.gray400,
       activeColor: AppColors.primary,
       count: titles.length,
       controller: controller,
@@ -178,7 +178,7 @@ class _OnboardingViewState extends State<OnboardingView> {
         child: Ink(
           padding: const EdgeInsets.all(MyPaddings.large),
           decoration: BoxDecoration(
-            border: Border.all(color: AppColors.gray4),
+            border: Border.all(color: AppColors.gray400),
             borderRadius: BorderRadius.circular(16),
           ),
           child: Column(
@@ -190,7 +190,7 @@ class _OnboardingViewState extends State<OnboardingView> {
               MyText.h3(
                 subTitle,
                 maxLines: 1,
-                color: AppColors.gray3,
+                color: AppColors.gray500,
               ),
               const SizedBox(height: MyPaddings.small),
               Expanded(child: Center(child: child))
@@ -236,7 +236,7 @@ class _OnboardingViewState extends State<OnboardingView> {
             title: '성향 테스트',
             subTitle: '아직 자신의 성향을 잘 모르시나요?',
             child:  BigButton(
-              backgroundColor: AppColors.primaryLight,
+              backgroundColor: AppColors.white,
               textColor: AppColors.primary,
               onPressed: () {
                 context.go(RouteNames.biasTest);
@@ -254,7 +254,7 @@ class _OnboardingViewState extends State<OnboardingView> {
     return RegScaffold(
       isScrollPage: false,
       body: Ink(
-        color: AppColors.primaryLight,
+        color: AppColors.white,
         child: Padding(
           padding: const EdgeInsets.only(bottom: MyPaddings.large),
           child: Column(

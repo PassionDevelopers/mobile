@@ -79,7 +79,7 @@ class MyPageTrendChart extends StatelessWidget {
             borderRadius: BorderRadius.circular(24),
             boxShadow: [
               BoxShadow(
-                color: AppColors.gray3.withOpacity(0.05),
+                color: AppColors.gray500.withOpacity(0.05),
                 blurRadius: 12,
                 offset: Offset(0, 6),
               ),
@@ -94,7 +94,7 @@ class MyPageTrendChart extends StatelessWidget {
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      MyText.small('성향 변화 추이', color: AppColors.gray2),
+                      MyText.small('성향 변화 추이', color: AppColors.gray600),
                       SizedBox(height: MyPaddings.small),
                       Row(
                         children: [
@@ -106,7 +106,7 @@ class MyPageTrendChart extends StatelessWidget {
                               onTap: () {
                                 viewModel.fetchBiasScoreHistory();
                               },
-                              child: Icon(Icons.refresh, size: 25, color: AppColors.gray2)),
+                              child: Icon(Icons.refresh, size: 25, color: AppColors.gray600)),
                         ],
                       ),
                     ],
@@ -138,7 +138,7 @@ class MyPageTrendChart extends StatelessWidget {
                 height: 35,
                 padding: EdgeInsets.all(3),
                 decoration: BoxDecoration(
-                  color: AppColors.gray5,
+                  color: AppColors.gray300,
                   borderRadius: BorderRadius.circular(20),
                 ),
                 child: Row(
